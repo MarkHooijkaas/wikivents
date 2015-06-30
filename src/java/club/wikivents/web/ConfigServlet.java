@@ -1,0 +1,46 @@
+package club.wikivents.web;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.kisst.props4j.Props;
+import org.kisst.props4j.SimpleProps;
+import org.kisst.servlet4j.AbstractServlet;
+
+public class ConfigServlet extends AbstractServlet{
+	private final Props props;
+
+
+	public ConfigServlet(Props props) { super(props); this.props=props;	}
+
+	public void handle(HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
+		if (getUser(request, response)==null)
+			return;
+		response.setContentType("text/html;charset=utf-8");
+		PrintWriter out = response.getWriter();
+		out.println("<pre>");
+		out.println(""+props.getParent());
+		//filteredOutput(out, ((SimpleProps)props).toIndentedString());
+		filteredOutput(out, ((SimpleProps)props).toPropertiesString());
+		out.println("</pre>");
+		response.setStatus(HttpServletResponse.SC_OK);
+	}
+
+	
+	private void filteredOutput(PrintWriter out, String str) {
+		for (String line: str.split("[\n]")) {
+			if ( line.toLowerCase().contains("password")) {
+				int pos = line.indexOf('=');
+				if (pos<=0)
+					pos=line.toLowerCase().indexOf("password")+8;
+				line=line.substring(0,pos+1)+"***";
+			}
+			out.println(line);
+		}
+	}
+	
+}
