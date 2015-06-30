@@ -2,24 +2,37 @@ package org.kisst.crud4j;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-public abstract class CrudTable<T> {
-	abstract public void save(String key, T value);
-	abstract public T load(String key);
+import org.kisst.struct4j.Struct;
+
+public abstract class CrudTable<T extends CrudObject> {
+	private final ConcurrentHashMap<String, Ref> map=new ConcurrentHashMap<String,Ref>();
+	public  final CrudSchema<T> schema;
+	private final  Storage<T> storage;
+	public CrudTable(Storage<T> storage) { 
+		this.schema=storage.getSchema();
+		this.storage=storage;
+	}
+	abstract protected T create(Struct  props);
+	public Ref create(T doc) {
+		storage.createStorage(doc);
+		Ref ref=new Ref(doc);
+		map.put(doc._id, ref);
+		return ref;
+	}
+	public Ref read(String key) { return getRef(key); }
+	public void update(Ref r, T newValue) { storage.updateStorage(r.value, newValue); r.value=newValue; }
+	public void delete(Ref r) {  /* TODO*/}
 	
 	public class Ref {
 		public final String key;
 		private T value;
 		private Ref(String key) { this.key=key; }
+		private Ref(T value) { this.key=value._id; this.value=value;}
 		public T get() { 
 			if (value==null)
-				value = load(key);
+				value = create(storage.readStorage(key));
 			return value; }
 		public String getKey() { return key; }
-	}
-	private final ConcurrentHashMap<String, Ref> map=new ConcurrentHashMap<String,Ref>();
-	public  final CrudSchema<T> schema;
-	public CrudTable(CrudSchema<T> schema) { 
-		this.schema=schema;;
 	}
 	
 	public T get(String key) { return getRef(key).get(); }

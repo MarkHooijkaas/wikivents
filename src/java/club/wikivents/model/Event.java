@@ -2,11 +2,12 @@ package club.wikivents.model;
 
 import java.util.Date;
 
+import org.kisst.crud4j.CrudObject;
 import org.kisst.crud4j.CrudSchema;
 import org.kisst.crud4j.CrudTable;
 import org.kisst.struct4j.Struct;
 
-public class Event {
+public class Event extends CrudObject {
 	public final String title;
 	public final Date date;
 	public final int min;
@@ -14,11 +15,12 @@ public class Event {
 	public final CrudTable<User>.Ref organizer;
 	
 	public Event(WikiventsModel model, Struct s) {
-		this(schema.organizer.getRef(model.users, s), s);
+		this(schema.organizer.getRef(model.users(), s), s);
 	}
 
 	@SuppressWarnings("deprecation")
 	public Event(CrudTable<User>.Ref organizer, Struct props) {
+		super(props);
 		this.title=props.getString(schema.title.name);
 		this.date=new Date(Date.parse(props.getString("date")));
 		this.min=props.getInt(schema.min.name);

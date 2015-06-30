@@ -4,9 +4,10 @@ import java.util.LinkedHashMap;
 
 import org.kisst.struct4j.Struct;
 
-public class CrudSchema<T> {
+public class CrudSchema<T extends CrudObject> {
 	private final LinkedHashMap<String, Field > fields=new LinkedHashMap<String, Field>();
 	public final Class<?> cls;
+	public final IdField _id = new IdField();
 
 	public CrudSchema(Class<?> cls) { this.cls=cls; }
 	public Field getField(String name) {return fields.get(name); }
@@ -65,7 +66,7 @@ public class CrudSchema<T> {
 		}
 		public long getLong(Struct s) { return (Long) getValue(s); }
 	}
-	public class RefField<RT> extends Field {
+	public class RefField<RT extends CrudObject> extends Field {
 		public RefField(String name, boolean optional) {
 			super(name, optional, null);
 		}
