@@ -32,7 +32,7 @@
 	</target>
 
 	<target name="jar" description="creates a jar file" depends="compile">
-		<jar jarfile="${projectname}-${project.version}.jar"  basedir="${builddir}/classes" includes="org/kisst/**" includes="club/wikivents/**">
+		<jar jarfile="${projectname}-${project.version}.jar"  basedir="${builddir}/classes" includes="**" excludes="test/**">
 			<manifest>
 				<attribute name="Implementation-Vendor" value="org.kisst"/>
 				<attribute name="Implementation-Title" value="Wikivents"/>
@@ -68,4 +68,18 @@
 	<target name="clean" depends="init">
   		<delete dir="${builddir}/classes" />
   	</target>
+  	
+  	<target name="test" depends="compile">
+  	      <java classname="test.Main"
+           fork="true"
+           failonerror="true"
+           maxmemory="128m"
+           >
+         <arg value="-h"/>
+         <classpath>
+           <pathelement location="lib/*.jar"/>
+           <pathelement location="build/classes"/>
+         </classpath>
+       </java>
+    </target>
 </project>

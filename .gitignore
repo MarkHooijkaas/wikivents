@@ -4,3 +4,4 @@ wikivents*.jar
 lib
 logs
 tmp
+test/data
