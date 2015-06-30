@@ -17,7 +17,7 @@ public class HomeServlet extends TemplateServlet {
 
 	@Override protected void addContext(HashMap<String, Object> root) {
 		root.put("model", model);
-		root.put("events", model.events);
+		root.put("events", model.events());
 	}
 
 }

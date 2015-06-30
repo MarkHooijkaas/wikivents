@@ -10,7 +10,7 @@ public class Attendance extends CrudObject {
 	public final CrudTable<Event>.Ref event;
 	
 	public Attendance(WikiventsModel model, Struct s) {
-		super(s);
+		super(schema,s);
 		this.user  = schema.user.getRef(model.users(), s);
 		this.event = schema.event.getRef(model.events(), s);
 	}

@@ -20,7 +20,7 @@ public class FileStorage<T extends CrudObject> implements Storage<T> {
 	
 	@Override public void createStorage(CrudObject value) {
 		File f = new File(dir, value._id);
-		FileUtil.saveString(f, new ReflectStruct(value).toString());
+		FileUtil.saveString(f, new ReflectStruct(value).toString(1, ""));
 	}
 	@Override public Struct readStorage(String key) {
 		return new SimpleProps(new File(dir, key));

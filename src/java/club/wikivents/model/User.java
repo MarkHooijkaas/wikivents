@@ -10,10 +10,13 @@ public class User extends CrudObject {
 	public final String password;
 	
 	public User(Struct s) {
-		super(s);
+		super(schema, s);
 		this.name=schema.name.getString(s);
 		this.email=schema.email.getString(s);
 		this.password=schema.password.getString(s);
+	}
+	@Override protected String createUniqueKey(Struct data) {
+		return schema.name.getValue(data);
 	}
 
 	public static Schema schema=new Schema();

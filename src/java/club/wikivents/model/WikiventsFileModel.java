@@ -13,6 +13,7 @@ public class WikiventsFileModel extends WikiventsModel {
 	public EventTable events() {return events; }
 	public AttendanceTable attendance() { return attendance; }
 
+	public WikiventsFileModel(String filename) { this(new File(filename)); }
 	public WikiventsFileModel(File dir) {
 		users = new UserTable(new FileStorage<User>(User.schema, dir)); 
 		events = new EventTable(new FileStorage<Event>(Event.schema, dir));

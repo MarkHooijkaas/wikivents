@@ -12,7 +12,7 @@ public abstract class CrudTable<T extends CrudObject> {
 		this.schema=storage.getSchema();
 		this.storage=storage;
 	}
-	abstract protected T create(Struct  props);
+	abstract protected T createObject(Struct  props);
 	public Ref create(T doc) {
 		storage.createStorage(doc);
 		Ref ref=new Ref(doc);
@@ -30,7 +30,7 @@ public abstract class CrudTable<T extends CrudObject> {
 		private Ref(T value) { this.key=value._id; this.value=value;}
 		public T get() { 
 			if (value==null)
-				value = create(storage.readStorage(key));
+				value = createObject(storage.readStorage(key));
 			return value; }
 		public String getKey() { return key; }
 	}

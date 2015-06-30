@@ -20,7 +20,7 @@ public class Event extends CrudObject {
 
 	@SuppressWarnings("deprecation")
 	public Event(CrudTable<User>.Ref organizer, Struct props) {
-		super(props);
+		super(schema, props);
 		this.title=props.getString(schema.title.name);
 		this.date=new Date(Date.parse(props.getString("date")));
 		this.min=props.getInt(schema.min.name);

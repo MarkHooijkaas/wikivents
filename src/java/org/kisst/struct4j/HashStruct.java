@@ -3,11 +3,12 @@ package org.kisst.struct4j;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 
-public class SimpleStruct extends BaseStruct {
+public class HashStruct extends BaseStruct {
 	private final LinkedHashMap<String, Object> map=new LinkedHashMap<String, Object>();
 
 	//@Override public String toString() { return toString(this.getClass(),); }
-
+	public void put(String key, Object value) { map.put(key, value); }
+	
 	@Override public Iterable<String> fieldNames() {
 		HashSet<String> result= new HashSet<String>();
 		for (String key: map.keySet())
