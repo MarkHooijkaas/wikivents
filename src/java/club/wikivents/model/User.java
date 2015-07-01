@@ -14,11 +14,12 @@ public class User extends CrudObject {
 		this.name=schema.name.getString(s);
 		this.email=schema.email.getString(s);
 		this.password=schema.password.getString(s);
+		
 	}
 
 	public static final Schema schema=new Schema();
 	public static class Schema extends CrudSchema<User> {
-		public Schema() { super(User.class); }
+		public Schema() { super(User.class); addAllFields();}
 		public final StringField name     = new StringField(User.class, "name"); 
 		public final StringField email    = new StringField(User.class, "email"); 
 		public final StringField password = new StringField(User.class, "password"); 

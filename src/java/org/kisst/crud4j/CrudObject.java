@@ -21,6 +21,6 @@ public class CrudObject extends BaseStruct {
 
 	@Override public Iterable<String> fieldNames() { return schema.fieldNames(); }
 	@Override public Object getDirectFieldValue(String name) {
-		return schema.getField(name); //TODO
+		return schema.getField(name).getObjectValue(this); 
 	}
 }

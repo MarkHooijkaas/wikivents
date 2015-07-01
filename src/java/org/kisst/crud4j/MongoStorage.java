@@ -19,7 +19,7 @@ public class MongoStorage<T extends CrudObject> implements Storage<T> {
 	}
 	public CrudSchema<T> getSchema() { return this.schema; }
 	
-	@Override public void createStorage(CrudObject value) {
+	@Override public void createStorage(T value) {
 		MongoStruct doc = new MongoStruct(makeStruct(value));
         collection.insert(doc.data);
 	}
@@ -30,12 +30,12 @@ public class MongoStorage<T extends CrudObject> implements Storage<T> {
 			return new MongoStruct(cursor.next());
 		} finally { cursor.close(); }		
 	}
-	@Override public void updateStorage(CrudObject oldValue, CrudObject newValue) {
+	@Override public void updateStorage(T oldValue, T newValue) {
 		MongoStruct oldDoc= new MongoStruct(makeStruct(oldValue));
 		MongoStruct newDoc= new MongoStruct(makeStruct(newValue));
         collection.update(oldDoc.data, newDoc.data);
 	}
-	@Override public void deleteStorage(CrudObject oldValue){} // TODO
+	@Override public void deleteStorage(T oldValue){} // TODO
 
 	
 	

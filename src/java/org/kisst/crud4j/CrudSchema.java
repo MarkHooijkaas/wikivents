@@ -11,7 +11,22 @@ public class CrudSchema<T extends CrudObject> {
 	public final Class<?> cls;
 	public final IdField _id = new IdField("_id");
 	
-	public CrudSchema(Class<?> cls) { this.cls=cls; }
+	public CrudSchema(Class<?> cls) { 
+		this.cls=cls;
+	}
+	@SuppressWarnings("unchecked")
+	protected void addAllFields() {
+		try {
+			for (java.lang.reflect.Field f : this.getClass().getFields()) {
+				if (Field.class.isAssignableFrom(f.getType())) {
+					fields.put(f.getName(), (CrudSchema<T>.Field<T>) f.get(this));
+					System.out.println("Added"+cls.getSimpleName()+"::"+f.getName());
+				}
+			}
+		}
+		catch (IllegalArgumentException e) { throw new RuntimeException(e); }
+		catch (IllegalAccessException e) { throw new RuntimeException(e); }
+	}
 	@Override public String toString() { return cls.getSimpleName(); }
 	public final IdField getKeyField() { return _id; }
 	public Field<T> getField(String name) {return fields.get(name); }
@@ -36,13 +51,14 @@ public class CrudSchema<T extends CrudObject> {
 			this.field=ReflectionUtil.getField(CrudObject.class, name);
 		}
 		@SuppressWarnings("unchecked")
-		public FT getValue(T obj) { 
+		public FT getObjectValue(CrudObject obj) { 
 			try {
 				return (FT) field.get(obj);
 			}
 			catch (IllegalArgumentException e) { throw new RuntimeException(e); }
 			catch (IllegalAccessException e) { throw new RuntimeException(e); }
 		}
+		
 		@SuppressWarnings("unchecked")
 		public FT getValue(Struct s) { 
 			if (optional)
@@ -50,6 +66,7 @@ public class CrudSchema<T extends CrudObject> {
 			else
 				return (FT) s.getObject(name);
 		}
+		
 		public void setValue(HashStruct doc, FT value) { doc.put(name, value); } 
 	}
 	public class StringField extends Field<String> {
