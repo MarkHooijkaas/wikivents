@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.kisst.crud4j.CrudObject;
 import org.kisst.crud4j.CrudSchema;
+import org.kisst.crud4j.CrudTable;
 import org.kisst.struct4j.Struct;
 
 public class Event extends CrudObject {
@@ -11,14 +12,14 @@ public class Event extends CrudObject {
 	public final Date date;
 	public final int min;
 	public final int max;
-	public final User organizer;
+	public final CrudTable<User>.Ref organizer;
 	
 	public Event(WikiventsModel model, Struct s) {
 		this(schema.organizer.get(model.users(), s), s);
 	}
 
 	@SuppressWarnings("deprecation")
-	public Event(User organizer, Struct props) {
+	public Event(CrudTable<User>.Ref organizer, Struct props) {
 		super(schema, props);
 		this.title=props.getString(schema.title.name);
 		this.date=new Date(Date.parse(props.getString("date")));

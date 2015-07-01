@@ -5,6 +5,7 @@ import org.kisst.struct4j.Struct;
 public abstract class CrudTable<T extends CrudObject> {
 	public  final CrudSchema<T> schema;
 	private final  Storage<T> storage;
+	
 	public CrudTable(Storage<T> storage) { 
 		this.schema=storage.getSchema();
 		this.storage=storage;
@@ -22,4 +23,12 @@ public abstract class CrudTable<T extends CrudObject> {
 	public void delete(T oldValue) {
 		storage.deleteInStorage(oldValue);
 	}
+
+	public class Ref {
+		public final String _id;
+		private Ref(String id) {this._id=id;}
+		public T get() {return read(_id); }
+	}
+	public Ref getRef(String key) { return new Ref(key); }
+
 }

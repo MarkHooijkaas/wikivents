@@ -2,11 +2,12 @@ package club.wikivents.model;
 
 import org.kisst.crud4j.CrudObject;
 import org.kisst.crud4j.CrudSchema;
+import org.kisst.crud4j.CrudTable;
 import org.kisst.struct4j.Struct;
 
 public class Attendance extends CrudObject {
-	public final User user;
-	public final Event event;
+	public final CrudTable<User>.Ref user;
+	public final CrudTable<Event>.Ref event;
 	
 	public Attendance(WikiventsModel model, Struct s) {
 		super(schema,s);
@@ -20,5 +21,4 @@ public class Attendance extends CrudObject {
 		public final RefField<User> user  = new RefField<User>(Attendance.class,"user", false); 
 		public final RefField<Event> event = new RefField<Event>(Attendance.class,"event", false); 
 	}
-
 }

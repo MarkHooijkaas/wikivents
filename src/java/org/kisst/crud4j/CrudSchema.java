@@ -95,8 +95,8 @@ public class CrudSchema<T extends CrudObject> {
 		public RefField(Class<T> cls, String name, boolean optional) {
 			super(cls, name, optional, null);
 		}
-		public RT get(CrudTable<RT> table, Struct s) { 
-			return table.read(s.getString(name));
+		public CrudTable<RT>.Ref get(CrudTable<RT> table, Struct s) { 
+			return table.getRef(s.getString(name));
 		}
 	}
 }
