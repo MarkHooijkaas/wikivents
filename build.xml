@@ -77,7 +77,7 @@
            >
          <arg value="-h"/>
          <classpath>
-           <pathelement location="lib/*.jar"/>
+           <pathelement location="lib/bson-2.13.2.jar"/>
            <pathelement location="build/classes"/>
          </classpath>
        </java>

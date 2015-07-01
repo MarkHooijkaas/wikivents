@@ -19,7 +19,7 @@ public abstract class BaseStruct implements Struct {
 			remainder=path.substring(pos+1);
 		}
 		Object value=getDirectFieldValue(name);
-		if (value==null)
+		if (value==null || value==UNKNOWN_FIELD)
 			return defaultValue;
 		if (remainder==null)
 			return value;

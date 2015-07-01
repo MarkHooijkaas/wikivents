@@ -10,20 +10,11 @@ public class CrudObject {
 		this.schema= schema;
 		this._id=createUniqueKey(data); 
 	}
-	//public CrudObject(CrudSchema<?> schema, String key) { 
-	//	this.schema= schema;
-	//	this._id=uniqueKey(key); 
-	//}
 	protected String createUniqueKey(Struct data) {
 		String key= data.getString("_id",null);
 		if (key==null)
 			return uniqueKey();
 		return key;
 	}
-	//protected String uniqueKey(String key) {
-	//	if (key==null)
-	//		return uniqueKey();
-	//	return key;
-	//}
-	protected String uniqueKey() { return new ObjectId().toHexString()+"HAHA";}
+	protected String uniqueKey() { return new ObjectId().toHexString();}
 }

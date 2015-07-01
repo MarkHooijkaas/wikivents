@@ -15,9 +15,6 @@ public class User extends CrudObject {
 		this.email=schema.email.getString(s);
 		this.password=schema.password.getString(s);
 	}
-	@Override protected String createUniqueKey(Struct data) {
-		return schema.name.getValue(data);
-	}
 
 	public static Schema schema=new Schema();
 	public static class Schema extends CrudSchema<User> {
