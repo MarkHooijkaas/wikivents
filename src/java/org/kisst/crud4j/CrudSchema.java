@@ -52,12 +52,12 @@ public class CrudSchema<T extends CrudObject> {
 		}
 		public long getLong(Struct s) { return getValue(s); }
 	}
-	public class RefField<RT extends CrudObject> extends Field<CrudTable<RT>.Ref> {
+	public class RefField<RT extends CrudObject> extends Field<RT> {
 		public RefField(String name, boolean optional) {
 			super(name, optional, null);
 		}
-		public CrudTable<RT>.Ref getRef(CrudTable<RT> table, Struct s) { 
-			return table.getRef(s.getString(name));
+		public RT get(CrudTable<RT> table, Struct s) { 
+			return table.read(s.getString(name));
 		}
 	}
 }
