@@ -16,11 +16,11 @@ public class User extends CrudObject {
 		this.password=schema.password.getString(s);
 	}
 
-	public static Schema schema=new Schema();
+	public static final Schema schema=new Schema();
 	public static class Schema extends CrudSchema<User> {
 		public Schema() { super(User.class); }
-		public final StringField name     = new StringField("name", false, null); 
-		public final StringField email    = new StringField("email", false, null); 
-		public final StringField password = new StringField("password", false, null); 
+		public final StringField name     = new StringField(User.class, "name"); 
+		public final StringField email    = new StringField(User.class, "email"); 
+		public final StringField password = new StringField(User.class, "password"); 
 	}
 }

@@ -34,9 +34,16 @@ public class ReflectionUtil {
 		} catch (ClassNotFoundException e) { throw new RuntimeException(e); }
 	}
 
-	public static Field getField(Class<?> cls, String name) {
+	public static Field getDeclaredField(Class<?> cls, String name) {
 		try {
 			return cls.getDeclaredField(name);
+		} 
+		catch (SecurityException e) {throw new RuntimeException(e); }
+		catch (NoSuchFieldException e) { return null; }
+	}
+	public static Field getField(Class<?> cls, String name) {
+		try {
+			return cls.getField(name);
 		} 
 		catch (SecurityException e) {throw new RuntimeException(e); }
 		catch (NoSuchFieldException e) { return null; }
