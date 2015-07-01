@@ -11,15 +11,15 @@ public abstract class CrudTable<T extends CrudObject> {
 	}
 	abstract protected T createObject(Struct  props);
 	public void create(T doc) {
-		storage.createStorage(doc);
+		storage.createInStorage(doc);
 	}
 	public T read(String key) { 
-		return createObject(storage.readStorage(key));
+		return createObject(storage.readFromStorage(key));
 	}
 	public void update(T oldValue, T newValue) { 
-		storage.updateStorage(oldValue, newValue); 
+		storage.updateInStorage(oldValue, newValue); 
 	}
 	public void delete(T oldValue) {
-		storage.deleteStorage(oldValue);
-}
+		storage.deleteInStorage(oldValue);
+	}
 }

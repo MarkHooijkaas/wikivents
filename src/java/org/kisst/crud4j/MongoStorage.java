@@ -19,23 +19,23 @@ public class MongoStorage<T extends CrudObject> implements Storage<T> {
 	}
 	public CrudSchema<T> getSchema() { return this.schema; }
 	
-	@Override public void createStorage(T value) {
+	@Override public void createInStorage(T value) {
 		MongoStruct doc = new MongoStruct(makeStruct(value));
         collection.insert(doc.data);
 	}
-	@Override public Struct readStorage(String key) {
+	@Override public Struct readFromStorage(String key) {
 		BasicDBObject query = new BasicDBObject("_id", key);
 		DBCursor cursor = collection.find(query);
 		try {
 			return new MongoStruct(cursor.next());
 		} finally { cursor.close(); }		
 	}
-	@Override public void updateStorage(T oldValue, T newValue) {
+	@Override public void updateInStorage(T oldValue, T newValue) {
 		MongoStruct oldDoc= new MongoStruct(makeStruct(oldValue));
 		MongoStruct newDoc= new MongoStruct(makeStruct(newValue));
         collection.update(oldDoc.data, newDoc.data);
 	}
-	@Override public void deleteStorage(T oldValue){} // TODO
+	@Override public void deleteInStorage(T oldValue){} // TODO
 
 	
 	
