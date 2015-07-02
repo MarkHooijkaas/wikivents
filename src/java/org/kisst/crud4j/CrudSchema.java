@@ -7,6 +7,8 @@ import org.kisst.struct4j.Struct;
 import org.kisst.util.ReflectionUtil;
 
 public class CrudSchema<T extends CrudObject> {
+	public static CrudSchema<CrudObject> schema=new CrudSchema<CrudObject>(CrudObject.class);
+	
 	private final LinkedHashMap<String, Field<T> > fields=new LinkedHashMap<String, Field<T>>();
 	public final Class<?> cls;
 	public final IdField _id = new IdField("_id");
@@ -76,7 +78,7 @@ public class CrudSchema<T extends CrudObject> {
 		public StringField(Class<T> cls, String name) { super(cls,name); }
 		public String getString(Struct s) { return getValue(s); }
 	}
-	private class IdField extends Field<String> {
+	public class IdField extends Field<String> {
 		public IdField(String name) { super(name); }
 	}
 	public class IntField extends Field<Integer> {

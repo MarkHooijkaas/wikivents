@@ -27,8 +27,18 @@ public class FileStorage<T extends CrudObject> implements Storage<T> {
 		return new SimpleProps(new File(dir, key));
 	}
 	@Override public void updateInStorage(T oldValue, T newValue) {
-		File f = new File(dir, newValue._id);
+		// The newValue may contain an id, but that is ignored
+		String oldId = schema.getKeyField().getObjectValue(oldValue);
+		File f = new File(dir, oldId);
 		FileUtil.saveString(f, newValue.toString(1,""));
 	}
-	@Override public void deleteInStorage(T oldValue)  {} // TODO
+	@Override public void deleteInStorage(T oldValue)  {
+		checkForConcurrentModification(oldValue);
+		getFile(oldValue).delete();
+	}
+	private void checkForConcurrentModification(T obj) {
+		// TODO Auto-generated method stub
+		
+	}
+	private File getFile(T obj) { return new File(schema.getKeyField().getValue(obj));}
 }
