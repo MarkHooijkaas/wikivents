@@ -37,7 +37,7 @@
 				<attribute name="Implementation-Vendor" value="org.kisst"/>
 				<attribute name="Implementation-Title" value="Wikivents"/>
 				<attribute name="Implementation-Version" value="${project.version}"/> 
-				<attribute name="Class-Path" value="lib/log4j-1.2.13.jar lib/slf4j-api-1.5.10.jar lib/slf4j-log4j12-1.5.10.jar lib/jetty-all-7.0.1.v20091125.jar lib/servlet-api-2.5.jar lib/freemarker-2.3.15.jar lib/commons-dbcp-1.3.jar lib/guava-12.0.1.jar lib/org.eclipse.jgit-3.7.0.201502260915-r.jar lib/org.eclipse.jgit.pgm-3.7.0.201502260915-r.jar lib/org.eclipse.jgit.ui-3.7.0.201502260915-r.jar lib/args4j-2.0.21.jar lib/org.eclipse.jgit.archive-3.7.0.201502260915-r.jar lib/commons-compress-1.6.jar lib/xz-1.4.jar lib/JavaEWAH-0.7.9.jar lib/org.osgi.core-4.3.1.jar lib/org.eclipse.jgit.console-3.7.0.201502260915-r.jar lib/log4jna.jar  lib/jzlib-1.1.3.jar"/>
+				<attribute name="Class-Path" value="lib/log4j-1.2.13.jar lib/slf4j-api-1.5.10.jar lib/slf4j-log4j12-1.5.10.jar lib/jetty-all-9.3.0.v20150612-uber.jar lib/servlet-api-2.5.jar lib/freemarker-2.3.15.jar lib/commons-dbcp-1.3.jar lib/guava-12.0.1.jar lib/org.eclipse.jgit-3.7.0.201502260915-r.jar lib/org.eclipse.jgit.pgm-3.7.0.201502260915-r.jar lib/org.eclipse.jgit.ui-3.7.0.201502260915-r.jar lib/args4j-2.0.21.jar lib/org.eclipse.jgit.archive-3.7.0.201502260915-r.jar lib/commons-compress-1.6.jar lib/xz-1.4.jar lib/JavaEWAH-0.7.9.jar lib/org.osgi.core-4.3.1.jar lib/org.eclipse.jgit.console-3.7.0.201502260915-r.jar lib/log4jna.jar  lib/jzlib-1.1.3.jar"/>
 				<attribute name="Main-Class" value="club.wikivents.Runner"/>
 			</manifest>
 			<zipfileset dir="${srcdir}/java" includes="*.template"/>

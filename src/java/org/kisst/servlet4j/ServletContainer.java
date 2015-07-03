@@ -58,7 +58,7 @@ public class ServletContainer extends AbstractHandler {
 			server.stop();
 			//Thread.sleep(3000);
 			for (Connector conn : server.getConnectors())
-				conn.close();
+				conn.stop();
 			server.destroy();
 		} catch (Exception e) { throw new RuntimeException(e);}
 	}
