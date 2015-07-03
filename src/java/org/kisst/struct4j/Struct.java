@@ -1,5 +1,7 @@
 package org.kisst.struct4j;
 
+import org.kisst.struct4j.seq.Sequence;
+
 public interface Struct {
 	//public static Object UNKNOWN_FIELD= new Object();
 	public class UnknownFieldException extends RuntimeException {
@@ -33,10 +35,15 @@ public interface Struct {
 	public int getInt(String path, int defaultValue);
 	public long getLong(String path, long defaultValue);
 	public boolean getBoolean(String path, boolean defaultValue);
+	public Struct getStruct(String path, Struct defaultValue);
+	public Sequence getSequence(String path, Sequence defaultValue);
+
 
 	public Object getObject(String path);
 	public String getString(String path);
 	public int getInt(String path);
 	public long getLong(String path);
 	public boolean getBoolean(String path);
+	public Struct getStruct(String path);
+	public Sequence getSequence(String path);
 }
