@@ -31,9 +31,15 @@ public abstract class BaseMemoryTable<T extends CrudObject> extends BaseTable<T>
 		cache.remove(oldValue._id);
 	}
 
-
-	private class MyUniqueIndex implements UniqueIndex<T>{
+	private class BaseIndex {
+		private final CrudSchema<T>.Field<?> keyField;
+		private BaseIndex(CrudSchema<T>.Field<?> keyField) {this.keyField=keyField; }
+		protected final String getKey(T record) { return keyField.getString(record); }
+	}
+	
+	private class MyUniqueIndex extends BaseIndex implements UniqueIndex<T>{
 		private final ConcurrentHashMap<String, T> map = new ConcurrentHashMap<String, T>();
+		private MyUniqueIndex(CrudSchema<T>.Field<?> keyField) {super(keyField); }
 		
 		@Override public T get(String field) { return map.get(field); }
 
@@ -55,11 +61,6 @@ public abstract class BaseMemoryTable<T extends CrudObject> extends BaseTable<T>
 			map.remove(oldKey);
 		}
 
-		private String getKey(T record) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
 		private void insertRecord(T record) {
 			String key=getKey(record);
 			T oldValue = map.get(key);
@@ -72,9 +73,10 @@ public abstract class BaseMemoryTable<T extends CrudObject> extends BaseTable<T>
 		}
 	}
 
-	private class MyMultiIndex implements MultiIndex<T>{
+	private class MyMultiIndex extends BaseIndex implements MultiIndex<T>{
 		private final ConcurrentHashMap<String, T> map = new ConcurrentHashMap<String, T>();
-		
+		public MyMultiIndex(CrudSchema<T>.Field<?> keyField) { super(keyField);}
+
 		@Override public TypedSequence<T> get(String field) { return null; }
 
 		@Override public void notifyCreate(T record) {
@@ -95,11 +97,6 @@ public abstract class BaseMemoryTable<T extends CrudObject> extends BaseTable<T>
 			map.remove(oldKey);
 		}
 
-		private String getKey(T record) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
 		private void insertRecord(T record) {
 			String key=getKey(record);
 			T oldValue = map.get(key);
@@ -112,8 +109,8 @@ public abstract class BaseMemoryTable<T extends CrudObject> extends BaseTable<T>
 		}
 	}
 
-	public UniqueIndex<T> useUniqueIndex() { return new MyUniqueIndex(); } // TODO
-	public MultiIndex<T>  useMultiIndex() { return new MyMultiIndex(); } // TODO
+	public UniqueIndex<T> useUniqueIndex(CrudSchema<T>.Field<?> field) { return new MyUniqueIndex(field); } // TODO
+	public MultiIndex<T>  useMultiIndex(CrudSchema<T>.Field<?> field) { return new MyMultiIndex(field); } // TODO
 	public OrderedIndex<T>  useOrderedIndex() { return null; } // TODO
 
 }

@@ -1,5 +1,7 @@
 package org.kisst.crud4j.impl;
 
+import java.util.ArrayList;
+
 import org.kisst.crud4j.CrudObject;
 import org.kisst.crud4j.CrudSchema;
 import org.kisst.crud4j.CrudTable;
@@ -7,9 +9,9 @@ import org.kisst.struct4j.MultiStruct;
 import org.kisst.struct4j.Struct;
 
 public abstract class BaseTable<T extends CrudObject> implements CrudTable<T>{
-	private final CrudSchema<T> schema;
+	protected final CrudSchema<T> schema;
 	private final String name;
-	private final Index<T>[] indices=null;
+	private final ArrayList<Index<T>> indices=new ArrayList<Index<T>>();
 	
 	private boolean alwaysCheckId=true;
 	public BaseTable(CrudSchema<T> schema) { 

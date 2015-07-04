@@ -54,6 +54,12 @@ public class CrudSchema<T extends CrudObject> {
 			this.defaultValue=null;
 			this.field=ReflectionUtil.getField(CrudObject.class, name);
 		}
+		public String getString(Struct s) { 
+			FT result = getValue(s);
+			if (result==null)
+				return null;
+			return result.toString();
+		}
 		@SuppressWarnings("unchecked")
 		public FT getObjectValue(CrudObject obj) { 
 			try {

@@ -24,14 +24,14 @@ public class WikiventsMongoModel implements WikiventsModel {
 	}
 	
 	private class EventTable extends MongoTable<Event> implements Event.Table {
-		private MultiIndex<Event> organiserIndex;
+		private MultiIndex<Event> organizerIndex;
 		private OrderedIndex<Event> dateIndex;
 		public EventTable(DB db) { 
 			super(Event.schema, db); 
-			this.organiserIndex = useMultiIndex();
+			this.organizerIndex = useMultiIndex();
 			this.dateIndex= useOrderedIndex();
 		}
-		@Override public MultiIndex<Event> organiserIndex() { return organiserIndex; }
+		@Override public MultiIndex<Event> organizerIndex() { return organizerIndex; }
 		@Override public OrderedIndex<Event> dateIndex() { return dateIndex; }
 	}
 	private class AttendanceTable extends MongoTable<Attendance> implements Attendance.Table {
