@@ -15,7 +15,7 @@ public class WikiventsFileModel implements WikiventsModel {
 	@Override public Attendance.Table attendance() { return attendance; }
 
 	private class UserTable extends FileTable<User> implements User.Table {
-		private UniqueIndex<User> usernameIndex;
+		public UniqueIndex<User> usernameIndex;
 		public UserTable(File maindir) { 
 			super(User.schema, maindir); 
 			usernameIndex = useUniqueIndex(User.schema.name);
@@ -24,8 +24,8 @@ public class WikiventsFileModel implements WikiventsModel {
 	}
 	
 	private class EventTable extends FileTable<Event> implements Event.Table {
-		private MultiIndex<Event> organizerIndex;
-		private OrderedIndex<Event> dateIndex;
+		public MultiIndex<Event> organizerIndex;
+		public OrderedIndex<Event> dateIndex;
 		public EventTable(File maindir) { 
 			super(Event.schema, maindir); 
 			this.organizerIndex = useMultiIndex(Event.schema.organizer);
@@ -35,8 +35,8 @@ public class WikiventsFileModel implements WikiventsModel {
 		@Override public OrderedIndex<Event> dateIndex() { return dateIndex; }
 	}
 	private class AttendanceTable extends FileTable<Attendance> implements Attendance.Table {
-		private MultiIndex<Attendance> userIndex;
-		private MultiIndex<Attendance> eventIndex;
+		public MultiIndex<Attendance> userIndex;
+		public MultiIndex<Attendance> eventIndex;
 		public AttendanceTable(File maindir) { 
 			super(Attendance.schema, maindir); 
 			this.userIndex= useMultiIndex(Attendance.schema.user);

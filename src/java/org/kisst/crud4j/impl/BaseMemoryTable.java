@@ -65,8 +65,7 @@ public abstract class BaseMemoryTable<T extends CrudObject> extends BaseTable<T>
 			String key=getKey(record);
 			T oldValue = map.get(key);
 			if (oldValue!=null) {
-				String oldKey = getKey(oldValue);
-				if (! key.equals(oldKey))
+				if (! oldValue._id.equals(record._id))
 					throw new RuntimeException("Trying to insert record with non-unique key "+key);
 			}
 			map.put(key, record);
@@ -109,8 +108,17 @@ public abstract class BaseMemoryTable<T extends CrudObject> extends BaseTable<T>
 		}
 	}
 
-	public UniqueIndex<T> useUniqueIndex(CrudSchema<T>.Field<?> field) { return new MyUniqueIndex(field); } // TODO
-	public MultiIndex<T>  useMultiIndex(CrudSchema<T>.Field<?> field) { return new MyMultiIndex(field); } // TODO
+	public UniqueIndex<T> useUniqueIndex(CrudSchema<T>.Field<?> field) {
+		BaseMemoryTable<T>.MyUniqueIndex result = new MyUniqueIndex(field);
+		addIndex(result);
+		return result;
+	} 
+	public MultiIndex<T>  useMultiIndex(CrudSchema<T>.Field<?> field) { 
+		BaseMemoryTable<T>.MyMultiIndex result = new MyMultiIndex(field);
+		addIndex(result);
+		return result;
+	} 
+
 	public OrderedIndex<T>  useOrderedIndex() { return null; } // TODO
 
 }

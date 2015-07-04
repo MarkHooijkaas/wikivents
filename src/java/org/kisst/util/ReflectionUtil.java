@@ -24,6 +24,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ReflectionUtil {
 
@@ -48,7 +50,24 @@ public class ReflectionUtil {
 		catch (SecurityException e) {throw new RuntimeException(e); }
 		catch (NoSuchFieldException e) { return null; }
 	}
-
+	
+	public static List<Object> getAllDeclaredFieldValuesOfType(Object obj, Class<?> type) {
+		ArrayList<Object> result=new ArrayList<Object>();
+		try {
+			for (Field f : obj.getClass().getDeclaredFields()) {
+				
+				System.out.println(obj.getClass().getSimpleName()+"::"+f.getName());
+				if (type.isAssignableFrom(f.getType())) {
+					result.add(f.get(obj));
+				}
+			}
+			return result;
+		}
+		catch (IllegalArgumentException e) { throw new RuntimeException(e); }
+		catch (IllegalAccessException e) { throw new RuntimeException(e); }
+	}
+	
+	
 	public static Method getMethod(Class<?> cls, String name, Class<?>[] signature) {
 		Method[] metharr = cls.getDeclaredMethods();
 		for (Method meth :metharr) {

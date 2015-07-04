@@ -16,6 +16,7 @@ public class Main {
 		User.schema.password.setValue(doc, "secret");
 		model.users().create(new User(doc));
 		System.out.println("Added user");
+		//model.users().create(new User(doc));
 
 		User.schema.name.setValue(doc, "PKO");
 		User.schema.email.setValue(doc, "pko@wikivents.nl");
