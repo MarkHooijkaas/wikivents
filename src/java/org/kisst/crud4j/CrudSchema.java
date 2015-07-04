@@ -13,14 +13,15 @@ public class CrudSchema<T extends CrudObject> {
 	public final Class<?> cls;
 	public final IdField _id = new IdField("_id");
 	
-	public CrudSchema(Class<?> cls) { 
-		this.cls=cls; 
-		addAllFields();
-	}
+	public CrudSchema(Class<?> cls) { this.cls=cls;	}
+	protected void addAllFields() { addAllFields(this.getClass());	}
 	@SuppressWarnings("unchecked")
-	protected void addAllFields() {
+	private void addAllFields(Class<?> cls) {
+		if (cls==null || cls==Object.class)
+			return;
+		addAllFields(cls.getSuperclass());
 		try {
-			for (java.lang.reflect.Field f : this.getClass().getDeclaredFields()) {
+			for (java.lang.reflect.Field f : cls.getDeclaredFields()) {
 				if (Field.class.isAssignableFrom(f.getType())) {
 					fields.put(f.getName(), (CrudSchema<T>.Field<T>) f.get(this));
 					System.out.println("Added"+cls.getSimpleName()+"::"+f.getName());
