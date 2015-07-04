@@ -1,5 +1,7 @@
-package org.kisst.crud4j;
+package org.kisst.crud4j.impl;
 
+import org.kisst.crud4j.CrudObject;
+import org.kisst.crud4j.CrudSchema;
 import org.kisst.struct4j.BaseStruct;
 import org.kisst.struct4j.ReflectStruct;
 import org.kisst.struct4j.Struct;
@@ -10,14 +12,12 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
-public class MongoStorage<T extends CrudObject> implements Storage<T> {
+public abstract class MongoTable<T extends CrudObject> extends BaseTable<T> {
 	private final DBCollection collection;
-	private final CrudSchema<T> schema;
-	public MongoStorage(CrudSchema<T> schema, DB db) { 
+	public MongoTable(CrudSchema<T> schema, DB db) { 
+		super(schema);
 		this.collection=db.getCollection(schema.cls.getSimpleName());
-		this.schema=schema;
 	}
-	public CrudSchema<T> getSchema() { return this.schema; }
 	
 	@Override public void createInStorage(T value) {
 		MongoStruct doc = new MongoStruct(makeStruct(value));
@@ -56,4 +56,9 @@ public class MongoStorage<T extends CrudObject> implements Storage<T> {
 		@Override public Iterable<String> fieldNames() { return data.keySet(); }
 		@Override public Object getDirectFieldValue(String name) { return data.get(name);}
 	}
+
+	public UniqueIndex<T> useUniqueIndex() { return null; } // TODO
+	public MultiIndex<T>  useMultiIndex() { return null; } // TODO
+	public OrderedIndex<T>  useOrderedIndex() { return null; } // TODO
+
 }

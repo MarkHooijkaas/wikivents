@@ -6,8 +6,8 @@ import org.kisst.crud4j.CrudTable;
 import org.kisst.struct4j.Struct;
 
 public class Attendance extends CrudObject {
-	public final CrudTable<User>.Ref user;
-	public final CrudTable<Event>.Ref event;
+	public final CrudTable.Ref<User> user;
+	public final CrudTable.Ref<Event> event;
 	
 	public Attendance(WikiventsModel model, Struct s) {
 		super(schema,s);
@@ -20,5 +20,10 @@ public class Attendance extends CrudObject {
 		public Schema() { super(Attendance.class); addAllFields();}
 		public final RefField<User> user  = new RefField<User>(Attendance.class,"user", false); 
 		public final RefField<Event> event = new RefField<Event>(Attendance.class,"event", false); 
+	}
+	
+	public interface Table extends CrudTable<Attendance> {
+		public MultiIndex<Attendance>  userIndex();
+		public MultiIndex<Attendance> eventIndex();
 	}
 }

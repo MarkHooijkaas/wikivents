@@ -2,6 +2,7 @@ package club.wikivents.model;
 
 import org.kisst.crud4j.CrudObject;
 import org.kisst.crud4j.CrudSchema;
+import org.kisst.crud4j.CrudTable;
 import org.kisst.struct4j.Struct;
 
 public class User extends CrudObject {
@@ -23,5 +24,9 @@ public class User extends CrudObject {
 		public final StringField name     = new StringField(User.class, "name"); 
 		public final StringField email    = new StringField(User.class, "email"); 
 		public final StringField password = new StringField(User.class, "password"); 
+	}
+	
+	public interface Table extends CrudTable<User> {
+		public UniqueIndex<User> usernameIndex();
 	}
 }
