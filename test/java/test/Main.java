@@ -17,14 +17,14 @@ public class Main {
 		WikiventsModel model = new WikiventsMongoModel(db);
 		
 		HashStruct doc=new HashStruct();
-		User.schema.name.setValue(doc, "Mark1967");
+		User.schema.username.setValue(doc, "Mark1967");
 		User.schema.email.setValue(doc, "mark@wikivents.nl");
 		User.schema.password.setValue(doc, "secret");
 		model.users().create(new User(doc));
 		System.out.println("Added user");
 		//model.users().create(new User(doc));
 
-		User.schema.name.setValue(doc, "PKO");
+		User.schema.username.setValue(doc, "PKO");
 		User.schema.email.setValue(doc, "pko@wikivents.nl");
 		User.schema.password.setValue(doc, "secret");
 		model.users().create(new User(doc));

@@ -18,7 +18,7 @@ public class WikiventsFileModel implements WikiventsModel {
 		public UniqueIndex<User> usernameIndex;
 		public UserTable(File maindir) { 
 			super(User.schema, maindir); 
-			usernameIndex = useUniqueIndex(User.schema.name);
+			usernameIndex = useUniqueIndex(User.schema.username);
 		}
 		@Override public UniqueIndex<User> usernameIndex() { return usernameIndex; }
 	}

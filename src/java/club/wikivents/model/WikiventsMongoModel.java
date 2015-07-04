@@ -18,7 +18,7 @@ public class WikiventsMongoModel implements WikiventsModel {
 		private UniqueIndex<User> usernameIndex;
 		public UserTable(DB db) { 
 			super(User.schema, db); 
-			usernameIndex = useUniqueIndex(User.schema.name);
+			usernameIndex = useUniqueIndex(User.schema.username);
 		}
 		@Override public UniqueIndex<User> usernameIndex() { return usernameIndex; }
 	}
