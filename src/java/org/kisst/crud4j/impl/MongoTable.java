@@ -11,6 +11,7 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.mongodb.DuplicateKeyException;
 
 public abstract class MongoTable<T extends CrudObject> extends BaseTable<T> {
 	private final DBCollection collection;
@@ -57,8 +58,22 @@ public abstract class MongoTable<T extends CrudObject> extends BaseTable<T> {
 		@Override public Object getDirectFieldValue(String name) { return data.get(name);}
 	}
 
-	public UniqueIndex<T> useUniqueIndex() { return null; } // TODO
-	public MultiIndex<T>  useMultiIndex() { return null; } // TODO
-	public OrderedIndex<T>  useOrderedIndex() { return null; } // TODO
+	
+	private class MyUniqueIndex extends BaseIndex<T> implements UniqueIndex<T>{
+		private MyUniqueIndex(CrudSchema<T>.Field<?> keyField) {
+			super(keyField); 
+			DBObject keys= new BasicDBObject(keyField.name,1);
+			DBObject options = new BasicDBObject("unique", true);
+			try {
+				collection.createIndex(keys, options);
+			}
+			catch (DuplicateKeyException e) { /* ignore */ }
+		}
+		@Override public T get(String field) { return null; } // TODO
+	}
+
+	public UniqueIndex<T> useUniqueIndex(CrudSchema<T>.Field<?> keyField) { return new MyUniqueIndex(keyField);} 
+	public MultiIndex<T>  useMultiIndex(CrudSchema<T>.Field<?> keyField) { return null; } // TODO
+	public OrderedIndex<T>  useOrderedIndex(CrudSchema<T>.Field<?> keyField) { return null; } // TODO
 
 }

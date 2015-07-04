@@ -3,12 +3,18 @@ package test;
 import org.kisst.struct4j.HashStruct;
 
 import club.wikivents.model.User;
-import club.wikivents.model.WikiventsFileModel;
 import club.wikivents.model.WikiventsModel;
+import club.wikivents.model.WikiventsMongoModel;
+
+import com.mongodb.DB;
+import com.mongodb.MongoClient;
 
 public class Main {
 	public static void main(String[] args) {
-		WikiventsModel model = new WikiventsFileModel("test/data");
+		 MongoClient mongoClient = new MongoClient("localhost");
+		 DB db = new DB(mongoClient,"wikivents");
+		 
+		WikiventsModel model = new WikiventsMongoModel(db);
 		
 		HashStruct doc=new HashStruct();
 		User.schema.name.setValue(doc, "Mark1967");
@@ -24,5 +30,6 @@ public class Main {
 		model.users().create(new User(doc));
 		System.out.println("Added user");
 
+		mongoClient.close();
 	}
 }

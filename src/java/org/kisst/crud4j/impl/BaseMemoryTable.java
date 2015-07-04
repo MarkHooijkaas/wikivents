@@ -31,13 +31,7 @@ public abstract class BaseMemoryTable<T extends CrudObject> extends BaseTable<T>
 		cache.remove(oldValue._id);
 	}
 
-	private class BaseIndex {
-		private final CrudSchema<T>.Field<?> keyField;
-		private BaseIndex(CrudSchema<T>.Field<?> keyField) {this.keyField=keyField; }
-		protected final String getKey(T record) { return keyField.getString(record); }
-	}
-	
-	private class MyUniqueIndex extends BaseIndex implements UniqueIndex<T>{
+	private class MyUniqueIndex extends BaseIndex<T> implements UniqueIndex<T>{
 		private final ConcurrentHashMap<String, T> map = new ConcurrentHashMap<String, T>();
 		private MyUniqueIndex(CrudSchema<T>.Field<?> keyField) {super(keyField); }
 		
@@ -72,7 +66,7 @@ public abstract class BaseMemoryTable<T extends CrudObject> extends BaseTable<T>
 		}
 	}
 
-	private class MyMultiIndex extends BaseIndex implements MultiIndex<T>{
+	private class MyMultiIndex extends BaseIndex<T> implements MultiIndex<T>{
 		private final ConcurrentHashMap<String, T> map = new ConcurrentHashMap<String, T>();
 		public MyMultiIndex(CrudSchema<T>.Field<?> keyField) { super(keyField);}
 

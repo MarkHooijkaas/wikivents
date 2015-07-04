@@ -18,7 +18,7 @@ public class WikiventsMongoModel implements WikiventsModel {
 		private UniqueIndex<User> usernameIndex;
 		public UserTable(DB db) { 
 			super(User.schema, db); 
-			usernameIndex = useUniqueIndex();
+			usernameIndex = useUniqueIndex(User.schema.name);
 		}
 		@Override public UniqueIndex<User> usernameIndex() { return usernameIndex; }
 	}
@@ -28,8 +28,8 @@ public class WikiventsMongoModel implements WikiventsModel {
 		private OrderedIndex<Event> dateIndex;
 		public EventTable(DB db) { 
 			super(Event.schema, db); 
-			this.organizerIndex = useMultiIndex();
-			this.dateIndex= useOrderedIndex();
+			this.organizerIndex = useMultiIndex(Event.schema.organizer);
+			this.dateIndex= useOrderedIndex(Event.schema.date);
 		}
 		@Override public MultiIndex<Event> organizerIndex() { return organizerIndex; }
 		@Override public OrderedIndex<Event> dateIndex() { return dateIndex; }
@@ -39,8 +39,8 @@ public class WikiventsMongoModel implements WikiventsModel {
 		private MultiIndex<Attendance> eventIndex;
 		public AttendanceTable(DB db) { 
 			super(Attendance.schema, db); 
-			this.userIndex= useMultiIndex();
-			this.eventIndex= useMultiIndex();
+			this.userIndex= useMultiIndex(Attendance.schema.user);
+			this.eventIndex= useMultiIndex(Attendance.schema.event);
 		}
 		@Override public MultiIndex<Attendance> userIndex() { return userIndex; }
 		@Override public MultiIndex<Attendance> eventIndex() { return eventIndex; }

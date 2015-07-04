@@ -1,5 +1,6 @@
 package org.kisst.crud4j;
 
+import java.util.Date;
 import java.util.LinkedHashMap;
 
 import org.kisst.struct4j.HashStruct;
@@ -94,6 +95,13 @@ public class CrudSchema<T extends CrudObject> {
 			super(cls, name, optional, defaultValue);
 		}
 		public int getInt(Struct s) { return getValue(s); }
+	}
+	public class DateField extends Field<Date> {
+		public DateField(Class<T> cls, String name, boolean optional) {
+			super(cls, name, optional, null);
+		}
+		public String getString(Struct s) { return getValue(s).toString(); }
+		public Date getDate(Struct s) { return getValue(s); }
 	}
 	public class LongField extends Field<Long> {
 		public LongField(Class<T> cls, String name, boolean optional, long defaultValue) {

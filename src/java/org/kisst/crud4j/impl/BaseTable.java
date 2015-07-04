@@ -7,7 +7,6 @@ import org.kisst.crud4j.CrudSchema;
 import org.kisst.crud4j.CrudTable;
 import org.kisst.struct4j.MultiStruct;
 import org.kisst.struct4j.Struct;
-import org.kisst.util.ReflectionUtil;
 
 public abstract class BaseTable<T extends CrudObject> implements CrudTable<T>{
 	protected final CrudSchema<T> schema;

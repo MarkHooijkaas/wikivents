@@ -38,6 +38,7 @@ public class Event extends CrudObject {
 		public final RefField<User> organizer = new RefField<User>(Event.class, "organizer", false);
 		public final IntField min = new IntField(Event.class, "min", false, 0); 
 		public final IntField max = new IntField(Event.class, "max", false, 0); 
+		public final DateField date = new DateField(Event.class, "date", false); 
 	}
 
 	public interface Table extends CrudTable<Event> {
