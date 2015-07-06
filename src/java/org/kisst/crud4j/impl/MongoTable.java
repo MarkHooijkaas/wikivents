@@ -2,7 +2,6 @@ package org.kisst.crud4j.impl;
 
 import org.kisst.crud4j.CrudObject;
 import org.kisst.crud4j.CrudSchema;
-import org.kisst.struct4j.BaseStruct;
 import org.kisst.struct4j.ReflectStruct;
 import org.kisst.struct4j.Struct;
 
@@ -46,28 +45,16 @@ public abstract class MongoTable<T extends CrudObject> extends BaseTable<T> {
 		return new ReflectStruct(value);
 	}
 	
-	private class MongoStruct extends BaseStruct {
-		private final DBObject data;
-		public MongoStruct(DBObject data) { this.data=data; }
-		public MongoStruct(Struct strc) { 
-			this.data=new BasicDBObject(); 
-			for(String key : strc.fieldNames())
-				data.put(key, strc.getObject(key));
-		}
-		@Override public Iterable<String> fieldNames() { return data.keySet(); }
-		@Override public Object getDirectFieldValue(String name) { return data.get(name);}
-	}
 
-	
 	private class MyUniqueIndex extends BaseIndex<T> implements UniqueIndex<T>{
 		private MyUniqueIndex(CrudSchema<T>.Field<?> keyField) {
 			super(keyField); 
-			DBObject keys= new BasicDBObject(keyField.name,1);
+			DBObject keys= new BasicDBObject(keyField.getName(),1);
 			DBObject options = new BasicDBObject("unique", true);
 			try {
 				collection.createIndex(keys, options);
 			}
-			catch (DuplicateKeyException e) { /* ignore */ }
+			catch (DuplicateKeyException e) { /* ignore */ } // TODO better way to ensure index
 		}
 		@Override public T get(String field) { return null; } // TODO
 	}
