@@ -18,8 +18,8 @@ public class Attendance extends CrudObject {
 	public static Schema schema=new Schema();
 	public static class Schema extends CrudSchema<Attendance> {
 		public Schema() { super(Attendance.class); addAllFields();}
-		public final RefField<User> user  = new RefField<User>(Attendance.class,"user", false); 
-		public final RefField<Event> event = new RefField<Event>(Attendance.class,"event", false); 
+		public final RefField<User> user  = new RefField<User>(Attendance.class,"user"); 
+		public final RefField<Event> event = new RefField<Event>(Attendance.class,"event"); 
 	}
 	
 	public interface Table extends CrudTable<Attendance> {
