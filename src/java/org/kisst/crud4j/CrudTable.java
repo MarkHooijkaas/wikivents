@@ -7,11 +7,13 @@ public interface CrudTable<T extends CrudObject> {
 	public  CrudSchema<T> getSchema();
 	public  String  getName();
 
+	public T createObject(Struct props);
 
 	public void create(T doc);
 	public T read(String key);
 	public void update(T oldValue, T newValue);
 	public void updateFields(T oldValue, Struct newFields);
+	public void delete(T oldValue);
 	
 	public Ref<T> getRef(String key);
 	public String getKey(T obj);
@@ -35,5 +37,4 @@ public interface CrudTable<T extends CrudObject> {
 	public interface OrderedIndex<T extends CrudObject> extends Index<T> {
 		public TypedSequence<T> get(String field);
 	}
-
 }
