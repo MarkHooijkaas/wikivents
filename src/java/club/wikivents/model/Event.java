@@ -20,13 +20,12 @@ public class Event extends CrudObject {
 		this(schema.organizer.get(model.users(), s), s);
 	}
 
-	@SuppressWarnings("deprecation")
 	public Event(CrudTable.Ref<User> organizer, Struct props) {
 		super(schema, props);
-		this.title=props.getString(schema.title.name);
-		this.date=new Date(Date.parse(props.getString("date")));
-		this.min=props.getInt(schema.min.name);
-		this.max=props.getInt(schema.max.name);
+		this.title=schema.title.getValue(props);
+		this.date=schema.date.getValue(props);
+		this.min=schema.min.getValue(props);
+		this.max=schema.max.getValue(props);
 		this.organizer=organizer;
 		//this.guests=new TypedArraySequence<CrudTable<User>.Ref>(props.getSequence("guests"));
 	}

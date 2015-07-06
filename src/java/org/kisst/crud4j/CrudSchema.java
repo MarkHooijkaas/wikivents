@@ -4,10 +4,12 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 
 import org.kisst.struct4j.HashStruct;
+import org.kisst.struct4j.Schema;
 import org.kisst.struct4j.Struct;
+import org.kisst.struct4j.Type;
 import org.kisst.util.ReflectionUtil;
 
-public class CrudSchema<T extends CrudObject> {
+public class CrudSchema<T extends CrudObject> implements Schema {
 	public static CrudSchema<CrudObject> schema=new CrudSchema<CrudObject>(CrudObject.class);
 	
 	private final LinkedHashMap<String, Field<T> > fields=new LinkedHashMap<String, Field<T>>();
@@ -15,6 +17,20 @@ public class CrudSchema<T extends CrudObject> {
 	public final IdField _id = new IdField("_id");
 	
 	public CrudSchema(Class<?> cls) { this.cls=cls;	}
+
+	@Override public String getName() { return cls.getSimpleName(); }
+	@Override public boolean isValidObject(Object obj) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	@Override public Object parseString(String str) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
+	
+	
 	protected void addAllFields() { addAllFields(this.getClass());	}
 	@SuppressWarnings("unchecked")
 	private void addAllFields(Class<?> cls) {
@@ -37,20 +53,19 @@ public class CrudSchema<T extends CrudObject> {
 	public Field<T> getField(String name) {return fields.get(name); }
 	public Iterable<String> fieldNames() { return fields.keySet(); }
 
-	public class Field<FT> {
-		public final String name;
+	public abstract class Field<FT> extends Schema.BaseField {
 		public final boolean optional;
 		private final FT defaultValue;
 		private java.lang.reflect.Field field;
 		public Field(Class<T> cls, String name) { this(cls, name, false, null);}
 		public Field(Class<?> cls, String name, boolean optional, FT defaultValue) {
-			this.name=name;
+			super(name);
 			this.optional=optional;
 			this.defaultValue=defaultValue;
 			this.field=ReflectionUtil.getField(cls, name);
 		}
 		public Field(String name) {
-			this.name=name;
+			super(name);
 			this.optional=false;
 			this.defaultValue=null;
 			this.field=ReflectionUtil.getField(CrudObject.class, name);
@@ -73,48 +88,56 @@ public class CrudSchema<T extends CrudObject> {
 		@SuppressWarnings("unchecked")
 		public FT getValue(Struct s) { 
 			if (optional)
-				return (FT) s.getObject(name,defaultValue);
+				return (FT) s.getObject(getName(),defaultValue);
 			else
-				return (FT) s.getObject(name);
+				return (FT) s.getObject(getName());
 		}
 		
-		public void setValue(HashStruct doc, FT value) { doc.put(name, value); } 
+		public void setValue(HashStruct doc, FT value) { doc.put(getName(), value); } 
 	}
-	public class StringField extends Field<String> {
+	public class StringField extends Field<String> implements Schema.StringField{
 		public StringField(Class<T> cls, String name, boolean optional, String defaultValue) {
 			super(cls, name, optional, defaultValue);
 		}
 		public StringField(Class<T> cls, String name) { super(cls,name); }
-		public String getString(Struct s) { return getValue(s); }
+		@Override public String getString(Struct s) { return getValue(s); }
 	}
 	public class IdField extends Field<String> {
 		public IdField(String name) { super(name); }
+		@Override public Type.JavaString getType() { return Type.javaString; }
 	}
-	public class IntField extends Field<Integer> {
+	public class BooleanField extends Field<Boolean> implements Schema.BooleanField {
+		public BooleanField(Class<T> cls, String name, boolean optional, boolean defaultValue) {
+			super(cls, name, optional, defaultValue);
+		}
+		public boolean getBoolean(Struct s) { return getValue(s); }
+	}
+	public class IntField extends Field<Integer> implements Schema.IntegerField {
 		public IntField(Class<T> cls, String name, boolean optional, int defaultValue) {
 			super(cls, name, optional, defaultValue);
 		}
 		public int getInt(Struct s) { return getValue(s); }
 	}
-	public class DateField extends Field<Date> {
-		public DateField(Class<T> cls, String name, boolean optional) {
-			super(cls, name, optional, null);
-		}
-		public String getString(Struct s) { return getValue(s).toString(); }
-		public Date getDate(Struct s) { return getValue(s); }
-	}
-	public class LongField extends Field<Long> {
+	public class LongField extends Field<Long> implements Schema.LongField{
 		public LongField(Class<T> cls, String name, boolean optional, long defaultValue) {
 			super(cls, name, optional, defaultValue);
 		}
 		public long getLong(Struct s) { return getValue(s); }
 	}
+	public class DateField extends Field<Date> implements Schema.DateField {
+		public DateField(Class<T> cls, String name, boolean optional) {
+			super(cls, name, optional, null);
+		}
+		@Override public String getString(Struct s) { return getValue(s).toString(); }
+		public Date getDate(Struct s) { return getValue(s); }
+	}
 	public class RefField<RT extends CrudObject> extends Field<RT> {
 		public RefField(Class<T> cls, String name, boolean optional) {
 			super(cls, name, optional, null);
 		}
+		@Override public Type.JavaString getType() { return Type.javaString; }
 		public CrudTable.Ref<RT> get(CrudTable<RT> table, Struct s) { 
-			return table.getRef(s.getString(name));
+			return table.getRef(s.getString(getName()));
 		}
 	}
 }
