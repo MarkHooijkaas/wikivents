@@ -24,7 +24,7 @@ public abstract class BaseTable<T extends CrudObject> implements CrudTable<T>{
 
 	public Index<T> addIndex(Index<T> idx) { indices.add(idx); return idx; }
 	
-	private T createObject(Struct props) { return null; }
+	@Override public T createObject(Struct props) { return null; }
 	public void create(T doc) {
 		try {
 			for(Index<T> index : indices)
