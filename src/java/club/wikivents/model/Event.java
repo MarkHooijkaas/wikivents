@@ -42,5 +42,6 @@ public class Event extends CrudObject {
 	public interface Table extends CrudTable<Event> {
 		public MultiIndex<Event>  organizerIndex();
 		public OrderedIndex<Event> dateIndex();
+		//default public Event createObject(Struct doc) { return new Event(userTable, doc); }
 	}
 }

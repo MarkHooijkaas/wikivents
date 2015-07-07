@@ -12,6 +12,7 @@ public class JsonOutputter {
 
 	public String createString(Struct struct) {
 		StringWriter out=new StringWriter();
+		out.write("{");
 		write(new PrintWriter(out), struct);
 		return out.toString();
 	}
@@ -25,12 +26,12 @@ public class JsonOutputter {
 				continue;
 			if (! firstElement) {
 				if (indentString==null)
-					out.write(',');
+					out.write(", ");
 				else
 					out.write(",\n");
 			}
 			firstElement=false;
-			out.print('"'+name+"\" : ");
+			out.print('"'+name+"\":");
 			if (value instanceof Struct) {
 				if (indentString==null)
 					write(out, (Struct) value, currentIndent);

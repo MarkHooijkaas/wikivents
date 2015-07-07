@@ -28,5 +28,7 @@ public class User extends CrudObject {
 	
 	public interface Table extends CrudTable<User> {
 		public UniqueIndex<User> usernameIndex();
+		default public User createObject(Struct props) { return new User(props); }
+
 	}
 }

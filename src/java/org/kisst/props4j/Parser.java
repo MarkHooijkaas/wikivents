@@ -271,7 +271,7 @@ public class Parser {
 					include(map,this);
 				continue;
 			}
-			else if (ch==';')
+			else if (ch==';' || ch=='{')
 				continue; // ignore
 			else if (Character.isLetter(ch) || ch=='_') {
 				unread();

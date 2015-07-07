@@ -1,5 +1,6 @@
 package org.kisst.crud4j.impl;
 
+import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.kisst.crud4j.CrudObject;
@@ -10,6 +11,9 @@ public abstract class BaseMemoryTable<T extends CrudObject> extends BaseTable<T>
 	private final ConcurrentHashMap<String, T> cache=new ConcurrentHashMap<String,T>();
 	public BaseMemoryTable(CrudSchema<T> schema) { super(schema);	}
 
+	abstract protected void loadAllRecords();
+
+	
 	@Override public void create(T doc) {
 		super.create(doc);
 		cache.put(doc._id, doc);
@@ -114,5 +118,19 @@ public abstract class BaseMemoryTable<T extends CrudObject> extends BaseTable<T>
 	} 
 
 	public OrderedIndex<T>  useOrderedIndex() { return null; } // TODO
+
+	private boolean allCached=false;
+	protected void cacheRecord(T rec) { cache.put(rec._id, rec); }
+	public synchronized void clearCache() { allCached=false; cache.clear();}
+	private synchronized void fillCache() {
+		if (allCached)
+			return;
+		loadAllRecords();
+	}
+
+	@Override public Iterator<T> iterator() { 
+		fillCache();
+		return cache.values().iterator();
+	}
 
 }

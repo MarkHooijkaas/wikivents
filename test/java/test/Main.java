@@ -18,18 +18,21 @@ public class Main {
 		WikiventsModel model = fileModel();
 		//WikiventsModel model = mongoModel();
 
+		for (User u: model.users())
+			System.out.println("***"+u);
+		
 		HashStruct doc=new HashStruct();
 		User.schema.username.setValue(doc, "Mark1967");
 		User.schema.email.setValue(doc, "mark@wikivents.nl");
 		User.schema.password.setValue(doc, "secret");
-		model.users().create(new User(doc));
+		//model.users().create(new User(doc));
 		System.out.println("Added user");
 		//model.users().create(new User(doc));
 
 		User.schema.username.setValue(doc, "PKO");
 		User.schema.email.setValue(doc, "pko@wikivents.nl");
 		User.schema.password.setValue(doc, "secret");
-		model.users().create(new User(doc));
+		//model.users().create(new User(doc));
 		System.out.println("Added user");
 
 		if (mongoClient!=null)

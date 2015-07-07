@@ -1,5 +1,6 @@
 package org.kisst.crud4j.impl;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 
 import org.kisst.crud4j.CrudObject;
@@ -7,16 +8,19 @@ import org.kisst.crud4j.CrudSchema;
 import org.kisst.crud4j.CrudTable;
 import org.kisst.item4j.struct.MultiStruct;
 import org.kisst.item4j.struct.Struct;
+import org.kisst.util.ReflectionUtil;
 
 public abstract class BaseTable<T extends CrudObject> implements CrudTable<T>{
 	protected final CrudSchema<T> schema;
 	private final String name;
 	private final ArrayList<Index<T>> indices=new ArrayList<Index<T>>();
+	private final Constructor<?> cons;
 	
 	private boolean alwaysCheckId=true;
 	public BaseTable(CrudSchema<T> schema) { 
 		this.schema=schema;
 		this.name=schema.cls.getSimpleName();
+		this.cons=ReflectionUtil.getConstructor(schema.cls, new Class<?>[]{ Struct.class} );
 	}
 	@Override public CrudSchema<T> getSchema() { return schema; }
 	@Override public String getName() { return name; }
@@ -24,7 +28,11 @@ public abstract class BaseTable<T extends CrudObject> implements CrudTable<T>{
 
 	public Index<T> addIndex(Index<T> idx) { indices.add(idx); return idx; }
 	
-	@Override public T createObject(Struct props) { return null; }
+	@SuppressWarnings("unchecked")
+	@Override public T createObject(Struct props) { 
+		return (T) ReflectionUtil.createObject(cons, new Object[]{ props} ); 
+	}		
+	
 	public void create(T doc) {
 		try {
 			for(Index<T> index : indices)

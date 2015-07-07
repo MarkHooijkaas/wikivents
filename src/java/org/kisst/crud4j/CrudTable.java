@@ -3,7 +3,7 @@ package org.kisst.crud4j;
 import org.kisst.item4j.seq.Sequence;
 import org.kisst.item4j.struct.Struct;
 
-public interface CrudTable<T extends CrudObject> {
+public interface CrudTable<T extends CrudObject> extends Iterable<T > {
 	public  CrudSchema<T> getSchema();
 	public  String  getName();
 

@@ -1,5 +1,7 @@
 package org.kisst.crud4j.impl;
 
+import java.util.Iterator;
+
 import org.kisst.crud4j.CrudObject;
 import org.kisst.crud4j.CrudSchema;
 import org.kisst.item4j.struct.ReflectStruct;
@@ -37,7 +39,18 @@ public abstract class MongoTable<T extends CrudObject> extends BaseTable<T> {
 	}
 	@Override public void deleteInStorage(T oldValue){} // TODO
 
-	
+	private T createObject(DBObject obj) { return createObject(new MongoStruct(obj)); }
+	private class MyIterator implements Iterator<T> {
+		private final DBCursor cursor;
+		public MyIterator(DBCursor cursor) { this.cursor=cursor;}
+		@Override public boolean hasNext() { return cursor.hasNext(); }
+		@Override public T next() { return createObject(cursor.next()); }
+		@Override public void remove() { throw new RuntimeException("remove not Supported");}
+	}
+	@Override public Iterator<T> iterator() {
+		return new MyIterator(collection.find());
+	}
+
 	
 	private static Struct makeStruct(Object value) {
 		if (value instanceof Struct)

@@ -41,7 +41,6 @@ public class CrudSchema<T extends CrudObject> implements Schema {
 			for (java.lang.reflect.Field f : cls.getDeclaredFields()) {
 				if (Field.class.isAssignableFrom(f.getType())) {
 					fields.put(f.getName(), (CrudSchema<T>.Field<T>) f.get(this));
-					System.out.println("Added"+cls.getSimpleName()+"::"+f.getName());
 				}
 			}
 		}

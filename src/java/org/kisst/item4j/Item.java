@@ -1,10 +1,12 @@
 package org.kisst.item4j;
 
 import java.util.List;
+import java.util.Map;
 
 import org.kisst.item4j.seq.ItemSequence;
 import org.kisst.item4j.seq.ListSequence;
 import org.kisst.item4j.seq.Sequence;
+import org.kisst.item4j.struct.MapStruct;
 import org.kisst.item4j.struct.ReflectStruct;
 import org.kisst.item4j.struct.Struct;
 
@@ -29,9 +31,11 @@ public interface Item {
 		if (obj instanceof Item) return (Item) obj;
 		return new Wrapper(obj);
 	}
+	@SuppressWarnings("unchecked")
 	public static Struct asStruct(Object obj) { 
 		if (obj==null) return null; 
 		if (obj instanceof Struct) return (Struct) obj;
+		if (obj instanceof Map) return new MapStruct((Map<String,?>) obj);
 		return new ReflectStruct(obj);
 	}		
 	public static Integer asInteger(Object obj) { 
