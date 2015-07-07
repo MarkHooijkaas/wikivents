@@ -1,6 +1,8 @@
-package org.kisst.struct4j;
+package org.kisst.item4j;
 
 import java.util.LinkedHashMap;
+
+import org.kisst.item4j.struct.BaseStruct;
 
 public class Params extends BaseStruct {
 	public static interface Param {

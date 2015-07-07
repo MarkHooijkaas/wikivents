@@ -2,7 +2,7 @@ package test;
 
 import java.io.File;
 
-import org.kisst.struct4j.HashStruct;
+import org.kisst.item4j.struct.HashStruct;
 
 import club.wikivents.model.User;
 import club.wikivents.model.WikiventsFileModel;

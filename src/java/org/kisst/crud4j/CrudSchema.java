@@ -3,10 +3,10 @@ package org.kisst.crud4j;
 import java.util.Date;
 import java.util.LinkedHashMap;
 
-import org.kisst.struct4j.HashStruct;
-import org.kisst.struct4j.Schema;
-import org.kisst.struct4j.Struct;
-import org.kisst.struct4j.Type;
+import org.kisst.item4j.Schema;
+import org.kisst.item4j.Type;
+import org.kisst.item4j.struct.HashStruct;
+import org.kisst.item4j.struct.Struct;
 import org.kisst.util.ReflectionUtil;
 
 public class CrudSchema<T extends CrudObject> implements Schema {

@@ -1,7 +1,7 @@
 package org.kisst.crud4j;
 
-import org.kisst.struct4j.Struct;
-import org.kisst.struct4j.seq.Sequence;
+import org.kisst.item4j.seq.Sequence;
+import org.kisst.item4j.struct.Struct;
 
 public interface CrudTable<T extends CrudObject> {
 	public  CrudSchema<T> getSchema();

@@ -1,7 +1,7 @@
 package org.kisst.crud4j.impl;
 
-import org.kisst.struct4j.BaseStruct;
-import org.kisst.struct4j.Struct;
+import org.kisst.item4j.struct.BaseStruct;
+import org.kisst.item4j.struct.Struct;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;

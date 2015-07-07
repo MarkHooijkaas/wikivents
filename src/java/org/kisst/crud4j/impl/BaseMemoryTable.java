@@ -4,7 +4,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.kisst.crud4j.CrudObject;
 import org.kisst.crud4j.CrudSchema;
-import org.kisst.struct4j.seq.Sequence;
+import org.kisst.item4j.seq.Sequence;
 
 public abstract class BaseMemoryTable<T extends CrudObject> extends BaseTable<T> {
 	private final ConcurrentHashMap<String, T> cache=new ConcurrentHashMap<String,T>();

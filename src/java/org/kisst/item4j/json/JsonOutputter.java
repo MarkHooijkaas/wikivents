@@ -1,8 +1,9 @@
-package org.kisst.struct4j;
+package org.kisst.item4j.json;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import org.kisst.item4j.struct.Struct;
 import org.kisst.util.StringUtil;
 
 public class JsonOutputter {

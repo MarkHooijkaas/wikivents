@@ -4,8 +4,8 @@ import java.io.File;
 
 import org.kisst.crud4j.CrudObject;
 import org.kisst.crud4j.CrudSchema;
+import org.kisst.item4j.struct.Struct;
 import org.kisst.props4j.SimpleProps;
-import org.kisst.struct4j.Struct;
 import org.kisst.util.FileUtil;
 
 public class FileTable<T extends CrudObject> extends BaseMemoryTable<T> {

@@ -1,4 +1,7 @@
-package org.kisst.struct4j;
+package org.kisst.item4j;
+
+import org.kisst.item4j.struct.ReflectStruct;
+import org.kisst.item4j.struct.Struct;
 
 public interface Item {
 	default public Object asObject() { return this; }

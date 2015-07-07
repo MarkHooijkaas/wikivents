@@ -1,4 +1,4 @@
-package org.kisst.struct4j;
+package org.kisst.item4j;
 
 import java.util.Date;
 

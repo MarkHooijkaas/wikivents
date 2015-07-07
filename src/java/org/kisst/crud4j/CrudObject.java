@@ -1,8 +1,8 @@
 package org.kisst.crud4j;
 
 import org.bson.types.ObjectId;
-import org.kisst.struct4j.BaseStruct;
-import org.kisst.struct4j.Struct;
+import org.kisst.item4j.struct.BaseStruct;
+import org.kisst.item4j.struct.Struct;
 
 public class CrudObject extends BaseStruct {
 	public final CrudSchema<?> schema;

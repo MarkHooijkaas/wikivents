@@ -1,9 +1,9 @@
-package org.kisst.struct4j.seq;
+package org.kisst.item4j.seq;
 
 import java.util.Iterator;
 import java.util.List;
 
-import org.kisst.struct4j.Item;
+import org.kisst.item4j.Item;
 
 final public class ImmutableSequence implements ItemSequence {
 	private final Object[] arr;

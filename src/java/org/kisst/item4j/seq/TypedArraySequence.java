@@ -1,4 +1,4 @@
-package org.kisst.struct4j.seq;
+package org.kisst.item4j.seq;
 
 import java.util.Iterator;
 

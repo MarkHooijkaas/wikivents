@@ -1,8 +1,8 @@
 package org.kisst.rest4j;
 
 import org.kisst.crud4j.impl.MongoStruct;
-import org.kisst.struct4j.Struct;
-import org.kisst.struct4j.seq.Sequence;
+import org.kisst.item4j.seq.Sequence;
+import org.kisst.item4j.struct.Struct;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;

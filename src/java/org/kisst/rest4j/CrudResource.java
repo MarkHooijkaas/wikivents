@@ -2,8 +2,8 @@ package org.kisst.rest4j;
 
 import org.kisst.crud4j.CrudObject;
 import org.kisst.crud4j.CrudTable;
-import org.kisst.struct4j.Struct;
-import org.kisst.struct4j.seq.Sequence;
+import org.kisst.item4j.seq.Sequence;
+import org.kisst.item4j.struct.Struct;
 
 public class CrudResource<T extends CrudObject> implements Resource {
 	private final CrudTable<T> table;

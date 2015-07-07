@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.kisst.struct4j.JsonOutputter;
-import org.kisst.struct4j.Struct;
+import org.kisst.item4j.json.JsonOutputter;
+import org.kisst.item4j.struct.Struct;
 
 public class ResourceServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

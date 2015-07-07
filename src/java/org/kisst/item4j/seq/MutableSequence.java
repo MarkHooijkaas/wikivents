@@ -1,10 +1,10 @@
-package org.kisst.struct4j.seq;
+package org.kisst.item4j.seq;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.kisst.struct4j.Item;
+import org.kisst.item4j.Item;
 
 public class MutableSequence implements ItemSequence {
 	private final List<Object> list;

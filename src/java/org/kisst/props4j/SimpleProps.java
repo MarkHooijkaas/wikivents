@@ -26,7 +26,7 @@ import java.io.InputStreamReader;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.kisst.struct4j.BaseStruct;
+import org.kisst.item4j.struct.BaseStruct;
 import org.kisst.util.FileUtil;
 import org.kisst.util.StringUtil;
 

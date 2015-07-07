@@ -1,6 +1,6 @@
 package org.kisst.util;
 
-import org.kisst.struct4j.Struct;
+import org.kisst.item4j.struct.Struct;
 
 public class StringUtil {
 

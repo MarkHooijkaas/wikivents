@@ -1,9 +1,9 @@
-package org.kisst.struct4j.seq;
+package org.kisst.item4j.seq;
 
 import java.util.Iterator;
 
-import org.kisst.struct4j.Item;
-import org.kisst.struct4j.Struct;
+import org.kisst.item4j.Item;
+import org.kisst.item4j.struct.Struct;
 
 public interface ItemSequence extends Sequence<Item>{
 	

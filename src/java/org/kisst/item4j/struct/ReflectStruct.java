@@ -1,4 +1,4 @@
-package org.kisst.struct4j;
+package org.kisst.item4j.struct;
 
 import java.lang.reflect.Field;
 import java.util.HashSet;

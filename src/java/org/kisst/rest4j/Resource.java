@@ -1,7 +1,7 @@
 package org.kisst.rest4j;
 
-import org.kisst.struct4j.Struct;
-import org.kisst.struct4j.seq.Sequence;
+import org.kisst.item4j.seq.Sequence;
+import org.kisst.item4j.struct.Struct;
 
 public interface Resource {
 	public void createResource(Struct doc);

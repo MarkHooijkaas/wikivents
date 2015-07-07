@@ -1,6 +1,6 @@
-package org.kisst.struct4j;
+package org.kisst.item4j.struct;
 
-import org.kisst.struct4j.seq.ItemSequence;
+import org.kisst.item4j.seq.ItemSequence;
 
 public abstract class BaseStruct implements Struct {
 	protected static Object UNKNOWN_FIELD=new Object();

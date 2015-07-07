@@ -19,7 +19,7 @@ along with the RelayConnector framework.  If not, see <http://www.gnu.org/licens
 
 package org.kisst.props4j;
 
-import org.kisst.struct4j.Struct;
+import org.kisst.item4j.struct.Struct;
 
 
 
