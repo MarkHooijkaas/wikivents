@@ -2,16 +2,16 @@ package org.kisst.item4j.seq;
 
 import java.util.Iterator;
 
-public class TypedArraySequence<T> implements Sequence<T> {
+public class ArraySequence<T> implements Sequence<T> {
 	public final Class<?> cls;
 	private final T[] array; 
-	public TypedArraySequence(Class<?> cls, T[] arr) {
+	public ArraySequence(Class<?> cls, T[] arr) {
 		this.cls=cls;
 		this.array=createArray(arr.length);
 		for (int i=0; i<arr.length; i++)
 			this.array[i]=arr[i];
 	}
-	public TypedArraySequence(Class<?> cls, ItemSequence seq) {
+	public ArraySequence(Class<?> cls, ItemSequence seq) {
 		this.cls=cls;
 		this.array=createArray(seq.size());
 		int i=0;
@@ -23,7 +23,9 @@ public class TypedArraySequence<T> implements Sequence<T> {
 	public int size() { return array.length; }
 	public T get(int index) { return (T) array[index]; }
 
+	@SuppressWarnings("unchecked")
 	private T[] createArray(int length) { return (T[]) new Object[length]; }
+	@SuppressWarnings("unchecked")
 	private T transformObject(Object obj) {
 		// TODO 
 		// if instanceof T
