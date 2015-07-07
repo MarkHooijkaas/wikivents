@@ -1,16 +1,10 @@
 package org.kisst.item4j.struct;
 
-import org.kisst.item4j.seq.ItemSequence;
 
 public abstract class BaseStruct implements Struct {
-	protected static Object UNKNOWN_FIELD=new Object();
-
-	@Override abstract public Iterable<String> fieldNames();	
 	abstract public Object getDirectFieldValue(String name);
 
-	
-	@Override public boolean hasField(String path) { return getObject(path, UNKNOWN_FIELD)==UNKNOWN_FIELD; }
-
+	@Override abstract public Iterable<String> fieldNames();	
 	
 	@Override public Object getObject(String path, Object defaultValue) {
 		String name=path;
@@ -29,79 +23,6 @@ public abstract class BaseStruct implements Struct {
 			return ((Struct) value).getObject(remainder);
 		return new ReflectStruct(value).getObject(remainder);
 	}
-	
-	@Override public Object getObject(String path) {
-		Object value=getObject(path,UNKNOWN_FIELD);
-		if (value==UNKNOWN_FIELD)
-			throw new UnknownFieldException(this,path);
-		if (value==null)
-			throw new FieldHasNullValueException(this,path);
-		return value;
-	}
-
-
-	@Override public String getString(String path, String defaultValue) {
-		Object obj=getObject(path,null);
-		if (obj==null)
-			return defaultValue;
-		return obj.toString();
-	}
-
-
-	@Override public int getInt(String path, int defaultValue) {
-		Object obj=getObject(path,null);
-		if (obj==null)
-			return defaultValue;
-		if (obj instanceof Integer)
-			return (Integer) obj;
-		return Integer.parseInt(obj.toString());
-	}
-
-	@Override public long getLong(String path, long defaultValue) {
-		Object obj=getObject(path,null);
-		if (obj==null)
-			return defaultValue;
-		if (obj instanceof Long)
-			return (Long) obj;
-		return Long.parseLong(obj.toString());
-	}
-
-	@Override public boolean getBoolean(String path, boolean defaultValue) {
-		Object obj=getObject(path,null);
-		if (obj==null)
-			return defaultValue;
-		if (obj instanceof Boolean)
-			return (Boolean) obj;
-		return Boolean.parseBoolean(obj.toString());
-	}
-	public Struct getStruct(String path, Struct defaultValue) { return (Struct) getObject(path); }
-	public ItemSequence getSequence(String path, ItemSequence defaultValue) { return (ItemSequence) getObject(path); }
-
-
-	@Override public String getString(String path) { return getObject(path).toString(); }
-	@Override public int getInt(String path) {
-		Object obj=getObject(path);
-		if (obj instanceof Integer)
-			return (Integer) obj;
-		return Integer.parseInt(obj.toString());
-	}
-
-	@Override public long getLong(String path) {
-		Object obj=getObject(path);
-		if (obj instanceof Long)
-			return (Long) obj;
-		if (obj instanceof Integer)
-			return (Integer) obj;
-		return Long.parseLong(obj.toString());
-	}
-	@Override public boolean getBoolean(String path) {
-		Object obj=getObject(path);
-		if (obj instanceof Boolean)
-			return (Boolean) obj;
-		return Boolean.parseBoolean(obj.toString());
-	}
-	public Struct getStruct(String path) { return (Struct) getObject(path); }
-	public ItemSequence getSequence(String path) { return (ItemSequence) getObject(path); }
 	
 	@Override public String toString() { return toString(1,null); }
 	public String toString(int levels, String indent) {

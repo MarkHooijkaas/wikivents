@@ -7,6 +7,14 @@ import org.kisst.item4j.struct.Struct;
 
 public interface ItemSequence extends Sequence<Item>{
 	
+	public class Wrapper implements ItemSequence {
+		private final Sequence<?> seq;
+		public Wrapper(Sequence<?>seq) { this.seq=seq; }
+		@Override public int size() { return seq.size(); }
+		@Override public Item get(int index) { return Item.asItem(seq.get(index)); }
+		@Override public Iterator<Item> iterator() { return new IteratorWrapper(seq.iterator()); }
+	}
+
 	default public Object getObject(int index) { return get(index); }
 	default public Item getItem(int index) { return Item.asItem(getObject(index)); }
 	default public Struct getStruct(int index) { return Item.asStruct(getObject(index)); }
