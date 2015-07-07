@@ -2,7 +2,7 @@ package org.kisst.rest4j;
 
 import org.kisst.crud4j.impl.MongoStruct;
 import org.kisst.struct4j.Struct;
-import org.kisst.struct4j.seq.TypedSequence;
+import org.kisst.struct4j.seq.Sequence;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -16,7 +16,7 @@ public class MongoResource implements Resource {
 		MongoStruct newObject = new MongoStruct(struct);
 		collection.insert(newObject.data);
 	}
-	@Override public TypedSequence<Struct> getResources(String[] filters) {
+	@Override public Sequence<Struct> getResources(String[] filters) {
 		return null; // TODO
 	}
 	@Override public Struct getSingleResource(String key) {

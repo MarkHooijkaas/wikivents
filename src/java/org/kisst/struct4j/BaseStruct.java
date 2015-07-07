@@ -1,6 +1,6 @@
 package org.kisst.struct4j;
 
-import org.kisst.struct4j.seq.Sequence;
+import org.kisst.struct4j.seq.ItemSequence;
 
 public abstract class BaseStruct implements Struct {
 	protected static Object UNKNOWN_FIELD=new Object();
@@ -75,7 +75,7 @@ public abstract class BaseStruct implements Struct {
 		return Boolean.parseBoolean(obj.toString());
 	}
 	public Struct getStruct(String path, Struct defaultValue) { return (Struct) getObject(path); }
-	public Sequence getSequence(String path, Sequence defaultValue) { return (Sequence) getObject(path); }
+	public ItemSequence getSequence(String path, ItemSequence defaultValue) { return (ItemSequence) getObject(path); }
 
 
 	@Override public String getString(String path) { return getObject(path).toString(); }
@@ -101,7 +101,7 @@ public abstract class BaseStruct implements Struct {
 		return Boolean.parseBoolean(obj.toString());
 	}
 	public Struct getStruct(String path) { return (Struct) getObject(path); }
-	public Sequence getSequence(String path) { return (Sequence) getObject(path); }
+	public ItemSequence getSequence(String path) { return (ItemSequence) getObject(path); }
 	
 	@Override public String toString() { return toString(1,null); }
 	public String toString(int levels, String indent) {

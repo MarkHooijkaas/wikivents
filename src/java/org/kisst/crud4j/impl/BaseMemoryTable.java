@@ -4,7 +4,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.kisst.crud4j.CrudObject;
 import org.kisst.crud4j.CrudSchema;
-import org.kisst.struct4j.seq.TypedSequence;
+import org.kisst.struct4j.seq.Sequence;
 
 public abstract class BaseMemoryTable<T extends CrudObject> extends BaseTable<T> {
 	private final ConcurrentHashMap<String, T> cache=new ConcurrentHashMap<String,T>();
@@ -70,7 +70,7 @@ public abstract class BaseMemoryTable<T extends CrudObject> extends BaseTable<T>
 		private final ConcurrentHashMap<String, T> map = new ConcurrentHashMap<String, T>();
 		public MyMultiIndex(CrudSchema<T>.Field<?> keyField) { super(keyField);}
 
-		@Override public TypedSequence<T> get(String field) { return null; }
+		@Override public Sequence<T> get(String field) { return null; }
 
 		@Override public void notifyCreate(T record) {
 			insertRecord(record);

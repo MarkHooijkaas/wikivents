@@ -1,6 +1,6 @@
 package org.kisst.struct4j;
 
-import org.kisst.struct4j.seq.Sequence;
+import org.kisst.struct4j.seq.ItemSequence;
 
 public interface Struct {
 	//public static Object UNKNOWN_FIELD= new Object();
@@ -36,7 +36,7 @@ public interface Struct {
 	public long getLong(String path, long defaultValue);
 	public boolean getBoolean(String path, boolean defaultValue);
 	public Struct getStruct(String path, Struct defaultValue);
-	public Sequence getSequence(String path, Sequence defaultValue);
+	public ItemSequence getSequence(String path, ItemSequence defaultValue);
 
 
 	public Object getObject(String path);
@@ -45,5 +45,5 @@ public interface Struct {
 	public long getLong(String path);
 	public boolean getBoolean(String path);
 	public Struct getStruct(String path);
-	public Sequence getSequence(String path);
+	public ItemSequence getSequence(String path);
 }

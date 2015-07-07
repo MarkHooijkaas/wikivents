@@ -2,7 +2,7 @@ package org.kisst.struct4j.seq;
 
 import java.util.Iterator;
 
-public class TypedArraySequence<T> implements TypedSequence<T> {
+public class TypedArraySequence<T> implements Sequence<T> {
 	public final Class<?> cls;
 	private final T[] array; 
 	public TypedArraySequence(Class<?> cls, T[] arr) {
@@ -11,7 +11,7 @@ public class TypedArraySequence<T> implements TypedSequence<T> {
 		for (int i=0; i<arr.length; i++)
 			this.array[i]=arr[i];
 	}
-	public TypedArraySequence(Class<?> cls, Sequence seq) {
+	public TypedArraySequence(Class<?> cls, ItemSequence seq) {
 		this.cls=cls;
 		this.array=createArray(seq.size());
 		int i=0;

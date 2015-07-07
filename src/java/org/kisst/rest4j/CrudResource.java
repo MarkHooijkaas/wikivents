@@ -3,7 +3,7 @@ package org.kisst.rest4j;
 import org.kisst.crud4j.CrudObject;
 import org.kisst.crud4j.CrudTable;
 import org.kisst.struct4j.Struct;
-import org.kisst.struct4j.seq.TypedSequence;
+import org.kisst.struct4j.seq.Sequence;
 
 public class CrudResource<T extends CrudObject> implements Resource {
 	private final CrudTable<T> table;
@@ -13,7 +13,7 @@ public class CrudResource<T extends CrudObject> implements Resource {
 		T obj = table.createObject(doc);
 		table.create(obj);
 	}
-	@Override public TypedSequence<Struct> getResources(String[] filters) {
+	@Override public Sequence<Struct> getResources(String[] filters) {
 		return null; // TODO
 	}
 	@Override public Struct getSingleResource(String key) {
