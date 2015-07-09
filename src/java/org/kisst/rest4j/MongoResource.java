@@ -7,14 +7,17 @@ import org.kisst.item4j.struct.Struct;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
+import com.mongodb.WriteResult;
 
 public class MongoResource implements Resource {
 	private final DBCollection collection;
 	public MongoResource(DBCollection coll) { this.collection=coll; }
 	
-	@Override public void createResource(Struct struct) {
+	@Override public String createResource(Struct struct) {
 		MongoStruct newObject = new MongoStruct(struct);
-		collection.insert(newObject.data);
+		@SuppressWarnings("unused")
+		WriteResult result = collection.insert(newObject.data);
+		return (String) newObject.data.get("_id");
 	}
 	@Override public Sequence<Struct> getResources(String[] filters) {
 		return null; // TODO

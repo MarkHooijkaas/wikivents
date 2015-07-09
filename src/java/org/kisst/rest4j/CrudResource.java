@@ -9,9 +9,10 @@ public class CrudResource<T extends CrudObject> implements Resource {
 	private final CrudTable<T> table;
 	public CrudResource(CrudTable<T> table) { this.table=table; }
 	
-	@Override public void createResource(Struct doc) {
+	@Override public String createResource(Struct doc) {
 		T obj = table.createObject(doc);
 		table.create(obj);
+		return obj._id;
 	}
 	@Override public Sequence<Struct> getResources(String[] filters) {
 		return null; // TODO

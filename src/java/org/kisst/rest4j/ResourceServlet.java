@@ -21,6 +21,7 @@ public class ResourceServlet extends HttpServlet {
 	@Override protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
 		resource.createResource(getPostedStruct(req));
 	}
+	@SuppressWarnings("unused")
 	@Override protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
 		// TODO: 
 		// recognize query to get multiple
