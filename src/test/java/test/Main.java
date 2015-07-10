@@ -5,9 +5,8 @@ import java.io.File;
 import org.kisst.item4j.struct.HashStruct;
 
 import club.wikivents.model.User;
-import club.wikivents.model.WikiventsFileModel;
 import club.wikivents.model.WikiventsModel;
-import club.wikivents.model.WikiventsMongoModel;
+import club.wikivents.model.WikiventsModels;
 
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
@@ -15,10 +14,10 @@ import com.mongodb.MongoClient;
 public class Main {
 	public static void main(String[] args) {
 
-		WikiventsModel model = fileModel();
+		WikiventsModel model = WikiventsModels.createFileModel(new File("test/data"));
 		//WikiventsModel model = mongoModel();
 
-		for (User u: model.users())
+		for (User u: model.users.findAll())
 			System.out.println("***"+u);
 		
 		HashStruct doc=new HashStruct();
@@ -39,11 +38,11 @@ public class Main {
 			mongoClient.close();
 	}
 
-	public static WikiventsFileModel fileModel() { return new WikiventsFileModel(new File("test/data")); }
+	
 	static MongoClient mongoClient = null;
-	public static WikiventsMongoModel mongoModel() {
+	public static WikiventsModel mongoModel() {
 		mongoClient = new MongoClient("localhost");
 		DB db = new DB(mongoClient,"wikivents");
-		return new WikiventsMongoModel(db);
+		return WikiventsModels.createMongoModel(db);
 	}
 }

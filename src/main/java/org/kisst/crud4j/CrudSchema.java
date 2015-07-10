@@ -1,10 +1,12 @@
 package org.kisst.crud4j;
 
+import java.lang.reflect.Constructor;
 import java.util.Date;
 import java.util.LinkedHashMap;
 
 import org.kisst.item4j.Schema;
 import org.kisst.item4j.Type;
+import org.kisst.item4j.json.JsonParser;
 import org.kisst.item4j.struct.HashStruct;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.util.ReflectionUtil;
@@ -15,18 +17,18 @@ public class CrudSchema<T extends CrudObject> implements Schema {
 	private final LinkedHashMap<String, Field<T> > fields=new LinkedHashMap<String, Field<T>>();
 	public final Class<?> cls;
 	public final IdField _id = new IdField("_id");
+	private final Constructor<?> cons;
 	
-	public CrudSchema(Class<?> cls) { this.cls=cls;	}
+	public CrudSchema(Class<?> cls) { 
+		this.cls=cls;
+		this.cons=ReflectionUtil.getConstructor(schema.cls, new Class<?>[]{ Struct.class} );
+	}
 
 	@Override public String getName() { return cls.getSimpleName(); }
-	@Override public boolean isValidObject(Object obj) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	@Override public Object parseString(String str) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	@Override public boolean isValidObject(Object obj) { return false; } // TODO
+	@Override public T parseString(String str) { return createObject(new JsonParser().parse(str)); }
+	@SuppressWarnings("unchecked")
+	public T createObject(Struct doc) { return (T) ReflectionUtil.createObject(cons, new Object[]{ doc} );}
 
 	
 	

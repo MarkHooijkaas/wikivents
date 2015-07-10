@@ -1,6 +1,7 @@
 package org.kisst.item4j.seq;
 
 import java.util.Iterator;
+import java.util.List;
 
 public class ArraySequence<T> implements Sequence<T> {
 	public final Class<?> cls;
@@ -17,6 +18,13 @@ public class ArraySequence<T> implements Sequence<T> {
 		int i=0;
 		for (Object obj : seq)
 			this.array[i++]=transformObject(obj);
+	}
+	public ArraySequence(Class<?> cls, List<T> list) {
+		this.cls=cls;
+		this.array=createArray(list.size());
+		int i=0;
+		for (T obj : list)
+			this.array[i++]=obj;
 	}
 
 

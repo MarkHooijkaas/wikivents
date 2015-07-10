@@ -5,6 +5,8 @@ import java.util.Date;
 import org.kisst.crud4j.CrudObject;
 import org.kisst.crud4j.CrudSchema;
 import org.kisst.crud4j.CrudTable;
+import org.kisst.crud4j.StructStorage;
+import org.kisst.crud4j.impl.BaseTable;
 import org.kisst.item4j.struct.Struct;
 
 public class Event extends CrudObject {
@@ -16,7 +18,7 @@ public class Event extends CrudObject {
 	//public final TypedSequence<CrudTable<User>.Ref> guests;
 	
 	public Event(WikiventsModel model, Struct s) {
-		this(schema.organizer.get(model.users(), s), s);
+		this(schema.organizer.get(model.users,s), s);
 	}
 
 	public Event(CrudTable.Ref<User> organizer, Struct props) {
@@ -29,7 +31,7 @@ public class Event extends CrudObject {
 		//this.guests=new TypedArraySequence<CrudTable<User>.Ref>(props.getSequence("guests"));
 	}
 	
-	public static Schema schema=new Schema();
+	public static final Schema schema=new Schema();
 	public static class Schema extends CrudSchema<Event> {
 		public Schema() { super(Event.class); addAllFields(); }
 		public final StringField title = new StringField(Event.class, "title"); 
@@ -37,11 +39,15 @@ public class Event extends CrudObject {
 		public final IntField min = new IntField(Event.class, "min"); 
 		public final IntField max = new IntField(Event.class, "max"); 
 		public final DateField date = new DateField(Event.class, "date"); 
+		//@Override public Event createObject(Struct doc) { return new Event(?table?, doc); }
 	}
 
-	public interface Table extends CrudTable<Event> {
-		public MultiIndex<Event>  organizerIndex();
-		public OrderedIndex<Event> dateIndex();
-		//default public Event createObject(Struct doc) { return new Event(userTable, doc); }
+	public static class Table extends BaseTable<Event> {
+		private final WikiventsModel model;
+		public Table(StructStorage storage, WikiventsModel model) { 
+			super(Event.schema, storage); 
+			this.model=model;
+		}
+		@Override public Event createObject(Struct doc) { return new Event(model, doc); }
 	}
 }

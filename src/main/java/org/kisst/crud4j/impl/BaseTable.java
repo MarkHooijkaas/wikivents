@@ -1,77 +1,48 @@
 package org.kisst.crud4j.impl;
 
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 
 import org.kisst.crud4j.CrudObject;
 import org.kisst.crud4j.CrudSchema;
 import org.kisst.crud4j.CrudTable;
+import org.kisst.crud4j.StructStorage;
+import org.kisst.item4j.seq.ArraySequence;
+import org.kisst.item4j.seq.Sequence;
 import org.kisst.item4j.struct.MultiStruct;
 import org.kisst.item4j.struct.Struct;
-import org.kisst.util.ReflectionUtil;
 
-public abstract class BaseTable<T extends CrudObject> implements CrudTable<T>{
+public class BaseTable<T extends CrudObject> implements CrudTable<T>{
 	protected final CrudSchema<T> schema;
 	private final String name;
-	private final ArrayList<Index<T>> indices=new ArrayList<Index<T>>();
-	private final Constructor<?> cons;
+	private final StructStorage storage;
 	
 	private boolean alwaysCheckId=true;
-	public BaseTable(CrudSchema<T> schema) { 
+	public BaseTable(CrudSchema<T> schema, StructStorage storage) { 
 		this.schema=schema;
+		this.storage=storage;
 		this.name=schema.cls.getSimpleName();
-		this.cons=ReflectionUtil.getConstructor(schema.cls, new Class<?>[]{ Struct.class} );
 	}
 	@Override public CrudSchema<T> getSchema() { return schema; }
 	@Override public String getName() { return name; }
 	@Override public String getKey(T obj) { return getSchema().getKeyField().getValue(obj); }
 
-	public Index<T> addIndex(Index<T> idx) { indices.add(idx); return idx; }
-	
-	@SuppressWarnings("unchecked")
-	@Override public T createObject(Struct props) { 
-		return (T) ReflectionUtil.createObject(cons, new Object[]{ props} ); 
-	}		
+	@Override public T createObject(Struct doc) { return schema.createObject(doc); }
 	
 	public void create(T doc) {
-		try {
-			for(Index<T> index : indices)
-				index.notifyCreate(doc);
-			createInStorage(doc);
-		}
-		catch (RuntimeException e) {
-			// TODO: rollback
-			throw e;
-		}
+		storage.createInStorage(doc);
 	}
 	public T read(String key) { 
-		return createObject(readFromStorage(key));
+		return createObject(storage.readFromStorage(key));
 	}
 	public void update(T oldValue, T newValue) {
 		checkSameId(oldValue, newValue);
-		try {
-			for(Index<T> index : indices)
-				index.notifyUpdate(oldValue,newValue);
-			updateInStorage(oldValue, newValue); 
-		}
-		catch (RuntimeException e) {
-			// TODO: rollback
-			throw e;
-		}
+		storage.updateInStorage(oldValue, newValue); 
 	}
 	public void updateFields(T oldValue, Struct newFields) { 
 		update(oldValue, createObject(new MultiStruct(newFields, oldValue))); 
 	}
 	public void delete(T oldValue) {
-		try {
-			for(Index<T> index : indices)
-				index.notifyDelete(oldValue);
-			deleteInStorage(oldValue);
-		}
-		catch (RuntimeException e) {
-			// TODO: rollback
-			throw e;
-		}
+		storage.deleteInStorage(oldValue);
 	}
 
 	public class MyRef implements Ref<T> {
@@ -106,9 +77,11 @@ public abstract class BaseTable<T extends CrudObject> implements CrudTable<T>{
 				throw new IllegalArgumentException("Trying to update object with id "+oldId+" with object with id "+newId);
 		}
 	}
-	
-	public abstract void createInStorage(T value);
-	public abstract Struct readFromStorage(String key);
-	public abstract void updateInStorage(T oldValue, T newValue);
-	public abstract void deleteInStorage(T oldValue);
+	@Override public Sequence<T> findAll() {
+		Sequence<Struct> seq = storage.findAll();
+		ArrayList<T> list=new ArrayList<T>(seq.size());
+		for (Struct rec:seq)
+			list.add(createObject(rec));
+		return new ArraySequence<T>(schema.cls, list);
+	}
 }
