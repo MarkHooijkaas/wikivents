@@ -21,7 +21,7 @@ public class CrudSchema<T extends CrudObject> implements Schema {
 	
 	public CrudSchema(Class<?> cls) { 
 		this.cls=cls;
-		this.cons=ReflectionUtil.getConstructor(schema.cls, new Class<?>[]{ Struct.class} );
+		this.cons=ReflectionUtil.getConstructor(cls, new Class<?>[]{ Struct.class} );
 	}
 
 	@Override public String getName() { return cls.getSimpleName(); }
