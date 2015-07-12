@@ -1,0 +1,9 @@
+<h1>Wikivents 3</h1>
+
+<a href="config">Configuration</a><br> 
+
+<table>
+{{#users}}
+<tr><td>{{username}}</td><td>{{email}}</td></tr>
+{{/users}}
+</table>
