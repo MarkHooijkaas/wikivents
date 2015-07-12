@@ -7,6 +7,7 @@
 	<classpathentry kind="lib" path="lib/log4j-1.2.13.jar"/>
 	<classpathentry kind="lib" path="lib/freemarker-2.3.15.jar"/>
 	<classpathentry kind="lib" path="lib/undertow-core-1.2.8.Final.jar"/>
+	<classpathentry kind="lib" path="lib/undertow-servlet-1.2.8.Final.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="lib/slf4j-log4j12-1.5.10.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>

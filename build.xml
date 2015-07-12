@@ -58,14 +58,29 @@
   		<delete dir="${builddir}/classes" />
   	</target>
   	
-  	<target name="test" depends="compile,fast-test"/>
-  	<target name="fast-test" depends="">
+  	<target name="test" depends="compile,file-test,mongo-test"/>
+  	<target name="file-test" depends="">
   	      <java classname="test.Main"
            fork="true"
            failonerror="true"
            maxmemory="128m"
            >
-         <arg value="-h"/>
+         <arg value="file"/>
+         <classpath>
+			<fileset dir="lib">
+				<include name="**/*.jar"/>
+			</fileset>
+           <pathelement location="build/classes"/>
+         </classpath>
+       </java>
+    </target>
+  	<target name="mongo-test" depends="">
+  	      <java classname="test.Main"
+           fork="true"
+           failonerror="true"
+           maxmemory="128m"
+           >
+         <arg value="file"/>
          <classpath>
 			<fileset dir="lib">
 				<include name="**/*.jar"/>
