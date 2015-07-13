@@ -1,6 +1,7 @@
 package org.kisst.crud4j.impl;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.kisst.crud4j.CrudObject;
 import org.kisst.crud4j.CrudSchema;
@@ -77,11 +78,20 @@ public class BaseTable<T extends CrudObject> implements CrudTable<T>{
 				throw new IllegalArgumentException("Trying to update object with id "+oldId+" with object with id "+newId);
 		}
 	}
+	private Sequence<T> all=null;
 	@Override public Sequence<T> findAll() {
+		if (all!=null)
+			return all;
 		Sequence<Struct> seq = storage.findAll();
 		ArrayList<T> list=new ArrayList<T>(seq.size());
 		for (Struct rec:seq)
 			list.add(createObject(rec));
-		return new ArraySequence<T>(schema.cls, list);
+		all=new ArraySequence<T>(schema.cls, list);
+		return all;
 	}
+	
+	
+	@Override public int size() { return findAll().size();}
+	@Override public T get(int index) { return findAll().get(index); }
+	@Override public Iterator<T> iterator() { return findAll().iterator(); }
 }

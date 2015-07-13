@@ -42,18 +42,20 @@ public class TemplateServlet extends BaseServlet {
 	}
 
 	public void handle(HttpServletRequest request, HttpServletResponse response) {
+		System.out.println("handling");
 		if (getUser(request, response)==null)
 			return;
 		try {
 			HashMap<String, Object> root=new HashMap<String, Object>();
 			//root.put("model", model);
 			addContext(root);
+			System.out.println("events "+root.get("events"));
 			Mustache templ = this.template;
 			if (debugMode)
 				templ=new DefaultMustacheFactory(new File("src/templates")).compile(templateName);
 			
 			Writer out = response.getWriter();
-		    templ.execute(out, root);	
+		    templ.execute(out, root);
 			out.flush();
 		}
 		catch (IOException e)  { throw new RuntimeException(e); }
