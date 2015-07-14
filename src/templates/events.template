@@ -1,0 +1,22 @@
+{{>header}}
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Datum</th>
+        <th>activiteit</th>
+        <th>plaats</th>
+      </tr>
+    </thead>
+    <tbody>
+{{#each model.events}}  
+      <tr>
+        <td>{{datum}}</td>
+        <td>{{titel}}</td>
+        <td>{{plaats}}</td>
+      </tr>
+{{/each}}
+    </tbody>
+  </table>
+  
+{{>footer}}

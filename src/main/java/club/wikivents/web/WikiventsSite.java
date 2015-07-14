@@ -33,10 +33,14 @@ public class WikiventsSite extends HttpHandlebarSite {
 		addPages();
 	}
 	
-	private void addPages() { 
-		addPage("/favicon.ico", new ResourcePage());
-		addPage("default", new TemplatePage(this, "home"));
-		//addPage("/config", new ConfigServlet(props));
+	private void addPages() {
+		setDefaultPage(new TemplatePage(this, "404"));
+		addPage("/", new TemplatePage(this, "home"));
+		addPage("/users", new TemplatePage(this, "users"));
+		addPage("/user/", new TemplatePage(this, "user"));
+		addPage("/events", new TemplatePage(this, "events"));
+		addPage("/event/", new TemplatePage(this, "event"));
 		addPage("/login", new LoginPage(this));
+		addPage("/favicon.ico", new ResourcePage());
 	}
 }

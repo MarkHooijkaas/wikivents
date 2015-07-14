@@ -1,3 +1,5 @@
+{{> header }}
+
 <h1>Wikivents : {{user.username}}</h1>
 
 <a href="config">Configuration</a><br> 
@@ -16,3 +18,5 @@
 <tr><td>{{title}}</td><td>{{date}}</td></tr>
 {{/each}}
 </table>
+
+{{> footer }}

@@ -1,0 +1,42 @@
+{{> header}}
+
+<form role="form">
+  <div class="form-group">
+    <label for="pwd">Titel</label>
+    <input type="text" class="form-control" id="title">
+  </div>
+  <div class="form-group">
+    <label for="email">Plaats</label>
+    <input type="email" class="form-control" id="city">
+  </div>
+  <div class="form-group">
+    <label for="pwd">Omschrijving:</label>
+      <textarea class="form-control" rows="5" id="description"></textarea>
+  </div>
+  
+  <div class="container">
+    <div class="row">
+        <div class='col-sm-6'>
+            <div class="form-group">
+                <div class='input-group date' id='date'>
+                    <input type='text' class="form-control" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            $(function () {
+                $('#datetimepicker1').datetimepicker();
+            });
+        </script>
+    </div>
+</div>
+  
+  
+  <button type="submit" class="btn btn-default">Submit</button>
+</form>
+
+
+{{> footer}}
