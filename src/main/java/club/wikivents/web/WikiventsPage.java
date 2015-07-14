@@ -28,9 +28,12 @@ public abstract class WikiventsPage extends HttpHandlebarPage {
 	
 	public User getUser(HttpServletRequest request) {
 		String id = getUserId(request);
+		//System.out.println("searching user:"+id);
 		if (id==null)
 			return null;
-		return model.users.read(id);
+		User user = model.users.read(id);
+		System.out.println("recognized user"+user);
+		return user;
 	}
 	public User ensureUser(HttpServletRequest req, HttpServletResponse resp,String usernameOrId) {
 		User u=getUser(req);

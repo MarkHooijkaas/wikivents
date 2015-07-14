@@ -8,7 +8,6 @@ import java.io.Writer;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.kisst.http4j.HttpServer;
 import org.kisst.item4j.struct.Struct;
 
 import com.github.jknack.handlebars.Context;
@@ -21,12 +20,11 @@ import com.github.jknack.handlebars.context.MapValueResolver;
 import com.github.jknack.handlebars.context.MethodValueResolver;
 import com.github.jknack.handlebars.io.FileTemplateLoader;
 
-public class HttpHandlebarSite extends HttpServer {
+public class HttpHandlebarSite {
 	public final Struct props;
 	public final boolean debug;
 	
 	public HttpHandlebarSite(Struct props) {
-		super(props);
 		this.props=props;
 		this.debug=props.getBoolean("debug",true);
 	}

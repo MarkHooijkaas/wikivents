@@ -2,7 +2,6 @@ package org.kisst.http4j;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.LinkedHashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,24 +16,14 @@ import org.slf4j.LoggerFactory;
 
 public class HttpServer extends AbstractHandler {
 	private final static Logger logger=LoggerFactory.getLogger(HttpServer.class);
-	private final LinkedHashMap<String, HttpPage> equals=new LinkedHashMap<String, HttpPage>();
-	private final LinkedHashMap<String, HttpPage> startsWith=new LinkedHashMap<String, HttpPage>();
 
 	private Server server=null;
 	protected final Struct props;
-	private HttpPage defaultPage;
+	private final HttpHandler handler;
 
-	public HttpServer(Struct props) {
+	public HttpServer(Struct props, HttpHandler handler) {
 		this.props=props;
-	}
-
-	public HttpServer setDefaultPage(HttpPage defaultPage) { this.defaultPage=defaultPage;  return this; }
-	public HttpServer addPage(String url, HttpPage servlet) {
-		if (url.endsWith("*"))
-			startsWith.put(url.substring(0, url.length()-1), servlet);
-		else
-			equals.put(url, servlet);
-		return this;
+		this.handler=handler;
 	}
 	
 	public void startListening() {
@@ -75,21 +64,9 @@ public class HttpServer extends AbstractHandler {
 	public void handle(String target,Request baseRequest,HttpServletRequest request,HttpServletResponse response) 
 	{
 		String path=request.getRequestURI();
-        baseRequest.setHandled(true);
-        try {
-        	HttpPage page = equals.get(path);
-        	if (page==null) {
-        		for (String prefix : startsWith.keySet()) {
-        			if (path.startsWith(prefix)) {
-        				page=startsWith.get(prefix);
-        				break;
-        			}
-        		}
-        		if (page==null)
-        			page=defaultPage;
-        	}
-        	page.handle(request, response);
-        }
+		try {
+			handler.handle(path, request, response);
+		}
         catch (Exception e) {
         	try {
         		logger.error("Error when handling "+path,e);

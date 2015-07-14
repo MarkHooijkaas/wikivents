@@ -4,6 +4,7 @@ package club.wikivents.web;
 
 import java.io.File;
 
+import org.kisst.http4j.HttpPageMap;
 import org.kisst.http4j.ResourcePage;
 import org.kisst.http4j.handlebar.HttpHandlebarSite;
 import org.kisst.item4j.struct.Struct;
@@ -17,6 +18,7 @@ import club.wikivents.model.WikiventsModels;
 public class WikiventsSite extends HttpHandlebarSite {
 	public final WikiventsModel model;
 	private MongoClient mongoClient=null;
+	public final HttpPageMap pages;
 	
 	public WikiventsSite(Struct props) {
 		super(props);
@@ -30,17 +32,14 @@ public class WikiventsSite extends HttpHandlebarSite {
 		}
 		else
 			throw new RuntimeException("Unknown storage type "+storage);
-		addPages();
-	}
-	
-	private void addPages() {
-		setDefaultPage(new TemplatePage(this, "404"));
-		addPage("/", new TemplatePage(this, "home"));
-		addPage("/users", new TemplatePage(this, "users"));
-		addPage("/user/", new TemplatePage(this, "user"));
-		addPage("/events", new TemplatePage(this, "events"));
-		addPage("/event/", new TemplatePage(this, "event"));
-		addPage("/login", new LoginPage(this));
-		addPage("/favicon.ico", new ResourcePage());
+
+		pages=new HttpPageMap("",new TemplatePage(this, "404"))
+		.addPage("", new TemplatePage(this, "home"))
+		.addPage(new TemplatePage(this, "users"))
+		.addPage(new TemplatePage(this, "user/*"))
+		.addPage(new TemplatePage(this, "events"))
+		.addPage(new TemplatePage(this, "event/*"))
+		.addPage(new LoginPage(this))
+		.addPage("/favicon.ico", new ResourcePage());
 	}
 }

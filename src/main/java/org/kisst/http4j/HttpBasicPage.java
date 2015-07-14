@@ -4,15 +4,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public abstract class HttpBasicPage implements HttpPage {
-	@Override public void handle(HttpServletRequest request, HttpServletResponse response) {
+	@Override public void handle(String path, HttpServletRequest request, HttpServletResponse response) {
 		String method = request.getMethod();
+		//System.out.println("handling "+method+" "+request.getRequestURI());
+		//System.out.println("handling "+method+" "+path);
 		if ("GET".equals(method))
-			handleGet(request,response);
-		else if ("GET".equals(method))
-			handlePost(request,response);
+			handleGet(path, request,response);
+		else if ("POST".equals(method))
+			handlePost(path, request,response);
 	}
 
-	public void handleGet(HttpServletRequest request, HttpServletResponse response) {}
-	public void handlePost(HttpServletRequest request, HttpServletResponse response) {}
+	public void handleGet(String path, HttpServletRequest request, HttpServletResponse response) {}
+	public void handlePost(String path, HttpServletRequest request, HttpServletResponse response) {}
 	
 }

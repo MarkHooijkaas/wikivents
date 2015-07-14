@@ -3,6 +3,7 @@ package club.wikivents;
 import java.io.File;
 
 import org.apache.log4j.PropertyConfigurator;
+import org.kisst.http4j.HttpServer;
 import org.kisst.props4j.SimpleProps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,14 +18,15 @@ import club.wikivents.web.WikiventsSite;
 public class Runner {
 	final static Logger logger=LoggerFactory.getLogger(Runner.class); 
 	private final SimpleProps props=new SimpleProps();
-	private final WikiventsSite server;
+	private final HttpServer server;
 	//private final WikiventsModel model;
 	static MongoClient mongoClient = null;
 	
 	public Runner(String configfile) {
 		//this.model=mongoModel();
 		props.load(new File(configfile));
-		this.server = new WikiventsSite(props);
+		WikiventsSite site=new WikiventsSite(props);
+		this.server = new HttpServer(props, site.pages);
 		
 	}
 	public void run() {
