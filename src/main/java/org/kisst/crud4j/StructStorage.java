@@ -5,6 +5,7 @@ import org.kisst.item4j.seq.Sequence;
 import org.kisst.item4j.struct.Struct;
 
 public interface StructStorage {
+	public Class<?> getRecordClass();
 	public String createInStorage(Struct value);
 	public Struct readFromStorage(String key);
 	public void updateInStorage(Struct oldValue, Struct newValue);

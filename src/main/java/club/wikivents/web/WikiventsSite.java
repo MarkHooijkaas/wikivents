@@ -4,6 +4,7 @@ package club.wikivents.web;
 
 import java.io.File;
 
+import org.kisst.http4j.ResourcePage;
 import org.kisst.http4j.handlebar.HttpHandlebarSite;
 import org.kisst.item4j.struct.Struct;
 
@@ -33,6 +34,7 @@ public class WikiventsSite extends HttpHandlebarSite {
 	}
 	
 	private void addPages() { 
+		addPage("/favicon.ico", new ResourcePage());
 		addPage("default", new TemplatePage(this, "home"));
 		//addPage("/config", new ConfigServlet(props));
 		addPage("/login", new LoginPage(this));

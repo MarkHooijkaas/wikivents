@@ -4,7 +4,7 @@
 
 <h2>Users</h2>
 <table>
-{{#each users}}
+{{#each model.users}}
 <tr><td>{{username}}</td><td>{{email}}</td></tr>
 {{/each}}
 </table>
@@ -12,7 +12,7 @@
 
 <h2>Events</h2>
 <table>
-{{#model.events}}
+{{#each model.events}}
 <tr><td>{{title}}</td><td>{{date}}</td></tr>
-{{/model.events}}
+{{/each}}
 </table>

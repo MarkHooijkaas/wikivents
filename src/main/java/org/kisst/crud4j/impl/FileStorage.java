@@ -23,9 +23,11 @@ public class FileStorage implements StructStorage {
 	private final JsonOutputter outputter = new JsonOutputter(null);
 	private final CrudSchema<?>.IdField keyField;
 	private final ArrayList<Index> indices=new ArrayList<Index>();
+	private final CrudSchema<?> schema;
 
 	
 	public FileStorage(CrudSchema<?> schema, File maindir) {
+		this.schema=schema;
 		this.keyField = schema.getKeyField();
 		this.name=schema.cls.getSimpleName();
 		dir=new File(maindir,name);
@@ -33,6 +35,7 @@ public class FileStorage implements StructStorage {
 			dir.mkdirs();
 		//loadAllRecords();
 	}
+	@Override public Class<?> getRecordClass() { return schema.cls; }
 	public Index addIndex(Index idx) { indices.add(idx); return idx; }
 	
 	@Override public String createInStorage(Struct value) {

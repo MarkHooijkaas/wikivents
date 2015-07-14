@@ -81,6 +81,7 @@ public class HttpServer extends AbstractHandler {
         }
         catch (Exception e) {
         	try {
+        		logger.error("Error when handling "+path,e);
 				PrintWriter out = response.getWriter();
 				out.println(e.getMessage());
 				out.println("<pre>");
@@ -90,6 +91,10 @@ public class HttpServer extends AbstractHandler {
 				// ignore the new error, and now write to the logfile anyway
 				logger.error("Error when handling "+path, e);
 			}
+        }
+        finally {
+        	try { response.getWriter().close();} 
+        	catch (IOException e) { throw new RuntimeException(e); }
         }
 	}
 }

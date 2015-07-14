@@ -19,6 +19,8 @@ public abstract class WikiventsPage extends HttpHandlebarPage {
 	public Data createTemplateData(HttpServletRequest request) { 
 		Data data = new Data();
 		data.add("user", getUser(request));
+		data.add("model", model);
+		//data.add("events", model.events);
 		return data;
 	}
 

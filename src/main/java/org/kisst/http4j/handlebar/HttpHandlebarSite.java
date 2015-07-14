@@ -3,6 +3,7 @@ package org.kisst.http4j.handlebar;
 
 
 import java.io.IOException;
+import java.io.PrintStream;
 import java.io.Writer;
 
 import javax.servlet.http.HttpServletResponse;
@@ -27,7 +28,7 @@ public class HttpHandlebarSite extends HttpServer {
 	public HttpHandlebarSite(Struct props) {
 		super(props);
 		this.props=props;
-		this.debug=props.getBoolean("debug",false);
+		this.debug=props.getBoolean("debug",true);
 	}
 	
 	
@@ -51,7 +52,8 @@ public class HttpHandlebarSite extends HttpServer {
 			Template tmpl = template;
 			if (debug)
 				tmpl=compile(name);
-			try (Writer out = response.getWriter())	{
+			try { //TODO: use autoclosable (Writer out = response.getWriter())	{
+				Writer out = response.getWriter();
 			    out.append(tmpl.apply(context.builder.build()));
 			} 
 			catch (IOException e) { throw new RuntimeException(e);}
@@ -68,5 +70,10 @@ public class HttpHandlebarSite extends HttpServer {
 			        MethodValueResolver.INSTANCE
 			    );
 		public void add(String name, Object value) { builder.combine(name, value); }
+		public void write(PrintStream out) {
+			Context ctx = builder.build();
+			//ctx.
+			out.println(ctx.toString());
+		}
 	}
 }

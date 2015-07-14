@@ -20,11 +20,14 @@ import com.mongodb.DuplicateKeyException;
 public class MongoStorage implements StructStorage {
 	private final DBCollection collection;
 	private final CrudSchema<?>.IdField keyField;
-	public MongoStorage(CrudSchema<?> schema, DB db) { 
+	private final CrudSchema<?> schema;
+	
+	public MongoStorage(CrudSchema<?> schema, DB db) {
+		this.schema=schema;
 		this.collection=db.getCollection(schema.cls.getSimpleName());
 		this.keyField=schema.getKeyField();
 	}
-	
+	@Override public Class<?> getRecordClass() { return schema.cls; }
 	@Override public String createInStorage(Struct value) {
 		MongoStruct doc = new MongoStruct(value);
         collection.insert(doc.data);
