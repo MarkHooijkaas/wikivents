@@ -11,21 +11,23 @@ import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.AbstractHandler;
-import org.kisst.props4j.Props;
+import org.kisst.item4j.struct.Struct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ServletContainer extends AbstractHandler {
-	private final static Logger logger=LoggerFactory.getLogger(ServletContainer.class); 
-	private Server server=null;
-	protected final Props props;
+public class HttpServer extends AbstractHandler {
+	private final static Logger logger=LoggerFactory.getLogger(HttpServer.class);
+	private final HashMap<String, HttpPage> handlerMap=new HashMap<String, HttpPage>();
 
-	public ServletContainer(Props props)
+	private Server server=null;
+	protected final Struct props;
+
+	public HttpServer(Struct props)
 	{
 		this.props=props;
 	}
 	
-	public void addServlet(String url, AbstractServlet servlet) {
+	public void addPage(String url, HttpPage servlet) {
 		handlerMap.put(url, servlet);
 	}
 	
@@ -64,7 +66,6 @@ public class ServletContainer extends AbstractHandler {
 	}
 
 	
-	private HashMap<String, AbstractServlet> handlerMap=new HashMap<String, AbstractServlet>();
 	public void handle(String target,Request baseRequest,HttpServletRequest request,HttpServletResponse response) 
 	{
 		String path=request.getRequestURI();

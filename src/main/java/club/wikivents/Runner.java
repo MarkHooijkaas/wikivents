@@ -12,19 +12,19 @@ import com.mongodb.MongoClient;
 
 import club.wikivents.model.WikiventsModel;
 import club.wikivents.model.WikiventsModels;
-import club.wikivents.web.WebSite;
+import club.wikivents.web.WikiventsSite;
 
 public class Runner {
 	final static Logger logger=LoggerFactory.getLogger(Runner.class); 
 	private final SimpleProps props=new SimpleProps();
-	private final WebSite server;
+	private final WikiventsSite server;
 	//private final WikiventsModel model;
 	static MongoClient mongoClient = null;
 	
 	public Runner(String configfile) {
 		//this.model=mongoModel();
 		props.load(new File(configfile));
-		this.server = new WebSite(WikiventsModels.createFileModel(new File("test/data")), props);
+		this.server = new WikiventsSite(props);
 		
 	}
 	public void run() {
