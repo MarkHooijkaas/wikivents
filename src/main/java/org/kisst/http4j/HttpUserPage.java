@@ -1,4 +1,4 @@
-package org.kisst.servlet4j;
+package org.kisst.http4j;
 
 import java.io.IOException;
 
@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.kisst.util.Base64;
 
-public abstract class UserPage extends HttpBasicPage {
+public abstract class HttpUserPage extends HttpBasicPage {
 	private static final Object COOKIE_NAME = "Hooi4jUser";
 	private static final long LOGIN_TIME = 7*24*60*60*1000; // a week
 	

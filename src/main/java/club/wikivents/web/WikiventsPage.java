@@ -3,7 +3,7 @@ package club.wikivents.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.kisst.servlet4j.HttpHandlebarPage;
+import org.kisst.http4j.handlebar.HttpHandlebarPage;
 
 import club.wikivents.model.User;
 import club.wikivents.model.WikiventsModel;

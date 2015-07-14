@@ -1,4 +1,4 @@
-package org.kisst.servlet4j;
+package org.kisst.http4j;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

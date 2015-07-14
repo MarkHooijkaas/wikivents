@@ -1,6 +1,8 @@
-package org.kisst.servlet4j;
+package org.kisst.http4j.handlebar;
 
-public abstract class HttpHandlebarPage extends UserPage {
+import org.kisst.http4j.HttpUserPage;
+
+public abstract class HttpHandlebarPage extends HttpUserPage {
 	private final HttpHandlebarSite site;
 	
 	public HttpHandlebarPage(HttpHandlebarSite site) {this.site=site;}
