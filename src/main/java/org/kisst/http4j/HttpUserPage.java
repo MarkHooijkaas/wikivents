@@ -10,7 +10,7 @@ import org.kisst.util.Base64;
 
 public abstract class HttpUserPage extends HttpBasicPage {
 	private static final String COOKIE_NAME = "Hooi4jUser";
-	private static final long LOGIN_TIME = 7*24*60*60*1000; // a week
+	private static final int LOGIN_DURATION= 7*24*60*60; // a week in seconds
 	
 	public String getUserId(HttpServletRequest request) {
 		Cookie[] cookies = request.getCookies();
@@ -25,6 +25,7 @@ public abstract class HttpUserPage extends HttpBasicPage {
 
 	public void setCookie(HttpServletResponse response, String userid) {
 		Cookie cookie = new Cookie(COOKIE_NAME, createCookieString(userid, System.currentTimeMillis()));
+		cookie.setMaxAge(LOGIN_DURATION);
 		//System.out.println("setting "+userid+" to "+cookie);
 
 		response.addCookie(cookie);		
@@ -45,7 +46,7 @@ public abstract class HttpUserPage extends HttpBasicPage {
 			//System.out.println("user id:"+userid);
 			long loginTime=Long.parseLong(parts[1]);
 			//System.out.println("login :"+(System.currentTimeMillis()-loginTime));
-			if ((System.currentTimeMillis()-loginTime)>LOGIN_TIME)
+			if ((System.currentTimeMillis()-loginTime)>(LOGIN_DURATION*1000))
 				return null; // Cookie too old
 			String expectedCookie= createCookieString(userid,loginTime);
 			//System.out.println("expected cookie:"+cookie);
