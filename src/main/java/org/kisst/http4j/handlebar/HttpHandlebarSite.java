@@ -66,8 +66,10 @@ public class HttpHandlebarSite {
 		}
 	}
 
-	public class TemplateData {
-		private final Builder builder = Context.newBuilder(this)
+	public static class TemplateData {
+		private final Builder builder;
+		public TemplateData(Object root) {
+			this.builder= Context.newBuilder(root)
 				.resolver(
 					StructValueResolver.INSTANCE,
 					MapValueResolver.INSTANCE,
@@ -75,6 +77,7 @@ public class HttpHandlebarSite {
 			        FieldValueResolver.INSTANCE,
 			        MethodValueResolver.INSTANCE
 			    );
+		}
 		public TemplateData add(String name, Object value) { builder.combine(name, value); return this;}
 		public void write(PrintStream out) {
 			Context ctx = builder.build();

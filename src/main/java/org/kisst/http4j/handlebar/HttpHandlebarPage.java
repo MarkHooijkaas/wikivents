@@ -13,7 +13,7 @@ public abstract class HttpHandlebarPage extends HttpUserPage {
 	
 	public class Template extends HttpHandlebarSite.CompiledTemplate { public Template(String name) { site.super(name); } } 
 	public class Data extends HttpHandlebarSite.TemplateData { 
-		public Data() { site.super(); }
+		public Data() { super(site); } // TODO: is this ok??
 		public Data add(String name, Object value) { super.add(name, value); return this;}
 	} 
 }

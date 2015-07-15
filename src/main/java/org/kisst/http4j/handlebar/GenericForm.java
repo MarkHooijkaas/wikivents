@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.kisst.http4j.handlebar.HttpHandlebarSite.CompiledTemplate;
 import org.kisst.http4j.handlebar.HttpHandlebarSite.TemplateData;
 import org.kisst.item4j.Schema;
 import org.kisst.item4j.struct.Struct;
@@ -52,49 +53,33 @@ public class GenericForm {
 	
 	
 	public class Field {
+		private final CompiledTemplate template;
 		public final Schema.Field field;
 		public final String label;
-		public final String type;
-		public Field(Schema.Field field, String label, String type) {
-			this.type=type;
+		public Field(Schema.Field field, String label) {
 			this.field=field;
 			this.label=label;
+			this.template= site.compileTemplate("generic.form."+getClass().getSimpleName() );
 		}
 		public String render(Struct data) {
-			String name=field.getName();
-			String value=field.getStringValue(data,"");
-			StringBuilder result = new StringBuilder();
-			result.append("<div class=\"form-group\">");
-			result.append("   <label for=\""+name+"\">"+label+"</label>");
-			result.append("<input type=\""+type+"\" class=\"form-control\" id=\""+name+"\" name=\""+name+"\"+ value=\""+value+"\">");
-			result.append("</div>");
-			return result.toString();
+			TemplateData context = new TemplateData(this);
+			return template.toString(context);
 		}
 	}
 	public class TextField extends Field {
-		public TextField(Schema.Field field, String label) { super(field,label, "text"); }
+		public TextField(Schema.Field field, String label) { super(field,label); }
 	}
 	public class EmailField extends Field {
-		public EmailField(Schema.Field field, String label) { super(field,label, "email"); }
+		public EmailField(Schema.Field field, String label) { super(field,label); }
 	}
 	public class PasswordField extends Field {
-		public PasswordField(Schema.Field field, String label) { super(field,label, "password"); }
+		public PasswordField(Schema.Field field, String label) { super(field,label); }
 	}
 	public class TextAreaField extends Field {
-		private final int rows;
+		public final int rows;
 		public TextAreaField(Schema.Field field, String label,  int rows) { 
-			super(field,label, "textarea");
+			super(field,label);
 			this.rows=rows;
-		}
-		@Override public String render(Struct data) {
-			String name=field.getName();
-			String value=field.getStringValue(data,"");
-			StringBuilder result = new StringBuilder();
-			result.append("<div class=\"form-group\">");
-			result.append("   <label for=\""+name+"\">"+label+"</label>");
-			result.append("<textarea class=\"form-control\" rows=\""+rows+"\" id=\""+name+"\" name=\""+name+"\">"+value+"</textarea>");
-			result.append("</div>");
-			return result.toString();
 		}
 	}
 }
