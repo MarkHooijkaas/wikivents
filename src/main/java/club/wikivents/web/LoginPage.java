@@ -1,7 +1,5 @@
 package club.wikivents.web;
 
-import java.io.IOException;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -35,10 +33,7 @@ public class LoginPage extends WikiventsPage {
 				System.out.println("Found  "+u);
 				if (u.password.equals(password)) {
 					setCookie(response,u._id);
-					try {
-						response.sendRedirect("/");
-					}
-					catch (IOException e) { throw new RuntimeException(e); }
+					redirect(response,"/");
 					return;
 				}
 				message="password incorrect";

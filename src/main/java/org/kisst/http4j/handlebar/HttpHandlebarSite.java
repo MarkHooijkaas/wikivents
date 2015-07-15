@@ -32,7 +32,8 @@ public class HttpHandlebarSite {
 	
 	
 	private final Handlebars handlebar=new Handlebars(new FileTemplateLoader("src/templates",".template"));
-	public Template compile(String templateName) {
+	public CompiledTemplate compileTemplate(String templateName) { return new CompiledTemplate(templateName); }
+	private Template compile(String templateName) {
 		try {
 			return handlebar.compile(templateName);
 		}
@@ -46,13 +47,20 @@ public class HttpHandlebarSite {
 			this.name=name;
 			this.template=compile(name);
 		}
-		public void output(TemplateData context, HttpServletResponse response) {
+		public String toString(TemplateData context) {
 			Template tmpl = template;
 			if (debug)
 				tmpl=compile(name);
+			try { 
+			    return tmpl.apply(context.builder.build());
+			} 
+			catch (IOException e) { throw new RuntimeException(e);}
+		}
+
+		public void output(TemplateData context, HttpServletResponse response) {
 			try { //TODO: use autoclosable (Writer out = response.getWriter())	{
 				Writer out = response.getWriter();
-			    out.append(tmpl.apply(context.builder.build()));
+			    out.append(toString(context));
 			} 
 			catch (IOException e) { throw new RuntimeException(e);}
 		}
@@ -67,10 +75,9 @@ public class HttpHandlebarSite {
 			        FieldValueResolver.INSTANCE,
 			        MethodValueResolver.INSTANCE
 			    );
-		public void add(String name, Object value) { builder.combine(name, value); }
+		public TemplateData add(String name, Object value) { builder.combine(name, value); return this;}
 		public void write(PrintStream out) {
 			Context ctx = builder.build();
-			//ctx.
 			out.println(ctx.toString());
 		}
 	}

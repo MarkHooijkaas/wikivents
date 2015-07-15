@@ -38,7 +38,7 @@ public class WikiventsSite extends HttpHandlebarSite {
 		.addPage(new TemplatePage(this, "users"))
 		.addPage(new TemplatePage(this, "user/*"))
 		.addPage(new TemplatePage(this, "events"))
-		.addPage(new TemplatePage(this, "event/*"))
+		.addPage(new EventPage(this))
 		.addPage(new LoginPage(this))
 		.addPage("/favicon.ico", new ResourcePage());
 	}

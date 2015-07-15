@@ -1,5 +1,6 @@
 package org.kisst.item4j;
 
+import org.kisst.item4j.struct.Struct;
 
 public interface Schema extends Type {
 	public Field getField(String name);
@@ -10,6 +11,7 @@ public interface Schema extends Type {
 		public Type getType();
 		default public boolean isOptional() { return false; }
 		default public boolean allowsNull() { return false; }
+		default public String getStringValue(Struct data, String defaultValue) { return data.getString(getName(),defaultValue); }
 	}
 	public interface StringField extends Field {
 		@Override default public Type.JavaString getType() { return Type.javaString; }

@@ -11,6 +11,8 @@ import org.kisst.item4j.struct.Struct;
 
 public class Event extends CrudObject {
 	public final String title;
+	public final String location;
+	public final String description;
 	public final Date date;
 	public final int min;
 	public final int max;
@@ -24,6 +26,8 @@ public class Event extends CrudObject {
 	public Event(CrudTable.Ref<User> organizer, Struct props) {
 		super(schema, props);
 		this.title=schema.title.getValue(props);
+		this.description=schema.description.getValue(props);
+		this.location=schema.location.getValue(props);
 		this.date=schema.date.getValue(props);
 		this.min=schema.min.getValue(props);
 		this.max=schema.max.getValue(props);
@@ -39,6 +43,8 @@ public class Event extends CrudObject {
 		public final IntField min = new IntField(Event.class, "min"); 
 		public final IntField max = new IntField(Event.class, "max"); 
 		public final DateField date = new DateField(Event.class, "date"); 
+		public final StringField location = new StringField(Event.class, "location"); 
+		public final StringField description = new StringField(Event.class, "description"); 
 		//@Override public Event createObject(Struct doc) { return new Event(?table?, doc); }
 	}
 
