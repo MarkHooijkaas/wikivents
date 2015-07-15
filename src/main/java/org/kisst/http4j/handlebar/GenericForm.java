@@ -56,8 +56,10 @@ public class GenericForm {
 		private final CompiledTemplate template;
 		public final Schema.Field field;
 		public final String label;
+		public final String name;
 		public Field(Schema.Field field, String label) {
 			this.field=field;
+			this.name=field.getName();
 			this.label=label;
 			this.template= site.compileTemplate("generic.form."+getClass().getSimpleName() );
 		}
