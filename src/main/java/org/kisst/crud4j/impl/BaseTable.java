@@ -92,7 +92,7 @@ public class BaseTable<T extends CrudObject> implements CrudTable<T>{
 	
 	
 	@Override public int size() { return findAll().size();}
-	@Override public T get(int index) { return findAll().get(index); }
+	@Override public Object getObject(int index) { return findAll().get(index); }
 	@Override public Iterator<T> iterator() { return findAll().iterator(); }
 	@Override public Class<?> getElementClass() { return schema.cls; }
 }

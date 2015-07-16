@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.kisst.item4j.Item;
 
-final public class ImmutableItemSequence implements ItemSequence {
+final public class ImmutableItemSequence implements ItemSequence<Item> {
 	private final Object[] arr;
 	public ImmutableItemSequence(List<?> list) { 
 		this.arr=new Object[list.size()];
@@ -19,7 +19,6 @@ final public class ImmutableItemSequence implements ItemSequence {
 	public Class<?> getElementClass() { return Item.class;}
 
 	@Override public int size() { return arr.length;}
-	@Override public Item get(int index) { return Item.asItem(arr[index]);}
 	@Override public Object getObject(int index) { return arr[index];}
 	@Override public Iterator<Item> iterator() { return new MyIterator();} 
 

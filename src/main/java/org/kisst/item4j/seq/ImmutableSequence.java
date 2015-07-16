@@ -26,7 +26,7 @@ public abstract class ImmutableSequence<T> implements Sequence<T>, RandomAccess 
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <E> ImmutableSequence<E> copyOf(ItemSequence seq) {
+	public static <E> ImmutableSequence<E> copyOf(ItemSequence<Item> seq) {
 		if (seq instanceof ImmutableSequence) 
 			return (ImmutableSequence<E>) seq; // TODO: prevent memory leak if small subrange of huge array
 		E[] arr = createArray(seq.size());
@@ -81,8 +81,8 @@ public abstract class ImmutableSequence<T> implements Sequence<T>, RandomAccess 
 			super(cls);
 			this.array=arr;
 		}
-		public int size() { return array.length; }
-		public T get(int index) { return (T) array[index]; }
+		@Override public int size() { return array.length; }
+		@Override public Object getObject(int index) { return array[index]; }
 		@Override public Iterator<T> iterator() { return new MyIterator<T>(array, 0, array.length);}
 	}
 
@@ -115,10 +115,7 @@ public abstract class ImmutableSequence<T> implements Sequence<T>, RandomAccess 
 		}
 		@Override public Iterator<T> iterator() { return new MyIterator<T>(seq.array, start, end);}
 		@Override public int size() { return end-start; }
-		@Override public T get(int index) { return seq.array[start+index]; }
+		@Override public Object getObject(int index) { return seq.array[start+index]; }
 	}
 
-	public final static class ImmutableItemSequence extends ArraySequence<Item> implements ItemSequence {
-		private ImmutableItemSequence(Class<?> elementClass, Item[] array) { super(elementClass, array); }
-	}
 }

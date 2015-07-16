@@ -6,18 +6,16 @@ import java.util.List;
 
 import org.kisst.item4j.Item;
 
-public class ListItemSequence<T> implements ItemSequence {
+public class ListItemSequence<T> implements ItemSequence<T> {
 	private final List<T> list;
 	public ListItemSequence() { this.list=new ArrayList<T>(); }
 	public ListItemSequence(List<T> list) { this.list=list; }
 
-	public List<?> getList() { return  this.list; }
+	@Override public Class<?> getElementClass() { return Item.class; }
 	@Override public int size() { return list.size();}
-	@Override public Item get(int index) { return Item.asItem(list.get(index));}
 	@Override public Object getObject(int index) { return list.get(index);}
-	@Override public Iterator<Item> iterator() { return new IteratorWrapper(list.iterator());} 
-	@Override public Class<?> getElementClass() { return Item.class;}
+	@Override public Iterator<T> iterator() { return list.iterator();} 
 
-
+	public List<?> getList() { return  this.list; }
 	public void append(T obj) { list.add(obj); }
 }

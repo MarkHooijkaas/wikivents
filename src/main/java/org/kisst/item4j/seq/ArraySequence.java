@@ -3,6 +3,8 @@ package org.kisst.item4j.seq;
 import java.util.Iterator;
 import java.util.List;
 
+import org.kisst.item4j.Item;
+
 public class ArraySequence<T> implements Sequence<T> {
 	public final Class<?> cls;
 	private final T[] array; 
@@ -12,7 +14,7 @@ public class ArraySequence<T> implements Sequence<T> {
 		for (int i=0; i<arr.length; i++)
 			this.array[i]=arr[i];
 	}
-	public ArraySequence(Class<?> cls, ItemSequence seq) {
+	public ArraySequence(Class<?> cls, ItemSequence<Item> seq) {
 		this.cls=cls;
 		this.array=createArray(seq.size());
 		int i=0;
@@ -28,8 +30,8 @@ public class ArraySequence<T> implements Sequence<T> {
 	}
 
 
-	public int size() { return array.length; }
-	public T get(int index) { return (T) array[index]; }
+	@Override public int size() { return array.length; }
+	@Override public Object getObject(int index) { return array[index]; }
 	@Override public Class<?> getElementClass() { return cls;}
 
 	@SuppressWarnings("unchecked")
