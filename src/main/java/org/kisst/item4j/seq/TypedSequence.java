@@ -7,12 +7,6 @@ public interface TypedSequence<T> extends ItemSequence, Iterable<T>{
 	public int size();
 	@SuppressWarnings("unchecked")
 	default public T get(int index) { return (T) getObject(index); }
-	default public String toFullString() {
-		StringBuilder result=new StringBuilder("[");
-		String sep="";
-		for (T obj:this) { result.append(sep+obj); sep=","; }
-		return result.toString()+"]";
-	}
 	
 	public final class IndexIterator<TT> implements Iterator<TT>{
 		private final TypedSequence<TT> seq;

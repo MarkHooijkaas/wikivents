@@ -17,8 +17,10 @@ public class Tests {
 		for (Failure failure : result.getFailures()) 
 			System.out.println(failure.toString()+failure.getTrace());
 	}
-	Immutable.Sequence<Integer> seq = Immutable.sequence(Integer.class, 0,1,2,3,4,5,6,7,8,9);
-	Immutable.Sequence<Integer> sub=seq.subsequence(5);
+	//Immutable.Sequence<Integer> seq = Immutable.sequence(Integer.class, 0,1,2,3,4,5,6,7,8,9);
+	//Immutable.Sequence<Integer> sub=seq.subsequence(5);
+	Immutable.ItemSequence seq = Immutable.itemSequence(0,1,2,3,4,5,6,7,8,9);
+	Immutable.ItemSequence sub=seq.subsequence(5);
 
 	@Test public void immutableSequences() {
 		assertEquals("size", 10, seq.size());
@@ -35,7 +37,7 @@ public class Tests {
 	}
 
 	@Test public void join() {
-		Immutable.Sequence<Integer> join=seq.join(sub,sub);
+		Immutable.ItemSequence join=seq.join(sub,sub);
 		assertEquals("size", 20, join.size());
 		assertEquals("seq[12]", 7, (int) join.get(12));
 		assertEquals("toFullString", "[0,1,2,3,4,5,6,7,8,9,5,6,7,8,9,5,6,7,8,9]", join.toFullString());
