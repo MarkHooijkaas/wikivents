@@ -86,12 +86,16 @@ public interface Immutable {
 		}
 
 		public Sequence<T> removeFirst() { return subsequence(1); }
-		public Sequence<T> removeLast()  { return subsequence(size()-1); }
-
+		public Sequence<T> removeLast()  { return subsequence(0,size()-1); }
 		public Sequence<T> remove(int index) {
 			if (index==0)      return removeFirst();
 			if (index==size()) return removeLast();
 			return subsequence(0,index).join(subsequence(index+1));
+		}
+		public Sequence<T> remove(int begin, int end) {
+			if (begin==0)      return subsequence(end+1);
+			if (end==size()) return subsequence(0, begin);
+			return subsequence(0,begin).join(this.subsequence(end));
 		}
 		
 		@SafeVarargs
@@ -166,7 +170,8 @@ public interface Immutable {
 				}
 				else
 					throw new RuntimeException("Unsupported ImmutableSequence type "+seq.getClass()); // should never happen
-				checkIndex(this.start);
+				seq.checkIndex(this.start);
+				seq.checkIndex(this.end);
 				if (this.start>this.end)
 					throw new IndexOutOfBoundsException("subsequence start "+start+" should be less or equal to end "+end);
 			}
