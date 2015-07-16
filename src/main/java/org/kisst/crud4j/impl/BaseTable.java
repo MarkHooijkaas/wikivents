@@ -8,7 +8,7 @@ import org.kisst.crud4j.CrudSchema;
 import org.kisst.crud4j.CrudTable;
 import org.kisst.crud4j.StructStorage;
 import org.kisst.item4j.seq.ArraySequence;
-import org.kisst.item4j.seq.Sequence;
+import org.kisst.item4j.seq.TypedSequence;
 import org.kisst.item4j.struct.MultiStruct;
 import org.kisst.item4j.struct.Struct;
 
@@ -78,11 +78,11 @@ public class BaseTable<T extends CrudObject> implements CrudTable<T>{
 				throw new IllegalArgumentException("Trying to update object with id "+oldId+" with object with id "+newId);
 		}
 	}
-	private Sequence<T> all=null;
-	@Override public Sequence<T> findAll() {
+	private TypedSequence<T> all=null;
+	@Override public TypedSequence<T> findAll() {
 		if (all!=null)
 			return all;
-		Sequence<Struct> seq = storage.findAll();
+		TypedSequence<Struct> seq = storage.findAll();
 		ArrayList<T> list=new ArrayList<T>(seq.size());
 		for (Struct rec:seq)
 			list.add(createObject(rec));

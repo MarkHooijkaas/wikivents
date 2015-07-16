@@ -23,6 +23,14 @@ public interface ItemSequence {
 	default public boolean getBoolean(int index) { return Item.asBoolean(getObject(index)); }
 	//default public ItemSequence getSequence(int index);
 
+	default void checkIndex(int index) {
+		if (index<0)
+			throw new IndexOutOfBoundsException("index "+index+" should be >=0");
+		if (index>size())
+			throw new IndexOutOfBoundsException("index "+index+" should be less or equal to size "+size());
+	}
+
+	
 	public final class IterableItems implements Iterable<Item> {
 		private final ItemSequence seq;
 		public IterableItems(ItemSequence seq) { this.seq=seq; }

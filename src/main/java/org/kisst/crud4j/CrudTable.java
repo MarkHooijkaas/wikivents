@@ -1,9 +1,9 @@
 package org.kisst.crud4j;
 
-import org.kisst.item4j.seq.Sequence;
+import org.kisst.item4j.seq.TypedSequence;
 import org.kisst.item4j.struct.Struct;
 
-public interface CrudTable<T extends CrudObject> extends Sequence<T> {
+public interface CrudTable<T extends CrudObject> extends TypedSequence<T> {
 	public  CrudSchema<T> getSchema();
 	public  String  getName();
 
@@ -14,7 +14,7 @@ public interface CrudTable<T extends CrudObject> extends Sequence<T> {
 	public void update(T oldValue, T newValue);
 	public void updateFields(T oldValue, Struct newFields);
 	public void delete(T oldValue);
-	public Sequence<T> findAll(); 
+	public TypedSequence<T> findAll(); 
 	
 	public Ref<T> getRef(String key);
 	public String getKey(T obj);
@@ -25,8 +25,8 @@ public interface CrudTable<T extends CrudObject> extends Sequence<T> {
 	}
 
 	public interface UniqueIndex<T extends CrudObject> { public T get(String field); }
-	public interface MultiIndex<T extends CrudObject> { public Sequence<T> get(String field); }
-	public interface OrderedIndex<T extends CrudObject> { public Sequence<T> get(String field);}
+	public interface MultiIndex<T extends CrudObject> { public TypedSequence<T> get(String field); }
+	public interface OrderedIndex<T extends CrudObject> { public TypedSequence<T> get(String field);}
 
 	
 }

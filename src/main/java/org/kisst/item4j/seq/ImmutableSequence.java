@@ -6,7 +6,7 @@ import java.util.RandomAccess;
 
 import org.kisst.item4j.Item;
 
-public abstract class ImmutableSequence<T> implements Sequence<T>, RandomAccess  {
+public abstract class ImmutableSequence<T> implements TypedSequence<T>, RandomAccess  {
 	private final Class<?> elementClass;
 	private ImmutableSequence(Class<?> elementClass) { this.elementClass=elementClass;}
 	public Class<?> getElementClass() { return elementClass; }
@@ -15,7 +15,7 @@ public abstract class ImmutableSequence<T> implements Sequence<T>, RandomAccess 
 	public SubSequence<T> subsequence(int start) { return new SubSequence<T>(this, start, size()); }
 
 	@SuppressWarnings("unchecked")
-	public static <E> ImmutableSequence<E> copyOf(Sequence<? extends E> seq) {
+	public static <E> ImmutableSequence<E> copyOf(TypedSequence<? extends E> seq) {
 		if (seq instanceof ImmutableSequence) 
 			return (ImmutableSequence<E>) seq; // TODO: prevent memory leak if small subrange of huge array
 		E[] arr = createArray(seq.size());

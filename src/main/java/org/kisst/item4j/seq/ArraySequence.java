@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.kisst.item4j.Item;
 
-public class ArraySequence<T> implements Sequence<T> {
+public class ArraySequence<T> implements TypedSequence<T> {
 	public final Class<?> cls;
 	private final T[] array; 
 	public ArraySequence(Class<?> cls, T[] arr) {

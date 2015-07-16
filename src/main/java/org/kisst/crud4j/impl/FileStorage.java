@@ -12,7 +12,7 @@ import org.kisst.item4j.Schema.Field;
 import org.kisst.item4j.json.JsonOutputter;
 import org.kisst.item4j.json.JsonParser;
 import org.kisst.item4j.seq.ArraySequence;
-import org.kisst.item4j.seq.Sequence;
+import org.kisst.item4j.seq.TypedSequence;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.util.FileUtil;
 
@@ -73,7 +73,7 @@ public class FileStorage implements StructStorage {
 	private File getFile(String key) { return new File(dir, key+".rec"); }
 	private File getFile(Struct obj) { return getFile(keyField.getValue(obj));}
 	
-	@Override public Sequence<Struct> findAll() {
+	@Override public TypedSequence<Struct> findAll() {
 		ArrayList<Struct> list=new ArrayList<Struct>();
 		long start= System.currentTimeMillis();
 		System.out.println("loading all records from "+name);
@@ -121,7 +121,7 @@ public class FileStorage implements StructStorage {
 	}
 	private class MyMultiIndex extends Index implements MultiIndex {
 		private MyMultiIndex(Schema.Field ... fields) { super(fields); }
-		@Override public Sequence<Struct> get(String... values) {
+		@Override public TypedSequence<Struct> get(String... values) {
 			// TODO Auto-generated method stub
 			return null;
 		}

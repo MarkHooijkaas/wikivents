@@ -7,7 +7,7 @@ import org.kisst.crud4j.StructStorage;
 import org.kisst.item4j.Schema;
 import org.kisst.item4j.Schema.Field;
 import org.kisst.item4j.seq.ArraySequence;
-import org.kisst.item4j.seq.Sequence;
+import org.kisst.item4j.seq.TypedSequence;
 import org.kisst.item4j.struct.Struct;
 
 import com.mongodb.BasicDBObject;
@@ -47,7 +47,7 @@ public class MongoStorage implements StructStorage {
 	}
 	@Override public void deleteInStorage(Struct oldValue){ collection.remove(new MongoStruct(oldValue).data); } 
 
-	@Override public Sequence<Struct> findAll() {
+	@Override public TypedSequence<Struct> findAll() {
 		ArrayList<Struct> list=new ArrayList<Struct>();
 		DBCursor cursor = collection.find();
 		try {
@@ -80,7 +80,7 @@ public class MongoStorage implements StructStorage {
 		private MyMultiIndex(Schema.Field ... fields) {
 			super(fields);
 		}
-		@Override public Sequence<Struct> get(String ... values) {
+		@Override public TypedSequence<Struct> get(String ... values) {
 			ArrayList<Struct> list = new ArrayList<Struct>();
 			DBCursor cursor = query(values);
 			try {
