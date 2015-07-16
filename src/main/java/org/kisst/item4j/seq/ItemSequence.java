@@ -6,25 +6,6 @@ import org.kisst.item4j.Item;
 import org.kisst.item4j.struct.Struct;
 
 public interface ItemSequence<T> extends Iterable<T>{
-	
-	public final class Wrapper implements ItemSequence<Item> {
-		private final Sequence<?> seq;
-		public Wrapper(Sequence<?>seq) { this.seq=seq; }
-		@Override public Class<?> getElementClass() { return Item.class; }
-		@Override public int size() { return seq.size(); }
-		@Override public Object getObject(int index) { return seq.get(index);}
-		//public Item get(int index) { return Item.asItem(seq.get(index)); }
-		@Override public Iterator<Item> iterator() { return new MyIterator(seq.iterator()); }
-
-		public final class MyIterator implements Iterator<Item>{
-			private final Iterator<?> it;
-			public MyIterator(Iterator<?> it) { this.it=it; }
-			@Override public boolean hasNext() { return it.hasNext();}
-			@Override public Item next() { return  Item.asItem(it.next()); }
-			@Override public void remove() { throw new RuntimeException("remove is not allowed on this list"); }
-		}
-	}
-	
 	public Class<?> getElementClass();
 	public int size();
 
@@ -40,4 +21,12 @@ public interface ItemSequence<T> extends Iterable<T>{
 	default public double getDouble(int index) { return Item.asDouble(getObject(index)); }
 	default public boolean getBoolean(int index) { return Item.asBoolean(getObject(index)); }
 	//default public ItemSequence getSequence(int index);
+
+	public static final class IteratorWrapper implements Iterator<Item>{
+		private final Iterator<?> it;
+		public IteratorWrapper(Iterator<?> it) { this.it=it; }
+		@Override public boolean hasNext() { return it.hasNext();}
+		@Override public Item next() { return  Item.asItem(it.next()); }
+		@Override public void remove() { throw new RuntimeException("remove is not allowed on this list"); }
+	}
 }

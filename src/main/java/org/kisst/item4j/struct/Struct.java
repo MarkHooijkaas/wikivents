@@ -36,7 +36,7 @@ public interface Struct {
 		if (obj==null) return defaultValue;
 		return Item.asStruct(obj);
 	}
-	default public ItemSequence getSequence(String path, ItemSequence defaultValue) {
+	default public ItemSequence<Item> getSequence(String path, ItemSequence<Item> defaultValue) {
 		Object obj= getObject(path,null); 
 		if (obj==null) return defaultValue;
 		return Item.asItemSequence(obj);
@@ -57,7 +57,7 @@ public interface Struct {
 	default public long getLong(String path) { return Item.asLong(getObject(path)); } 
 	default public boolean getBoolean(String path) { return Item.asBoolean(getObject(path)); } 
 	default public Struct getStruct(String path) { return Item.asStruct(getObject(path)); } 
-	default public ItemSequence getItemSequence(String path) { return Item.asItemSequence(getObject(path)); } 
+	default public ItemSequence<Item> getItemSequence(String path) { return Item.asItemSequence(getObject(path)); } 
 
 	public static final Object UNKNOWN_FIELD=new Object();
 	public class UnknownFieldException extends RuntimeException {

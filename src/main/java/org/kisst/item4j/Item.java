@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.kisst.item4j.seq.ItemSequence;
 import org.kisst.item4j.seq.ListItemSequence;
-import org.kisst.item4j.seq.Sequence;
 import org.kisst.item4j.struct.MapStruct;
 import org.kisst.item4j.struct.ReflectStruct;
 import org.kisst.item4j.struct.Struct;
@@ -80,11 +79,11 @@ public interface Item {
 		return Boolean.parseBoolean(asString(obj));
 	}
 	@SuppressWarnings("unchecked")
-	public static ItemSequence asItemSequence(Object obj) {
+	public static ItemSequence<Item> asItemSequence(Object obj) {
 		if (obj==null) return null; 
-		if (obj instanceof ItemSequence) return (ItemSequence) obj;
-		if (obj instanceof Sequence) return new ItemSequence.Wrapper((Sequence<?>)obj);
-		if (obj instanceof List) return new ListItemSequence<Object>((List<Object>)obj);
+		if (obj instanceof ItemSequence) return (ItemSequence<Item>) obj;
+		//if (obj instanceof Sequence) return new ItemSequence.Wrapper((Sequence<?>)obj);
+		if (obj instanceof List) return new ListItemSequence((List<?>)obj);
 		//if (obj instanceof Array) return new ListSequence<Object>((Array<Object>)obj);
 		throw new ClassCastException("Can not make a ItemSequence of type "+obj.getClass()+", "+obj);
 	}
