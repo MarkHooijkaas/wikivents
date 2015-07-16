@@ -13,6 +13,8 @@ public interface ItemSequence extends Sequence<Item>{
 		@Override public int size() { return seq.size(); }
 		@Override public Item get(int index) { return Item.asItem(seq.get(index)); }
 		@Override public Iterator<Item> iterator() { return new IteratorWrapper(seq.iterator()); }
+		@Override public Class<?> getElementClass() { return Item.class;}
+
 	}
 
 	default public Object getObject(int index) { return get(index); }

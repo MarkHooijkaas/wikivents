@@ -30,6 +30,7 @@ public class ArraySequence<T> implements Sequence<T> {
 
 	public int size() { return array.length; }
 	public T get(int index) { return (T) array[index]; }
+	@Override public Class<?> getElementClass() { return cls;}
 
 	@SuppressWarnings("unchecked")
 	private T[] createArray(int length) { return (T[]) new Object[length]; }
