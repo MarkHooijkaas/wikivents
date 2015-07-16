@@ -78,14 +78,14 @@ public interface Item {
 		if (obj instanceof Boolean) return (Boolean) obj;
 		return Boolean.parseBoolean(asString(obj));
 	}
-	@SuppressWarnings("unchecked")
-	public static ItemSequence<Item> asItemSequence(Object obj) {
+	public static ItemSequence asItemSequence(Object obj) {
 		if (obj==null) return null; 
-		if (obj instanceof ItemSequence) return (ItemSequence<Item>) obj;
-		//if (obj instanceof Sequence) return new ItemSequence.Wrapper((Sequence<?>)obj);
+		if (obj instanceof ItemSequence) return (ItemSequence) obj;
 		if (obj instanceof List) return new ListItemSequence((List<?>)obj);
-		//if (obj instanceof Array) return new ListSequence<Object>((Array<Object>)obj);
 		throw new ClassCastException("Can not make a ItemSequence of type "+obj.getClass()+", "+obj);
+	}
+	public static Object asType(Class<?> elementClass, Object obj) {
+		return obj;
 	}
 		
 	public class Wrapper implements Item {
@@ -97,5 +97,4 @@ public interface Item {
 		}
 		public Object asObject() { return obj; }
 	}
-
 }

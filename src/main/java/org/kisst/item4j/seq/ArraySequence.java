@@ -14,12 +14,13 @@ public class ArraySequence<T> implements Sequence<T> {
 		for (int i=0; i<arr.length; i++)
 			this.array[i]=arr[i];
 	}
-	public ArraySequence(Class<?> cls, ItemSequence<Item> seq) {
+	@SuppressWarnings("unchecked")
+	public ArraySequence(Class<?> cls, ItemSequence seq) {
 		this.cls=cls;
 		this.array=createArray(seq.size());
 		int i=0;
-		for (Object obj : seq)
-			this.array[i++]=transformObject(obj);
+		for (Object obj : seq.items())
+			this.array[i++]=(T) Item.asType(getElementClass(), obj);
 	}
 	public ArraySequence(Class<?> cls, List<T> list) {
 		this.cls=cls;
@@ -36,13 +37,7 @@ public class ArraySequence<T> implements Sequence<T> {
 
 	@SuppressWarnings("unchecked")
 	private T[] createArray(int length) { return (T[]) new Object[length]; }
-	@SuppressWarnings("unchecked")
-	private T transformObject(Object obj) {
-		// TODO 
-		// if instanceof T
-		// if instanceof Struct
-		return (T) obj;
-	}
+
 	
 	private class MyIterator implements Iterator<T> {
 		private int index=0;

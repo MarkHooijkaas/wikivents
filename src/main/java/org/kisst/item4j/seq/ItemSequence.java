@@ -5,11 +5,12 @@ import java.util.Iterator;
 import org.kisst.item4j.Item;
 import org.kisst.item4j.struct.Struct;
 
-public interface ItemSequence<T> extends Iterable<T>{
+public interface ItemSequence {
 	public Class<?> getElementClass();
 	public int size();
 
 	public Object getObject(int index); // { return get(index); }
+	default public Iterable<Item> items() { return new IterableItems(this); }
 	default public Item getItem(int index) { return Item.asItem(getObject(index)); }
 	default public Struct getStruct(int index) { return Item.asStruct(getObject(index)); }
 	default public String getString(int index) { return Item.asString(getObject(index)); }
@@ -22,11 +23,15 @@ public interface ItemSequence<T> extends Iterable<T>{
 	default public boolean getBoolean(int index) { return Item.asBoolean(getObject(index)); }
 	//default public ItemSequence getSequence(int index);
 
-	public static final class IteratorWrapper implements Iterator<Item>{
-		private final Iterator<?> it;
-		public IteratorWrapper(Iterator<?> it) { this.it=it; }
-		@Override public boolean hasNext() { return it.hasNext();}
-		@Override public Item next() { return  Item.asItem(it.next()); }
-		@Override public void remove() { throw new RuntimeException("remove is not allowed on this list"); }
+	public final class IterableItems implements Iterable<Item> {
+		private final ItemSequence seq;
+		public IterableItems(ItemSequence seq) { this.seq=seq; }
+		@Override public Iterator<Item> iterator() { return new MyIterator();}
+		public final class MyIterator implements Iterator<Item>{
+			private int index=0;
+			@Override public boolean hasNext() { return index<seq.size();}
+			@Override public Item next() { return seq.getItem(index++); }
+			@Override public void remove() { throw new RuntimeException("remove is not allowed on this list"); }
+		}
 	}
 }

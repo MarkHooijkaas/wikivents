@@ -26,13 +26,13 @@ public abstract class ImmutableSequence<T> implements Sequence<T>, RandomAccess 
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <E> ImmutableSequence<E> copyOf(ItemSequence<Item> seq) {
+	public static <E> ImmutableSequence<E> copyOf(ItemSequence seq) {
 		if (seq instanceof ImmutableSequence) 
 			return (ImmutableSequence<E>) seq; // TODO: prevent memory leak if small subrange of huge array
 		E[] arr = createArray(seq.size());
 		int i=0;
-		for (Object obj : seq)
-			arr[i++]= transformObject(obj);
+		for (Item item : seq.items())
+			arr[i++]= (E) Item.asType(seq.getElementClass(), item); 
 		return new ArraySequence<E>(seq.getElementClass(), arr);
 	}
 
@@ -51,13 +51,6 @@ public abstract class ImmutableSequence<T> implements Sequence<T>, RandomAccess 
 
 	@SuppressWarnings("unchecked")
 	private static <E> E[] createArray(int length) { return (E[]) new Object[length]; }
-	@SuppressWarnings("unchecked")
-	private static<E> E transformObject(Object obj) {
-		// TODO 
-		// if instanceof T
-		// if instanceof Struct
-		return (E) obj;
-	}
 
 
 
