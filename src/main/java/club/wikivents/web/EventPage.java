@@ -20,6 +20,7 @@ public class EventPage extends WikiventsPage {
 		//edit=createTemplate("event.edit");
 		form = new GenericForm(site)
 				.addField(Event.schema.title, "Titel")
+				.addDateField(Event.schema.date, "Datum")
 				.addField(Event.schema.min, "Minimum aantal deelnemers")
 				.addField(Event.schema.max, "Maximum aantal deelnemers")
 				.addField(Event.schema.location, "Plaats")

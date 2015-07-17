@@ -5,7 +5,7 @@ package club.wikivents.web;
 import java.io.File;
 
 import org.kisst.http4j.HttpPageMap;
-import org.kisst.http4j.ResourcePage;
+import org.kisst.http4j.ResourceHandler;
 import org.kisst.http4j.handlebar.HttpHandlebarSite;
 import org.kisst.item4j.struct.Struct;
 
@@ -34,12 +34,13 @@ public class WikiventsSite extends HttpHandlebarSite {
 			throw new RuntimeException("Unknown storage type "+storage);
 
 		pages=new HttpPageMap("",new TemplatePage(this, "404"))
-		.addPage("", new TemplatePage(this, "home"))
+		.addHandler("", new TemplatePage(this, "home"))
 		.addPage(new TemplatePage(this, "users"))
 		.addPage(new TemplatePage(this, "user/*"))
 		.addPage(new TemplatePage(this, "events"))
 		.addPage(new EventPage(this))
 		.addPage(new LoginPage(this))
-		.addPage("/favicon.ico", new ResourcePage());
+		.addHandler("resources/*", new ResourceHandler(new ResourceHandler.FileResourceFinder(new File("src/resources"))))
+		.addHandler("/favicon.ico", new ResourceHandler(new ResourceHandler.FileResourceFinder(new File("src/resources/favicon.ico"))));
 	}
 }

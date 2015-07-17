@@ -80,9 +80,10 @@ public class HttpServer extends AbstractHandler {
 				logger.error("Error when handling "+path, e);
 			}
         }
-        finally {
-        	try { response.getWriter().close();} 
-        	catch (IOException e) { throw new RuntimeException(e); }
-        }
+		finally {
+			try { response.flushBuffer();} 
+			catch (IOException e) { throw new RuntimeException(e); }
+		}
+
 	}
 }

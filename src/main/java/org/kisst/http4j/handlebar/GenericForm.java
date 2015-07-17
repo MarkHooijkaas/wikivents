@@ -5,10 +5,13 @@ import java.util.LinkedHashMap;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.kisst.crud4j.CrudSchema;
 import org.kisst.http4j.handlebar.HttpHandlebarSite.CompiledTemplate;
 import org.kisst.http4j.handlebar.HttpHandlebarSite.TemplateData;
 import org.kisst.item4j.Schema;
 import org.kisst.item4j.struct.Struct;
+
+import club.wikivents.model.Event;
 
 public class GenericForm {
 	private final HttpHandlebarSite site;
@@ -49,6 +52,10 @@ public class GenericForm {
 		fields.put(field.getName(), new TextAreaField(field,label, rows));
 		return this;
 	}
+	public GenericForm addDateField(CrudSchema<Event>.DateField field, String label) {
+		fields.put(field.getName(), new DateField(field,label));
+		return this;
+	}
 
 	
 	
@@ -83,5 +90,8 @@ public class GenericForm {
 			super(field,label);
 			this.rows=rows;
 		}
+	}
+	public class DateField extends Field {
+		public DateField(Schema.Field field, String label) { super(field,label);}
 	}
 }

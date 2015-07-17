@@ -6,8 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class HttpPageMap implements HttpPage {
-	private final LinkedHashMap<String, HttpPage> equals=new LinkedHashMap<String, HttpPage>();
-	private final LinkedHashMap<String, HttpPage> startsWith=new LinkedHashMap<String, HttpPage>();
+	private final LinkedHashMap<String, HttpHandler> equals=new LinkedHashMap<String, HttpHandler>();
+	private final LinkedHashMap<String, HttpHandler> startsWith=new LinkedHashMap<String, HttpHandler>();
 
 	private final HttpPage defaultPage;
 	private final String path;
@@ -17,8 +17,8 @@ public class HttpPageMap implements HttpPage {
 	}
 	
 	//public HttpPageMap setDefaultPage(HttpPage defaultPage) { this.defaultPage=defaultPage;  return this; }
-	public HttpPageMap addPage(HttpPage page) { return addPage(page.getPath(), page); }
-	public HttpPageMap addPage(String path, HttpPage servlet) {
+	public HttpPageMap addPage(HttpPage page) { return addHandler(page.getPath(), page); }
+	public HttpPageMap addHandler(String path, HttpHandler servlet) {
 		while (path.startsWith("/"))
 			path=path.substring(1);
 		if (path.endsWith("*")) {
@@ -38,7 +38,7 @@ public class HttpPageMap implements HttpPage {
 		while (path.startsWith("/"))
 			path=path.substring(1);
 		//System.out.println("Searching for {"+path+"}");
-		HttpPage page = equals.get(path);
+		HttpHandler page = equals.get(path);
 		String subPath="";
 		if (page==null) {
 			for (String prefix : startsWith.keySet()) {

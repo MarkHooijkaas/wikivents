@@ -1,0 +1,17 @@
+<div class="input-group date">
+    <label for="{{name}}">{{label}}</label>
+    <input class="form-control" type="text" id="mydatepicker" name="{{name}}" 
+    	data-date="{{value}}" 
+    	data-date-format="dd-mm-yyyy"   
+    >
+</div>
+
+
+
+
+<script >
+$(document).ready(function(){
+	$('#mydatepicker').datepicker()
+});
+
+</script>
