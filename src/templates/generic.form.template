@@ -1,6 +1,6 @@
 {{> header}}
 
-<form role="form">
+<form role="form" method="POST">
 
 {{&fields}}
   

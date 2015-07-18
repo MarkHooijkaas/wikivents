@@ -1,8 +1,11 @@
 package org.kisst.item4j;
 
 import java.lang.reflect.Constructor;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -83,11 +86,25 @@ public interface Item {
 		if (obj instanceof Boolean) return (Boolean) obj;
 		return Boolean.parseBoolean(asString(obj));
 	}
-	@SuppressWarnings("deprecation")
-	public static Date asDate(Object obj) { 
+	public static LocalDate asLocalDate(Object obj) { 
 		if (obj==null) return null; 
-		if (obj instanceof Date) return (Date) obj;
-		return new Date(asString(obj));
+		if (obj instanceof LocalDate) return (LocalDate) obj;
+		return LocalDate.parse(asString(obj));
+	}
+	public static LocalTime asLocalTime(Object obj) { 
+		if (obj==null) return null; 
+		if (obj instanceof LocalTime) return (LocalTime) obj;
+		return LocalTime.parse(asString(obj));
+	}
+	public static LocalDateTime asLocalDateTime(Object obj) { 
+		if (obj==null) return null; 
+		if (obj instanceof LocalDateTime) return (LocalDateTime) obj;
+		return LocalDateTime.parse(asString(obj));
+	}
+	public static Instant asInstant(Object obj) { 
+		if (obj==null) return null; 
+		if (obj instanceof Instant) return (Instant) obj;
+		return Instant.parse(asString(obj));
 	}
 
 	public static Immutable.ItemSequence asItemSequence(Object obj) {

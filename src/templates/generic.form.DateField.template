@@ -2,7 +2,7 @@
     <label for="{{name}}">{{label}}</label>
     <input class="form-control" type="text" id="mydatepicker" name="{{name}}" 
     	data-date="{{value}}" 
-    	data-date-format="dd-mm-yyyy"   
+    	data-date-format="yyyy-mm-dd"   
     >
 </div>
 

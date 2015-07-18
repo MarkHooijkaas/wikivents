@@ -34,7 +34,7 @@ public class ResourceHandler implements HttpHandler {
 		try {
 			response.reset();
 			Resource resource=finder.findResource(subPath);
-			System.out.println("found "+subPath+"==> "+resource.getContentLength()+" bytes");
+			//System.out.println("found "+subPath+"==> "+resource.getContentLength()+" bytes");
 			
 			//if (resource == null) {
 			//	response.sendError(HttpServletResponse.SC_NOT_FOUND);

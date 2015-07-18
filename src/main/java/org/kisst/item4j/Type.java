@@ -1,6 +1,9 @@
 package org.kisst.item4j;
 
-import java.util.Date;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public interface Type<T> {
 	public Class<T> getJavaClass();
@@ -31,17 +34,31 @@ public interface Type<T> {
 		@Override default public Class<Long> getJavaClass() { return Long.class; }
 		@Override default public Long parseString(String str) { return Long.parseLong(str);}
 	}
-	public interface JavaDate extends Type<Date>{
-		@Override default public Class<Date> getJavaClass() { return Date.class; }
-		@SuppressWarnings("deprecation")
-		@Override default public Date parseString(String str) { return new Date(Date.parse(str));}
+	public interface JavaLocalDate extends Type<LocalDate>{
+		@Override default public Class<LocalDate> getJavaClass() { return LocalDate.class; }
+		@Override default public LocalDate parseString(String str) { return LocalDate.parse(str);}
+	}
+	public interface JavaLocalTime extends Type<LocalTime>{
+		@Override default public Class<LocalTime> getJavaClass() { return LocalTime.class; }
+		@Override default public LocalTime parseString(String str) { return LocalTime.parse(str);}
+	}
+	public interface JavaLocalDateTime extends Type<LocalDateTime>{
+		@Override default public Class<LocalDateTime> getJavaClass() { return LocalDateTime.class; }
+		@Override default public LocalDateTime parseString(String str) { return LocalDateTime.parse(str);}
+	}
+	public interface JavaInstant extends Type<Instant>{
+		@Override default public Class<Instant> getJavaClass() { return Instant.class; }
+		@Override default public Instant parseString(String str) { return Instant.parse(str);}
 	}
 
 	public static final JavaString javaString=new JavaString(){};
 	public static final JavaBoolean javaBoolean=new JavaBoolean(){};
 	public static final JavaInteger javaInteger=new JavaInteger(){};
 	public static final JavaLong javaLong=new JavaLong(){};
-	public static final JavaDate javaDate=new JavaDate(){};
+	public static final JavaLocalDate javaLocalDate=new JavaLocalDate(){};
+	public static final JavaLocalTime javaLocalTime =new JavaLocalTime(){};
+	public static final JavaLocalDateTime javaLocalDateTime =new JavaLocalDateTime(){};
+	public static final JavaInstant javaInstant =new JavaInstant(){};
 
 	public class OfClass<T> implements Type<T> {
 		private final Class<T> cls;

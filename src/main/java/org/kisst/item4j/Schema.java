@@ -1,7 +1,10 @@
 package org.kisst.item4j;
 
 import java.lang.reflect.Constructor;
-import java.util.Date;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.LinkedHashMap;
 
 import org.kisst.item4j.json.JsonParser;
@@ -129,9 +132,24 @@ public class Schema<T> implements Type<T> {
 		public LongField(Builder builder) { super(builder); }
 		public long getLong(Struct s) { return s.getLong(getName()); }
 	}
-	public class DateField extends Field { // implements Schema.DateField {
-		public DateField(String name) { super(Type.javaDate, name); }
-		public DateField(Builder builder) { super(builder); }
-		public Date getDate(Struct s) { return s.getDate(getName()); }
+	public class LocalDateField extends Field { // implements Schema.DateField {
+		public LocalDateField(String name) { super(Type.javaLocalDate, name); }
+		public LocalDateField(Builder builder) { super(builder); }
+		public LocalDate getLocalDate(Struct s) { return s.getLocalDate(getName()); }
+	}
+	public class LocalTimeField extends Field { // implements Schema.DateField {
+		public LocalTimeField(String name) { super(Type.javaLocalTime, name); }
+		public LocalTimeField(Builder builder) { super(builder); }
+		public LocalTime getLocalTime(Struct s) { return s.getLocalTime(getName()); }
+	}
+	public class LocalDateTimeField extends Field { // implements Schema.DateField {
+		public LocalDateTimeField(String name) { super(Type.javaLocalDateTime, name); }
+		public LocalDateTimeField(Builder builder) { super(builder); }
+		public LocalDateTime getLocalDateTime(Struct s) { return s.getLocalDateTime(getName()); }
+	}
+	public class InstantField extends Field { // implements Schema.DateField {
+		public InstantField(String name) { super(Type.javaLocalDate, name); }
+		public InstantField(Builder builder) { super(builder); }
+		public Instant getInstant(Struct s) { return s.getInstant(getName()); }
 	}
 }

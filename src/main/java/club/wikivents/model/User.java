@@ -40,7 +40,8 @@ public class User extends CrudObject {
 	public static class Table extends CrudTable<User> {
 		public class Ref extends CrudTable<User>.Ref { public Ref(String id) { super(id); } }
 		@Override public Ref createRef(String _id) { return new Ref(_id); }
-		public Table(StructStorage storage) { super(User.schema, storage);}
+		
+		public Table(StructStorage storage, WikiventsModel model) { super(User.schema, model, storage);}
 		@Override public User createObject(Struct props) { return new User(props); }
 	}
 }

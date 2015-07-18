@@ -28,19 +28,23 @@ public abstract class WikiventsPage extends HttpHandlebarPage {
 	
 	public User getUser(HttpServletRequest request) {
 		String id = getUserId(request);
-		//System.out.println("searching user:"+id);
+		//System.out.println("searching user: "+id);
 		if (id==null)
 			return null;
 		User user = model.users.read(id);
-		System.out.println("recognized user"+user);
+		//System.out.println("recognized user: "+user);
 		return user;
 	}
-	public User ensureUser(HttpServletRequest req, HttpServletResponse resp,String usernameOrId) {
+	public User ensureUser(HttpServletRequest req, HttpServletResponse resp) {
 		User u=getUser(req);
 		if (u==null) {
 			sendUnauthorizedError(resp);
 			throw new RuntimeException("Not Authenticated");
 		}
+		return u;
+	}
+	public User ensureUser(HttpServletRequest req, HttpServletResponse resp,String usernameOrId) {
+		User u=ensureUser(req,resp);
 		if (u.username.equals(usernameOrId))
 			return u;
 		if (u._id.equals(usernameOrId))

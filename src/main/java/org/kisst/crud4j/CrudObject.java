@@ -19,6 +19,7 @@ public class CrudObject implements Struct {
 	}
 	protected String uniqueKey() { return new ObjectId().toHexString();}
 
+	@Override public String toString() { return toShortString(); }
 	@Override public Iterable<String> fieldNames() { return schema.fieldNames(); }
 	@Override public Object getDirectFieldValue(String name) { return ReflectionUtil.getFieldValue(this, name); }
 }

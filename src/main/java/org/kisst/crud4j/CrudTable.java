@@ -1,30 +1,40 @@
 package org.kisst.crud4j;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.kisst.item4j.seq.ArraySequence;
+import org.kisst.item4j.Immutable;
+import org.kisst.item4j.Item;
 import org.kisst.item4j.seq.TypedSequence;
 import org.kisst.item4j.struct.MultiStruct;
 import org.kisst.item4j.struct.Struct;
 
 public abstract class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 	protected final CrudSchema<T> schema;
+	protected final Item.Factory factory;
 	private final String name;
 	private final StructStorage storage;
 	private final ConcurrentHashMap<String,T> cache;
 
 	private boolean alwaysCheckId=true;
-	public CrudTable(CrudSchema<T> schema, StructStorage storage) { this(schema,storage,true); } 
-	public CrudTable(CrudSchema<T> schema, StructStorage storage, boolean useCache) { 
+	public CrudTable(CrudSchema<T> schema, Item.Factory factory, StructStorage storage) { this(schema,factory,storage,true); } 
+	public CrudTable(CrudSchema<T> schema, Item.Factory factory, StructStorage storage, boolean useCache) { 
 		this.schema=schema;
+		this.factory=factory;
 		this.storage=storage;
 		this.name=schema.cls.getSimpleName();
 		if (useCache)
 			cache=new ConcurrentHashMap<String,T>();
 		else
 			cache=null;
+		if (cache!=null) {
+			TypedSequence<Struct> seq = storage.findAll();
+			for (Struct rec:seq) {
+				T obj =createObject(rec);
+				System.out.println("caching "+obj);
+				cache.put(obj._id, obj);
+			}
+		}
 	}
 	public CrudSchema<T> getSchema() { return schema; }
 	public String getName() { return name; }
@@ -88,16 +98,10 @@ public abstract class CrudTable<T extends CrudObject> implements TypedSequence<T
 				throw new IllegalArgumentException("Trying to update object with id "+oldId+" with object with id "+newId);
 		}
 	}
-	private TypedSequence<T> all=null;
 	public TypedSequence<T> findAll() {
-		if (all!=null)
-			return all;
-		TypedSequence<Struct> seq = storage.findAll();
-		ArrayList<T> list=new ArrayList<T>(seq.size());
-		for (Struct rec:seq)
-			list.add(createObject(rec));
-		all=new ArraySequence<T>(schema.cls, list);
-		return all;
+		if (cache!=null)  
+			return Immutable.Sequence.smartCopy(schema.getJavaClass(),cache.values());
+		return Immutable.Sequence.realCopy(schema.getJavaClass(),storage.findAll());
 	}
 
 

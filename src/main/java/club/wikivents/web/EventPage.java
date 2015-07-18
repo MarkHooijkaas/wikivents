@@ -5,9 +5,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.kisst.http4j.HttpRequestStruct;
 import org.kisst.http4j.handlebar.GenericForm;
+import org.kisst.item4j.struct.HashStruct;
 import org.kisst.item4j.struct.Struct;
 
 import club.wikivents.model.Event;
+import club.wikivents.model.User;
 
 public class EventPage extends WikiventsPage {
 	private final Template show;
@@ -44,13 +46,12 @@ public class EventPage extends WikiventsPage {
 		}
 	}
 	@Override public void handlePost(String path, HttpServletRequest request, HttpServletResponse response) {
-		//Data data = new Data()
-		//		.add("user", getUser(request))
-		//		.add("model", model);
 		Struct input=new HttpRequestStruct(request);
-		//Data data = createTemplateData(request);
 		if (path==null || path.equals("") || path.equals("new")) {
-			Event event=new Event(model,input);
+			User u = ensureUser(request,response);
+			HashStruct data = new HashStruct(input);
+			data.put(Event.schema.organizer.getName(),u._id);
+			Event event=new Event(model,data);
 			model.events.create(event);
 			redirect(response,"event/"+event._id);
 		}

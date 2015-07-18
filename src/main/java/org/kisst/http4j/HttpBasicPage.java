@@ -14,6 +14,8 @@ public abstract class HttpBasicPage implements HttpPage {
 			handleGet(path, request,response);
 		else if ("POST".equals(method))
 			handlePost(path, request,response);
+		else
+			throw new RuntimeException("Unknown method type "+method);
 	}
 
 	public void handleGet(String path, HttpServletRequest request, HttpServletResponse response) {}
