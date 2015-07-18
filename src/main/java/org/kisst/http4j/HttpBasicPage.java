@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 public abstract class HttpBasicPage implements HttpPage {
 	@Override public void handle(String path, HttpServletRequest request, HttpServletResponse response) {
 		String method = request.getMethod();
-		System.out.println("handling "+method+" "+request.getRequestURI());
-		System.out.println("handling "+method+" "+path);
+		//System.out.println("handling "+method+" "+request.getRequestURI());
+		//System.out.println("handling "+method+" "+path);
 		if ("GET".equals(method))
 			handleGet(path, request,response);
 		else if ("POST".equals(method))

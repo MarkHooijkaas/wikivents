@@ -1,42 +1,33 @@
 {{> header}}
 
-<form role="form">
-  <div class="form-group">
-    <label for="pwd">Titel</label>
-    <input type="text" class="form-control" id="title">
-  </div>
-  <div class="form-group">
-    <label for="email">Plaats</label>
-    <input type="text" class="form-control" id="city">
-  </div>
-  <div class="form-group">
-    <label for="pwd">Omschrijving:</label>
-      <textarea class="form-control" rows="5" id="description"></textarea>
-  </div>
+<h1>{{event.title}}</h1>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Veld</th>
+        <th>waarde</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Datum</td>
+        <td>{{event.date}}</td>
+      </tr>
+      <tr>
+        <td>Minimum aantal deelnemers</td>
+        <td>{{event.min}}</td>
+      </tr>
+      <tr>
+        <td>Maximum aantal deelnemers</td>
+        <td>{{event.max}}</td>
+      </tr>
+      <tr>
+        <td>Plaats</td>
+        <td>{{event.location}}</td>
+      </tr>
+    </tbody>
+  </table>
   
-  <div class="container">
-    <div class="row">
-        <div class='col-sm-6'>
-            <div class="form-group">
-                <div class='input-group date' id='date'>
-                    <input type='text' class="form-control" />
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
-            </div>
-        </div>
-        <script type="text/javascript">
-            $(function () {
-                $('#datetimepicker1').datetimepicker();
-            });
-        </script>
-    </div>
-</div>
+  <div>{{event.description}}</div>
   
-  
-  <button type="submit" class="btn btn-default">Submit</button>
-</form>
-
-
 {{> footer}}
