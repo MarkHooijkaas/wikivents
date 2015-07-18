@@ -1,0 +1,19 @@
+{{>header}}
+
+<form role="form" method="GET" action="/{{page.name}}/edit/{{record._id}}">
+  <button type="submit" class="btn btn-default">Wijzig</button>
+</form>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Veld</th>
+        <th>Waarde</th>
+      </tr>
+    </thead>
+    <tbody>
+{{{fields}}}  
+    </tbody>
+  </table>
+  
+{{>footer}}

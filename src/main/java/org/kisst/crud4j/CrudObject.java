@@ -4,7 +4,7 @@ import org.bson.types.ObjectId;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.util.ReflectionUtil;
 
-public class CrudObject implements Struct {
+public abstract class CrudObject implements Struct {
 	public final CrudSchema<?> schema;
 	public final String _id;
 	public CrudObject(CrudSchema<?> schema, Struct data) { 
@@ -18,6 +18,7 @@ public class CrudObject implements Struct {
 		return key;
 	}
 	protected String uniqueKey() { return new ObjectId().toHexString();}
+	abstract public boolean mayBeChangedBy(String userId);
 
 	@Override public String toString() { return toShortString(); }
 	@Override public Iterable<String> fieldNames() { return schema.fieldNames(); }

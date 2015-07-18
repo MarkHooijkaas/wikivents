@@ -13,7 +13,7 @@ public class TemplatePage extends WikiventsPage {
 		String templateName=url;
 		if (templateName.endsWith("/*"))
 			templateName= templateName.substring(0, templateName.length()-2);
-		this.template = createTemplate(templateName);
+		this.template = createTemplate("wikivents/"+templateName);
 	}
 	@Override public String getPath() { return url; }
 	@Override public void handle(String path, HttpServletRequest request, HttpServletResponse response) {

@@ -15,21 +15,32 @@ public class GenericForm {
 	private final HttpHandlebarSite.CompiledTemplate template;
 	private final LinkedHashMap<String, Field> fields = new LinkedHashMap<String,Field>();
 
-	public GenericForm(HttpHandlebarSite site) { this(site,"generic.form"); }
+	public GenericForm(HttpHandlebarSite site) { this(site,"generic/form"); }
 	public GenericForm(HttpHandlebarSite site, String templateName) {
 		this.site=site;
 		this.template=this.site.compileTemplate(templateName);
 	}
 	public Iterator<Field> fields() { return fields.values().iterator(); }
-	public String render(Struct data) { 
+	public String renderEdit(Struct data) { 
 		//System.out.println("Rendering "+data);
 		StringBuilder result = new StringBuilder();
 		for (Field f: fields.values())
-			result.append(f.render(data));
+			result.append(f.renderEdit(data));
 		return result.toString(); 
 	}
-	public void output(TemplateData context, Struct data, HttpServletResponse response) {
-		context.add("fields", render(data));
+	public String renderShow(Struct data) { 
+		//System.out.println("Rendering "+data);
+		StringBuilder result = new StringBuilder();
+		for (Field f: fields.values())
+			result.append(f.renderShow(data));
+		return result.toString(); 
+	}
+	public void outputEdit(TemplateData context, Struct data, HttpServletResponse response) {
+		context.add("fields", renderEdit(data));
+		template.output(context, response); 
+	}
+	public void outputShow(TemplateData context, Struct data, HttpServletResponse response) {
+		context.add("fields", renderShow(data));
 		template.output(context, response); 
 	}
 
@@ -58,7 +69,8 @@ public class GenericForm {
 	
 	
 	public class Field {
-		private final CompiledTemplate template;
+		private final CompiledTemplate templateEdit;
+		//private final CompiledTemplate templateShow;
 		public final Schema<?>.Field field;
 		public final String label;
 		public final String name;
@@ -66,14 +78,19 @@ public class GenericForm {
 			this.field=field;
 			this.name=field.getName();
 			this.label=label;
-			this.template= site.compileTemplate("generic.form."+getClass().getSimpleName() );
+			this.templateEdit= site.compileTemplate("generic/form."+getClass().getSimpleName() );
+			//this.templateShow= site.compileTemplate("generic/show."+getClass().getSimpleName() );
 		}
-		public String render(Struct data) {
+		public String renderEdit(Struct data) {
 			TemplateData context = new TemplateData(this);
 			String value = field.getString(data);
 			context.add("value", value);
 			System.out.println("Rendering field "+name+" to "+value);
-			return template.toString(context);
+			return templateEdit.toString(context);
+		}
+		public String renderShow(Struct data) {
+			String value = field.getString(data);
+			return "<tr><td>"+label+"</td><td>"+value+"</td></tr>";
 		}
 	}
 	public class TextField extends Field {

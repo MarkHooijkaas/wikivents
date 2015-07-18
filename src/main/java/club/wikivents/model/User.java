@@ -19,6 +19,7 @@ public class User extends CrudObject {
 		this.password=schema.password.getString(s);
 		
 	}
+	@Override public boolean mayBeChangedBy(String userId) { return userId.endsWith(_id); }
 
 	public static final Schema schema=new Schema();
 	public static class Schema extends CrudSchema<User> {

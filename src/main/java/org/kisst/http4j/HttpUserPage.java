@@ -64,11 +64,14 @@ public abstract class HttpUserPage extends HttpBasicPage {
 		String signature=Base64.encodeBytes(bytes); // TODO: better signature
 		return Base64.encodeBytes((userid+":"+time+":"+signature).getBytes());
 	}
-	
-	public String ensureUserId(HttpServletRequest req, HttpServletResponse resp,String userId) {
+	public String ensureUserId(HttpServletRequest req, HttpServletResponse resp) {
 		String id=getUserId(req);
 		if (id==null)
-			throw new HttpServer.UnauthorizedException("Not Authorized expected "+userId+" but got "+id);
+			throw new HttpServer.UnauthorizedException("Not Autheticated user");
+		return id;
+	}
+	public String ensureUserId(HttpServletRequest req, HttpServletResponse resp,String userId) {
+		String id=ensureUserId(req,resp);
 		if (id.equals(userId))
 			return id;
 		throw new HttpServer.UnauthorizedException("Not Authorized expected "+userId+" but got "+id);

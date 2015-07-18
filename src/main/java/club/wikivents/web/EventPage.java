@@ -19,7 +19,7 @@ public class EventPage extends WikiventsPage {
 			
 	public EventPage(WikiventsSite site) {
 		super(site);
-		show=createTemplate("event.show");
+		show=createTemplate("wikivents/event.show");
 		//edit=createTemplate("event.edit");
 		form = new GenericForm(site)
 				.addField(Event.schema.title, "Titel")
@@ -37,7 +37,7 @@ public class EventPage extends WikiventsPage {
 		Struct input=new HttpRequestStruct(request);
 		if (path==null || path.equals("") || path.equals("new")) {
 			// GET a form to create new Event
-			form.output(data, input, response);
+			form.outputEdit(data, input, response);
 		}
 		if ( path.startsWith("edit/")) {
 			path=path.substring(5);
@@ -45,7 +45,7 @@ public class EventPage extends WikiventsPage {
 			ensureUser(request,response,event.organizer._id);
 			//System.out.println("Editing "+event);
 			data.add("event", event);
-			form.output(data, event, response);
+			form.outputEdit(data, event, response);
 		}
 		else {
 			// GET the data for a existing Event

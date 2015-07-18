@@ -10,7 +10,7 @@
     <tbody>
 {{#each model.users}}  
       <tr>
-        <td>{{username}}</td>
+        <td><a href="/user/{{_id}}">{{username}}</a></td>
         <td>{{email}}</td>
       </tr>
 {{/each}}

@@ -36,9 +36,11 @@ public class WikiventsSite extends HttpHandlebarSite {
 		pages=new HttpPageMap("",new TemplatePage(this, "404"))
 		.addHandler("", new TemplatePage(this, "home"))
 		.addPage(new TemplatePage(this, "users"))
-		.addPage(new TemplatePage(this, "user/*"))
+		//.addPage(new TemplatePage(this, "user/*"))
 		.addPage(new TemplatePage(this, "events"))
-		.addPage(new EventPage(this))
+		.addPage(new UserCrudPage(this))
+		.addPage(new EventCrudPage(this))
+		//.addPage(new EventPage(this))
 		.addPage(new LoginPage(this))
 		.addHandler("resources/*", new ResourceHandler(new ResourceHandler.FileResourceFinder(new File("src/resources"))))
 		.addHandler("/favicon.ico", new ResourceHandler(new ResourceHandler.FileResourceFinder(new File("src/resources/favicon.ico"))));

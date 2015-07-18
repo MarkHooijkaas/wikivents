@@ -39,7 +39,7 @@ public abstract class WikiventsPage extends HttpHandlebarPage {
 	public User ensureUser(HttpServletRequest req, HttpServletResponse resp) {
 		User u=getUser(req);
 		if (u==null)
-			throw new HttpServer.HttpException(HttpServletResponse.SC_UNAUTHORIZED, "Not Authorized");
+			throw new HttpServer.UnauthorizedException("Not Authorized");
 		return u;
 	}
 	public User ensureUser(HttpServletRequest req, HttpServletResponse resp,String usernameOrId) {
