@@ -23,6 +23,8 @@ public class User extends CrudObject {
 	public static final Schema schema=new Schema();
 	public static class Schema extends CrudSchema<User> {
 		public Schema() { super(User.class); addAllFields();}
+		public IdField getKeyField() { return _id; }
+		public final IdField _id = new IdField();
 		public final StringField username = new StringField("username"); 
 		public final StringField email    = new StringField("email"); 
 		public final StringField password = new StringField("password"); 

@@ -36,6 +36,7 @@ public class Schema<T> implements Type<T> {
 		try {
 			for (java.lang.reflect.Field f : cls.getDeclaredFields()) {
 				if (Field.class.isAssignableFrom(f.getType())) {
+					//System.out.println("adding "+f);
 					fields.put(f.getName(), (Field) f.get(this));
 				}
 			}

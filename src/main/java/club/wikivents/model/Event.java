@@ -10,7 +10,7 @@ import org.kisst.item4j.Immutable;
 import org.kisst.item4j.struct.Struct;
 
 public class Event extends CrudObject {
-	public static class Guest extends CrudObject {
+	public static class Guest {
 		public final CrudTable<User>.Ref user;
 		public final Date date;
 		public static final Schema schema=new Schema();
@@ -20,13 +20,11 @@ public class Event extends CrudObject {
 			public final DateField date = new DateField("date"); 
 		}
 		public Guest(WikiventsModel model, Struct props) {
-			super(schema, props);
 			this.user=schema.user.getRef(model.users,props);
 			this.date=schema.date.getDate(props);
 		}
 
 	}
-	
 	public final String title;
 	public final String location;
 	public final String description;
@@ -51,6 +49,8 @@ public class Event extends CrudObject {
 	public static final Schema schema=new Schema();
 	public static class Schema extends CrudSchema<Event> {
 		public Schema() { super(Event.class); addAllFields(); }
+		public IdField getKeyField() { return _id; }
+		public final IdField _id = new IdField();
 		public final StringField title = new StringField("title"); 
 		public final RefField<User> organizer = new RefField<User>("organizer");
 		public final IntField min = new IntField("min"); 
