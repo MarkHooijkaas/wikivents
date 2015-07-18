@@ -71,11 +71,11 @@ public interface Struct {
 		for (String name: fieldNames()) {
 			Object value=this.getDirectFieldValue(name);
 			result.append(name+":");
-			if (value instanceof BaseStruct) {
+			if (value instanceof Struct) {
 				if (indent==null)
-					result.append(((BaseStruct)value).toString(levels-1, indent+"\t"));
+					result.append(((Struct)value).toString(levels-1, indent+"\t"));
 				else
-					result.append(((BaseStruct)value).toString(levels-1, null));
+					result.append(((Struct)value).toString(levels-1, null));
 			}
 			else
 				result.append(""+value);

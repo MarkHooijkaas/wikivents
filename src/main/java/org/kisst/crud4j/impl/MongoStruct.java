@@ -1,12 +1,11 @@
 package org.kisst.crud4j.impl;
 
-import org.kisst.item4j.struct.BaseStruct;
 import org.kisst.item4j.struct.Struct;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
-public class MongoStruct extends BaseStruct {
+public class MongoStruct implements Struct {
 	public final DBObject data;
 	public MongoStruct(DBObject data) { this.data=data; }
 	public MongoStruct(Struct strc) { 

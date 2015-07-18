@@ -7,6 +7,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.kisst.crud4j.CrudSchema;
 import org.kisst.crud4j.StructStorage;
+import org.kisst.item4j.Schema;
 import org.kisst.item4j.json.JsonOutputter;
 import org.kisst.item4j.json.JsonParser;
 import org.kisst.item4j.seq.ArraySequence;
@@ -90,12 +91,12 @@ public class FileStorage implements StructStorage {
 		return new ArraySequence<Struct>(Struct.class,list);
 	}
 	
-	@Override public UniqueIndex useUniqueIndex(CrudSchema<?>.Field... fields) { 
+	@Override public UniqueIndex useUniqueIndex(Schema<?>.Field... fields) { 
 		MyUniqueIndex index = new MyUniqueIndex(fields); 
 		addIndex(index);
 		return index;
 	}
-	@Override public MultiIndex useMultiIndex(CrudSchema<?>.Field... fields) { 
+	@Override public MultiIndex useMultiIndex(Schema<?>.Field... fields) { 
 		MyMultiIndex index = new MyMultiIndex(fields); 
 		addIndex(index);
 		return index;

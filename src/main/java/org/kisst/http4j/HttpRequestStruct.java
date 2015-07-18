@@ -2,9 +2,9 @@ package org.kisst.http4j;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.kisst.item4j.struct.BaseStruct;
+import org.kisst.item4j.struct.Struct;
 
-public class HttpRequestStruct extends BaseStruct{
+public class HttpRequestStruct implements Struct {
 	private final HttpServletRequest request;
 	
 	public HttpRequestStruct(HttpServletRequest request) {this.request=request;} 

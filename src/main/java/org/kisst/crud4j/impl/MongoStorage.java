@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.kisst.crud4j.CrudSchema;
 import org.kisst.crud4j.StructStorage;
+import org.kisst.item4j.Schema;
 import org.kisst.item4j.seq.ArraySequence;
 import org.kisst.item4j.seq.TypedSequence;
 import org.kisst.item4j.struct.Struct;
@@ -56,8 +57,8 @@ public class MongoStorage implements StructStorage {
 		finally { cursor.close(); }
 	}
 
-	@Override public UniqueIndex useUniqueIndex(CrudSchema<?>.Field ... fields) { return new MyUniqueIndex(fields);} 
-	@Override public MultiIndex  useMultiIndex(CrudSchema<?>.Field ... fields) { return new MyMultiIndex(fields); } 
+	@Override public UniqueIndex useUniqueIndex(Schema<?>.Field ... fields) { return new MyUniqueIndex(fields);} 
+	@Override public MultiIndex  useMultiIndex(Schema<?>.Field ... fields) { return new MyMultiIndex(fields); } 
 	//public OrderedIndex  useOrderedIndex(SchkeyField) { return null; } // TODO
 
 	

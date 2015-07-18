@@ -26,11 +26,10 @@ import java.io.InputStreamReader;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.kisst.item4j.struct.BaseStruct;
 import org.kisst.util.FileUtil;
 import org.kisst.util.StringUtil;
 
-public class SimpleProps extends BaseStruct implements Props {
+public class SimpleProps implements Props {
 	//private static final Logger logger = LoggerFactory.getLogger(SimpleProps.class);
 	//private static final long serialVersionUID = 1L;
 

@@ -3,7 +3,7 @@ package org.kisst.item4j.struct;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 
-public class HashStruct extends BaseStruct {
+public class HashStruct implements Struct {
 	private final LinkedHashMap<String, Object> map=new LinkedHashMap<String, Object>();
 
 	//@Override public String toString() { return toString(this.getClass(),); }

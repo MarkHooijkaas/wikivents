@@ -6,7 +6,7 @@ import java.util.Map;
  * @author mark
  *
  */
-public class MapStruct extends BaseStruct {
+public class MapStruct implements Struct {
 	private final Map<String, Object> map;
 
 	@SuppressWarnings("unchecked")

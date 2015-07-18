@@ -5,7 +5,7 @@ import java.util.HashSet;
 
 import org.kisst.util.ReflectionUtil;
 
-public class ReflectStruct extends BaseStruct {
+public class ReflectStruct implements Struct {
 	private final Object obj;
 
 	public ReflectStruct(Object obj) { this.obj=obj; }

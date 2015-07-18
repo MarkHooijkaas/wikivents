@@ -2,7 +2,7 @@ package org.kisst.item4j.struct;
 
 import java.util.HashSet;
 
-public class MultiStruct extends BaseStruct {
+public class MultiStruct implements Struct {
 	private final Struct[] structs;
 	
 	public MultiStruct(Struct... structs) { 

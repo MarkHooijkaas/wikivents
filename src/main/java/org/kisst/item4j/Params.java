@@ -2,9 +2,9 @@ package org.kisst.item4j;
 
 import java.util.LinkedHashMap;
 
-import org.kisst.item4j.struct.BaseStruct;
+import org.kisst.item4j.struct.Struct;
 
-public class Params extends BaseStruct {
+public class Params implements Struct {
 	public static interface Param {
 		public String getName();
 		public String getValue();
