@@ -5,3 +5,5 @@ logs
 tmp
 test/data
 /target/
+data/
+src/resources/images/

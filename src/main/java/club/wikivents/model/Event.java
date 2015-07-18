@@ -11,18 +11,18 @@ import org.kisst.item4j.struct.Struct;
 
 public class Event extends CrudObject {
 	public static class Guest extends CrudObject {
-		public final User.Table.Ref user;
+		public final CrudTable<User>.Ref user;
 		public final Date date;
 		public static final Schema schema=new Schema();
 		public static class Schema extends CrudSchema<Guest> {
 			public Schema() { super(Guest.class); addAllFields(); }
-			public final User.Table.RefField user = new User.Table.RefField("user");
-			public final DateField date = new DateField(Guest.class,"date"); 
+			public final RefField<User> user = new RefField<User>("user");
+			public final DateField date = new DateField("date"); 
 		}
 		public Guest(WikiventsModel model, Struct props) {
 			super(schema, props);
-			this.user=null;//schema.user.get(model.users,props);
-			this.date=schema.date.getValue(props);
+			this.user=schema.user.getRef(model.users,props);
+			this.date=schema.date.getDate(props);
 		}
 
 	}
@@ -33,31 +33,31 @@ public class Event extends CrudObject {
 	public final Date date;
 	public final int min;
 	public final int max;
-	public final User.Table.Ref organizer;
+	public final CrudTable<User>.Ref organizer;
 	public final Immutable.Sequence<Guest> guests;
 	
 	public Event(WikiventsModel model, Struct props) {
 		super(schema, props);
-		this.title=schema.title.getValue(props);
-		this.description=schema.description.getValue(props);
-		this.location=schema.location.getValue(props);
-		this.date=schema.date.getValue(props);
-		this.min=schema.min.getValue(props);
-		this.max=schema.max.getValue(props);
-		this.organizer=null;//schema.organizer.get(model.users,props);
+		this.title=schema.title.getString(props);
+		this.description=schema.description.getString(props);
+		this.location=schema.location.getString(props);
+		this.date=schema.date.getDate(props);
+		this.min=schema.min.getInt(props);
+		this.max=schema.max.getInt(props);
+		this.organizer=schema.organizer.getRef(model.users,props);
 		this.guests=props.getTypedSequence(Guest.class,"guests");
 	}
 	
 	public static final Schema schema=new Schema();
 	public static class Schema extends CrudSchema<Event> {
 		public Schema() { super(Event.class); addAllFields(); }
-		public final StringField title = new StringField(Event.class, "title"); 
-		public final User.Table.RefField organizer = new User.Table.RefField("organizer");
-		public final IntField min = new IntField(Event.class, "min"); 
-		public final IntField max = new IntField(Event.class, "max"); 
-		public final DateField date = new DateField(Event.class, "date"); 
-		public final StringField location = new StringField(Event.class, "location"); 
-		public final StringField description = new StringField(Event.class, "description"); 
+		public final StringField title = new StringField("title"); 
+		public final RefField<User> organizer = new RefField<User>("organizer");
+		public final IntField min = new IntField("min"); 
+		public final IntField max = new IntField("max"); 
+		public final DateField date = new DateField("date"); 
+		public final StringField location = new StringField("location"); 
+		public final StringField description = new StringField("description"); 
 	}
 
 	public static class Table extends CrudTable<Event> {

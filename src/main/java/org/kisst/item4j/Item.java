@@ -2,6 +2,7 @@ package org.kisst.item4j;
 
 import java.lang.reflect.Constructor;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -82,6 +83,13 @@ public interface Item {
 		if (obj instanceof Boolean) return (Boolean) obj;
 		return Boolean.parseBoolean(asString(obj));
 	}
+	@SuppressWarnings("deprecation")
+	public static Date asDate(Object obj) { 
+		if (obj==null) return null; 
+		if (obj instanceof Date) return (Date) obj;
+		return new Date(asString(obj));
+	}
+
 	public static Immutable.ItemSequence asItemSequence(Object obj) {
 		if (obj==null) return null; 
 		if (obj instanceof ItemSequence) return Immutable.ItemSequence.smartCopy((ItemSequence) obj);
@@ -149,5 +157,4 @@ public interface Item {
 			}
 		}
 	}
-
 }

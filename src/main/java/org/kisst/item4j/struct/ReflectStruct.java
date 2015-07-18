@@ -3,6 +3,8 @@ package org.kisst.item4j.struct;
 import java.lang.reflect.Field;
 import java.util.HashSet;
 
+import org.kisst.util.ReflectionUtil;
+
 public class ReflectStruct extends BaseStruct {
 	private final Object obj;
 
@@ -25,13 +27,5 @@ public class ReflectStruct extends BaseStruct {
 		return result;
 	}
 	
-	@Override public Object getDirectFieldValue(String name) {
-		try {
-			return obj.getClass().getField(name).get(obj);
-		}
-		catch (IllegalArgumentException e) { return UNKNOWN_FIELD; }
-		catch (IllegalAccessException e) { return UNKNOWN_FIELD; }
-		catch (NoSuchFieldException e) { return UNKNOWN_FIELD; }
-		catch (SecurityException e) { return UNKNOWN_FIELD; }
-	}
+	@Override public Object getDirectFieldValue(String name) { return ReflectionUtil.getFieldValue(this, name); }
 }

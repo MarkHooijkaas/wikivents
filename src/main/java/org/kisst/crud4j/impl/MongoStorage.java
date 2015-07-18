@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 import org.kisst.crud4j.CrudSchema;
 import org.kisst.crud4j.StructStorage;
-import org.kisst.item4j.Schema;
-import org.kisst.item4j.Schema.Field;
 import org.kisst.item4j.seq.ArraySequence;
 import org.kisst.item4j.seq.TypedSequence;
 import org.kisst.item4j.struct.Struct;
@@ -31,7 +29,7 @@ public class MongoStorage implements StructStorage {
 	@Override public String createInStorage(Struct value) {
 		MongoStruct doc = new MongoStruct(value);
         collection.insert(doc.data);
-        return keyField.getValue(doc);
+        return keyField.getString(doc);
 	}
 	@Override public Struct readFromStorage(String key) {
 		BasicDBObject query = new BasicDBObject(keyField.getName(), key);
@@ -58,13 +56,13 @@ public class MongoStorage implements StructStorage {
 		finally { cursor.close(); }
 	}
 
-	@Override public UniqueIndex useUniqueIndex(Schema.Field ... fields) { return new MyUniqueIndex(fields);} 
-	@Override public MultiIndex  useMultiIndex(Schema.Field ... fields) { return new MyMultiIndex(fields); } 
+	@Override public UniqueIndex useUniqueIndex(CrudSchema<?>.Field ... fields) { return new MyUniqueIndex(fields);} 
+	@Override public MultiIndex  useMultiIndex(CrudSchema<?>.Field ... fields) { return new MyMultiIndex(fields); } 
 	//public OrderedIndex  useOrderedIndex(SchkeyField) { return null; } // TODO
 
 	
 	private class MyUniqueIndex extends Index implements UniqueIndex {
-		private MyUniqueIndex(Schema.Field ... fields) {
+		private MyUniqueIndex(CrudSchema<?>.Field ... fields) {
 			super(fields);
 		}
 		@Override public Struct get(String ... values) {
@@ -77,7 +75,7 @@ public class MongoStorage implements StructStorage {
 	}
 
 	private class MyMultiIndex extends Index implements MultiIndex {
-		private MyMultiIndex(Schema.Field ... fields) {
+		private MyMultiIndex(CrudSchema<?>.Field ... fields) {
 			super(fields);
 		}
 		@Override public TypedSequence<Struct> get(String ... values) {
@@ -92,11 +90,11 @@ public class MongoStorage implements StructStorage {
 	}
 
 	private class Index {
-		private final Field[] fields;
-		protected Index(Schema.Field ... fields) {
+		private final CrudSchema<?>.Field[] fields;
+		protected Index(CrudSchema<?>.Field ... fields) {
 			this.fields=fields;
 			BasicDBObject keys= new BasicDBObject();
-			for (Field f:fields)
+			for (CrudSchema<?>.Field f:fields)
 				keys.append(f.getName(), 1);
 			DBObject options = new BasicDBObject("unique", true);
 			try {
@@ -109,7 +107,7 @@ public class MongoStorage implements StructStorage {
 				throw new IllegalArgumentException("query with wrong number of arguments "); // TODO add info
 			BasicDBObject keys= new BasicDBObject();
 			int i=0;
-			for (Field f:fields)
+			for (CrudSchema<?>.Field f:fields)
 				keys.append(f.getName(), values[i++]);
 			return collection.find(keys);
 		} 

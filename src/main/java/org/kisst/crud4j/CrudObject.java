@@ -1,10 +1,10 @@
 package org.kisst.crud4j;
 
 import org.bson.types.ObjectId;
-import org.kisst.item4j.struct.BaseStruct;
 import org.kisst.item4j.struct.Struct;
+import org.kisst.util.ReflectionUtil;
 
-public class CrudObject extends BaseStruct {
+public class CrudObject implements Struct {
 	public final CrudSchema<?> schema;
 	public final String _id;
 	public CrudObject(CrudSchema<?> schema, Struct data) { 
@@ -20,7 +20,5 @@ public class CrudObject extends BaseStruct {
 	protected String uniqueKey() { return new ObjectId().toHexString();}
 
 	@Override public Iterable<String> fieldNames() { return schema.fieldNames(); }
-	@Override public Object getDirectFieldValue(String name) {
-		return schema.getField(name).getObjectValue(this); 
-	}
+	@Override public Object getDirectFieldValue(String name) { return ReflectionUtil.getFieldValue(this, name); }
 }

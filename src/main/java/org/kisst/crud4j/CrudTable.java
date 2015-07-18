@@ -28,7 +28,7 @@ public abstract class CrudTable<T extends CrudObject> implements TypedSequence<T
 	}
 	public CrudSchema<T> getSchema() { return schema; }
 	public String getName() { return name; }
-	public String getKey(T obj) { return getSchema().getKeyField().getValue(obj); }
+	public String getKey(T obj) { return getSchema().getKeyField().getString(obj); }
 
 	public T createObject(Struct doc) { return schema.createObject(doc); }
 
@@ -81,9 +81,9 @@ public abstract class CrudTable<T extends CrudObject> implements TypedSequence<T
 	private void checkSameId(T oldValue, T newValue) {
 		if (! alwaysCheckId)
 			return;
-		String newId = schema.getKeyField().getObjectValue(newValue);
+		String newId = schema.getKeyField().getString(newValue);
 		if (newId!=null) {
-			String oldId = schema.getKeyField().getObjectValue(oldValue);
+			String oldId = schema.getKeyField().getString(oldValue);
 			if (!newId.equals(oldId))
 				throw new IllegalArgumentException("Trying to update object with id "+oldId+" with object with id "+newId);
 		}

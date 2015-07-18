@@ -66,7 +66,18 @@ public class ReflectionUtil {
 		catch (IllegalArgumentException e) { throw new RuntimeException(e); }
 		catch (IllegalAccessException e) { throw new RuntimeException(e); }
 	}
-	
+
+	public static final Object UNKNOWN_FIELD=new Object();
+	public static Object getFieldValue(Object obj, String fieldname) {
+		try {
+			return obj.getClass().getField(fieldname).get(obj);
+		}
+		catch (IllegalArgumentException e) { return UNKNOWN_FIELD; }
+		catch (IllegalAccessException e) { return UNKNOWN_FIELD; }
+		catch (NoSuchFieldException e) { return UNKNOWN_FIELD; }
+		catch (SecurityException e) { return UNKNOWN_FIELD; }
+	}
+
 	
 	public static Method getMethod(Class<?> cls, String name, Class<?>[] signature) {
 		Method[] metharr = cls.getDeclaredMethods();

@@ -7,8 +7,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.kisst.crud4j.CrudSchema;
 import org.kisst.crud4j.StructStorage;
-import org.kisst.item4j.Schema;
-import org.kisst.item4j.Schema.Field;
 import org.kisst.item4j.json.JsonOutputter;
 import org.kisst.item4j.json.JsonParser;
 import org.kisst.item4j.seq.ArraySequence;
@@ -39,7 +37,7 @@ public class FileStorage implements StructStorage {
 	public Index addIndex(Index idx) { indices.add(idx); return idx; }
 	
 	@Override public String createInStorage(Struct value) {
-		String key = keyField.getValue(value);
+		String key = keyField.getString(value);
 		if (key==null)
 			key=createUniqueKey();
 		File f = getFile(key);
@@ -58,7 +56,7 @@ public class FileStorage implements StructStorage {
 	}
 	@Override public void updateInStorage(Struct oldValue, Struct newValue) {
 		// The newValue may contain an id, but that is ignored
-		String oldId = keyField.getValue(oldValue);
+		String oldId = keyField.getString(oldValue);
 		File f = getFile(oldId);
 		FileUtil.saveString(f, outputter.createString(newValue));
 	}
@@ -71,7 +69,7 @@ public class FileStorage implements StructStorage {
 		
 	}
 	private File getFile(String key) { return new File(dir, key+".rec"); }
-	private File getFile(Struct obj) { return getFile(keyField.getValue(obj));}
+	private File getFile(Struct obj) { return getFile(keyField.getString(obj));}
 	
 	@Override public TypedSequence<Struct> findAll() {
 		ArrayList<Struct> list=new ArrayList<Struct>();
@@ -92,20 +90,20 @@ public class FileStorage implements StructStorage {
 		return new ArraySequence<Struct>(Struct.class,list);
 	}
 	
-	@Override public UniqueIndex useUniqueIndex(Field... fields) { 
+	@Override public UniqueIndex useUniqueIndex(CrudSchema<?>.Field... fields) { 
 		MyUniqueIndex index = new MyUniqueIndex(fields); 
 		addIndex(index);
 		return index;
 	}
-	@Override public MultiIndex useMultiIndex(Field... fields) { 
+	@Override public MultiIndex useMultiIndex(CrudSchema<?>.Field... fields) { 
 		MyMultiIndex index = new MyMultiIndex(fields); 
 		addIndex(index);
 		return index;
 	}
 	private class Index {
 		@SuppressWarnings("unused")
-		private final Field[] fields;
-		protected Index(Schema.Field ... fields) {
+		private final CrudSchema<?>.Field[] fields;
+		protected Index(CrudSchema<?>.Field ... fields) {
 			this.fields=fields;
 		}
 		public void notifyCreate(Struct record) {}
@@ -113,14 +111,14 @@ public class FileStorage implements StructStorage {
 		public void notifyDelete(Struct oldRecord) {}
 	}
 	private class MyUniqueIndex extends Index implements UniqueIndex {
-		private MyUniqueIndex(Schema.Field ... fields) { super(fields); }
+		private MyUniqueIndex(CrudSchema<?>.Field ... fields) { super(fields); }
 		@Override public Struct get(String... values) {
 			// TODO Auto-generated method stub
 			return null;
 		}
 	}
 	private class MyMultiIndex extends Index implements MultiIndex {
-		private MyMultiIndex(Schema.Field ... fields) { super(fields); }
+		private MyMultiIndex(CrudSchema<?>.Field ... fields) { super(fields); }
 		@Override public TypedSequence<Struct> get(String... values) {
 			// TODO Auto-generated method stub
 			return null;

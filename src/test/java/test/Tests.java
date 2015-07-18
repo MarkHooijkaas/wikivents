@@ -19,7 +19,7 @@ public class Tests {
 	}
 	//Immutable.Sequence<Integer> seq = Immutable.sequence(Integer.class, 0,1,2,3,4,5,6,7,8,9);
 	//Immutable.Sequence<Integer> sub=seq.subsequence(5);
-	Immutable.ItemSequence seq = Immutable.itemSequence(0,1,2,3,4,5,6,7,8,9);
+	Immutable.ItemSequence seq = Immutable.items(0,1,2,3,4,5,6,7,8,9);
 	Immutable.ItemSequence sub=seq.subsequence(5);
 
 	@Test public void immutableSequences() {

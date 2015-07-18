@@ -43,15 +43,14 @@ public interface Type<T> {
 	public static final JavaLong javaLong=new JavaLong(){};
 	public static final JavaDate javaDate=new JavaDate(){};
 
-	public class Helper<T> implements Type<T> {
-		private final Class<?> cls;
+	public class OfClass<T> implements Type<T> {
+		private final Class<T> cls;
 		private final Item.Factory factory;
-		public Helper(Class<?> cls, Item.Factory factory) {
+		public OfClass(Class<T> cls, Item.Factory factory) {
 			this.cls=cls;
 			this.factory=factory;
 		}
-		@SuppressWarnings("unchecked")
-		public Class<T> getJavaClass() { return (Class<T>) this.cls; };  
+		public Class<T> getJavaClass() { return this.cls; };  
 		@Override public T parseString(String str) { return factory.construct(cls,str); }
 		@Override public String getName() { return getJavaClass().getSimpleName(); }
 		@Override public boolean isValidObject(Object obj) {
