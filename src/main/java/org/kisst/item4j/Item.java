@@ -1,13 +1,16 @@
 package org.kisst.item4j;
 
-import java.util.List;
+import java.lang.reflect.Constructor;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.kisst.item4j.seq.ItemSequence;
-import org.kisst.item4j.seq.ListItemSequence;
+import org.kisst.item4j.seq.TypedSequence;
 import org.kisst.item4j.struct.MapStruct;
 import org.kisst.item4j.struct.ReflectStruct;
 import org.kisst.item4j.struct.Struct;
+import org.kisst.util.ReflectionUtil;
 
 public interface Item {
 	public Object asObject(); // { return this; }
@@ -20,6 +23,7 @@ public interface Item {
 	default public float asFloat() { return asFloat(asObject()); }
 	default public double asDouble() { return asDouble(asObject()); }
 	default public boolean asBoolean() { return asBoolean(asObject()); }
+	default public <T> T asType(Class<?> cls) { return asType(cls,asObject()); }
 	
 	public static String asString(Object obj) { 
 		if (obj==null) return null; 
@@ -78,14 +82,24 @@ public interface Item {
 		if (obj instanceof Boolean) return (Boolean) obj;
 		return Boolean.parseBoolean(asString(obj));
 	}
-	public static ItemSequence asItemSequence(Object obj) {
+	public static Immutable.ItemSequence asItemSequence(Object obj) {
 		if (obj==null) return null; 
-		if (obj instanceof ItemSequence) return (ItemSequence) obj;
-		if (obj instanceof List) return new ListItemSequence((List<?>)obj);
+		if (obj instanceof ItemSequence) return Immutable.ItemSequence.smartCopy((ItemSequence) obj);
+		if (obj instanceof Collection)   return Immutable.ItemSequence.smartCopy((Collection<?>) obj);
 		throw new ClassCastException("Can not make a ItemSequence of type "+obj.getClass()+", "+obj);
 	}
-	public static Object asType(Class<?> elementClass, Object obj) {
-		return obj;
+	@SuppressWarnings("unchecked")
+	public static <T> Immutable.Sequence<T> asTypedSequence(Class<?> type, Object obj) {
+		if (obj==null) return null; 
+		if (obj instanceof TypedSequence) return Immutable.Sequence.smartCopy(type,(TypedSequence<T>) obj);
+		if (obj instanceof Collection)   return Immutable.Sequence.smartCopy(type, (Collection<T>) obj);
+		throw new ClassCastException("Can not make a ItemSequence of type "+obj.getClass()+", "+obj);
+	}
+
+	
+	@SuppressWarnings("unchecked")
+	public static <T> T asType(Class<?> cls, Object obj) {
+		return (T) obj;
 	}
 		
 	public class Wrapper implements Item {
@@ -97,4 +111,43 @@ public interface Item {
 		}
 		public Object asObject() { return obj; }
 	}
+	
+	
+	public interface Factory {
+		public <T> T construct(Class<?> cls, Struct data);
+		public <T> T construct(Class<?> cls, String data);
+		
+		@SuppressWarnings("unchecked")	default public <T> T cast(Object obj){ return (T) obj; } 
+
+		public final static BasicFactory basicFactory=new BasicFactory();
+		public class BasicFactory implements Factory {
+			public<T> T construct(Class<?> cls, Struct data){
+				Constructor<?> c = ReflectionUtil.getFirstCompatibleConstructor(cls, new Class<?>[]{data.getClass()});
+				if (c!=null)
+					return cast(ReflectionUtil.createObject(c, new Object[] {data}));
+				throw new IllegalArgumentException("Unknown Struct Constructor for class "+cls+" and data "+data);
+			}
+			public<T> T construct(Class<?> cls, String data){
+				Constructor<?> c = ReflectionUtil.getFirstCompatibleConstructor(cls, new Class<?>[]{String.class});
+				if (c!=null)
+					return cast(ReflectionUtil.createObject(c, new Object[] {data}));
+				throw new IllegalArgumentException("Unknown String Constructor "+cls+" and data "+data);
+			}
+		}
+
+		public class MappedFactory extends BasicFactory {
+			public interface ConStructor { public Object ConStruct(Struct data); }
+			private final HashMap<Class<?>, ConStructor> constructors = new HashMap<Class<?>, ConStructor>(); 
+
+			public MappedFactory addClass(Class<?> cls, ConStructor c) { constructors.put(cls, c); return this;}
+
+			public <T> T construct(Class<?> cls, Struct data){
+				ConStructor c = constructors.get(cls);
+				if (c!=null)
+					return cast(c.ConStruct(data));
+				return super.construct(cls, data);
+			}
+		}
+	}
+
 }

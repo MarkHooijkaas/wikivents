@@ -18,7 +18,7 @@ public interface Immutable {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 
-	public static Immutable.ItemSequence itemSequence(Object ... obj) { return new Immutable.ItemSequence.ArraySequence(obj); }
+	public static Immutable.ItemSequence items(Object ... obj) { return new Immutable.ItemSequence.ArraySequence(obj); }
 
 	public abstract class ItemSequence implements org.kisst.item4j.seq.ItemSequence, Immutable {
 		private ItemSequence() { } 
@@ -40,22 +40,15 @@ public interface Immutable {
 			return new ArraySequence(arr);
 		}
 
-
-		public static  ItemSequence smartCopy(TypedSequence<?> seq) {
-			if (seq instanceof ItemSequence) 
-				return (ItemSequence) seq; 
+		public static  Immutable.ItemSequence smartCopy(org.kisst.item4j.seq.ItemSequence seq) {
+			if (seq instanceof Immutable.ItemSequence) 
+				return (Immutable.ItemSequence) seq;
 			return realCopy(seq);
 		}
 
-		public static  ItemSequence smartCopy(org.kisst.item4j.seq.ItemSequence seq) {
-			if (seq instanceof ItemSequence) 
-				return (ItemSequence) seq;
-			return realCopy(seq);
-		}
-
-		public static  ItemSequence smartCopy(Collection<?> collection) {
-			if (collection instanceof ItemSequence) 
-				return (ItemSequence) collection; // TODO: prevent memory leak if small subrange of huge array
+		public static  Immutable.ItemSequence smartCopy(Collection<?> collection) {
+			if (collection instanceof org.kisst.item4j.seq.ItemSequence) 
+				return smartCopy((org.kisst.item4j.seq.ItemSequence) collection); 
 			return realCopy(collection);
 		}
 
@@ -171,7 +164,15 @@ public interface Immutable {
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@SuppressWarnings("unchecked")
-	public static<T> Sequence<T> sequence(Class<?> cls, T ... obj) { return new Immutable.Sequence.ArraySequence<T>(cls, obj); }
+	public static<T> Sequence<T> typedSequence(Class<?> cls, T ... obj) { return new Immutable.Sequence.ArraySequence<T>(cls, obj); }
+	public static<T> Sequence<T> typedSequence(Class<?> cls, Immutable.ItemSequence seq) {
+		@SuppressWarnings("unchecked")
+		T[] arr=(T[]) new Object[seq.size()];
+		int i=0;
+		for (Item item : seq.items())
+			arr[i++]=item.asType(cls);
+		return new Immutable.Sequence.ArraySequence<T>(cls, arr);
+	}
 
 
 	public abstract class Sequence<T> implements TypedSequence<T>, RandomAccess, Immutable  {
@@ -183,18 +184,19 @@ public interface Immutable {
 		public Sequence<T> subsequence(int start, int end) { return new SubSequence<T>(this, start, end); }
 		public Sequence<T> subsequence(int start) { return subsequence(start, size()); }
 
-		public static <E> Sequence<E> realCopy(TypedSequence<? extends E> seq) {
+/*		public static <E> Sequence<E> realCopy(TypedSequence<? extends E> seq) {
 			E[] arr = createArray(seq.size());
 			int i=0; for (E obj : seq) arr[i++]=obj;
 			return new ArraySequence<E>(seq.getElementClass(), arr);
 		}
+*/
 		@SuppressWarnings("unchecked")
-		public static <E> Sequence<E> realCopy(org.kisst.item4j.seq.ItemSequence seq) {
+		public static <E> Sequence<E> realCopy(Class<?> type, org.kisst.item4j.seq.ItemSequence seq) {
 			E[] arr = createArray(seq.size());
 			int i=0; 
-			for (org.kisst.item4j.Item item : seq.items())
-				arr[i++]= (E) org.kisst.item4j.Item.asType(seq.getElementClass(), item); 
-			return new ArraySequence<E>(seq.getElementClass(), arr);
+			for (Object obj: seq.objects())
+				arr[i++]= (E) org.kisst.item4j.Item.asType(type, obj); 
+			return new ArraySequence<E>(type, arr);
 		}
 		public static <E> Sequence<E> realCopy(Class<?> elementClass, Collection<? extends E> collection) {
 			E[] arr = createArray(collection.size());
@@ -202,26 +204,22 @@ public interface Immutable {
 			return new ArraySequence<E>(elementClass, arr);
 		}
 
-
 		@SuppressWarnings("unchecked")
-		public static <E> Sequence<E> smartCopy(TypedSequence<? extends E> seq) {
-			if (seq instanceof Sequence) 
-				return (Sequence<E>) seq; 
-			return realCopy(seq);
+		public static <E> Sequence<E> smartCopy(Class<?> type, org.kisst.item4j.seq.ItemSequence seq) {
+			if (seq==null) throw new NullPointerException("Can not make smartCopy of null");
+			if (seq instanceof TypedSequence) {
+				if (type==seq.getElementClass())
+					return (Sequence<E>) seq;
+				return Immutable.Sequence.realCopy(type,  seq);
+			}
+			if (seq instanceof Collection)
+				return realCopy(type,(Collection<E>) seq);
+			throw new ClassCastException("Can not make a TypedSequence of type "+seq.getClass()+", "+seq);
 		}
-
-		@SuppressWarnings("unchecked")
-		public static <E> Sequence<E> smartCopy(org.kisst.item4j.seq.ItemSequence seq) {
-			if (seq instanceof Sequence) 
-				return (Sequence<E>) seq;
-			return realCopy(seq);
-		}
-
-		@SuppressWarnings("unchecked")
-		public static <E> Sequence<E> smartCopy(Class<?> elementClass, Collection<? extends E> collection) {
-			if (collection instanceof Sequence) 
-				return (Sequence<E>) collection; // TODO: prevent memory leak if small subrange of huge array
-			return realCopy(elementClass, collection);
+		public static <E> Sequence<E> smartCopy(Class<?> type, Collection<? extends E> collection) {
+			if (collection instanceof org.kisst.item4j.seq.ItemSequence ) 
+				return smartCopy(type, (org.kisst.item4j.seq.ItemSequence) collection); 
+			return realCopy(type, collection);
 		}
 
 		public Sequence<T> removeFirst() { return subsequence(1); }

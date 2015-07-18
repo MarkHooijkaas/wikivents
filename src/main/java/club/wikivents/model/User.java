@@ -2,8 +2,8 @@ package club.wikivents.model;
 
 import org.kisst.crud4j.CrudObject;
 import org.kisst.crud4j.CrudSchema;
+import org.kisst.crud4j.CrudTable;
 import org.kisst.crud4j.StructStorage;
-import org.kisst.crud4j.impl.BaseTable;
 import org.kisst.item4j.struct.Struct;
 
 public class User extends CrudObject {
@@ -27,7 +27,14 @@ public class User extends CrudObject {
 		public final StringField password = new StringField(User.class, "password"); 
 	}
 	
-	public static class Table extends BaseTable<User> {
+	public static class Table extends CrudTable<User> {
+		public static class RefField extends CrudSchema.Field<Ref> {
+			public RefField(String name) { super(name);}
+			//@Override public Type<Ref> getType() { return new Type.Helper<Ref>(Ref.class, null); }
+
+		}
+		public class Ref extends CrudTable<User>.Ref { public Ref(String id) { super(id); } }
+		@Override public Ref createRef(String _id) { return new Ref(_id); }
 		public Table(StructStorage storage) { super(User.schema, storage);}
 		@Override public User createObject(Struct props) { return new User(props); }
 	}

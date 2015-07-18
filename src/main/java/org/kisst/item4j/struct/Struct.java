@@ -1,5 +1,6 @@
 package org.kisst.item4j.struct;
 
+import org.kisst.item4j.Immutable;
 import org.kisst.item4j.Item;
 import org.kisst.item4j.seq.ItemSequence;
 
@@ -57,7 +58,8 @@ public interface Struct {
 	default public long getLong(String path) { return Item.asLong(getObject(path)); } 
 	default public boolean getBoolean(String path) { return Item.asBoolean(getObject(path)); } 
 	default public Struct getStruct(String path) { return Item.asStruct(getObject(path)); } 
-	default public ItemSequence getItemSequence(String path) { return Item.asItemSequence(getObject(path)); } 
+	default public Immutable.ItemSequence getItemSequence(String path) { return Item.asItemSequence(getObject(path)); } 
+	default public<T> Immutable.Sequence<T> getTypedSequence(Class<?> type, String path) { return Item.asTypedSequence(type,getObject(path)); } 
 
 	public static final Object UNKNOWN_FIELD=new Object();
 	public class UnknownFieldException extends RuntimeException {

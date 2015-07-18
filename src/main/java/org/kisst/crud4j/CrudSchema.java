@@ -5,25 +5,24 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 
 import org.kisst.item4j.Schema;
-import org.kisst.item4j.Type;
 import org.kisst.item4j.json.JsonParser;
 import org.kisst.item4j.struct.HashStruct;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.util.ReflectionUtil;
 
-public class CrudSchema<T extends CrudObject> implements Schema {
+public class CrudSchema<T extends CrudObject> implements Schema<T> {
 	public static CrudSchema<CrudObject> schema=new CrudSchema<CrudObject>(CrudObject.class);
 	
-	private final LinkedHashMap<String, Field<T> > fields=new LinkedHashMap<String, Field<T>>();
-	public final Class<?> cls;
+	private final LinkedHashMap<String, Field<?> > fields=new LinkedHashMap<String, Field<?>>();
+	public final Class<T> cls;
 	public final IdField _id = new IdField("_id");
 	private final Constructor<?> cons;
 	
-	public CrudSchema(Class<?> cls) { 
+	public CrudSchema(Class<T> cls) { 
 		this.cls=cls;
 		this.cons=ReflectionUtil.getConstructor(cls, new Class<?>[]{ Struct.class} );
 	}
-
+	@Override public Class<T> getJavaClass() { return cls;}
 	@Override public String getName() { return cls.getSimpleName(); }
 	@Override public boolean isValidObject(Object obj) { return false; } // TODO
 	@Override public T parseString(String str) { return createObject(new JsonParser().parse(str)); }
@@ -42,7 +41,7 @@ public class CrudSchema<T extends CrudObject> implements Schema {
 		try {
 			for (java.lang.reflect.Field f : cls.getDeclaredFields()) {
 				if (Field.class.isAssignableFrom(f.getType())) {
-					fields.put(f.getName(), (CrudSchema<T>.Field<T>) f.get(this));
+					fields.put(f.getName(), (CrudSchema.Field<T>) f.get(this));
 				}
 			}
 		}
@@ -51,14 +50,15 @@ public class CrudSchema<T extends CrudObject> implements Schema {
 	}
 	@Override public String toString() { return cls.getSimpleName(); }
 	public final IdField getKeyField() { return _id; }
-	public Field<T> getField(String name) {return fields.get(name); }
+	@SuppressWarnings("unchecked")
+	public<F> Field<F> getField(String name) {return (Field<F>) fields.get(name); }
 	public Iterable<String> fieldNames() { return fields.keySet(); }
 
-	public abstract class Field<FT> extends Schema.BaseField {
-		public class Builder extends BaseField.Builder {
-			private final Class<T> cls;
+	public static abstract class Field<FT> extends Schema.Field<FT> {
+		public class Builder extends Schema.Field.Builder {
+			private final Class<?> cls;
 			private FT defaultValue=null;
-			protected Builder(Class<T> cls, String name) {
+			protected Builder(Class<?> cls, String name) {
 				super(name);
 				this.cls=cls;
 			}
@@ -66,7 +66,7 @@ public class CrudSchema<T extends CrudObject> implements Schema {
 		}
 		private final FT defaultValue;
 		private java.lang.reflect.Field field;
-		public Field(Class<T> cls, String name) { 
+		public Field(Class<?> cls, String name) { 
 			super(name); 
 			this.field=ReflectionUtil.getField(cls, name);
 			this.defaultValue=null;
@@ -113,7 +113,7 @@ public class CrudSchema<T extends CrudObject> implements Schema {
 	}
 	public class IdField extends Field<String> {
 		public IdField(String name) { super(name); }
-		@Override public Type.JavaString getType() { return Type.javaString; }
+		//@Override public Type.JavaString getType() { return Type.javaString; }
 	}
 	public class BooleanField extends Field<Boolean> implements Schema.BooleanField {
 		public BooleanField(Class<T> cls, String name) { super(cls, name); }
@@ -136,6 +136,7 @@ public class CrudSchema<T extends CrudObject> implements Schema {
 		@Override public String getString(Struct s) { return getValue(s).toString(); }
 		public Date getDate(Struct s) { return getValue(s); }
 	}
+	/*
 	public class RefField<RT extends CrudObject> extends Field<RT> {
 		public RefField(Class<T> cls, String name) { super(cls, name); }
 		public RefField(Builder builder) { super(builder); }
@@ -144,4 +145,5 @@ public class CrudSchema<T extends CrudObject> implements Schema {
 			return table.getRef(s.getString(getName()));
 		}
 	}
+	*/
 }
