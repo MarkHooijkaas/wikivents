@@ -22,6 +22,7 @@ public class GenericForm {
 	}
 	public Iterator<Field> fields() { return fields.values().iterator(); }
 	public String render(Struct data) { 
+		//System.out.println("Rendering "+data);
 		StringBuilder result = new StringBuilder();
 		for (Field f: fields.values())
 			result.append(f.render(data));
@@ -69,6 +70,9 @@ public class GenericForm {
 		}
 		public String render(Struct data) {
 			TemplateData context = new TemplateData(this);
+			String value = field.getString(data);
+			context.add("value", value);
+			System.out.println("Rendering field "+name+" to "+value);
 			return template.toString(context);
 		}
 	}

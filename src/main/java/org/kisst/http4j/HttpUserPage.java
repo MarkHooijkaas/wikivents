@@ -67,19 +67,10 @@ public abstract class HttpUserPage extends HttpBasicPage {
 	
 	public String ensureUserId(HttpServletRequest req, HttpServletResponse resp,String userId) {
 		String id=getUserId(req);
-		if (id==null) {
-			sendUnauthorizedError(resp);
-			throw new RuntimeException("Not Authenticated");
-		}
+		if (id==null)
+			throw new HttpServer.UnauthorizedException("Not Authorized expected "+userId+" but got "+id);
 		if (id.equals(userId))
 			return id;
-		sendUnauthorizedError(resp);
-		throw new RuntimeException("Not Authorized");
-	}
-
-	public void sendUnauthorizedError(HttpServletResponse resp) {
-		try {
-			resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "");
-		} catch (IOException e) { throw new RuntimeException(e);}
+		throw new HttpServer.UnauthorizedException("Not Authorized expected "+userId+" but got "+id);
 	}
 }

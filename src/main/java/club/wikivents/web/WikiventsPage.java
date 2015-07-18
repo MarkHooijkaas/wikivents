@@ -3,6 +3,7 @@ package club.wikivents.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.kisst.http4j.HttpServer;
 import org.kisst.http4j.handlebar.HttpHandlebarPage;
 
 import club.wikivents.model.User;
@@ -37,10 +38,8 @@ public abstract class WikiventsPage extends HttpHandlebarPage {
 	}
 	public User ensureUser(HttpServletRequest req, HttpServletResponse resp) {
 		User u=getUser(req);
-		if (u==null) {
-			sendUnauthorizedError(resp);
-			throw new RuntimeException("Not Authenticated");
-		}
+		if (u==null)
+			throw new HttpServer.HttpException(HttpServletResponse.SC_UNAUTHORIZED, "Not Authorized");
 		return u;
 	}
 	public User ensureUser(HttpServletRequest req, HttpServletResponse resp,String usernameOrId) {
@@ -49,7 +48,6 @@ public abstract class WikiventsPage extends HttpHandlebarPage {
 			return u;
 		if (u._id.equals(usernameOrId))
 			return u;
-		sendUnauthorizedError(resp);
-		throw new RuntimeException("Not Authorized");
+		throw new HttpServer.UnauthorizedException("Not Authorized expected ["+usernameOrId+"] but user=["+u._id+"]");
 	}
 }

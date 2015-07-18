@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.kisst.http4j.HttpRequestStruct;
 import org.kisst.http4j.handlebar.GenericForm;
 import org.kisst.item4j.struct.HashStruct;
+import org.kisst.item4j.struct.MultiStruct;
 import org.kisst.item4j.struct.Struct;
 
 import club.wikivents.model.Event;
@@ -33,10 +34,18 @@ public class EventPage extends WikiventsPage {
 
 	@Override public void handleGet(String path, HttpServletRequest request, HttpServletResponse response) {
 		Data data = createTemplateData(request);
+		Struct input=new HttpRequestStruct(request);
 		if (path==null || path.equals("") || path.equals("new")) {
-			Struct input=new HttpRequestStruct(request);
 			// GET a form to create new Event
 			form.output(data, input, response);
+		}
+		if ( path.startsWith("edit/")) {
+			path=path.substring(5);
+			Event event=model.events.read(path);
+			ensureUser(request,response,event.organizer._id);
+			//System.out.println("Editing "+event);
+			data.add("event", event);
+			form.output(data, event, response);
 		}
 		else {
 			// GET the data for a existing Event
@@ -55,11 +64,19 @@ public class EventPage extends WikiventsPage {
 			model.events.create(event);
 			redirect(response,"event/"+event._id);
 		}
-		else {
-			Event oldEvent=new Event(model,input); // TODO: encode oldEvent
-			Event event=new Event(model,input);
-			model.events.update(oldEvent, event);
-			redirect(response,"event/"+event._id);
+		else { 
+			if ( path.startsWith("edit/")) 
+				path=path.substring(5);
+			Event oldEvent=model.events.read(path);
+			User u = ensureUser(request,response,oldEvent.organizer._id);
+			//Event newEvent=model.events.createObject(input);
+			Event newEvent=new Event(model,new MultiStruct(input,oldEvent));
+			
+			System.out.println("Checking Authorization "+u+" for "+oldEvent);
+			if (! u._id.equals(oldEvent.organizer._id))
+				throw new RuntimeException("Not Authorized");
+			model.events.update(oldEvent, newEvent);
+			redirect(response,"/event/"+newEvent._id);
 		}
 		//String message="Unknown user";
 		

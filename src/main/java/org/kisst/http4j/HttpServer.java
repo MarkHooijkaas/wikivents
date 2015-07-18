@@ -69,12 +69,19 @@ public class HttpServer extends AbstractHandler {
 		}
         catch (Exception e) {
         	try {
-        		logger.error("Error when handling "+path,e);
-				PrintWriter out = response.getWriter();
-				out.println(e.getMessage());
-				out.println("<pre>");
-				e.printStackTrace(out);
-				out.println("</pre>");
+        		if (e instanceof HttpException) {
+        			HttpException he=(HttpException) e;
+        			response.sendError(he.code, e.getMessage()); 
+        			e.printStackTrace();
+        		}
+        		else {
+        			logger.error("Error when handling "+path,e);
+        			PrintWriter out = response.getWriter();
+        			out.println(e.getMessage());
+        			out.println("<pre>");
+        			e.printStackTrace(out);
+        			out.println("</pre>");
+        		}
 			} catch (IOException e1) {
 				// ignore the new error, and now write to the logfile anyway
 				logger.error("Error when handling "+path, e);
@@ -84,6 +91,17 @@ public class HttpServer extends AbstractHandler {
 			try { response.flushBuffer();} 
 			catch (IOException e) { throw new RuntimeException(e); }
 		}
-
+	}
+	
+	public static class HttpException extends RuntimeException {
+		private static final long serialVersionUID = 1L;
+		private final int code;
+		public HttpException(int code, String msg) {super(msg); this.code=code; } 
+		public HttpException(int code, String msg, Throwable e) {super(msg, e); this.code=code; } 
+		public HttpException(int code, Throwable e) {super(e); this.code=code; } 
+	}
+	public static class UnauthorizedException extends HttpException {
+		private static final long serialVersionUID = 1L;
+		public UnauthorizedException(String msg) {super(HttpServletResponse.SC_UNAUTHORIZED, msg); } 
 	}
 }

@@ -28,7 +28,7 @@ public class Schema<T> implements Type<T> {
 	@Override public boolean isValidObject(Object obj) { return false; } // TODO
 	@Override public T parseString(String str) { return createObject(new JsonParser().parse(str)); }
 	@SuppressWarnings("unchecked")
-	public T createObject(Struct doc) { return (T) ReflectionUtil.createObject(cons, new Object[]{ doc} );}
+	public T createObject(Struct doc) { return (T) ReflectionUtil.createObject(cons, new Object[]{doc} );}
 	
 	protected void addAllFields() { addAllFields(this.getClass());	}
 	@SuppressWarnings("unchecked")
