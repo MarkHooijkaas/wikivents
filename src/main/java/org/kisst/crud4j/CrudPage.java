@@ -38,19 +38,21 @@ public class CrudPage<T extends CrudObject> extends HttpHandlebarPage  {
 			path=path.substring(5);
 			T rec=table.read(path);
 			String user = ensureUserId(request,response);
-			if (rec.mayBeChangedBy(user))
-			System.out.println("Editing "+rec);
+			if (! rec.mayBeChangedBy(user))
+				throw new HttpServer.UnauthorizedException("Not Authorized user "+user+" for "+rec);
 			data.add("record", rec);
 			data.add(path, rec);
 			form.outputEdit(data, rec, response);
 		}
 		else {
+			String user = getUserId(request);
 			// GET the data for a existing record
 			T rec = table.read(path);
 			//System.out.println("Showing "+rec);
 			data.add("record", rec);
 			data.add(path, rec);
 			data.add("fields", form.renderShow(rec));
+			data.add("userMayChange", rec.mayBeChangedBy(user));
 			show.output(data, response);
 		}
 	}
@@ -78,7 +80,7 @@ public class CrudPage<T extends CrudObject> extends HttpHandlebarPage  {
 			T newRecord=table.createObject(new MultiStruct(input,oldRecord));
 			
 			if (! oldRecord.mayBeChangedBy(user))
-				throw new HttpServer.UnauthorizedException("Not Authorized "+user+" for "+oldRecord);
+				throw new HttpServer.UnauthorizedException("Not Authorized user "+user+" for "+oldRecord);
 			table.update(oldRecord, newRecord);
 			redirect(response,"/"+name+"/"+newRecord._id);
 		}
