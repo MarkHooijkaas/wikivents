@@ -24,8 +24,26 @@ public class Event extends CrudObject {
 			this.user=schema.user.getRef(model.users,props);
 			this.date=schema.date.getInstant(props);
 		}
-
 	}
+	public static class Comment {
+		public final CrudTable<User>.Ref user;
+		public final Instant date;
+		public final String comment;
+		public static final Schema schema=new Schema();
+		public static class Schema extends CrudSchema<Guest> {
+			public Schema() { super(Guest.class); addAllFields(); }
+			public final RefField<User> user = new RefField<User>("user");
+			public final InstantField date = new InstantField("date"); 
+			public final StringField comment = new StringField("comment"); 
+		}
+		public Comment(WikiventsModel model, Struct props) {
+			this.user=schema.user.getRef(model.users,props);
+			this.date=schema.date.getInstant(props);
+			this.comment=schema.comment.getString(props);
+		}
+	}
+
+	
 	public final String title;
 	public final String location;
 	public final String description;

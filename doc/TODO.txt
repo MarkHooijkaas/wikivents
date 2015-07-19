@@ -6,9 +6,23 @@ custom form templates
 multiple skins
 jar file with resources
 logging
-
+wysiwyg editor for description, comments
+foto's users
+foto's event
 
 friends
 groups
 references
 immutable struct
+
+
+events
+event/all?
+GET POST event/new
+GET      event/:id
+GET      event/:id/comments
+GET POST event/edit/:id
+GET POST event/:id/comments/new
+GET POST event/:id/guests
+GET POST event/:id/guest/new
+GET POST event/:id/guest/:idx/delete
