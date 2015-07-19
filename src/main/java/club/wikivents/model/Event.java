@@ -46,7 +46,7 @@ public class Event extends CrudObject {
 		this.organizer=schema.organizer.getRef(model.users,props);
 		this.guests=props.getTypedSequence(Guest.class,"guests", null);
 	}
-	public boolean mayBeChangedBy(String userId) { return userId.equals(organizer._id); }
+	public boolean mayBeChangedBy(String userId) { return userId!=null && userId.equals(organizer._id); }
 
 	public static final Schema schema=new Schema();
 	public static class Schema extends CrudSchema<Event> {
