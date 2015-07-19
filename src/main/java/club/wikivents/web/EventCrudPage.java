@@ -8,7 +8,7 @@ import club.wikivents.model.Event;
 import club.wikivents.model.User;
 import club.wikivents.model.WikiventsModel;
 
-public class EventCrudPage extends CrudPage<Event> {
+public class EventCrudPage extends  CrudPage<Event> implements WikiventsPage {
 
 	private WikiventsModel model;
 
@@ -24,10 +24,10 @@ public class EventCrudPage extends CrudPage<Event> {
 			);
 		this.model=site.model;
 	}
+	@Override public WikiventsModel getModel() { return model;}
 
 	@Override protected void validateCreate(String userid, HashStruct data) {
 		User.Table.Ref user=model.users.createRef(userid);
 		data.put(Event.schema.organizer.getName(),user);
 	}
-
 }

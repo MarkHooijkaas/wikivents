@@ -4,20 +4,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.kisst.http4j.HttpRequestStruct;
+import org.kisst.http4j.handlebar.HttpHandlebarSite.TemplateData;
 import org.kisst.item4j.struct.Struct;
 
 import club.wikivents.model.User;
 
-public class LoginPage extends WikiventsPage {
+public class LoginPage extends TemplatePage implements WikiventsPage {
 	private final Template loginForm;
 	
 	public LoginPage(WikiventsSite site) {
-		super(site);
+		super(site, "../login.form");
 		loginForm=createTemplate("login.form");
 	}
 
 	@Override public void handleGet(String path, HttpServletRequest request, HttpServletResponse response) {
-		Data data = createTemplateData(request);
+		TemplateData data = createTemplateData(request);
 		loginForm.output(data, response);
 	}
 	@Override public void handlePost(String path, HttpServletRequest request, HttpServletResponse response) {
@@ -40,7 +41,7 @@ public class LoginPage extends WikiventsPage {
 				break;
 			}
 		}
-		Data data2 = createTemplateData(request);
+		TemplateData data2 = createTemplateData(request);
 		data2.add("message", message);
 		data2.add("username", username);
 		data2.add("password", password);
