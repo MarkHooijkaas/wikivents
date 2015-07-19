@@ -1,8 +1,5 @@
 package club.wikivents.web;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.kisst.crud4j.CrudPage;
 import org.kisst.http4j.handlebar.GenericForm;
 import org.kisst.item4j.struct.HashStruct;
@@ -28,8 +25,7 @@ public class EventCrudPage extends CrudPage<Event> {
 		this.model=site.model;
 	}
 
-	@Override protected void addNewItemData(HashStruct data, HttpServletRequest request, HttpServletResponse response) {
-		String userid = ensureUserId(request,response);
+	@Override protected void validateCreate(String userid, HashStruct data) {
 		User.Table.Ref user=model.users.createRef(userid);
 		data.put(Event.schema.organizer.getName(),user);
 	}
