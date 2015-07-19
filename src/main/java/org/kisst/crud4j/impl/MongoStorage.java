@@ -10,12 +10,10 @@ import org.kisst.item4j.seq.TypedSequence;
 import org.kisst.item4j.struct.Struct;
 
 import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.DuplicateKeyException;
-import com.mongodb.MongoClient;
 
 public class MongoStorage implements StructStorage {
 
@@ -23,17 +21,21 @@ public class MongoStorage implements StructStorage {
 	private final CrudSchema<?>.IdField keyField;
 	private final CrudSchema<?> schema;
 	private final boolean useCache;
+	private final MongoDb db;
 	
-	public MongoStorage(CrudSchema<?> schema, Struct props) {
+	public MongoStorage(CrudSchema<?> schema, Struct props, MongoDb db) {
 		this.schema=schema;
-		this.collection=getMongoDB(props).getCollection(schema.cls.getSimpleName());
+		this.db=db;
+		this.collection=db.getCollection(schema.cls.getSimpleName());
 		this.keyField=schema.getKeyField();
 		this.useCache=props.getBoolean("useCache",false);
 	}
 	@Override public boolean useCache() { return this.useCache; }
-	@Override public void close() { closeMongoDB(); }
+
+	@Override public void close() { db.closeMongoDB(); }
 	@Override public Class<?> getRecordClass() { return schema.cls; }
 	@Override public String createInStorage(Struct value) {
+		//db.printEncoder();
 		MongoStruct doc = new MongoStruct(value);
         collection.insert(doc.data);
         return keyField.getString(doc);
@@ -119,22 +121,4 @@ public class MongoStorage implements StructStorage {
 			return collection.find(keys);
 		} 
 	}
-
-	private static MongoClient mongoClient;
-	private static DB db;
-	private static DB getMongoDB(Struct props) {
-		if (db!=null)
-			return db;
-		mongoClient = new MongoClient(props.getString("mongohost", "localhost"));
-		db = new DB(mongoClient,props.getString("mongodb", "wikivents"));
-		return db;
-	}
-	private static void closeMongoDB() {
-		if (mongoClient==null)
-			return;
-		mongoClient.close();
-		mongoClient=null;
-		db=null;
-	}
-
 }

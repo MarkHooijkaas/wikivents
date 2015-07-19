@@ -8,11 +8,11 @@
 	<classpathentry kind="lib" path="lib/handlebars-2.2.2.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/mongo-java-driver-3.0.2.jar"/>
 	<classpathentry kind="lib" path="lib/jetty-all-9.3.0.v20150612-uber.jar"/>
-	<classpathentry kind="lib" path="lib/bson-3.0.2.jar"/>
 	<classpathentry kind="lib" path="lib/json-simple-1.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-api-1.7.12.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-log4j12-1.7.12.jar"/>
+	<classpathentry kind="lib" path="lib/mongo-java-driver-3.0.3.jar"/>
+	<classpathentry kind="lib" path="lib/bson-3.0.3.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

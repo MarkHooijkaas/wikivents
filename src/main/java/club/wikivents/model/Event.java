@@ -43,7 +43,7 @@ public class Event extends CrudObject {
 		this.date=schema.date.getLocalDate(props);
 		this.min=schema.min.getInt(props);
 		this.max=schema.max.getInt(props);
-		this.organizer=schema.organizer.getRef(model.users,props);
+		this.organizer=schema.organizer.getRef(model.users,props);//new SimpleRef(props.getString("organizer",null));
 		this.guests=props.getTypedSequence(Guest.class,"guests", null);
 	}
 	public boolean mayBeChangedBy(String userId) { return userId!=null && userId.equals(organizer._id); }
