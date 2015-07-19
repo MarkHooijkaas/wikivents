@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public interface Type<T> {
+	@SuppressWarnings("unchecked") public static <T> T cast(Object obj){ return (T) obj; } 
+
 	public Class<T> getJavaClass();
 	public T parseString(String str);
 
@@ -17,63 +19,38 @@ public interface Type<T> {
 		return getJavaClass().isAssignableFrom(obj.getClass());
 	}
 
+	public static final Java<String> javaString=new Java<String>(String.class, str -> str);
+	public static final Java<Boolean> javaBoolean=new Java<Boolean>(Boolean.class, str -> Boolean.parseBoolean(str));
+	public static final Java<Integer> javaInteger=new Java<Integer>(Integer.class, str -> Integer.parseInt(str));
+	public static final Java<Long> javaLong=new Java<Long>(Long.class, str -> Long.parseLong(str));
+	public static final Java<LocalDate> javaLocalDate=new Java<LocalDate>(LocalDate.class, str -> LocalDate.parse(str));
+	public static final Java<LocalTime> javaLocalTime =new Java<LocalTime>(LocalTime.class, str -> LocalTime.parse(str));
+	public static final Java<LocalDateTime> javaLocalDateTime =new Java<LocalDateTime>(LocalDateTime.class, str -> LocalDateTime.parse(str));
+	public static final Java<Instant> javaInstant =new Java<Instant>(Instant.class, str -> Instant.parse(str));
 
-	public interface JavaString extends Type<String> {
-		@Override default public Class<String> getJavaClass() { return String.class; }
-		@Override default public String parseString(String str) { return str;}
+	public interface Parser<T> {
+		T parseString(String str);
 	}
-	public interface JavaBoolean extends Type<Boolean> {
-		@Override default public Class<Boolean> getJavaClass() { return Boolean.class; }
-		@Override default public Boolean parseString(String str) { return Boolean.parseBoolean(str);}
-	}
-	public interface JavaInteger extends Type<Integer> {
-		@Override default public Class<Integer> getJavaClass() { return Integer.class; }
-		@Override default public Integer parseString(String str) { return Integer.parseInt(str);}
-	}
-	public interface JavaLong extends Type<Long> {
-		@Override default public Class<Long> getJavaClass() { return Long.class; }
-		@Override default public Long parseString(String str) { return Long.parseLong(str);}
-	}
-	public interface JavaLocalDate extends Type<LocalDate>{
-		@Override default public Class<LocalDate> getJavaClass() { return LocalDate.class; }
-		@Override default public LocalDate parseString(String str) { return LocalDate.parse(str);}
-	}
-	public interface JavaLocalTime extends Type<LocalTime>{
-		@Override default public Class<LocalTime> getJavaClass() { return LocalTime.class; }
-		@Override default public LocalTime parseString(String str) { return LocalTime.parse(str);}
-	}
-	public interface JavaLocalDateTime extends Type<LocalDateTime>{
-		@Override default public Class<LocalDateTime> getJavaClass() { return LocalDateTime.class; }
-		@Override default public LocalDateTime parseString(String str) { return LocalDateTime.parse(str);}
-	}
-	public interface JavaInstant extends Type<Instant>{
-		@Override default public Class<Instant> getJavaClass() { return Instant.class; }
-		@Override default public Instant parseString(String str) { return Instant.parse(str);}
+	
+	public class Java<T> implements Type<T> {
+		private final Class<T> cls;
+		private final Parser<T> parser;
+		public Java(Class<T> cls, Parser<T> parser) {	this.cls=cls; this.parser=parser;}
+		@Override public Class<T> getJavaClass() { return this.cls; };  
+		@Override public T parseString(String str) { return parser.parseString(str); }
 	}
 
-	public static final JavaString javaString=new JavaString(){};
-	public static final JavaBoolean javaBoolean=new JavaBoolean(){};
-	public static final JavaInteger javaInteger=new JavaInteger(){};
-	public static final JavaLong javaLong=new JavaLong(){};
-	public static final JavaLocalDate javaLocalDate=new JavaLocalDate(){};
-	public static final JavaLocalTime javaLocalTime =new JavaLocalTime(){};
-	public static final JavaLocalDateTime javaLocalDateTime =new JavaLocalDateTime(){};
-	public static final JavaInstant javaInstant =new JavaInstant(){};
-
-	public class OfClass<T> implements Type<T> {
+	
+	/*
+	public class FactoryClass<T> implements Type<T> {
 		private final Class<T> cls;
 		private final Item.Factory factory;
-		public OfClass(Class<T> cls, Item.Factory factory) {
+		public FactoryClass(final Class<T> cls, final Item.Factory factory) {
 			this.cls=cls;
 			this.factory=factory;
 		}
-		public Class<T> getJavaClass() { return this.cls; };  
+		@Override public Class<T> getJavaClass() { return this.cls; };  
 		@Override public T parseString(String str) { return factory.construct(cls,str); }
-		@Override public String getName() { return getJavaClass().getSimpleName(); }
-		@Override public boolean isValidObject(Object obj) {
-			if (obj==null)
-				return false; // TODO: is this desirable behaviour?
-			return getJavaClass().isAssignableFrom(obj.getClass());
-		}
 	}
+	*/
 }

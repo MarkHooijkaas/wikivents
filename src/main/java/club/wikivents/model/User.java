@@ -4,7 +4,6 @@ import org.kisst.crud4j.CrudObject;
 import org.kisst.crud4j.CrudSchema;
 import org.kisst.crud4j.CrudTable;
 import org.kisst.crud4j.StructStorage;
-import org.kisst.item4j.Type;
 import org.kisst.item4j.struct.Struct;
 
 public class User extends CrudObject {
@@ -29,13 +28,6 @@ public class User extends CrudObject {
 		public final StringField username = new StringField("username"); 
 		public final StringField email    = new StringField("email"); 
 		public final StringField password = new StringField("password"); 
-		public class RefField extends CrudSchema<User>.Field {
-			public RefField(String name) { super(Type.javaString,name); }
-			@Override public Type.JavaString getType() { return Type.javaString; }
-			public CrudTable<User>.Ref getRef(CrudTable<User> table, Struct s) { 
-				return table.createRef(s.getString(getName()));
-			}
-		}
 	}
 	
 	public static class Table extends CrudTable<User> {

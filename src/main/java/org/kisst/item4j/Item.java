@@ -17,6 +17,8 @@ import org.kisst.item4j.struct.Struct;
 import org.kisst.util.ReflectionUtil;
 
 public interface Item {
+	public static <T> T cast(Object obj){ return Type.cast(obj); } 
+
 	public Object asObject(); // { return this; }
 	default public Struct asStruct() { return asStruct(asObject()); }
 	default public String asString() { return asString(asObject()); }
@@ -27,7 +29,7 @@ public interface Item {
 	default public float asFloat() { return asFloat(asObject()); }
 	default public double asDouble() { return asDouble(asObject()); }
 	default public boolean asBoolean() { return asBoolean(asObject()); }
-	default public <T> T asType(Class<?> cls) { return asType(cls,asObject()); }
+	default public <T> T asType(Class<T> cls) { return asType(cls,asObject()); }
 	
 	public static String asString(Object obj) { 
 		if (obj==null) return null; 
@@ -38,11 +40,10 @@ public interface Item {
 		if (obj instanceof Item) return (Item) obj;
 		return new Wrapper(obj);
 	}
-	@SuppressWarnings("unchecked")
 	public static Struct asStruct(Object obj) { 
 		if (obj==null) return null; 
 		if (obj instanceof Struct) return (Struct) obj;
-		if (obj instanceof Map) return new MapStruct((Map<String,?>) obj);
+		if (obj instanceof Map) return new MapStruct(cast(obj));
 		return new ReflectStruct(obj);
 	}		
 	public static Integer asInteger(Object obj) { 
@@ -120,11 +121,11 @@ public interface Item {
 		if (obj instanceof Collection)   return Immutable.Sequence.smartCopy(type, (Collection<T>) obj);
 		throw new ClassCastException("Can not make a ItemSequence of type "+obj.getClass()+", "+obj);
 	}
-
 	
-	@SuppressWarnings("unchecked")
 	public static <T> T asType(Class<?> cls, Object obj) {
-		return (T) obj;
+		if (obj==null) return null;
+		//if (cls.isAssignableFrom(obj.getClass()))
+		return cast(obj);
 	}
 		
 	public class Wrapper implements Item {
@@ -139,11 +140,10 @@ public interface Item {
 	
 	
 	public interface Factory {
+		public default <T> T cast(Object obj){ return Type.cast(obj); } 
 		public <T> T construct(Class<?> cls, Struct data);
 		public <T> T construct(Class<?> cls, String data);
 		
-		@SuppressWarnings("unchecked")	default public <T> T cast(Object obj){ return (T) obj; } 
-
 		public final static BasicFactory basicFactory=new BasicFactory();
 		public class BasicFactory implements Factory {
 			public<T> T construct(Class<?> cls, Struct data){

@@ -56,6 +56,31 @@ public interface Struct {
 		if (obj==null) return defaultValue;
 		return Item.asBoolean(obj);
 	}
+	default public LocalDate getLocalDate(String path, LocalDate defaultValue) {
+		Object obj= getObject(path,null); 
+		if (obj==null) return defaultValue;
+		return Item.asLocalDate(obj);
+	}
+	default public LocalTime getLocalTime(String path, LocalTime defaultValue) {
+		Object obj= getObject(path,null); 
+		if (obj==null) return defaultValue;
+		return Item.asLocalTime(obj);
+	}
+	default public LocalDateTime getLocalDateTime(String path, LocalDateTime defaultValue) {
+		Object obj= getObject(path,null); 
+		if (obj==null) return defaultValue;
+		return Item.asLocalDateTime(obj);
+	}
+	default public Instant getInstant(String path, Instant defaultValue) {
+		Object obj= getObject(path,null); 
+		if (obj==null) return defaultValue;
+		return Item.asInstant(obj);
+	}
+	default public<T> T getType(Class<?> cls, String path, T defaultValue) {
+		Object obj= getObject(path,null); 
+		if (obj==null) return defaultValue;
+		return Item.asType(cls, obj);
+	}
 	default public Struct getStruct(String path, Struct defaultValue) {
 		Object obj= getObject(path,null); 
 		if (obj==null) return defaultValue;
@@ -105,13 +130,14 @@ public interface Struct {
 		return value;
 	}
 	default public String getString(String path) { return Item.asString(getObject(path)); } 
-	default public int getInt(String path) { return Item.asInteger(getObject(path)); } 
+	default public int getInteger(String path) { return Item.asInteger(getObject(path)); } 
 	default public long getLong(String path) { return Item.asLong(getObject(path)); } 
 	default public boolean getBoolean(String path) { return Item.asBoolean(getObject(path)); } 
 	default public LocalDate getLocalDate(String path) { return Item.asLocalDate(getObject(path)); }
 	default public LocalTime getLocalTime(String path) { return Item.asLocalTime(getObject(path)); }
 	default public LocalDateTime getLocalDateTime(String path) { return Item.asLocalDateTime(getObject(path)); }
 	default public Instant getInstant(String path) { return Item.asInstant(getObject(path)); }
+	default public<T> T getType(Class<?> cls, String path) { return Item.asType(cls,getObject(path)); }
 	default public Struct getStruct(String path) { return Item.asStruct(getObject(path)); } 
 	default public Immutable.ItemSequence getItemSequence(String path) { return Item.asItemSequence(getObject(path)); } 
 	default public<T> Immutable.Sequence<T> getTypedSequence(Class<?> type, String path) { return Item.asTypedSequence(type,getObject(path)); } 

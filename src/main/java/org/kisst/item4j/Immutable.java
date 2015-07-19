@@ -165,15 +165,6 @@ public interface Immutable {
 
 	@SuppressWarnings("unchecked")
 	public static<T> Sequence<T> typedSequence(Class<?> cls, T ... obj) { return new Immutable.Sequence.ArraySequence<T>(cls, obj); }
-	public static<T> Sequence<T> typedSequence(Class<?> cls, Immutable.ItemSequence seq) {
-		@SuppressWarnings("unchecked")
-		T[] arr=(T[]) new Object[seq.size()];
-		int i=0;
-		for (Item item : seq.items())
-			arr[i++]=item.asType(cls);
-		return new Immutable.Sequence.ArraySequence<T>(cls, arr);
-	}
-
 
 	public abstract class Sequence<T> implements TypedSequence<T>, RandomAccess, Immutable  {
 		private final Class<?> elementClass;
@@ -184,24 +175,18 @@ public interface Immutable {
 		public Sequence<T> subsequence(int start, int end) { return new SubSequence<T>(this, start, end); }
 		public Sequence<T> subsequence(int start) { return subsequence(start, size()); }
 
-/*		public static <E> Sequence<E> realCopy(TypedSequence<? extends E> seq) {
-			E[] arr = createArray(seq.size());
-			int i=0; for (E obj : seq) arr[i++]=obj;
-			return new ArraySequence<E>(seq.getElementClass(), arr);
-		}
-*/
 		@SuppressWarnings("unchecked")
 		public static <E> Sequence<E> realCopy(Class<?> type, org.kisst.item4j.seq.ItemSequence seq) {
 			E[] arr = createArray(seq.size());
 			int i=0; 
 			for (Object obj: seq.objects())
-				arr[i++]= (E) org.kisst.item4j.Item.asType(type, obj); 
-			return new ArraySequence<E>(type, arr);
+				arr[i++]= (E) Item.asType(type, obj); 
+			return new Immutable.Sequence.ArraySequence<E>(type, arr);
 		}
 		public static <E> Sequence<E> realCopy(Class<?> elementClass, Collection<? extends E> collection) {
 			E[] arr = createArray(collection.size());
 			int i=0; for (E obj : collection) arr[i++]=obj;
-			return new ArraySequence<E>(elementClass, arr);
+			return new Immutable.Sequence.ArraySequence<E>(elementClass, arr);
 		}
 
 		@SuppressWarnings("unchecked")

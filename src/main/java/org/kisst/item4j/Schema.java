@@ -115,41 +115,41 @@ public class Schema<T> implements Type<T> {
 	public class StringField extends Field{ //implements Schema.StringField{
 		public StringField(String name) {	super(Type.javaString, name); }
 		public StringField(Builder builder) { super(builder); }
-		@Override public String getString(Struct s) { return s.getString(getName()); }
+		@Override public String getString(Struct s) { return s.getString(getName(),null); }
 	}
 	public class BooleanField extends Field {//implements Schema.BooleanField {
 		public BooleanField(String name) { super(Type.javaBoolean, name); }
 		public BooleanField(Builder builder) { super(builder); }
-		public boolean getBoolean(Struct s) { return s.getBoolean(getName()); }
+		public boolean getBoolean(Struct s) { return s.getBoolean(getName(),false); }
 	}
 	public class IntField extends Field {//implements Schema.IntegerField {
 		public IntField(String name) { super(Type.javaInteger, name); }
 		public IntField(Builder builder) { super(builder); }
-		public int getInt(Struct s) { return s.getInt(getName()); }
+		public int getInt(Struct s) { return s.getInteger(getName(),0); }
 	}
 	public class LongField extends Field { //implements Schema.LongField{
 		public LongField(String name) { super(Type.javaLong, name); }
 		public LongField(Builder builder) { super(builder); }
-		public long getLong(Struct s) { return s.getLong(getName()); }
+		public long getLong(Struct s) { return s.getLong(getName(),0); }
 	}
 	public class LocalDateField extends Field { // implements Schema.DateField {
 		public LocalDateField(String name) { super(Type.javaLocalDate, name); }
 		public LocalDateField(Builder builder) { super(builder); }
-		public LocalDate getLocalDate(Struct s) { return s.getLocalDate(getName()); }
+		public LocalDate getLocalDate(Struct s) { return s.getLocalDate(getName(),null); }
 	}
 	public class LocalTimeField extends Field { // implements Schema.DateField {
 		public LocalTimeField(String name) { super(Type.javaLocalTime, name); }
 		public LocalTimeField(Builder builder) { super(builder); }
-		public LocalTime getLocalTime(Struct s) { return s.getLocalTime(getName()); }
+		public LocalTime getLocalTime(Struct s) { return s.getLocalTime(getName(),null); }
 	}
 	public class LocalDateTimeField extends Field { // implements Schema.DateField {
 		public LocalDateTimeField(String name) { super(Type.javaLocalDateTime, name); }
 		public LocalDateTimeField(Builder builder) { super(builder); }
-		public LocalDateTime getLocalDateTime(Struct s) { return s.getLocalDateTime(getName()); }
+		public LocalDateTime getLocalDateTime(Struct s) { return s.getLocalDateTime(getName(),null); }
 	}
 	public class InstantField extends Field { // implements Schema.DateField {
 		public InstantField(String name) { super(Type.javaLocalDate, name); }
 		public InstantField(Builder builder) { super(builder); }
-		public Instant getInstant(Struct s) { return s.getInstant(getName()); }
+		public Instant getInstant(Struct s) { return s.getInstant(getName(),null); }
 	}
 }
