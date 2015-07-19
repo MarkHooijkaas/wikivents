@@ -1,5 +1,5 @@
 unknown user with cookie can still create activity: userid is not checked
-logout page
+show organizer name
 guests
 comments
 custom form templates
