@@ -1,5 +1,19 @@
 {{> header}}
 
+
+{{#if user}}
+Je bent ingelogd als {{user.username}}
+
+<form role="form" method="post" action="/LoginPage">
+  <div class="checkbox">
+    <label>Wil je uitloggen?</label>
+  </div>
+  <input type="hidden" name="logout" value="true"/>
+  <button type="submit" class="btn btn-default">Uitloggen</button>
+</form>
+
+{{else}}
+
 <form role="form" method="post" action="/LoginPage">
   <div class="form-group">
     <label for="email">Username:</label>
@@ -14,6 +28,10 @@
   </div>
   <button type="submit" class="btn btn-default">Submit</button>
 </form>
+
+{{/if}}
+
+
 {{message}}
 
 {{> footer}}

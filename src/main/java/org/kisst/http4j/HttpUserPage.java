@@ -23,11 +23,15 @@ public abstract class HttpUserPage extends HttpBasicPage {
 		return null;
 	}
 
+	public void clearCookie(HttpServletResponse response) {
+		Cookie cookie = new Cookie(COOKIE_NAME, null);
+		cookie.setMaxAge(0);
+		response.addCookie(cookie);		
+	}
+
 	public void setCookie(HttpServletResponse response, String userid) {
 		Cookie cookie = new Cookie(COOKIE_NAME, createCookieString(userid, System.currentTimeMillis()));
 		cookie.setMaxAge(LOGIN_DURATION);
-		//System.out.println("setting "+userid+" to "+cookie);
-
 		response.addCookie(cookie);		
 	}
 

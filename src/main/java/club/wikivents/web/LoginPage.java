@@ -4,24 +4,36 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.kisst.http4j.HttpRequestStruct;
+import org.kisst.http4j.handlebar.HttpHandlebarPage;
 import org.kisst.http4j.handlebar.HttpHandlebarSite.TemplateData;
 import org.kisst.item4j.struct.Struct;
 
 import club.wikivents.model.User;
+import club.wikivents.model.WikiventsModel;
 
-public class LoginPage extends TemplatePage implements WikiventsPage {
+public class LoginPage extends HttpHandlebarPage implements WikiventsPage {
 	private final Template loginForm;
+	private final WikiventsModel model;
 	
 	public LoginPage(WikiventsSite site) {
-		super(site, "../login.form");
+		super(site);
 		loginForm=createTemplate("login.form");
+		this.model=site.model;
 	}
 
+	@Override public WikiventsModel getModel() { return this.model; }
+
 	@Override public void handleGet(String path, HttpServletRequest request, HttpServletResponse response) {
+		System.out.println(getUser(request));
 		TemplateData data = createTemplateData(request);
 		loginForm.output(data, response);
 	}
 	@Override public void handlePost(String path, HttpServletRequest request, HttpServletResponse response) {
+		if ("true".equals(request.getParameter("logout"))) {
+			clearCookie(response);
+			redirect(response,"");
+			return;
+		}
 		Struct data=new HttpRequestStruct(request);
 		for (String field:data.fieldNames())
 			System.out.println(field+"="+data.getObject(field));
@@ -30,9 +42,9 @@ public class LoginPage extends TemplatePage implements WikiventsPage {
 		System.out.println("login from"+username+"  password:"+password);
 		String message="Unknown user";
 		for (User u: this.model.users) { // TODO: use index on username and on email
-			if (u.username.equals(username)) {
-				System.out.println("Found  "+u);
-				if (u.password.equals(password)) {
+			if (u.username.equals(username) || u.email.equals(username)) {
+				//System.out.println("Found  "+u);
+				if (u.password.equals(password) ) {
 					setCookie(response,u._id);
 					redirect(response,"/");
 					return;
@@ -48,5 +60,4 @@ public class LoginPage extends TemplatePage implements WikiventsPage {
 		loginForm.output(data2, response);
 		
 	}
-
 }
