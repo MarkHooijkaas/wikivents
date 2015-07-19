@@ -11,6 +11,8 @@ public interface StructStorage {
 	public void updateInStorage(Struct oldValue, Struct newValue);
 	public void deleteInStorage(Struct oldValue);
 	public TypedSequence<Struct> findAll();
+	public boolean useCache();
+	default public void close() {}
 	
 	public UniqueIndex useUniqueIndex(Schema<?>.Field ... fields);
 	public MultiIndex  useMultiIndex(Schema<?>.Field ... fields);
@@ -18,5 +20,4 @@ public interface StructStorage {
 	public interface UniqueIndex { public Struct get(String ... values);}
 	public interface MultiIndex { public TypedSequence<Struct> get(String...  values); }
 	//public interface OrderedIndex{ public Sequence<Struct> get(String field); }
-
 }

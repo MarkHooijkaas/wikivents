@@ -23,17 +23,25 @@ public class FileStorage implements StructStorage {
 	private final CrudSchema<?>.IdField keyField;
 	private final ArrayList<Index> indices=new ArrayList<Index>();
 	private final CrudSchema<?> schema;
+	private final boolean useCache;
 
 	
-	public FileStorage(CrudSchema<?> schema, File maindir) {
+	public FileStorage(CrudSchema<?> schema, File maindir, boolean useCache) {
 		this.schema=schema;
 		this.keyField = schema.getKeyField();
 		this.name=schema.cls.getSimpleName();
+		this.useCache=useCache;				
 		dir=new File(maindir,name);
 		if (! dir.exists())
 			dir.mkdirs();
 		//loadAllRecords();
+		
 	}
+	public FileStorage(CrudSchema<?> schema, Struct props) {
+		this(schema,new File(props.getString("datadir", "data")),props.getBoolean("useCache",true)); 
+	}
+	@Override public boolean useCache() { return useCache;}
+
 	@Override public Class<?> getRecordClass() { return schema.cls; }
 	public Index addIndex(Index idx) { indices.add(idx); return idx; }
 	
@@ -164,5 +172,4 @@ public class FileStorage implements StructStorage {
 			throw e;
 		}
 	}
-	
 }

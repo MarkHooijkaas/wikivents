@@ -23,5 +23,10 @@ public class WikiventsModel extends CrudModel implements Item.Factory {
 			return cast(events.createRef(data.getString("_id")));
 		return basicFactory.construct(cls, data);
 	}
-	@Override public <T> T construct(Class<?> cls, String data) { return basicFactory.construct(cls, data);} 
+	@Override public <T> T construct(Class<?> cls, String data) { return basicFactory.construct(cls, data);}
+
+	public void close() {
+		users.close();
+		events.close();
+	}
 }

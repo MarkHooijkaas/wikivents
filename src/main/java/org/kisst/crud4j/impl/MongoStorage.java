@@ -15,17 +15,23 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.DuplicateKeyException;
+import com.mongodb.MongoClient;
 
 public class MongoStorage implements StructStorage {
+
 	private final DBCollection collection;
 	private final CrudSchema<?>.IdField keyField;
 	private final CrudSchema<?> schema;
+	private final boolean useCache;
 	
-	public MongoStorage(CrudSchema<?> schema, DB db) {
+	public MongoStorage(CrudSchema<?> schema, Struct props) {
 		this.schema=schema;
-		this.collection=db.getCollection(schema.cls.getSimpleName());
+		this.collection=getMongoDB(props).getCollection(schema.cls.getSimpleName());
 		this.keyField=schema.getKeyField();
+		this.useCache=props.getBoolean("useCache",false);
 	}
+	@Override public boolean useCache() { return this.useCache; }
+	@Override public void close() { closeMongoDB(); }
 	@Override public Class<?> getRecordClass() { return schema.cls; }
 	@Override public String createInStorage(Struct value) {
 		MongoStruct doc = new MongoStruct(value);
@@ -114,5 +120,21 @@ public class MongoStorage implements StructStorage {
 		} 
 	}
 
+	private static MongoClient mongoClient;
+	private static DB db;
+	private static DB getMongoDB(Struct props) {
+		if (db!=null)
+			return db;
+		mongoClient = new MongoClient(props.getString("mongohost", "localhost"));
+		db = new DB(mongoClient,props.getString("mongodb", "wikivents"));
+		return db;
+	}
+	private static void closeMongoDB() {
+		if (mongoClient==null)
+			return;
+		mongoClient.close();
+		mongoClient=null;
+		db=null;
+	}
 
 }

@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Iterator;
 
 import org.kisst.item4j.Immutable;
 import org.kisst.item4j.Item;
@@ -12,8 +13,16 @@ import org.kisst.util.ReflectionUtil;
 
 public interface Struct {
 	public Iterable<String> fieldNames();
-	abstract public Object getDirectFieldValue(String name);
+	public Object getDirectFieldValue(String name);
 
+	public final static Struct EMPTY=new Struct() {
+		public final Iterable<String> fieldNames() { return new Iterable<String>() {
+			public Iterator<String> iterator() { return new Iterator<String>(){
+				@Override public final boolean hasNext() { return false; }
+				@Override public final String next() { return null;}
+		};}};};
+		public Object getDirectFieldValue(String name) { return UNKNOWN_FIELD;}
+	};
 	
 	default public Object getObject(String path, Object defaultValue) {
 		String name=path;

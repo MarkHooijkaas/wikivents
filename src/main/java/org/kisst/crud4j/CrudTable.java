@@ -17,17 +17,17 @@ public abstract class CrudTable<T extends CrudObject> implements TypedSequence<T
 	private final ConcurrentHashMap<String,T> cache;
 
 	private boolean alwaysCheckId=true;
-	public CrudTable(CrudSchema<T> schema, Item.Factory factory, StructStorage storage) { this(schema,factory,storage,true); } 
-	public CrudTable(CrudSchema<T> schema, Item.Factory factory, StructStorage storage, boolean useCache) { 
+	public CrudTable(CrudSchema<T> schema, Item.Factory factory, StructStorage storage) { 
 		this.schema=schema;
 		this.factory=factory;
 		this.storage=storage;
 		this.name=schema.cls.getSimpleName();
-		if (useCache)
+		if (storage.useCache())
 			cache=new ConcurrentHashMap<String,T>();
 		else
 			cache=null;
 		if (cache!=null) {
+			System.out.println("Loading all "+name+" records to cache");
 			TypedSequence<Struct> seq = storage.findAll();
 			for (Struct rec:seq) {
 				T obj=createObject(rec);
@@ -36,6 +36,7 @@ public abstract class CrudTable<T extends CrudObject> implements TypedSequence<T
 			}
 		}
 	}
+	public void close() { storage.close(); }
 	public CrudSchema<T> getSchema() { return schema; }
 	public String getName() { return name; }
 	public String getKey(T obj) { return getSchema().getKeyField().getString(obj); }

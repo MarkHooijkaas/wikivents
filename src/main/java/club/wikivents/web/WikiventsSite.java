@@ -9,40 +9,27 @@ import org.kisst.http4j.ResourceHandler;
 import org.kisst.http4j.handlebar.HttpHandlebarSite;
 import org.kisst.item4j.struct.Struct;
 
-import com.mongodb.DB;
-import com.mongodb.MongoClient;
-
 import club.wikivents.model.WikiventsModel;
 import club.wikivents.model.WikiventsModels;
 
 public class WikiventsSite extends HttpHandlebarSite {
 	public final WikiventsModel model;
-	private MongoClient mongoClient=null;
 	public final HttpPageMap pages;
 	
 	public WikiventsSite(Struct props) {
 		super(props);
-		String storage = props.getString("storage", "file");
-		if ("file".equals(storage))
-			this.model=WikiventsModels.createFileModel(new File(props.getString("datadir", "data")));
-		else if ("mongo".equals(storage)) {
-			mongoClient = new MongoClient(props.getString("mongohost", "localhost"));
-			DB db = new DB(mongoClient,props.getString("mongodb", "wikivents"));
-			this.model=WikiventsModels.createMongoModel(db);
-		}
-		else
-			throw new RuntimeException("Unknown storage type "+storage);
+		this.model=WikiventsModels.createModel(props);
 
 		pages=new HttpPageMap("",new TemplatePage(this, "404"))
 		.addHandler("", new TemplatePage(this, "home"))
 		.addPage(new TemplatePage(this, "users"))
-		//.addPage(new TemplatePage(this, "user/*"))
 		.addPage(new TemplatePage(this, "events"))
 		.addPage(new UserCrudPage(this))
 		.addPage(new EventCrudPage(this))
-		//.addPage(new EventPage(this))
 		.addPage(new LoginPage(this))
 		.addHandler("resources/*", new ResourceHandler(new ResourceHandler.FileResourceFinder(new File("src/resources"))))
 		.addHandler("/favicon.ico", new ResourceHandler(new ResourceHandler.FileResourceFinder(new File("src/resources/favicon.ico"))));
 	}
+
+	public void close() { model.close(); }
 }

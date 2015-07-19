@@ -8,30 +8,24 @@ import org.kisst.props4j.SimpleProps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mongodb.DB;
-import com.mongodb.MongoClient;
-
-import club.wikivents.model.WikiventsModel;
-import club.wikivents.model.WikiventsModels;
 import club.wikivents.web.WikiventsSite;
 
 public class Runner {
 	final static Logger logger=LoggerFactory.getLogger(Runner.class); 
 	private final SimpleProps props=new SimpleProps();
 	private final HttpServer server;
-	//private final WikiventsModel model;
-	static MongoClient mongoClient = null;
+	private final WikiventsSite site;
 	
 	public Runner(String configfile) {
-		//this.model=mongoModel();
 		props.load(new File(configfile));
-		WikiventsSite site=new WikiventsSite(props);
+		this.site=new WikiventsSite(props.getProps("wikivents"));
 		this.server = new HttpServer(props, site.pages);
 		
 	}
 	public void run() {
 		server.startListening();
 		server.join();
+		site.close();
 	}
 	
 	public static void main(String[] args) {
@@ -42,11 +36,5 @@ public class Runner {
 		System.out.println("End INIT: "+(System.currentTimeMillis()-ts));
 		runner.run();
 		System.out.println("SITE stopped");
-	}
-	
-	public static WikiventsModel mongoModel() {
-		mongoClient = new MongoClient("localhost");
-		DB db = new DB(mongoClient,"wikivents");
-		return WikiventsModels.createMongoModel(db);
 	}
 }
