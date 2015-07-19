@@ -1,0 +1,14 @@
+unknown user with cookie can still create activity: userid is not checked
+logout page
+guests
+comments
+custom form templates
+multiple skins
+jar file with resources
+
+
+
+friends
+groups
+references
+immutable struct
