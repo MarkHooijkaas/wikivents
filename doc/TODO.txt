@@ -5,7 +5,7 @@ comments
 custom form templates
 multiple skins
 jar file with resources
-
+logging
 
 
 friends

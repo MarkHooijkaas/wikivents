@@ -18,20 +18,28 @@ import com.github.jknack.handlebars.context.FieldValueResolver;
 import com.github.jknack.handlebars.context.JavaBeanValueResolver;
 import com.github.jknack.handlebars.context.MapValueResolver;
 import com.github.jknack.handlebars.context.MethodValueResolver;
+import com.github.jknack.handlebars.io.ClassPathTemplateLoader;
 import com.github.jknack.handlebars.io.FileTemplateLoader;
+import com.github.jknack.handlebars.io.CompositeTemplateLoader;
 
 public class HttpHandlebarSite {
 	public final Struct props;
-	public final boolean debug;
+	public final boolean loadDynamic;
+	private final Handlebars handlebar;
 	
 	public HttpHandlebarSite(Struct props) {
 		this.props=props;
-		this.debug=props.getBoolean("debug",true);
+		this.loadDynamic=props.getBoolean("loadDynamic",false); // TODO: handlebars seems to load dynamically always
+		String dir=props.getString("file.dir", null);
+		System.out.println(props);
+		ClassPathTemplateLoader cp = new ClassPathTemplateLoader("/templates/",".template");
+		if (dir==null)
+			this.handlebar=new Handlebars(cp);
+		else
+			this.handlebar=new Handlebars(new CompositeTemplateLoader(new FileTemplateLoader(dir,".template"),cp));
 	}
-	
-	
-	
-	private final Handlebars handlebar=new Handlebars(new FileTemplateLoader("src/templates",".template"));
+
+
 	public CompiledTemplate compileTemplate(String templateName) { return new CompiledTemplate(templateName); }
 	private Template compile(String templateName) {
 		try {
@@ -49,7 +57,7 @@ public class HttpHandlebarSite {
 		}
 		public String toString(TemplateData context) {
 			Template tmpl = template;
-			if (debug)
+			if (loadDynamic)
 				tmpl=compile(name);
 			try { 
 			    return tmpl.apply(context.builder.build());

@@ -17,7 +17,7 @@ public class WikiventsSite extends HttpHandlebarSite {
 	public final HttpPageMap pages;
 	
 	public WikiventsSite(Struct props) {
-		super(props);
+		super(props.getStruct("handlebars",Struct.EMPTY));
 		this.model=WikiventsModels.createModel(props);
 
 		pages=new HttpPageMap("",new TemplatePage(this, "404"))

@@ -7,7 +7,7 @@
 	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="/resources/datepicker/css/datepicker.css">
     <link rel="stylesheet" href="/resources/datepicker/less/datepicker.less">
- 	
+
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
@@ -26,11 +26,10 @@
         <li><a href="/events">Alle activiteiten</a></li>
         <li><a href="/users">Alle gebruikers</a></li>
         <li><a href="/user/">Mijn Profiel</a></li>
-        <li><a href="/event/">Maak een activiteit</a></li> 
-        <li><a href="/LoginPage">Login</a></li> 
+				<li><a href="/event/">Maak een activiteit</a></li>
+        <li><a href="/LoginPage">Login</a></li>
       </ul>
     </div>
   </div>
 </nav>
-
 <div class="container-fluid">
