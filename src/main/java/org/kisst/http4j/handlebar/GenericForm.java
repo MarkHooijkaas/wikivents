@@ -83,9 +83,10 @@ public class GenericForm {
 		}
 		public String renderEdit(Struct data) {
 			TemplateData context = new TemplateData(this);
+			//System.out.println("Rendering "+this.getClass()+" field "+name+" from "+data);
 			String value = field.getString(data);
 			context.add("value", value);
-			System.out.println("Rendering field "+name+" to "+value);
+			//System.out.println("Rendering field "+name+" to "+value);
 			return templateEdit.toString(context);
 		}
 		public String renderShow(Struct data) {

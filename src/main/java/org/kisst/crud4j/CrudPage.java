@@ -15,7 +15,7 @@ import org.kisst.item4j.struct.Struct;
 public class CrudPage<T extends CrudObject> extends HttpHandlebarPage  {
 	private final Template show;
 	private final GenericForm form;
-	private final CrudTable<T> table;
+	protected final CrudTable<T> table;
 	private final String name;
 			
 	public CrudPage(HttpHandlebarSite site, CrudTable<T> table, GenericForm form) {
@@ -34,7 +34,7 @@ public class CrudPage<T extends CrudObject> extends HttpHandlebarPage  {
 			// GET a form to create new Event
 			form.outputEdit(data, input, response);
 		}
-		if ( path.startsWith("edit/")) {
+		else if ( path.startsWith("edit/")) {
 			path=path.substring(5);
 			T rec=table.read(path);
 			String user = ensureUserId(request,response);
@@ -67,10 +67,10 @@ public class CrudPage<T extends CrudObject> extends HttpHandlebarPage  {
 		Struct input=new HttpRequestStruct(request);
 		if (path==null || path.equals("") || path.equals("new")) {
 			HashStruct data = new HashStruct(input);
-			//String id = ensureUserId(request,response);
-			// TODO: data.put(schema.organizer.getName(),id);
+			addNewItemData(data, request, response);
 			T rec=table.createObject(data);
 			table.create(rec);
+			redirect(response,"/"+name+"/"+rec._id);
 		}
 		else { 
 			if ( path.startsWith("edit/")) 
@@ -85,5 +85,7 @@ public class CrudPage<T extends CrudObject> extends HttpHandlebarPage  {
 			redirect(response,"/"+name+"/"+newRecord._id);
 		}
 	}
+
+	protected void addNewItemData(HashStruct data, HttpServletRequest request,HttpServletResponse response) {}
 
 }

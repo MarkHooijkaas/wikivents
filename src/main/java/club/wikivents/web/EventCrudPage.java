@@ -1,11 +1,19 @@
 package club.wikivents.web;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.kisst.crud4j.CrudPage;
 import org.kisst.http4j.handlebar.GenericForm;
+import org.kisst.item4j.struct.HashStruct;
 
 import club.wikivents.model.Event;
+import club.wikivents.model.User;
+import club.wikivents.model.WikiventsModel;
 
 public class EventCrudPage extends CrudPage<Event> {
+
+	private WikiventsModel model;
 
 	public EventCrudPage(WikiventsSite site) {
 		super(site, site.model.events,
@@ -17,6 +25,13 @@ public class EventCrudPage extends CrudPage<Event> {
 				.addField(Event.schema.location, "Plaats")
 				.addTextAreaField(Event.schema.description, "Omschrijving",10)
 			);
+		this.model=site.model;
+	}
+
+	@Override protected void addNewItemData(HashStruct data, HttpServletRequest request, HttpServletResponse response) {
+		String userid = ensureUserId(request,response);
+		User.Table.Ref user=model.users.createRef(userid);
+		data.put(Event.schema.organizer.getName(),user);
 	}
 
 }

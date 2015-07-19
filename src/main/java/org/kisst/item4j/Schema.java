@@ -74,7 +74,7 @@ public class Schema<T> implements Type<T> {
 			this.field=ReflectionUtil.getField(getType().getJavaClass(), getName());
 		}
 		public Object getObject(Struct s) { 
-			Object result = s.getObject(getName());
+			Object result = s.getObject(getName(),null);
 			if (result==null)
 				return defaultValue;
 			return result;
