@@ -51,7 +51,11 @@ public abstract class CrudTable<T extends CrudObject> implements TypedSequence<T
 	public T read(String key) { 
 		if (cache!=null)
 			return cache.get(key);
-		return createObject(storage.readFromStorage(key));
+		Struct rec = storage.readFromStorage(key);
+		T obj = createObject(rec);
+		//System.out.println("struct "+rec.getClass()+"="+rec);
+		//System.out.println("object "+obj.getClass()+"="+obj);
+		return obj;
 	}
 	public void update(T oldValue, T newValue) {
 		checkSameId(oldValue, newValue);
@@ -70,7 +74,7 @@ public abstract class CrudTable<T extends CrudObject> implements TypedSequence<T
 	public class Ref {
 		public final String _id;
 		protected Ref(String id) {this._id=id;}
-		public T get() {return read(_id); }
+		public T get() {System.out.println("searching "+_id);return read(_id); }
 		public CrudTable<T> getTable() { return CrudTable.this; }
 		@Override public boolean equals(Object obj) {
 			if (obj==this)

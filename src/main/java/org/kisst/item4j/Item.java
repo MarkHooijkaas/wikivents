@@ -124,6 +124,12 @@ public interface Item {
 	
 	public static <T> T asType(Class<?> cls, Object obj) {
 		if (obj==null) return null;
+		System.out.println("Converting "+obj+" to "+cls);
+		if (obj instanceof Struct) {
+			Object result = Schema.globalFactory.construct(cls,(Struct)obj);
+			System.out.println("result is "+result.getClass()+" "+result);
+			return cast(result);
+		}
 		//if (cls.isAssignableFrom(obj.getClass()))
 		return cast(obj);
 	}
@@ -145,6 +151,7 @@ public interface Item {
 		public <T> T construct(Class<?> cls, String data);
 		
 		public final static BasicFactory basicFactory=new BasicFactory();
+		
 		public class BasicFactory implements Factory {
 			public<T> T construct(Class<?> cls, Struct data){
 				Constructor<?> c = ReflectionUtil.getFirstCompatibleConstructor(cls, new Class<?>[]{data.getClass()});

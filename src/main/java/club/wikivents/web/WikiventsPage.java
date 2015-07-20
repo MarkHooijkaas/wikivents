@@ -24,11 +24,11 @@ public interface WikiventsPage {
 	
 	default public User getUser(HttpServletRequest request) {
 		String id = getUserId(request);
-		System.out.println("searching user: "+id);
+		//System.out.println("searching user: "+id);
 		if (id==null)
 			return null;
 		User user = getModel().users.read(id);
-		System.out.println("recognized user: "+user);
+		//System.out.println("recognized user: "+user);
 		return user;
 	}
 

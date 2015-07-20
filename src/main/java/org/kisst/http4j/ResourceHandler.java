@@ -130,7 +130,7 @@ public class ResourceHandler implements HttpHandler {
 		private class FileResource implements Resource {
 			private final File file;
 			public FileResource(String name) { this.file=new File(dir,name); 
-				System.out.println(file.getAbsolutePath());
+				//System.out.println(file.getAbsolutePath());
 			}
 			@Override public String getFileName() { return file.getName();}
 			@Override public long getLastModified() { return file.lastModified();}

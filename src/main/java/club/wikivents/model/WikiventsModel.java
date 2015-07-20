@@ -3,6 +3,7 @@ package club.wikivents.model;
 import org.kisst.crud4j.CrudModel;
 import org.kisst.crud4j.StructStorage;
 import org.kisst.item4j.Item;
+import org.kisst.item4j.Schema;
 import org.kisst.item4j.struct.Struct;
 
 
@@ -10,7 +11,10 @@ public class WikiventsModel extends CrudModel implements Item.Factory {
 	public final User.Table users=new User.Table(getStorage(User.class), this);
 	public final Event.Table events=new Event.Table(getStorage(Event.class),this);
 	
-	public WikiventsModel(StructStorage ... tables){ super(tables); }
+	public WikiventsModel(StructStorage ... tables){ 
+		super(tables);
+		Schema.globalFactory=this;
+	}
 
 	@Override public <T> T construct(Class<?> cls, Struct data) {
 		if (Event.class==cls)

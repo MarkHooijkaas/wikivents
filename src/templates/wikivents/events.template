@@ -5,6 +5,7 @@
       <tr>
         <th>Datum</th>
         <th>Organisator</th>
+        <th>Organisator naam</th>
         <th>activiteit</th>
         <th>plaats</th>
       </tr>
@@ -13,7 +14,8 @@
 {{#each model.events}}  
       <tr>
         <td>{{date}}</td>
-        <td>{{organizer.get.username}}</td>
+        <td>{{organizer}}</td>
+        <td>{{organizer.get2.username}}</td>
         <td><a href="event/{{_id}}">{{title}}</a></td>
         <td>{{location}}</td>
       </tr>
