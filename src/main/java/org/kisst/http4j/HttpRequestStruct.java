@@ -8,7 +8,8 @@ public class HttpRequestStruct implements Struct {
 	private final HttpServletRequest request;
 	
 	public HttpRequestStruct(HttpServletRequest request) {this.request=request;	} 
-	
+	public HttpRequestStruct(HttpCall call) { this(call.request);}
+
 	@Override public String toString() { return toShortString(); }
 	@Override public Object getDirectFieldValue(String name) { return request.getParameter(name); }
 	@SuppressWarnings("unchecked")
