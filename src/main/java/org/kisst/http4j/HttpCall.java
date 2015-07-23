@@ -19,18 +19,18 @@ public class HttpCall {
 		this.path=path;
 	}
 	
-	public void handle() {
+	public void handle(String subPath) {
 		String method = request.getMethod();
 		if ("GET".equals(method))
-			handleGet();
+			handleGet(subPath);
 		else if ("POST".equals(method))
-			handlePost();
+			handlePost(subPath);
 		else
 			throw new RuntimeException("Unknown method type "+method);
 	}
 
-	public void handleGet() {}
-	public void handlePost() {}
+	public void handleGet(String subPath) {}
+	public void handlePost(String subPath) {}
 	
 	
 	public void output(String text) {

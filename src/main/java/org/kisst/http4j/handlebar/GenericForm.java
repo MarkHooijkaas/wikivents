@@ -3,20 +3,20 @@ package org.kisst.http4j.handlebar;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
-import javax.servlet.http.HttpServletResponse;
-
-import org.kisst.http4j.handlebar.HttpHandlebarSite.CompiledTemplate;
-import org.kisst.http4j.handlebar.HttpHandlebarSite.TemplateData;
+import org.kisst.http4j.HttpCall;
+import org.kisst.http4j.HttpForm;
+import org.kisst.http4j.handlebar.TemplateEngine.CompiledTemplate;
+import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
 import org.kisst.item4j.Schema;
 import org.kisst.item4j.struct.Struct;
 
-public class GenericForm {
-	private final HttpHandlebarSite site;
-	private final HttpHandlebarSite.CompiledTemplate template;
+public class GenericForm implements HttpForm {
+	private final TemplateEngine site;
+	private final TemplateEngine.CompiledTemplate template;
 	private final LinkedHashMap<String, Field> fields = new LinkedHashMap<String,Field>();
 
-	public GenericForm(HttpHandlebarSite site) { this(site,"generic/form"); }
-	public GenericForm(HttpHandlebarSite site, String templateName) {
+	public GenericForm(TemplateEngine site) { this(site,"generic/form"); }
+	public GenericForm(TemplateEngine site, String templateName) {
 		this.site=site;
 		this.template=this.site.compileTemplate(templateName);
 	}
@@ -35,15 +35,25 @@ public class GenericForm {
 			result.append(f.renderShow(data));
 		return result.toString(); 
 	}
+	/*
 	public void outputEdit(TemplateData context, Struct data, HttpServletResponse response) {
-		context.add("fields", renderEdit(data));
-		template.output(context, response); 
 	}
 	public void outputShow(TemplateData context, Struct data, HttpServletResponse response) {
 		context.add("fields", renderShow(data));
 		template.output(context, response); 
 	}
-
+*/
+	@Override public void showViewPage(HttpCall call, Struct data) {
+		
+		TemplateData context = new TemplateData(this);
+		context .add("fields", renderEdit(data));
+		call.output(template.toString(context)); 
+	}
+	@Override
+	public void showEditPage(HttpCall call, Struct data) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	public GenericForm addField(Schema<?>.Field field, String label) { 
 		fields.put(field.getName(), new TextField(field,label));

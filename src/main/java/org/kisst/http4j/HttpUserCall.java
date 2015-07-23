@@ -6,13 +6,48 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.kisst.http4j.HttpServer.HttpException;
 import org.kisst.util.Base64;
 
-public abstract class HttpUserPage extends HttpBasicPage {
+public class HttpUserCall extends HttpCall{
 	private static final String COOKIE_NAME = "Hooi4jUser";
 	private static final int LOGIN_DURATION= 7*24*60*60; // a week in seconds
+
+	//public final T user;
+	public final String userid;
 	
-	public String getUserId(HttpServletRequest request) {
+	public HttpUserCall(String path, HttpServletRequest request,HttpServletResponse response) {
+		super(path, request, response);
+		this.userid=getUserId();
+	}
+
+	public HttpUserCall(HttpCall call) {
+		super(call,call.path);
+		this.userid=getUserId();
+	}
+
+	public void ensureUser() {
+		if (userid==null)
+			throw new UnauthorizedException("Not Authenticated user");
+	}
+	public void ensureUser(String userId) {
+		if (userid== null || ! userid.equals(userId))
+			throw new UnauthorizedException("Not Authorized expected "+userId+" but got "+userid);
+	}
+	
+	public void clearCookie() {
+		Cookie cookie = new Cookie(COOKIE_NAME, null);
+		cookie.setMaxAge(0);
+		response.addCookie(cookie);		
+	}
+
+	public void setCookie(String userid) {
+		Cookie cookie = new Cookie(COOKIE_NAME, createCookieString(userid, System.currentTimeMillis()));
+		cookie.setMaxAge(LOGIN_DURATION);
+		response.addCookie(cookie);		
+	}
+
+	private String getUserId() {
 		Cookie[] cookies = request.getCookies();
 		if (cookies==null)
 			return null;
@@ -22,19 +57,6 @@ public abstract class HttpUserPage extends HttpBasicPage {
 		}
 		return null;
 	}
-
-	public void clearCookie(HttpServletResponse response) {
-		Cookie cookie = new Cookie(COOKIE_NAME, null);
-		cookie.setMaxAge(0);
-		response.addCookie(cookie);		
-	}
-
-	public void setCookie(HttpServletResponse response, String userid) {
-		Cookie cookie = new Cookie(COOKIE_NAME, createCookieString(userid, System.currentTimeMillis()));
-		cookie.setMaxAge(LOGIN_DURATION);
-		response.addCookie(cookie);		
-	}
-
 	
 	
 	private String decodeCookie(String cookie) {
@@ -60,7 +82,7 @@ public abstract class HttpUserPage extends HttpBasicPage {
 			return null; // invalid cookie
 	}
 	
-	public static final String createCookieString(String userid, long time) {
+	private static final String createCookieString(String userid, long time) {
 		byte[] bytes = userid.getBytes();
 		byte[] hash = Long.toHexString(time).getBytes();
 		for (int i=0; i<bytes.length; i++)
@@ -68,16 +90,8 @@ public abstract class HttpUserPage extends HttpBasicPage {
 		String signature=Base64.encodeBytes(bytes); // TODO: better signature
 		return Base64.encodeBytes((userid+":"+time+":"+signature).getBytes());
 	}
-	public String ensureUserId(HttpServletRequest req, HttpServletResponse resp) {
-		String id=getUserId(req);
-		if (id==null)
-			throw new HttpServer.UnauthorizedException("Not Autheticated user");
-		return id;
-	}
-	public String ensureUserId(HttpServletRequest req, HttpServletResponse resp,String userId) {
-		String id=ensureUserId(req,resp);
-		if (id.equals(userId))
-			return id;
-		throw new HttpServer.UnauthorizedException("Not Authorized expected "+userId+" but got "+id);
+	public static class UnauthorizedException extends HttpException {
+		private static final long serialVersionUID = 1L;
+		public UnauthorizedException(String msg) {super(HttpServletResponse.SC_UNAUTHORIZED, msg); } 
 	}
 }

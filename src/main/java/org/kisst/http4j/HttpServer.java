@@ -19,9 +19,9 @@ public class HttpServer extends AbstractHandler {
 
 	private Server server=null;
 	protected final Struct props;
-	private final HttpHandler handler;
+	private final HttpCallHandler<HttpCall> handler;
 
-	public HttpServer(Struct props, HttpHandler handler) {
+	public HttpServer(Struct props, HttpCallHandler<HttpCall> handler) {
 		this.props=props;
 		this.handler=handler;
 	}
@@ -60,12 +60,11 @@ public class HttpServer extends AbstractHandler {
 		} catch (Exception e) { throw new RuntimeException(e);}
 	}
 
-	
-	public void handle(String target,Request baseRequest,HttpServletRequest request,HttpServletResponse response) 
-	{
-		String path=request.getRequestURI();
+	public void handle(String path, Request baseRequest , HttpServletRequest request, HttpServletResponse response) {
 		try {
-			handler.handle(path, request, response);
+			String path2=request.getRequestURI();
+			HttpCall call=new HttpCall(path2,request,response);
+			handler.handle(call,path2);
 		}
         catch (Exception e) {
         	try {
@@ -99,9 +98,5 @@ public class HttpServer extends AbstractHandler {
 		public HttpException(int code, String msg) {super(msg); this.code=code; } 
 		public HttpException(int code, String msg, Throwable e) {super(msg, e); this.code=code; } 
 		public HttpException(int code, Throwable e) {super(e); this.code=code; } 
-	}
-	public static class UnauthorizedException extends HttpException {
-		private static final long serialVersionUID = 1L;
-		public UnauthorizedException(String msg) {super(HttpServletResponse.SC_UNAUTHORIZED, msg); } 
 	}
 }

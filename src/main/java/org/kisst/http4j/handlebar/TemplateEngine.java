@@ -4,9 +4,6 @@ package org.kisst.http4j.handlebar;
 
 import java.io.IOException;
 import java.io.PrintStream;
-import java.io.Writer;
-
-import javax.servlet.http.HttpServletResponse;
 
 import org.kisst.item4j.struct.Struct;
 
@@ -19,15 +16,15 @@ import com.github.jknack.handlebars.context.JavaBeanValueResolver;
 import com.github.jknack.handlebars.context.MapValueResolver;
 import com.github.jknack.handlebars.context.MethodValueResolver;
 import com.github.jknack.handlebars.io.ClassPathTemplateLoader;
-import com.github.jknack.handlebars.io.FileTemplateLoader;
 import com.github.jknack.handlebars.io.CompositeTemplateLoader;
+import com.github.jknack.handlebars.io.FileTemplateLoader;
 
-public class HttpHandlebarSite {
+public class TemplateEngine {
 	public final Struct props;
 	public final boolean loadDynamic;
 	private final Handlebars handlebar;
 	
-	public HttpHandlebarSite(Struct props) {
+	public TemplateEngine(Struct props) {
 		this.props=props;
 		this.loadDynamic=props.getBoolean("loadDynamic",false); // TODO: handlebars seems to load dynamically always
 		String dir=props.getString("file.dir", null);
@@ -61,14 +58,6 @@ public class HttpHandlebarSite {
 				tmpl=compile(name);
 			try { 
 			    return tmpl.apply(context.builder.build());
-			} 
-			catch (IOException e) { throw new RuntimeException(e);}
-		}
-
-		public void output(TemplateData context, HttpServletResponse response) {
-			try { //TODO: use autoclosable (Writer out = response.getWriter())	{
-				Writer out = response.getWriter();
-			    out.append(toString(context));
 			} 
 			catch (IOException e) { throw new RuntimeException(e);}
 		}

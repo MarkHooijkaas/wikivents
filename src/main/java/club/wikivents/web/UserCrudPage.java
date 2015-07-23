@@ -1,24 +1,18 @@
 package club.wikivents.web;
 
-import org.kisst.crud4j.CrudPage;
-import org.kisst.http4j.handlebar.GenericForm;
-
-import club.wikivents.model.User;
-import club.wikivents.model.WikiventsModel;
-
-public class UserCrudPage extends CrudPage<User> implements WikiventsPage {
-
-	private final  WikiventsModel model;
+public class UserCrudPage extends WikiventsPage {
 	public UserCrudPage(WikiventsSite site) {
-		super(site, site.model.users,
-			new GenericForm(site)
-				.addField(User.schema.username, "Gebruikersnaam")
-				.addEmailField(User.schema.email, "Email adres")
-				.addPasswordField(User.schema.password, "Wachtwoord")
-			);
-		this.model=site.model;
+		super(site);
+		
+			//new GenericForm(site)
+			//	.addField(User.schema.username, "Gebruikersnaam")
+			//	.addEmailField(User.schema.email, "Email adres")
+			//	.addPasswordField(User.schema.password, "Wachtwoord")
+			//);
 	}
-	@Override public WikiventsModel getModel() { return model;}
 
-
+	@Override public void handle(WikiventsCall call, String subPath) {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -1,31 +1,18 @@
 package org.kisst.http4j;
 
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-public abstract class HttpBasicPage implements HttpPage {
-	@Override public void handle(String path, HttpServletRequest request, HttpServletResponse response) {
-		String method = request.getMethod();
+public abstract class HttpBasicPage<T extends HttpCall> implements HttpCallHandler<T>{
+	@Override public void handle(T call, String subPath) {
+		String method = call.request.getMethod();
 		//System.out.println("handling "+method+" "+request.getRequestURI());
 		//System.out.println("handling "+method+" "+path);
 		if ("GET".equals(method))
-			handleGet(path, request,response);
+			handleGet(call, subPath);
 		else if ("POST".equals(method))
-			handlePost(path, request,response);
+			handlePost(call, subPath);
 		else
 			throw new RuntimeException("Unknown method type "+method);
 	}
 
-	public void handleGet(String path, HttpServletRequest request, HttpServletResponse response) {}
-	public void handlePost(String path, HttpServletRequest request, HttpServletResponse response) {}
-	
-	public void redirect(HttpServletResponse response, String url) {
-		try {
-			response.sendRedirect(url);
-		}
-		catch (IOException e) { throw new RuntimeException(e);}
-	}
-	
+	public void handleGet(HttpCall call, String subPath) {}
+	public void handlePost(HttpCall call, String subPath) {}
 }

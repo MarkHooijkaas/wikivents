@@ -16,11 +16,10 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-public class ResourceHandler implements HttpHandler {
+public class ResourceHandler<T extends HttpCall> implements HttpCallHandler<T> {
 	private static final long ONE_SECOND_IN_MILLIS = TimeUnit.SECONDS.toMillis(1);
 	private static final String ETAG_HEADER = "W/\"%s-%s\"";
 	private static final String CONTENT_DISPOSITION_HEADER = "inline;filename=\"%1$s\"; filename*=UTF-8''%1$s";
@@ -30,9 +29,9 @@ public class ResourceHandler implements HttpHandler {
 
 	private final ResourceFinder finder;
 	public ResourceHandler(ResourceFinder finder) { this.finder=finder; } 
-	public void handle(String subPath, HttpServletRequest request, HttpServletResponse response) {
+	public void handle(HttpCall call, String subPath) {
 		try {
-			response.reset();
+			call.response.reset();
 			Resource resource=finder.findResource(subPath);
 			//System.out.println("found "+subPath+"==> "+resource.getContentLength()+" bytes");
 			
@@ -42,33 +41,33 @@ public class ResourceHandler implements HttpHandler {
 			//}
 
 			String fileName = URLEncoder.encode(resource.getFileName(), StandardCharsets.UTF_8.name());
-			boolean notModified = setCacheHeaders(request, response, fileName, resource.getLastModified());
+			boolean notModified = setCacheHeaders(call, fileName, resource.getLastModified());
 
 			if (notModified) {
-				response.sendError(HttpServletResponse.SC_NOT_MODIFIED);
+				call.response.sendError(HttpServletResponse.SC_NOT_MODIFIED);
 				return;
 			}
-			setContentHeaders(response, fileName, resource.getContentLength());
+			setContentHeaders(call, fileName, resource.getContentLength());
 
-			if ("HEAD".equals(request.getMethod()))
+			if ("HEAD".equals(call.request.getMethod()))
 				return;
 
-			writeContent(response, resource);
+			writeContent(call, resource);
 		}
 		catch (IOException e) { throw new RuntimeException(e);}
 
 	}
 
-	private boolean setCacheHeaders(HttpServletRequest request, HttpServletResponse response, String fileName, long lastModified) {
+	private boolean setCacheHeaders(HttpCall call, String fileName, long lastModified) {
 		String eTag = String.format(ETAG_HEADER, fileName, lastModified);
-		response.setHeader("ETag", eTag);
-		response.setDateHeader("Last-Modified", lastModified);
-		response.setDateHeader("Expires", System.currentTimeMillis() + DEFAULT_EXPIRE_TIME_IN_MILLIS);
-		return notModified(request, eTag, lastModified);
+		call.response.setHeader("ETag", eTag);
+		call.response.setDateHeader("Last-Modified", lastModified);
+		call.response.setDateHeader("Expires", System.currentTimeMillis() + DEFAULT_EXPIRE_TIME_IN_MILLIS);
+		return notModified(call, eTag, lastModified);
 	}
 
-	private boolean notModified(HttpServletRequest request, String eTag, long lastModified) {
-		String ifNoneMatch = request.getHeader("If-None-Match");
+	private boolean notModified(HttpCall call, String eTag, long lastModified) {
+		String ifNoneMatch = call.request.getHeader("If-None-Match");
 
 		if (ifNoneMatch != null) {
 			String[] matches = ifNoneMatch.split("\\s*,\\s*");
@@ -76,26 +75,26 @@ public class ResourceHandler implements HttpHandler {
 			return (Arrays.binarySearch(matches, eTag) > -1 || Arrays.binarySearch(matches, "*") > -1);
 		}
 		else {
-			long ifModifiedSince = request.getDateHeader("If-Modified-Since");
+			long ifModifiedSince = call.request.getDateHeader("If-Modified-Since");
 			return (ifModifiedSince + ONE_SECOND_IN_MILLIS > lastModified); // That second is because the header is in seconds, not millis.
 		}
 	}
 
-	private void setContentHeaders(HttpServletResponse response, String fileName, long contentLength) {
+	private void setContentHeaders(HttpCall call, String fileName, long contentLength) {
 		try {
-			response.setHeader("Content-Type", Files.probeContentType(Paths.get(fileName)));
+			call.response.setHeader("Content-Type", Files.probeContentType(Paths.get(fileName)));
 		}
 		catch (IOException e) { throw new RuntimeException(e);}
-		response.setHeader("Content-Disposition", String.format(CONTENT_DISPOSITION_HEADER, fileName));
+		call.response.setHeader("Content-Disposition", String.format(CONTENT_DISPOSITION_HEADER, fileName));
 
 		if (contentLength != -1) {
-			response.setHeader("Content-Length", String.valueOf(contentLength));
+			call.response.setHeader("Content-Length", String.valueOf(contentLength));
 		}
 	}
 
-	private void writeContent(HttpServletResponse response, Resource resource) throws IOException {
+	private void writeContent(HttpCall call, Resource resource) throws IOException {
 		try (ReadableByteChannel inputChannel = Channels.newChannel(resource.getInputStream());
-				WritableByteChannel outputChannel = Channels.newChannel(response.getOutputStream());)
+				WritableByteChannel outputChannel = Channels.newChannel(call.response.getOutputStream());)
 		{
 			ByteBuffer buffer = ByteBuffer.allocateDirect(DEFAULT_STREAM_BUFFER_SIZE);
 			long size = 0;
@@ -106,8 +105,8 @@ public class ResourceHandler implements HttpHandler {
 				buffer.clear();
 			}
 
-			if (resource.getContentLength() == -1 && !response.isCommitted()) {
-				response.setHeader("Content-Length", String.valueOf(size));
+			if (resource.getContentLength() == -1 && !call.response.isCommitted()) {
+				call.response.setHeader("Content-Length", String.valueOf(size));
 			}
 		}
 	}
