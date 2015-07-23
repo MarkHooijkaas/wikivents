@@ -1,0 +1,73 @@
+When showing an event, the following templates will be tried:
+	1. event/event.show.template
+	2. form/show.template
+	3. a very simple internal editing template
+
+When editing an event, the following templates will be tried:
+	1. event/event.edit.template
+	2. form/edit.template
+	3. a very simple internal editing template
+
+The same mechanism is used for user templates, with in step 1, user/user.xxxx.template, instead of event.
+
+Each template will use handlebars.java as templating engine, for more information see:
+	http://jknack.github.io/handlebars.java/
+	
+Inside the template one can use the following constructs:
+	{{>header}}  includes a HTML header, which should be located in the toplevel directory
+	{{>footer}}  includes a HTML footer, which should be located in the toplevel directory
+	{{#each fields}} .... {{/each}} iterate over all the fields for a generic layout
+	{{<fieldname>}} e.g. {{title}} to access a specific field without iteration
+
+An event has the following fields:
+	- title
+	- date
+	- location
+	- min
+	- max
+	- description
+
+A user has the following fields:
+	- username
+	- email
+	- password
+
+Of each field (e.g. title) one can ask the value, and the following field properties
+	{{title.value}}
+	{{title.show}}
+	{{title.edit}}
+	{{title.field.name}}
+	{{title.field.label}}
+	{{title.field.type}}
+
+When iterating over all fields one should omit the fieldname as follows:
+	{{#each fields}}
+		{{value}}
+		{{show}}
+		{{edit}}
+		{{field.name}}
+		{{field.label}}
+		{{field.type}}
+	{{/each}}
+
+When using the show method (e.g. {{date.show}} or {{show}}) a template specific for the field type is used, as follows
+	1. event/event.field.show.<fieldtype>.template
+	2. form/field.show.<fieldtype>.template
+	3. event/event.field.show.template
+	4. form/field.show.template
+where <fieldtype> can be any of:
+	- TextField
+	- TextAreaField
+	- PasswordField
+	- EmailField
+	- DateField
+
+The same holds for the {{edit}} method, with show replaced by edit. Especially a DateField has special date picker logic for in a edit form
+
+When in the configuration
+	handlebars.loadDynamic=true
+the templates are reloaded whenever they are edited, so that you can test modifications without restarting.
+
+However, at startup of the application all templates are located, and it is decided which templates to use. 
+If you add or remove a template, you need to restart the application in order to use the new situation.
+	

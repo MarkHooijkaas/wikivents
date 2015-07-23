@@ -1,5 +1,6 @@
 package org.kisst.http4j.handlebar;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -12,6 +13,8 @@ import org.kisst.item4j.Schema;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.util.ReflectionUtil;
 
+import com.github.jknack.handlebars.Handlebars.SafeString;
+
 public abstract class GenericForm implements HttpForm {
 	private final CompiledTemplate defaultShowFieldTemplate;
 	private final CompiledTemplate defaultEditFieldTemplate;
@@ -19,31 +22,36 @@ public abstract class GenericForm implements HttpForm {
 	private final LinkedHashMap<String, Field> fields = new LinkedHashMap<String,Field>();
 	private final CompiledTemplate showTemplate;
 	private final CompiledTemplate editTemplate;
+	private final String prefix;
 
-	public GenericForm(TemplateEngine engine) {
+	public GenericForm(TemplateEngine engine) { this(engine,"");}
+	public GenericForm(TemplateEngine engine, String prefix) {
 		this.engine=engine;
+		this.prefix=prefix;
 		this.defaultShowFieldTemplate=engine.compile(
 				engine.compileInline("<tr><th>{{field.label}}</th><td>{{value}}</td></tr>\n"),
+				prefix+"field.show",
 				"form/field.show");
 		this.defaultEditFieldTemplate=engine.compile(
 				engine.compileInline("<tr><th>{{field.label}}</hd><td><input type=\"{{field.type}}\" name=\"{{field.name}}\" id=\"{{field.name}}\" value=\"{{value}}\"/></td></tr>\n"),
+				prefix+"field.edit",
 				"form/field.edit");
 		this.showTemplate=engine.compile(
 				engine.compileInline("{{>header}} <table>{{#each fields}} {{&show}} {{/each}}</table> {{>footer}}"),
+				prefix+"show",
 				"form/show");
 		this.editTemplate=engine.compile(
 				engine.compileInline("{{>header}} <form><table>{{#each fields}} {{&edit}} {{/each}}</table></form> {{>footer}}"),
+				prefix+"edit",
 				"form/edit");
 	}
 	public Iterator<Field> fields() { return fields.values().iterator(); }
 
 	@Override public void showViewPage(HttpCall call, Struct data) {
-		System.out.println("Showing view page with template "+showTemplate);
 		TemplateData context = new TemplateData(new Instance(data));
 		call.output(showTemplate.toString(context)); 
 	}
 	@Override public void showEditPage(HttpCall call, Struct data) {
-		System.out.println("Showing edit page with template "+editTemplate);
 		TemplateData context = new TemplateData(new Instance(data));
 		call.output(editTemplate.toString(context)); 
 	}
@@ -59,24 +67,25 @@ public abstract class GenericForm implements HttpForm {
 
 	
 	
-	public class Instance  {
+	public class Instance implements Struct {
+		private final LinkedHashMap<String,FieldValue> fieldvalues=new LinkedHashMap<String,FieldValue>(fields.size());
 		public class FieldValue {
 			public final Field field;
 			public FieldValue(Field f) { this.field=f;}
 			public String value() { return field.value(data);}
-			public String edit() { return field.templateEdit.toString(new TemplateData(this));}
-			public String show() { return field.templateShow.toString(new TemplateData(this)); }
+			public SafeString edit() { return new SafeString(field.templateEdit.toString(new TemplateData(this)));}
+			public SafeString show() { return new SafeString(field.templateShow.toString(new TemplateData(this))); }
 		}
 		public final Struct data;
-		public Instance(Struct data) { this.data=data;}
-		public GenericForm form() { return GenericForm.this;}
-		public FieldValue[] fields() {
-			FieldValue[] result=new FieldValue[fields.size()];
-			int i=0;
+		public Instance(Struct data) { 
+			this.data=data;
 			for (Field f: fields.values())
-				result[i++]=new FieldValue(f);
-			return result;
+				fieldvalues.put(f.name, new FieldValue(f));
 		}
+		public GenericForm form() { return GenericForm.this;}
+		public Collection<FieldValue> fields() { return fieldvalues.values(); }
+		@Override public Iterable<String> fieldNames() { return fieldvalues.keySet(); }
+		@Override public Object getDirectFieldValue(String name) { return fieldvalues.get(name); }
 	}
 	
 	public class Field {
@@ -89,8 +98,16 @@ public abstract class GenericForm implements HttpForm {
 			this.field=field;
 			this.name=field.getName();
 			this.label=label;
-			this.templateShow= engine.compile(defaultShowFieldTemplate,"form/field.show."+getClass().getSimpleName() );
-			this.templateEdit= engine.compile(defaultEditFieldTemplate,"form/field.edit."+getClass().getSimpleName() );
+			this.templateShow= engine.compile(
+				defaultShowFieldTemplate,
+				prefix+"field.show."+getClass().getSimpleName(),
+				"form/field.show."+getClass().getSimpleName()
+			);
+			this.templateEdit= engine.compile(
+				defaultEditFieldTemplate,
+				prefix+"field.edit."+getClass().getSimpleName(),
+				"form/field.edit."+getClass().getSimpleName()
+			);
 			System.out.println(this.name+",show="+this.templateShow+",edit="+this.templateEdit);
 		}
 		public String value(Struct data) { return field.getString(data); }

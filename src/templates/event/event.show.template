@@ -13,25 +13,19 @@
       </tr>
     </thead>
     <tbody>
+      {{date.show}}
       <tr>
-        <td>Datum</td>
-        <td>{{event.date}}</td>
+        <th>Min. aantal deelnemers</th>
+        <td>{{min.value}}</td>
       </tr>
       <tr>
-        <td>Minimum aantal deelnemers</td>
-        <td>{{event.min}}</td>
+        <th>Max. aantal deelnemers</th>
+        <td>{{max.value}}</td>
       </tr>
-      <tr>
-        <td>Maximum aantal deelnemers</td>
-        <td>{{event.max}}</td>
-      </tr>
-      <tr>
-        <td>Plaats</td>
-        <td>{{event.location}}</td>
-      </tr>
+      {{location.show}}
     </tbody>
   </table>
   
-  <div>{{event.description}}</div>
+  <div>{{description.value}}</div>
   
 {{> footer}}

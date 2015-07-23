@@ -11,7 +11,7 @@ public class UserCrudPage extends WikiventsPage {
 	private final HttpCrudHandler<User> handler;
 
 	public class Form extends GenericForm {
-		public Form(TemplateEngine engine) { super(engine); addAllFields(); }
+		public Form(TemplateEngine engine) { super(engine,"user/user."); addAllFields(); }
 		public final TextField username = new TextField(User.schema.username, "Gebruikersnaam");
 		public final EmailField email = new EmailField(User.schema.email, "Email adres");
 		public final PasswordField password = new PasswordField(User.schema.password, "Wachtwoord");

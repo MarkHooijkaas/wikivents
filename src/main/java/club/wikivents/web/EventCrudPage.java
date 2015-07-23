@@ -13,7 +13,7 @@ public class EventCrudPage extends WikiventsPage {
 	private final HttpCrudHandler<Event> handler;
 
 	public class Form extends GenericForm {
-		public Form(TemplateEngine engine) { super(engine); addAllFields(); }
+		public Form(TemplateEngine engine) { super(engine,"event/event."); addAllFields(); }
 		public final TextField title = new TextField(Event.schema.title, "Titel");
 		public final DateField date= new DateField(Event.schema.date, "Datum");
 		public final TextField min = new TextField(Event.schema.min, "Minimum aantal deelnemers");

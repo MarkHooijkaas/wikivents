@@ -8,9 +8,7 @@ public class TemplatePage extends WikiventsPage {
 
 	public TemplatePage(WikiventsSite site, String templateName) {
 		super(site);
-		if (templateName.endsWith("/*"))
-			templateName= templateName.substring(0, templateName.length()-2);
-		this.template = createTemplate("wikivents/"+templateName);
+		this.template = createTemplate(templateName);
 	}
 
 	@Override public void handle(WikiventsCall call, String subPath) {
