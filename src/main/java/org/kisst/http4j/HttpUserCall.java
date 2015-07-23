@@ -16,13 +16,13 @@ public class HttpUserCall extends HttpCall{
 	//public final T user;
 	public final String userid;
 	
-	public HttpUserCall(String path, HttpServletRequest request,HttpServletResponse response) {
-		super(path, request, response);
+	public HttpUserCall(HttpServletRequest request,HttpServletResponse response) {
+		super(request, response);
 		this.userid=getUserId();
 	}
 
 	public HttpUserCall(HttpCall call) {
-		super(call,call.path);
+		super(call);
 		this.userid=getUserId();
 	}
 

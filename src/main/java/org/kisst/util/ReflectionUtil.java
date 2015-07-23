@@ -28,7 +28,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReflectionUtil {
-
+	public static String smartClassName(Object obj) { return obj==null ? null : smartClassName(obj.getClass()); } 
+	public static String smartClassName(Class<? >cls) { 
+		String name=cls.getCanonicalName();
+		int pos=name.lastIndexOf('.');
+		int prevpos=0;
+		while (pos>0) {
+			if (! Character.isUpperCase(name.charAt(pos+1)))
+				return name.substring(prevpos+1);
+			prevpos=pos;
+			pos=name.lastIndexOf('.', pos-1);
+		}
+		return name;
+	}
+	
 	public static Constructor<?> getConstructor(String classname, Class<?>[] signature) {
 		try {
 			Class<?> c = Class.forName(classname);
@@ -50,15 +63,28 @@ public class ReflectionUtil {
 		catch (SecurityException e) {throw new RuntimeException(e); }
 		catch (NoSuchFieldException e) { return null; }
 	}
-	
+
+	public static List<Field> getAllDeclaredFieldsOfType(Class<?> objectClass, Class<?> fieldClass) {
+		ArrayList<Field> result=new ArrayList<Field>();
+		try {
+			for (Field f : objectClass.getDeclaredFields()) {
+				if (fieldClass.isAssignableFrom(f.getType())) {
+					result.add(f);
+					System.out.println(smartClassName(objectClass)+"::"+f.getName());
+				}					
+			}
+			return result;
+		}
+		catch (IllegalArgumentException e) { throw new RuntimeException(e); }
+	}
+
 	public static List<Object> getAllDeclaredFieldValuesOfType(Object obj, Class<?> type) {
 		ArrayList<Object> result=new ArrayList<Object>();
 		try {
 			for (Field f : obj.getClass().getDeclaredFields()) {
-				
-				System.out.println(obj.getClass().getSimpleName()+"::"+f.getName());
 				if (type.isAssignableFrom(f.getType())) {
 					result.add(f.get(obj));
+					System.out.println(smartClassName(obj)+"::"+f.getName());
 				}
 			}
 			return result;

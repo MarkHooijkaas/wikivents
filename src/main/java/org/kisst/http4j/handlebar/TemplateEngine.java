@@ -52,6 +52,7 @@ public class TemplateEngine {
 			this.name=name;
 			this.template=compile(name);
 		}
+		@Override public String toString() { return "Template("+name+")";}
 		public String toString(TemplateData context) {
 			Template tmpl = template;
 			if (loadDynamic)

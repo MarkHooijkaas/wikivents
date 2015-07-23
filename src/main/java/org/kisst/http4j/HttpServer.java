@@ -62,9 +62,8 @@ public class HttpServer extends AbstractHandler {
 
 	public void handle(String path, Request baseRequest , HttpServletRequest request, HttpServletResponse response) {
 		try {
-			String path2=request.getRequestURI();
-			HttpCall call=new HttpCall(path2,request,response);
-			handler.handle(call,path2);
+			HttpCall call=new HttpCall(request,response);
+			handler.handle(call,request.getRequestURI());
 		}
         catch (Exception e) {
         	try {

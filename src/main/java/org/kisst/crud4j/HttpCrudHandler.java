@@ -23,16 +23,15 @@ public class HttpCrudHandler<T extends CrudObject> extends HttpBasicPage<HttpUse
 	private class Call extends HttpUserCall {
 		public Call(HttpUserCall call) { super(call); }
 		@Override public void handleGet(String subPath) {
-			String path = this.path;
-			if (path==null || path.equals("") || path.equals("new"))
+			if (subPath==null || subPath.equals("") || subPath.equals("new"))
 				showFormNewRecord();
-			else if ( path.startsWith("edit/"))
+			else if ( subPath.startsWith("edit/"))
 				showFormExistingRecord(subPath);
 			else
 				showRecord(subPath);
 		}
 		@Override public void handlePost(String subPath) {
-			if (path==null || path.equals("") || path.equals("new"))
+			if (subPath==null || subPath.equals("") || subPath.equals("new"))
 				createNewRecord();
 			else 
 				updateExistingRecord(subPath);
@@ -69,7 +68,7 @@ public class HttpCrudHandler<T extends CrudObject> extends HttpBasicPage<HttpUse
 			if ( subPath.startsWith("edit/")) 
 				subPath=subPath.substring(5);
 			//String userid = ensureUserId(call);
-			T oldRecord=table.read(path);
+			T oldRecord=table.read(subPath);
 			//if (! oldRecord.mayBeChangedBy(userid))
 			//	throw new UnauthorizedException("Not Authorized user "+userid+" for "+oldRecord);
 			T newRecord=table.createObject(new MultiStruct(input,oldRecord));

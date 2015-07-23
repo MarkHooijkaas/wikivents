@@ -124,10 +124,10 @@ public interface Item {
 	
 	public static <T> T asType(Class<?> cls, Object obj) {
 		if (obj==null) return null;
-		System.out.println("Converting "+obj+" to "+cls);
+		//System.out.println("Converting "+obj+" to "+cls);
 		if (obj instanceof Struct) {
 			Object result = Schema.globalFactory.construct(cls,(Struct)obj);
-			System.out.println("result is "+result.getClass()+" "+result);
+			//System.out.println("result is "+result.getClass()+" "+result);
 			return cast(result);
 		}
 		//if (cls.isAssignableFrom(obj.getClass()))

@@ -9,14 +9,12 @@ import javax.servlet.http.HttpServletResponse;
 public class HttpCall {
 	public final HttpServletRequest request;
 	public final HttpServletResponse response;
-	public final  String path;
 	private PrintWriter out;
 
-	public HttpCall(HttpCall call, String path) { this(path,call.request,call.response); }
-	public HttpCall(String path, HttpServletRequest request,HttpServletResponse response) {
+	protected HttpCall(HttpCall call) { this(call.request,call.response); }
+	public HttpCall(HttpServletRequest request,HttpServletResponse response) {
 		this.request=request;
 		this.response=response;
-		this.path=path;
 	}
 	
 	public void handle(String subPath) {
@@ -53,6 +51,18 @@ public class HttpCall {
 			response.sendRedirect(url);
 		}
 		catch (IOException e) { throw new RuntimeException(e);}
+	}
+	
+	public String calcSubPath(String path) {
+		while (path.startsWith("/"))
+			path=path.substring(1);
+		int pos=path.indexOf("/");
+		if (pos<=0)
+			return "";
+		path=path.substring(pos+1);
+		while (path.startsWith("/"))
+			path=path.substring(1);
+		return path;
 	}
 
 }

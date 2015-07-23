@@ -2,6 +2,7 @@ package org.kisst.http4j.handlebar;
 
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.HttpForm;
@@ -9,13 +10,14 @@ import org.kisst.http4j.handlebar.TemplateEngine.CompiledTemplate;
 import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
 import org.kisst.item4j.Schema;
 import org.kisst.item4j.struct.Struct;
+import org.kisst.util.ReflectionUtil;
 
 public class GenericForm implements HttpForm {
 	private final TemplateEngine site;
-	private final TemplateEngine.CompiledTemplate template;
+	private final CompiledTemplate template;
 	private final LinkedHashMap<String, Field> fields = new LinkedHashMap<String,Field>();
 
-	public GenericForm(TemplateEngine site) { this(site,"generic/form"); }
+	public GenericForm(TemplateEngine site) { this(site,"generic/show"); }
 	public GenericForm(TemplateEngine site, String templateName) {
 		this.site=site;
 		this.template=this.site.compileTemplate(templateName);
@@ -44,7 +46,7 @@ public class GenericForm implements HttpForm {
 	}
 */
 	@Override public void showViewPage(HttpCall call, Struct data) {
-		
+		System.out.println("Showing view page with template "+template);
 		TemplateData context = new TemplateData(this);
 		context .add("fields", renderEdit(data));
 		call.output(template.toString(context)); 
@@ -74,6 +76,15 @@ public class GenericForm implements HttpForm {
 	public<T> GenericForm addDateField(Schema<?>.Field field, String label) {
 		fields.put(field.getName(), new DateField(field,label));
 		return this;
+	}
+
+	protected void addAllFields() { addAllFields(this.getClass());	}
+	
+	private void addAllFields(Class<?> cls) {
+		List<java.lang.reflect.Field> fs = ReflectionUtil.getAllDeclaredFieldsOfType(this.getClass(), Field.class);
+		for (java.lang.reflect.Field f: fs) {
+			fields.put(f.getName(), (Field) ReflectionUtil.getFieldValue(this,f.getName()));
+		}
 	}
 
 	
