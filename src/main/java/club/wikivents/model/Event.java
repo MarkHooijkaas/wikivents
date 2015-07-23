@@ -30,8 +30,8 @@ public class Event extends CrudObject {
 		public final Instant date;
 		public final String comment;
 		public static final Schema schema=new Schema();
-		public static class Schema extends CrudSchema<Guest> {
-			public Schema() { super(Guest.class); addAllFields(); }
+		public static class Schema extends CrudSchema<Comment> {
+			public Schema() { super(Comment.class); addAllFields(); }
 			public final RefField<User> user = new RefField<User>("user");
 			public final InstantField date = new InstantField("date"); 
 			public final StringField comment = new StringField("comment"); 
