@@ -1,5 +1,0 @@
-  <div class="form-group">
-    <label for="{{field.name}}">{{label}}</label>
-    <textarea type="{{field.type}}" class="form-control" id="{{name}}" name="{{name}}" rows="{{field.rows}}"> {{value}}</textarea>
-  </div>
-  
