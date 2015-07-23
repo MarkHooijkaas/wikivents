@@ -5,8 +5,10 @@ import org.kisst.item4j.Type;
 import org.kisst.item4j.struct.Struct;
 
 public class CrudSchema<T> extends Schema<T> {
-	public CrudSchema(Class<T> cls) { super(cls);}
-	public IdField getKeyField() { return null; }
+	public CrudSchema(Class<T> cls) { 
+		super(cls);
+	}
+	public IdField getKeyField() { return null; } // TODO
 
 	public class IdField extends Field {
 		public IdField() { super(Type.javaString, "_id"); }

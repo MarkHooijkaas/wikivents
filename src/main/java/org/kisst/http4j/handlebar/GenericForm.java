@@ -12,70 +12,40 @@ import org.kisst.item4j.Schema;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.util.ReflectionUtil;
 
-public class GenericForm implements HttpForm {
-	private final TemplateEngine site;
-	private final CompiledTemplate template;
+public abstract class GenericForm implements HttpForm {
+	private final CompiledTemplate defaultShowFieldTemplate;
+	private final CompiledTemplate defaultEditFieldTemplate;
+	private final TemplateEngine engine;
 	private final LinkedHashMap<String, Field> fields = new LinkedHashMap<String,Field>();
+	private final CompiledTemplate showTemplate;
+	private final CompiledTemplate editTemplate;
 
-	public GenericForm(TemplateEngine site) { this(site,"generic/show"); }
-	public GenericForm(TemplateEngine site, String templateName) {
-		this.site=site;
-		this.template=this.site.compileTemplate(templateName);
+	public GenericForm(TemplateEngine engine) {
+		this.engine=engine;
+		this.defaultShowFieldTemplate=engine.compile(
+				engine.compileInline("<tr><th>{{field.label}}</th><td>{{value}}</td></tr>\n"),
+				"form/field.show");
+		this.defaultEditFieldTemplate=engine.compile(
+				engine.compileInline("<tr><th>{{field.label}}</hd><td><input type=\"{{field.type}}\" name=\"{{field.name}}\" id=\"{{field.name}}\" value=\"{{value}}\"/></td></tr>\n"),
+				"form/field.edit");
+		this.showTemplate=engine.compile(
+				engine.compileInline("{{>header}} <table>{{#each fields}} {{&show}} {{/each}}</table> {{>footer}}"),
+				"form/show");
+		this.editTemplate=engine.compile(
+				engine.compileInline("{{>header}} <form><table>{{#each fields}} {{&edit}} {{/each}}</table></form> {{>footer}}"),
+				"form/edit");
 	}
 	public Iterator<Field> fields() { return fields.values().iterator(); }
-	public String renderEdit(Struct data) { 
-		//System.out.println("Rendering "+data);
-		StringBuilder result = new StringBuilder();
-		for (Field f: fields.values())
-			result.append(f.renderEdit(data));
-		return result.toString(); 
-	}
-	public String renderShow(Struct data) { 
-		//System.out.println("Rendering "+data);
-		StringBuilder result = new StringBuilder();
-		for (Field f: fields.values())
-			result.append(f.renderShow(data));
-		return result.toString(); 
-	}
-	/*
-	public void outputEdit(TemplateData context, Struct data, HttpServletResponse response) {
-	}
-	public void outputShow(TemplateData context, Struct data, HttpServletResponse response) {
-		context.add("fields", renderShow(data));
-		template.output(context, response); 
-	}
-*/
+
 	@Override public void showViewPage(HttpCall call, Struct data) {
-		System.out.println("Showing view page with template "+template);
-		TemplateData context = new TemplateData(this);
-		context .add("fields", renderEdit(data));
-		call.output(template.toString(context)); 
+		System.out.println("Showing view page with template "+showTemplate);
+		TemplateData context = new TemplateData(new Instance(data));
+		call.output(showTemplate.toString(context)); 
 	}
-	@Override
-	public void showEditPage(HttpCall call, Struct data) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	public GenericForm addField(Schema<?>.Field field, String label) { 
-		fields.put(field.getName(), new TextField(field,label));
-		return this;
-	}
-	public<T> GenericForm addEmailField(Schema<?>.Field field, String label) { 
-		fields.put(field.getName(), new EmailField(field,label));
-		return this;
-	}
-	public<T> GenericForm addPasswordField(Schema<?>.Field field, String label) { 
-		fields.put(field.getName(), new PasswordField(field,label));
-		return this;
-	}
-	public<T> GenericForm addTextAreaField(Schema<?>.Field field, String label, int rows) { 
-		fields.put(field.getName(), new TextAreaField(field,label, rows));
-		return this;
-	}
-	public<T> GenericForm addDateField(Schema<?>.Field field, String label) {
-		fields.put(field.getName(), new DateField(field,label));
-		return this;
+	@Override public void showEditPage(HttpCall call, Struct data) {
+		System.out.println("Showing edit page with template "+editTemplate);
+		TemplateData context = new TemplateData(new Instance(data));
+		call.output(editTemplate.toString(context)); 
 	}
 
 	protected void addAllFields() { addAllFields(this.getClass());	}
@@ -89,9 +59,29 @@ public class GenericForm implements HttpForm {
 
 	
 	
+	public class Instance  {
+		public class FieldValue {
+			public final Field field;
+			public FieldValue(Field f) { this.field=f;}
+			public String value() { return field.value(data);}
+			public String edit() { return field.templateEdit.toString(new TemplateData(this));}
+			public String show() { return field.templateShow.toString(new TemplateData(this)); }
+		}
+		public final Struct data;
+		public Instance(Struct data) { this.data=data;}
+		public GenericForm form() { return GenericForm.this;}
+		public FieldValue[] fields() {
+			FieldValue[] result=new FieldValue[fields.size()];
+			int i=0;
+			for (Field f: fields.values())
+				result[i++]=new FieldValue(f);
+			return result;
+		}
+	}
+	
 	public class Field {
-		private final CompiledTemplate templateEdit;
-		//private final CompiledTemplate templateShow;
+		public final CompiledTemplate templateShow;
+		public final CompiledTemplate templateEdit;
 		public final Schema<?>.Field field;
 		public final String label;
 		public final String name;
@@ -99,20 +89,16 @@ public class GenericForm implements HttpForm {
 			this.field=field;
 			this.name=field.getName();
 			this.label=label;
-			this.templateEdit= site.compileTemplate("generic/form."+getClass().getSimpleName() );
-			//this.templateShow= site.compileTemplate("generic/show."+getClass().getSimpleName() );
+			this.templateShow= engine.compile(defaultShowFieldTemplate,"form/field.show."+getClass().getSimpleName() );
+			this.templateEdit= engine.compile(defaultEditFieldTemplate,"form/field.edit."+getClass().getSimpleName() );
+			System.out.println(this.name+",show="+this.templateShow+",edit="+this.templateEdit);
 		}
-		public String renderEdit(Struct data) {
-			TemplateData context = new TemplateData(this);
-			//System.out.println("Rendering "+this.getClass()+" field "+name+" from "+data);
-			String value = field.getString(data);
-			context.add("value", value);
-			//System.out.println("Rendering field "+name+" to "+value);
-			return templateEdit.toString(context);
-		}
-		public String renderShow(Struct data) {
-			String value = field.getString(data);
-			return "<tr><td>"+label+"</td><td>"+value+"</td></tr>";
+		public String value(Struct data) { return field.getString(data); }
+		public String type() { 
+			String name=this.getClass().getSimpleName();
+			if (name.endsWith("Field"))
+				name=name.substring(0, name.length()-5);
+			return name.toLowerCase();
 		}
 	}
 	public class TextField extends Field {
@@ -126,10 +112,7 @@ public class GenericForm implements HttpForm {
 	}
 	public class TextAreaField extends Field {
 		public final int rows;
-		public TextAreaField(Schema<?>.Field field, String label,  int rows) { 
-			super(field,label);
-			this.rows=rows;
-		}
+		public TextAreaField(Schema<?>.Field field, String label,  int rows) { super(field,label); this.rows=rows; }
 	}
 	public class DateField extends Field {
 		public DateField(Schema<?>.Field field, String label) { super(field,label);}

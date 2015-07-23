@@ -14,8 +14,11 @@
       </tr>
     </thead>
     <tbody>
-{{{fields}}}  
+{{#each fields}}
+  {{&show}}
+{{/each}}
+
     </tbody>
   </table>
-  
+ 
 {{>footer}}

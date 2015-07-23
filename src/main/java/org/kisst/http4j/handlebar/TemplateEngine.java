@@ -2,6 +2,7 @@ package org.kisst.http4j.handlebar;
 
 
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 
@@ -23,11 +24,17 @@ public class TemplateEngine {
 	public final Struct props;
 	public final boolean loadDynamic;
 	private final Handlebars handlebar;
+	private final File dir;
+	
 	
 	public TemplateEngine(Struct props) {
 		this.props=props;
 		this.loadDynamic=props.getBoolean("loadDynamic",false); // TODO: handlebars seems to load dynamically always
-		String dir=props.getString("file.dir", null);
+		String filedir = props.getString("file.dir", null);
+		if (filedir==null)
+			this.dir=null;
+		else
+			this.dir=new File(filedir);
 		System.out.println(props);
 		ClassPathTemplateLoader cp = new ClassPathTemplateLoader("/templates/",".template");
 		if (dir==null)
@@ -37,10 +44,28 @@ public class TemplateEngine {
 	}
 
 
+	public boolean exists(String templateName) { return new File(dir,templateName+".template").exists(); } // TODO: handle classpath
+
+	public CompiledTemplate compile(CompiledTemplate defaultTemplate, String ... names) {
+		for (String name:names) {
+			if (exists(name)) {
+				System.out.println("Compiling "+name);
+				return compileTemplate(name);
+			}
+		}
+		return defaultTemplate;
+	}
+
 	public CompiledTemplate compileTemplate(String templateName) { return new CompiledTemplate(templateName); }
 	private Template compile(String templateName) {
 		try {
 			return handlebar.compile(templateName);
+		}
+		catch (IOException e) { throw new RuntimeException(e);}
+	}
+	public CompiledTemplate compileInline(String template) {
+		try {
+			return new CompiledTemplate(handlebar.compileInline(template));
 		}
 		catch (IOException e) { throw new RuntimeException(e);}
 	}
@@ -52,10 +77,14 @@ public class TemplateEngine {
 			this.name=name;
 			this.template=compile(name);
 		}
+		public CompiledTemplate(Template template) {
+			this.name=null;
+			this.template=template;
+		}
 		@Override public String toString() { return "Template("+name+")";}
 		public String toString(TemplateData context) {
 			Template tmpl = template;
-			if (loadDynamic)
+			if (loadDynamic && name!=null)
 				tmpl=compile(name);
 			try { 
 			    return tmpl.apply(context.builder.build());
