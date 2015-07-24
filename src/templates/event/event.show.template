@@ -1,10 +1,6 @@
 {{> header}}
 
-<h1>{{event.title}}</h1>
-<form role="form" method="GET" action="edit/{{event._id}}">
-  <button type="submit" class="btn btn-default">Wijzig</button>
-</form>
-
+<h1>{{record.title}}</h1>
   <table class="table table-hover">
     <thead>
       <tr>
@@ -13,19 +9,23 @@
       </tr>
     </thead>
     <tbody>
-      {{date.show}}
+      {{form.date.show}}
       <tr>
         <th>Min. aantal deelnemers</th>
-        <td>{{min.value}}</td>
+        <td>{{form.min.value}}</td>
       </tr>
       <tr>
         <th>Max. aantal deelnemers</th>
-        <td>{{max.value}}</td>
+        <td>{{form.max.value}}</td>
       </tr>
-      {{location.show}}
+      {{form.location.show}}
     </tbody>
   </table>
+
+<form role="form" method="GET" action="edit/{{form.record._id}}">
+  <button type="submit" class="btn btn-default">Wijzig</button>
+</form>
   
-  <div>{{description.value}}</div>
+  <div>{{form.description.value}}</div>
   
 {{> footer}}

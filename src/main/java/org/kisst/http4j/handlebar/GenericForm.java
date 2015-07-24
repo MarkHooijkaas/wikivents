@@ -48,11 +48,13 @@ public abstract class GenericForm implements HttpForm {
 	public Iterator<Field> fields() { return fields.values().iterator(); }
 
 	@Override public void showViewPage(HttpCall call, Struct data) {
-		TemplateData context = new TemplateData(new Instance(data));
+		TemplateData context = new TemplateData(call);
+		context.add("form", new Instance(data));
 		call.output(showTemplate.toString(context)); 
 	}
 	@Override public void showEditPage(HttpCall call, Struct data) {
-		TemplateData context = new TemplateData(new Instance(data));
+		TemplateData context = new TemplateData(call);
+		context.add("form", new Instance(data));
 		call.output(editTemplate.toString(context)); 
 	}
 
@@ -72,13 +74,13 @@ public abstract class GenericForm implements HttpForm {
 		public class FieldValue {
 			public final Field field;
 			public FieldValue(Field f) { this.field=f;}
-			public String value() { return field.value(data);}
+			public String value() { return field.value(record);}
 			public SafeString edit() { return new SafeString(field.templateEdit.toString(new TemplateData(this)));}
 			public SafeString show() { return new SafeString(field.templateShow.toString(new TemplateData(this))); }
 		}
-		public final Struct data;
-		public Instance(Struct data) { 
-			this.data=data;
+		public final Struct record;
+		public Instance(Struct record) { 
+			this.record=record;
 			for (Field f: fields.values())
 				fieldvalues.put(f.name, new FieldValue(f));
 		}

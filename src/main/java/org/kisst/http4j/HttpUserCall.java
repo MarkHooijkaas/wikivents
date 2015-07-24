@@ -31,6 +31,7 @@ public class HttpUserCall extends HttpCall{
 			throw new UnauthorizedException("Not Authenticated user");
 	}
 	public void ensureUser(String userId) {
+		ensureUser();
 		if (userid== null || ! userid.equals(userId))
 			throw new UnauthorizedException("Not Authorized expected "+userId+" but got "+userid);
 	}

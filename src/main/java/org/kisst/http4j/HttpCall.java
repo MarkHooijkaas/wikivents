@@ -45,7 +45,8 @@ public class HttpCall {
 		out=null;
 	}
 
-	
+	public void invalidPage() { throw new RuntimeException("Invalid page "+request.getRequestURI()); }
+
 	public void redirect(String url) {
 		try {
 			response.sendRedirect(url);

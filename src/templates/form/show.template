@@ -1,5 +1,4 @@
 {{>header}}
-
 {{#if userMayChange}}
 <form role="form" method="GET" action="/{{page.name}}/edit/{{record._id}}">
   <button type="submit" class="btn btn-default">Wijzig</button>
@@ -14,7 +13,7 @@
       </tr>
     </thead>
     <tbody>
-{{#each fields}}
+{{#each form.fields}}
   {{&show}}
 {{/each}}
 

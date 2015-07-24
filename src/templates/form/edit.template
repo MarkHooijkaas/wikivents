@@ -4,8 +4,8 @@
 
 <form role="form" method="POST">
 
-{{#each fields}}
-  {{& edit}}
+{{#each form.fields}}
+  {{edit}}
 {{/each}}
   
   

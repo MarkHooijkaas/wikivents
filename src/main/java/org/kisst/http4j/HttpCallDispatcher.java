@@ -33,7 +33,7 @@ public class HttpCallDispatcher<T extends HttpCall> implements HttpCallHandler<T
 		HttpCallHandler<T> handler = map.get(name);
 		if (handler==null)
 				handler=defaultHandler;
-		System.out.println("Handling {"+name+"} with subPath {"+subPath+"} with handler "+handler.getClass().getSimpleName());
+		//System.out.println("Handling {"+name+"} with subPath {"+subPath+"} with handler "+handler.getClass().getSimpleName());
 		handler.handle(call,subPath); // TODO: call the subType method????
 	}
 }

@@ -1,29 +1,16 @@
 {{> header}}
 
-<form role="form">
-  <div class="form-group">
-    <label for="title">Titel</label>
-    <input type="text" class="form-control" id="title" name="title">
-  </div>
-  <div class="form-group">
-    <label for="city">Plaats</label>
-    <input type="text" class="form-control" id="city" name="city">
-  </div>
-  <div class="form-group">
-    <label for="min">Minimum aantal deelnemers</label>
-    <input type="text" class="form-control" id="min" name="min">
-  </div>
-  <div class="form-group">
-    <label for="max">Maximum aantal deelnemers</label>
-    <input type="text" class="form-control" id="city">
-  </div>
-  <div class="form-group">
-    <label for="description">Omschrijving:</label>
-      <textarea class="form-control" rows="5" id="description"></textarea>
-  </div>
-  
-  
-  
+<script > $(document).ready(function(){ $('#mydatepicker').datepicker() }); </script>
+
+
+<form role="form" method="POST">
+    {{form.title.edit}}
+    {{form.date.edit}}
+    {{form.location.edit}}
+    {{form.min.edit}}
+    {{form.max.edit}}
+    {{form.description.edit}}
+
   <button type="submit" class="btn btn-default">Submit</button>
 </form>
 

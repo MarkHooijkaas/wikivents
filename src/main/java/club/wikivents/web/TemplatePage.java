@@ -8,7 +8,7 @@ public class TemplatePage extends WikiventsPage {
 
 	public TemplatePage(WikiventsSite site, String templateName) {
 		super(site);
-		this.template = createTemplate(templateName);
+		this.template = engine.compileTemplate(templateName);
 	}
 
 	@Override public void handle(WikiventsCall call, String subPath) {

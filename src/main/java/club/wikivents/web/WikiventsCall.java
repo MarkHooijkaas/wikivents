@@ -19,37 +19,16 @@ public class WikiventsCall extends HttpUserCall {
 	public WikiventsCall(HttpCall call, WikiventsModel model) {
 		super(call);
 		this.model=model;
-		this.user=getUser();
-	}
-	/*
-	public WikiventsCall(String path, HttpServletRequest request,HttpServletResponse response, WikiventsModel model) {
-		super(path, request, response);
-		this.model=model;
-		this.user=getUser();
-	}
-*/
-	public TemplateData createTemplateData() { 
-		TemplateData data = new TemplateData(model);
-		data.add("user", user);
-		data.add("model", model);
-		//data.add("events", model.events);
-		return data;
-	}
-	
-	private User getUser() {
 		if (userid==null)
-			return null;
+			this.user=null;
 		else
-			return model.users.read(userid);
+			this.user=model.users.read(userid);
 	}
+	public TemplateData createTemplateData() { return new TemplateData(this); }
+	
 
 	@Override public void ensureUser() {
 		if (user==null)
 			throw new UnauthorizedException("Not Authenticated");
-	}
-	@Override public void ensureUser(String userid) {
-		ensureUser();
-		if (!userid.equals(user._id))
-			throw new UnauthorizedException("Not Authorized");
 	}
 }

@@ -2,8 +2,6 @@ package club.wikivents.web;
 
 import org.kisst.http4j.HttpBasicPage;
 import org.kisst.http4j.handlebar.TemplateEngine;
-import org.kisst.http4j.handlebar.TemplateEngine.CompiledTemplate;
-import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
 
 import club.wikivents.model.WikiventsModel;
 
@@ -16,6 +14,4 @@ public class WikiventsPage extends HttpBasicPage<WikiventsCall>{
 		this.model=site.model;
 		this.engine=site.engine;
 	}
-	public CompiledTemplate createTemplate(String templateName) { return engine.compileTemplate(templateName);}
-	public TemplateData createTemplateData() { return new TemplateData(this); }
 }

@@ -17,39 +17,49 @@ public class HttpCrudHandler<T extends CrudObject> extends HttpBasicPage<HttpUse
 		this.table=table;
 	}
 
-	@Override public void handle(HttpUserCall call, String subPath) { new Call(call).handle(subPath);}
+	@Override public void handle(HttpUserCall call, String subPath) { new Call(call,subPath).handle(subPath);}
 	
 
-	private class Call extends HttpUserCall {
-		public Call(HttpUserCall call) { super(call); }
+	public class Call extends HttpUserCall {
+		public final T record;
+		public Call(HttpUserCall call, String subPath) { 
+			super(call);
+			if (subPath==null || subPath.equals("") || subPath.equals("new"))
+				this.record=null;
+			else if (subPath.startsWith("edit/")) {
+				this.record=table.read(subPath.substring(5));
+				checkAuthorized();	
+			}
+			else
+				this.record=table.read(subPath);
+		}
 		@Override public void handleGet(String subPath) {
 			if (subPath==null || subPath.equals("") || subPath.equals("new"))
 				showFormNewRecord();
 			else if ( subPath.startsWith("edit/"))
-				showFormExistingRecord(subPath);
+				showFormExistingRecord(subPath.substring(5));
 			else
 				showRecord(subPath);
 		}
 		@Override public void handlePost(String subPath) {
+			ensureUser();
 			if (subPath==null || subPath.equals("") || subPath.equals("new"))
 				createNewRecord();
-			else 
-				updateExistingRecord(subPath);
+			else if ( subPath.startsWith("edit/"))
+				updateExistingRecord(subPath.substring(5));
+			else
+				invalidPage();
 		}
 		protected void showFormNewRecord() {
 			Struct input=new HttpRequestStruct(this);
 			form.showEditPage(this, input);
 		}
 		protected void showFormExistingRecord(String subPath) {
-			T rec=table.read(subPath);
-			ensureUser(rec._id);
-			//if (! rec.mayBeChangedBy(call.userid))
-			//	throw new HttpUserCall.UnauthorizedException("Not Authorized user "+user+" for "+rec);
-			form.showEditPage(this, rec);
+			form.showEditPage(this, record);
 		}
+
 		protected void showRecord(String subPath) {
-			T rec = table.read(subPath);
-			form.showViewPage(this, rec);
+			form.showViewPage(this, record);
 		}
 
 
@@ -64,20 +74,22 @@ public class HttpCrudHandler<T extends CrudObject> extends HttpBasicPage<HttpUse
 			redirect(rec._id);
 		}
 		protected void updateExistingRecord(String subPath) {
+			checkAuthorized();
 			Struct input=new HttpRequestStruct(this);
-			if ( subPath.startsWith("edit/")) 
-				subPath=subPath.substring(5);
-			//String userid = ensureUserId(call);
-			T oldRecord=table.read(subPath);
-			//if (! oldRecord.mayBeChangedBy(userid))
-			//	throw new UnauthorizedException("Not Authorized user "+userid+" for "+oldRecord);
+			T oldRecord=record;
 			T newRecord=table.createObject(new MultiStruct(input,oldRecord));
 			//validateUpdate(userid, oldRecord, newRecord);
+			System.out.println("Updating "+subPath+" old:"+oldRecord+" new:"+newRecord);
 			table.update(oldRecord, newRecord);
-			redirect(newRecord._id);
+			redirect("/event/"+newRecord._id);
+		}
+		private void checkAuthorized() {
+			if (record==null)
+				return;
+			if (! record.mayBeChangedBy(userid))
+				throw new UnauthorizedException("Not Authorized user "+userid+" for "+record);
 		}
 	}
 	//protected void validateUpdate(String userid, T oldRecord, T newRecord) {}
 	//protected void validateCreate(String userid, HashStruct data) {}
-
 }

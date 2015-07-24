@@ -16,8 +16,8 @@ Each template will use handlebars.java as templating engine, for more informatio
 Inside the template one can use the following constructs:
 	{{>header}}  includes a HTML header, which should be located in the toplevel directory
 	{{>footer}}  includes a HTML footer, which should be located in the toplevel directory
-	{{#each fields}} .... {{/each}} iterate over all the fields for a generic layout
-	{{<fieldname>}} e.g. {{title}} to access a specific field without iteration
+	{{#each form.fields}} .... {{/each}} iterate over all the fields for a generic layout
+	{{<fieldname>}} e.g. {{form.title}} to access a specific field without iteration
 
 An event has the following fields:
 	- title
@@ -33,15 +33,15 @@ A user has the following fields:
 	- password
 
 Of each field (e.g. title) one can ask the value, and the following field properties
-	{{title.value}}
-	{{title.show}}
-	{{title.edit}}
-	{{title.field.name}}
-	{{title.field.label}}
-	{{title.field.type}}
+	{{form.title.value}}
+	{{form.title.show}}
+	{{form.title.edit}}
+	{{form.title.field.name}}
+	{{form.title.field.label}}
+	{{form.title.field.type}}
 
 When iterating over all fields one should omit the fieldname as follows:
-	{{#each fields}}
+	{{#each form.fields}}
 		{{value}}
 		{{show}}
 		{{edit}}

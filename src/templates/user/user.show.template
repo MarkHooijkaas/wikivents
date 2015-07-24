@@ -1,0 +1,17 @@
+{{> header}}
+
+<h1>{{user.username}}</h1>
+
+  <table class="table table-hover">
+    <tbody>
+      {{form.username.show}}
+      {{form.email.show}}
+      {{form.password.show}}
+    </tbody>
+  </table>
+
+<form role="form" method="GET" action="edit/{{form.record._id}}">
+  <button type="submit" class="btn btn-default">Wijzig</button>
+</form>
+  
+{{> footer}}
