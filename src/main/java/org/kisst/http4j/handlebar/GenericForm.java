@@ -23,6 +23,8 @@ public abstract class GenericForm implements HttpForm {
 	private final CompiledTemplate showTemplate;
 	private final CompiledTemplate editTemplate;
 	private final String prefix;
+	private final CompiledTemplate changeButtonTemplate;
+	private final CompiledTemplate submitButtonTemplate;
 
 	public GenericForm(TemplateEngine engine) { this(engine,"");}
 	public GenericForm(TemplateEngine engine, String prefix) {
@@ -44,20 +46,19 @@ public abstract class GenericForm implements HttpForm {
 				engine.compileInline("{{>header}} <form><table>{{#each fields}} {{&edit}} {{/each}}</table></form> {{>footer}}"),
 				prefix+"edit",
 				"form/edit");
+		this.changeButtonTemplate=engine.compile(null, prefix+"changeButton", "form/changeButton");
+		this.submitButtonTemplate=engine.compile(null, prefix+"submitButton", "form/submitButton");
 	}
 	public Iterator<Field> fields() { return fields.values().iterator(); }
 
 	@Override public void showViewPage(HttpCall call, Struct data) {
-		TemplateData context = new TemplateData(call);
-		context.add("form", new Instance(data));
-		call.output(showTemplate.toString(context)); 
+		new Instance(call,data).output(showTemplate); 
 	}
 	@Override public void showEditPage(HttpCall call, Struct data) {
-		TemplateData context = new TemplateData(call);
-		context.add("form", new Instance(data));
-		call.output(editTemplate.toString(context)); 
+		new Instance(call,data).output(editTemplate); 
 	}
-
+	
+	
 	protected void addAllFields() { addAllFields(this.getClass());	}
 	
 	private void addAllFields(Class<?> cls) {
@@ -79,15 +80,26 @@ public abstract class GenericForm implements HttpForm {
 			public SafeString show() { return new SafeString(field.templateShow.toString(new TemplateData(this))); }
 		}
 		public final Struct record;
-		public Instance(Struct record) { 
+		public final  HttpCall call;
+		public Instance(HttpCall call, Struct record) {
+			this.call=call;
 			this.record=record;
 			for (Field f: fields.values())
 				fieldvalues.put(f.name, new FieldValue(f));
 		}
 		public GenericForm form() { return GenericForm.this;}
+		public boolean userMayChange() { return true; } // TODO
+		public SafeString changeButton() { return new SafeString(toString(changeButtonTemplate)); }
+		public SafeString submitButton() { return new SafeString(toString(submitButtonTemplate)); }
 		public Collection<FieldValue> fields() { return fieldvalues.values(); }
 		@Override public Iterable<String> fieldNames() { return fieldvalues.keySet(); }
 		@Override public Object getDirectFieldValue(String name) { return fieldvalues.get(name); }
+		public void output(CompiledTemplate templ) { call.output(toString(templ)); }
+		public String toString(CompiledTemplate templ) {
+			TemplateData context = new TemplateData(call);
+			context.add("form", this);
+			return templ.toString(context); 
+		}
 	}
 	
 	public class Field {

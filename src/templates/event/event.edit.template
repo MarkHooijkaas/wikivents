@@ -4,14 +4,14 @@
 
 
 <form role="form" method="POST">
-    {{form.title.edit}}
-    {{form.date.edit}}
-    {{form.location.edit}}
-    {{form.min.edit}}
-    {{form.max.edit}}
-    {{form.description.edit}}
+	{{form.title.edit}}
+	{{form.date.edit}}
+	{{form.location.edit}}
+	{{form.min.edit}}
+	{{form.max.edit}}
+	{{form.description.edit}}
 
-  <button type="submit" class="btn btn-default">Submit</button>
+	{{form.submitButton}}
 </form>
 
 

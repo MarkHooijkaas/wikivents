@@ -1,9 +1,6 @@
 {{>header}}
-{{#if userMayChange}}
-<form role="form" method="GET" action="/{{page.name}}/edit/{{record._id}}">
-  <button type="submit" class="btn btn-default">Wijzig</button>
-</form>
-{{/if}}
+
+{{form.changeButton}}
 
   <table class="table table-hover">
     <thead>

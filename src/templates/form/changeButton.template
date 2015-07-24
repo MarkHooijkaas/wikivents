@@ -1,0 +1,5 @@
+{{#if form.userMayChange}}
+<form role="form" method="GET" action="edit/{{form.record._id}}">
+  <button type="submit" class="btn btn-default">Wijzig</button>
+</form>
+{{/if}}
