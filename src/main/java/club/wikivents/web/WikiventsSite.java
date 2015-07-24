@@ -27,8 +27,8 @@ public class WikiventsSite implements HttpCallHandler<HttpCall> {
 		this.handler= 
 				new HttpCallDispatcher<WikiventsCall>(new TemplatePage(this, "404"))
 				.addHandler("", new TemplatePage(this, "home"))
-				.addHandler("users", new TemplatePage(this, "user/all.users"))
-				.addHandler("events", new TemplatePage(this, "event/all.events"))
+				//.addHandler("users", new TemplatePage(this, "user/all.users"))
+				//.addHandler("events", new TemplatePage(this, "event/all.events"))
 				.addHandler("user", new UserCrudPage(this))
 				.addHandler("event", new EventCrudPage(this))
 				.addHandler("login", new LoginPage(this))

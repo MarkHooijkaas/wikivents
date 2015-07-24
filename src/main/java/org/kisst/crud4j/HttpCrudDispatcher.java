@@ -1,7 +1,7 @@
 package org.kisst.crud4j;
 
 import org.kisst.http4j.HttpCallDispatcher;
-import org.kisst.http4j.HttpForm;
+import org.kisst.http4j.HttpView;
 import org.kisst.http4j.HttpRequestStruct;
 import org.kisst.http4j.HttpUserCall;
 import org.kisst.item4j.struct.HashStruct;
@@ -9,13 +9,14 @@ import org.kisst.item4j.struct.MultiStruct;
 import org.kisst.item4j.struct.Struct;
 
 public class HttpCrudDispatcher<T extends CrudObject> extends HttpCallDispatcher<HttpUserCall>{
-	private final HttpForm form;
+	private final HttpView form;
 	protected final CrudTable<T> table;
 
-	public HttpCrudDispatcher(CrudTable<T> table, HttpForm form) {
+	public HttpCrudDispatcher(CrudTable<T> table, HttpView form) {
 		super(null);
 		this.form=form;
 		this.table=table;
+		addHandler("all",  (HttpUserCall call, String subPath) -> new ListCall(call).handle(subPath));
 		addHandler("new",  (HttpUserCall call, String subPath) -> new NewCall(call).handle(subPath));
 		addHandler("show", (HttpUserCall call, String subPath) -> new ShowCall(call,subPath).handle(subPath));
 		addHandler("edit", (HttpUserCall call, String subPath) -> new EditCall(call,subPath).handle(subPath));
@@ -27,6 +28,11 @@ public class HttpCrudDispatcher<T extends CrudObject> extends HttpCallDispatcher
 		return table.read(subPath);
 	}
 	
+	private class ListCall extends HttpUserCall {
+		public ListCall(HttpUserCall call) { super(call); }
+		@Override public void handleGet(String subPath) { form.showList(this, table.findAll()); }
+		@Override public void handlePost(String subPath) { invalidPage(); }
+	}
 
 	private class NewCall extends HttpUserCall {
 		public NewCall(HttpUserCall call) { super(call); }

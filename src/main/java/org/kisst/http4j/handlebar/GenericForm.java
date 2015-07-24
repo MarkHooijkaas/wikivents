@@ -6,22 +6,24 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.kisst.http4j.HttpCall;
-import org.kisst.http4j.HttpForm;
+import org.kisst.http4j.HttpView;
 import org.kisst.http4j.handlebar.TemplateEngine.CompiledTemplate;
 import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
 import org.kisst.item4j.Schema;
+import org.kisst.item4j.seq.ItemSequence;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.util.ReflectionUtil;
 
 import com.github.jknack.handlebars.Handlebars.SafeString;
 
-public abstract class GenericForm implements HttpForm {
+public abstract class GenericForm implements HttpView {
 	private final CompiledTemplate defaultShowFieldTemplate;
 	private final CompiledTemplate defaultEditFieldTemplate;
 	private final TemplateEngine engine;
 	private final LinkedHashMap<String, Field> fields = new LinkedHashMap<String,Field>();
 	private final CompiledTemplate showTemplate;
 	private final CompiledTemplate editTemplate;
+	private final CompiledTemplate listTemplate;
 	private final String prefix;
 	private final CompiledTemplate changeButtonTemplate;
 	private final CompiledTemplate submitButtonTemplate;
@@ -38,14 +40,15 @@ public abstract class GenericForm implements HttpForm {
 				engine.compileInline("<tr><th>{{field.label}}</hd><td><input type=\"{{field.type}}\" name=\"{{field.name}}\" id=\"{{field.name}}\" value=\"{{value}}\"/></td></tr>\n"),
 				prefix+"field.edit",
 				"form/field.edit");
-		this.showTemplate=engine.compile(
-				engine.compileInline("{{>header}} <table>{{#each fields}} {{&show}} {{/each}}</table> {{>footer}}"),
+		this.showTemplate=engine.compile(null,
 				prefix+"show",
 				"form/show");
-		this.editTemplate=engine.compile(
-				engine.compileInline("{{>header}} <form><table>{{#each fields}} {{&edit}} {{/each}}</table></form> {{>footer}}"),
+		this.editTemplate=engine.compile(null,
 				prefix+"edit",
 				"form/edit");
+		this.listTemplate=engine.compile(null,
+				prefix+"list",
+				"form/list");
 		this.changeButtonTemplate=engine.compile(null, prefix+"changeButton", "form/changeButton");
 		this.submitButtonTemplate=engine.compile(null, prefix+"submitButton", "form/submitButton");
 	}
@@ -57,7 +60,11 @@ public abstract class GenericForm implements HttpForm {
 	@Override public void showEditPage(HttpCall call, Struct data) {
 		new Instance(call,data).output(editTemplate); 
 	}
-	
+	public void showList(HttpCall call, ItemSequence seq) {
+		TemplateData context = new TemplateData(call);
+		context.add("list", seq);
+		call.output(listTemplate.toString(context)); 
+	}
 	
 	protected void addAllFields() { addAllFields(this.getClass());	}
 	

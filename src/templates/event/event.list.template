@@ -11,7 +11,7 @@
       </tr>
     </thead>
     <tbody>
-{{#each model.events}}  
+{{#each list}}  
       <tr>
         <td>{{date}}</td>
         <td>{{organizer}}</td>

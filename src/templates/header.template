@@ -22,11 +22,11 @@
     </div>
     <div>
       <ul class="nav navbar-nav">
-        <li class="active"><a href="/">Home</a></li>
-        <li><a href="/events">Alle activiteiten</a></li>
-        <li><a href="/users">Alle gebruikers</a></li>
-        <li><a href="/user/show/{{user._id}}">Mijn Profiel</a></li>
-				<li><a href="/event/new">Maak een activiteit</a></li>
+		<li class="active"><a href="/">Home</a></li>
+		<li><a href="/event/all">Alle activiteiten</a></li>
+		<li><a href="/user/all">Alle gebruikers</a></li>
+		<li><a href="/user/show/{{userid}}">Mijn Profiel</a></li>
+		<li><a href="/event/new">Maak een activiteit</a></li>
         <li><a href="/LoginPage">Login</a></li>
       </ul>
     </div>
