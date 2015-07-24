@@ -25,8 +25,8 @@
         <li class="active"><a href="/">Home</a></li>
         <li><a href="/events">Alle activiteiten</a></li>
         <li><a href="/users">Alle gebruikers</a></li>
-        <li><a href="/user/{{user._id}}">Mijn Profiel</a></li>
-				<li><a href="/event/">Maak een activiteit</a></li>
+        <li><a href="/user/show/{{user._id}}">Mijn Profiel</a></li>
+				<li><a href="/event/new">Maak een activiteit</a></li>
         <li><a href="/LoginPage">Login</a></li>
       </ul>
     </div>

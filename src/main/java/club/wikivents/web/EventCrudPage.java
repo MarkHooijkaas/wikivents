@@ -1,6 +1,6 @@
 package club.wikivents.web;
 
-import org.kisst.crud4j.HttpCrudHandler;
+import org.kisst.crud4j.HttpCrudDispatcher;
 import org.kisst.http4j.handlebar.GenericForm;
 import org.kisst.http4j.handlebar.TemplateEngine;
 import org.kisst.item4j.struct.HashStruct;
@@ -10,7 +10,7 @@ import club.wikivents.model.User;
 
 public class EventCrudPage extends WikiventsPage {
 	private final GenericForm form;
-	private final HttpCrudHandler<Event> handler;
+	private final HttpCrudDispatcher<Event> handler;
 
 	public class Form extends GenericForm {
 		public Form(TemplateEngine engine) { super(engine,"event/event."); addAllFields(); }
@@ -26,7 +26,7 @@ public class EventCrudPage extends WikiventsPage {
 	public EventCrudPage(WikiventsSite site) {
 		super(site);
 		this.form = new Form(site.engine);
-		this.handler=new HttpCrudHandler<Event>(model.events, form);
+		this.handler=new HttpCrudDispatcher<Event>(model.events, form);
 	}
 	@Override public void handle(WikiventsCall call, String subPath) { handler.handle(call, subPath); }
 	
