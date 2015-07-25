@@ -33,6 +33,10 @@ public class WikiventsSite implements HttpCallHandler<HttpCall> {
 				.addHandler("event", new EventCrudPage(this))
 				.addHandler("login", new LoginPage(this))
 				.addHandler("resources", new ResourceHandler<WikiventsCall>(new ResourceHandler.FileResourceFinder(new File("src/resources"))))
+				.addHandler("css", new ResourceHandler<WikiventsCall>(new ResourceHandler.FileResourceFinder(new File("src/resources/css"))))
+				.addHandler("scripts", new ResourceHandler<WikiventsCall>(new ResourceHandler.FileResourceFinder(new File("src/resources/scripts"))))
+				.addHandler("js", new ResourceHandler<WikiventsCall>(new ResourceHandler.FileResourceFinder(new File("src/resources/js"))))
+				.addHandler("images", new ResourceHandler<WikiventsCall>(new ResourceHandler.FileResourceFinder(new File("src/resources/images"))))
 				.addHandler("favicon.ico", new ResourceHandler<WikiventsCall>(new ResourceHandler.FileResourceFinder(new File("src/resources/favicon.ico"))))
 			;
 	}
