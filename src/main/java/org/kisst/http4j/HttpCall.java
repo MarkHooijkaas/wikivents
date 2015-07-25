@@ -27,8 +27,8 @@ public class HttpCall {
 			throw new RuntimeException("Unknown method type "+method);
 	}
 
-	public void handleGet(String subPath) {}
-	public void handlePost(String subPath) {}
+	public void handleGet(String subPath) { invalidPage(); }
+	public void handlePost(String subPath) { invalidPage(); }
 	
 	
 	public void output(String text) {

@@ -31,7 +31,6 @@ public class HttpCrudDispatcher<T extends CrudObject> extends HttpCallDispatcher
 	private class ListCall extends HttpUserCall {
 		public ListCall(HttpUserCall call) { super(call); }
 		@Override public void handleGet(String subPath) { form.showList(this, table.findAll()); }
-		@Override public void handlePost(String subPath) { invalidPage(); }
 	}
 
 	private class NewCall extends HttpUserCall {
@@ -54,7 +53,6 @@ public class HttpCrudDispatcher<T extends CrudObject> extends HttpCallDispatcher
 			this.record=read(subPath);
 		}
 		@Override public void handleGet(String subPath) { form.showViewPage(this, record); }
-		@Override public void handlePost(String subPath) { invalidPage();	}
 	}
 
 	private class EditCall extends HttpUserCall {
