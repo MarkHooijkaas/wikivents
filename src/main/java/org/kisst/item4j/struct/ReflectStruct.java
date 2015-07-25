@@ -9,7 +9,8 @@ public class ReflectStruct implements Struct {
 	private final Object obj;
 
 	public ReflectStruct(Object obj) { this.obj=obj; }
-
+	protected ReflectStruct() { this.obj=this; }
+	
 	@Override public String toString() { 
 		StringBuilder result=new StringBuilder(getClass().getSimpleName());
 		result.append('(');
