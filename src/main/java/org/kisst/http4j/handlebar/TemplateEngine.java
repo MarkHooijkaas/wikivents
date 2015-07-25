@@ -25,26 +25,27 @@ public class TemplateEngine {
 	public final boolean loadDynamic;
 	private final Handlebars handlebar;
 	private final File dir;
-	
+	private final String postfix;
 	
 	public TemplateEngine(Struct props) {
 		this.props=props;
 		this.loadDynamic=props.getBoolean("loadDynamic",false); // TODO: handlebars seems to load dynamically always
 		String filedir = props.getString("file.dir", null);
+		this.postfix = props.getString("postfix", ".hbr");
 		if (filedir==null)
 			this.dir=null;
 		else
 			this.dir=new File(filedir);
 		System.out.println(props);
-		ClassPathTemplateLoader cp = new ClassPathTemplateLoader("/templates/",".template");
+		ClassPathTemplateLoader cp = new ClassPathTemplateLoader("/templates/",postfix);
 		if (dir==null)
 			this.handlebar=new Handlebars(cp);
 		else
-			this.handlebar=new Handlebars(new CompositeTemplateLoader(new FileTemplateLoader(dir,".template"),cp));
+			this.handlebar=new Handlebars(new CompositeTemplateLoader(new FileTemplateLoader(dir,postfix),cp));
 	}
 
 
-	public boolean exists(String templateName) { return new File(dir,templateName+".template").exists(); } // TODO: handle classpath
+	public boolean exists(String templateName) { return new File(dir,templateName+postfix).exists(); } // TODO: handle classpath
 
 	public CompiledTemplate compile(CompiledTemplate defaultTemplate, String ... names) {
 		for (String name:names) {
