@@ -10,6 +10,6 @@
     </tbody>
   </table>
 
-{{form.changeButton}}
+{{> form/changeButton}}
   
 {{> footer}}

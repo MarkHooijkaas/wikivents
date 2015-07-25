@@ -13,7 +13,7 @@
 {{#each list}}  
       <tr>
         <td>{{date}}</td>
-        <td>{{organizer.get.username}}</td>
+        <td>{{ensure userid organizer}}</td>
         <td><a href="/event/show/{{_id}}">{{title}}</a></td>
         <td>{{location}}</td>
       </tr>

@@ -22,7 +22,7 @@
     </tbody>
   </table>
 
-{{form.changeButton}}
+{{> form/changeButton}}
   
   <div>{{form.description.value}}</div>
   
