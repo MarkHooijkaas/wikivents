@@ -4,13 +4,16 @@ package club.wikivents.web;
 
 import java.io.File;
 
+import org.kisst.crud4j.CrudTable;
 import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.HttpCallHandler;
+import org.kisst.http4j.HttpUserCall;
 import org.kisst.http4j.HttpCallDispatcher;
 import org.kisst.http4j.ResourceHandler;
 import org.kisst.http4j.handlebar.TemplateEngine;
 import org.kisst.item4j.struct.Struct;
 
+import club.wikivents.model.User;
 import club.wikivents.model.WikiventsModel;
 import club.wikivents.model.WikiventsModels;
 
@@ -24,6 +27,7 @@ public class WikiventsSite implements HttpCallHandler<HttpCall> {
 		//getStruct("site",Struct.EMPTY)
 		this.model=WikiventsModels.createModel(props);
 		this.engine=new TemplateEngine(props.getStruct("handlebars"));
+		engine.registerHelpers(new Helper());
 		this.handler= 
 				new HttpCallDispatcher<WikiventsCall>(new TemplatePage(this, "404"))
 				.addHandler("", new TemplatePage(this, "home"))
@@ -43,5 +47,17 @@ public class WikiventsSite implements HttpCallHandler<HttpCall> {
 	@Override public void handle(HttpCall call, String subPath) { handler.handle(new WikiventsCall(call, model), subPath);}
 	
 	public void close() { model.close(); }
-
+	
+	public class Helper {
+		public CharSequence ensure(String userid, CrudTable<User>.Ref userref) {  
+			if (userid==null)
+				return "***";
+			if (userref==null)
+				return "nobody";
+			User u=userref.get();
+			if (u==null)
+				return "unknown";
+			return u.username;
+		}
+	}
 }
