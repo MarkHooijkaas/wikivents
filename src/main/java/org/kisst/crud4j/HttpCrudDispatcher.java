@@ -40,10 +40,10 @@ public class HttpCrudDispatcher<T extends CrudObject> extends HttpCallDispatcher
 		@Override public void handlePost(String subPath) {
 			Struct input=new HttpRequestStruct(this);
 			HashStruct data = new HashStruct(input);
-			//validateCreate(userid, data);
+			form.validateCreate(userid, data);
 			T rec=table.createObject(data);
 			table.create(rec);
-			redirect("../show/"+rec._id);
+			redirect("show/"+rec._id);
 		}
 	}
 
@@ -69,7 +69,7 @@ public class HttpCrudDispatcher<T extends CrudObject> extends HttpCallDispatcher
 			Struct input=new HttpRequestStruct(this);
 			T oldRecord=record;
 			T newRecord=table.createObject(new MultiStruct(input,oldRecord));
-			//validateUpdate(userid, oldRecord, newRecord);
+			form.validateUpdate(userid, oldRecord, newRecord);
 			System.out.println("Updating "+subPath+" old:"+oldRecord+" new:"+newRecord);
 			table.update(oldRecord, newRecord);
 			redirect("../show/"+newRecord._id);

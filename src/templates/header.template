@@ -25,9 +25,14 @@
 		<li class="active"><a href="/">Home</a></li>
 		<li><a href="/event/all">Alle activiteiten</a></li>
 		<li><a href="/user/all">Alle gebruikers</a></li>
-		<li><a href="/user/show/{{userid}}">Mijn Profiel</a></li>
 		<li><a href="/event/new">Maak een activiteit</a></li>
-        <li><a href="/LoginPage">Login</a></li>
+{{#if userid}}		
+		<li><a href="/user/show/{{userid}}">Mijn Profiel</a></li>
+        <li><a href="/login">Logout {{user.username}}</a></li>
+{{else}}
+        <li><a href="/login">Login</a></li>
+        <li><a href="/user/new">Registreer</a></li>
+{{/if}}
       </ul>
     </div>
   </div>

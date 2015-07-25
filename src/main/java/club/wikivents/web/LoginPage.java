@@ -21,6 +21,7 @@ public class LoginPage extends TemplatePage {
 			TemplateData data = createTemplateData();
 			output(template.toString(data));
 		}
+		
 		@Override public void handlePost(String subPath) {
 			if ("true".equals(request.getParameter("logout"))) {
 				clearCookie();
@@ -35,11 +36,12 @@ public class LoginPage extends TemplatePage {
 			System.out.println("login from"+username+"  password:"+password);
 			String message="Unknown user";
 			for (User u: this.model.users) { // TODO: use index on username and on email
+				System.out.println("Checking  "+u);
 				if (u.username.equals(username) || u.email.equals(username)) {
-					//System.out.println("Found  "+u);
+					System.out.println("Found  "+u);
 					if (u.password.equals(password) ) {
 						setCookie(u._id);
-						redirect("/");
+						redirect("/user/show/"+u._id);
 						return;
 					}
 					message="password incorrect";
