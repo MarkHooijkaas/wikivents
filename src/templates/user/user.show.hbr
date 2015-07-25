@@ -4,9 +4,9 @@
 
   <table class="table table-hover">
     <tbody>
-      {{form.username.show}}
-      {{form.email.show}}
-      {{form.password.show}}
+      {{> form/field.show field=form.username}}
+      {{> form/field.show field=form.email}}
+      {{> form/field.show field=form.password}}
     </tbody>
   </table>
 

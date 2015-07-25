@@ -1,9 +1,9 @@
 {{> header}}
 
 <form role="form" method="post">
-  {{form.username.edit}}
-  {{form.email.edit}}
-  {{form.password.edit}}
+  {{> form/field.edit field=form.username}}
+  {{> form/field.edit field=form.email}}
+  {{> form/field.edit field=form.password}}
   
   {{> form/submitButton}}
 </form>

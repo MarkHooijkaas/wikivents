@@ -1,12 +1,12 @@
 package org.kisst.http4j.handlebar;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.kisst.http4j.HttpCall;
-import org.kisst.http4j.HttpUserCall;
 import org.kisst.http4j.HttpView;
 import org.kisst.http4j.handlebar.TemplateEngine.CompiledTemplate;
 import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
@@ -15,11 +15,7 @@ import org.kisst.item4j.seq.ItemSequence;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.util.ReflectionUtil;
 
-import com.github.jknack.handlebars.Handlebars.SafeString;
-
 public abstract class GenericForm implements HttpView {
-	private final CompiledTemplate defaultShowFieldTemplate;
-	private final CompiledTemplate defaultEditFieldTemplate;
 	private final TemplateEngine engine;
 	private final LinkedHashMap<String, Field> fields = new LinkedHashMap<String,Field>();
 	private final CompiledTemplate showTemplate;
@@ -31,14 +27,6 @@ public abstract class GenericForm implements HttpView {
 	public GenericForm(TemplateEngine engine, String prefix) {
 		this.engine=engine;
 		this.prefix=prefix;
-		this.defaultShowFieldTemplate=engine.compile(
-				engine.compileInline("<tr><th>{{field.label}}</th><td>{{value}}</td></tr>\n"),
-				prefix+"field.show",
-				"form/field.show");
-		this.defaultEditFieldTemplate=engine.compile(
-				engine.compileInline("<tr><th>{{field.label}}</hd><td><input type=\"{{field.type}}\" name=\"{{field.name}}\" id=\"{{field.name}}\" value=\"{{value}}\"/></td></tr>\n"),
-				prefix+"field.edit",
-				"form/field.edit");
 		this.showTemplate=engine.compile(null,
 				prefix+"show",
 				"form/show");
@@ -73,15 +61,21 @@ public abstract class GenericForm implements HttpView {
 	}
 
 	
+	private final static List<String> fieldNames=Arrays.asList(new String[]{"value","name","label"});
 	
 	public class Instance implements Struct {
 		private final LinkedHashMap<String,FieldValue> fieldvalues=new LinkedHashMap<String,FieldValue>(fields.size());
-		public class FieldValue {
+		public class FieldValue implements Struct {
 			public final Field field;
 			public FieldValue(Field f) { this.field=f;}
 			public String value() { return field.value(Instance.this);}
-			public SafeString edit() { return new SafeString(field.templateEdit.toString( new TemplateData(this)));}
-			public SafeString show() { return new SafeString(field.templateShow.toString(new TemplateData(this))); }
+			@Override public Iterable<String> fieldNames() { return fieldNames; }
+			@Override public Object getDirectFieldValue(String name) { 
+				if ("value".equals(name)) return value();
+				if ("name".equals(name)) return field.name;
+				if ("label".equals(name)) return field.label;
+				return UNKNOWN_FIELD;
+			}
 		}
 		public final Struct record;
 		public final  HttpCall call;
@@ -105,8 +99,6 @@ public abstract class GenericForm implements HttpView {
 	}
 	
 	public class Field {
-		public final CompiledTemplate templateShow;
-		public final CompiledTemplate templateEdit;
 		public final Schema<?>.Field field;
 		public final String label;
 		public final String name;
@@ -114,20 +106,8 @@ public abstract class GenericForm implements HttpView {
 			this.field=field;
 			this.name=field.getName();
 			this.label=label;
-			this.templateShow= engine.compile(
-				defaultShowFieldTemplate,
-				prefix+"field.show."+getClass().getSimpleName(),
-				"form/field.show."+getClass().getSimpleName()
-			);
-			this.templateEdit= engine.compile(
-				defaultEditFieldTemplate,
-				prefix+"field.edit."+getClass().getSimpleName(),
-				"form/field.edit."+getClass().getSimpleName()
-			);
-			System.out.println(this.name+",show="+this.templateShow+",edit="+this.templateEdit);
 		}
 		public String value(Instance inst) { return field.getString(inst.record); }
-		//public String value(Struct data) { return field.getString(data); }
 		public String type() { 
 			String name=this.getClass().getSimpleName();
 			if (name.endsWith("Field"))
