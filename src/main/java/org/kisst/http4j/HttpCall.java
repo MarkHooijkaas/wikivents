@@ -31,14 +31,15 @@ public class HttpCall {
 	public void handlePost(String subPath) { invalidPage(); }
 	
 	
-	public void output(String text) {
+	public PrintWriter getWriter() {
 		try { 
 			if (out==null)
 				out = response.getWriter();
-		    out.append(text);
-		} 
+			return out;
+		}
 		catch (IOException e) { throw new RuntimeException(e);}
 	}
+	public void output(String text) { getWriter().append(text); }
 	public void close() {
 		if (out!=null)
 			out.close();

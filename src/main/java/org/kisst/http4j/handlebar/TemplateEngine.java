@@ -5,6 +5,7 @@ package org.kisst.http4j.handlebar;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.io.Writer;
 
 import org.kisst.item4j.struct.Struct;
 
@@ -44,7 +45,9 @@ public class TemplateEngine {
 			this.handlebar=new Handlebars(new CompositeTemplateLoader(new FileTemplateLoader(dir,postfix),cp));
 	}
 
-
+	public void registerHelpers(Object helpers) {
+		handlebar.registerHelpers(helpers);
+	}
 	public boolean exists(String templateName) { return new File(dir,templateName+postfix).exists(); } // TODO: handle classpath
 
 	public CompiledTemplate compile(CompiledTemplate defaultTemplate, String ... names) {
@@ -89,6 +92,15 @@ public class TemplateEngine {
 				tmpl=compile(name);
 			try { 
 			    return tmpl.apply(context.builder.build());
+			} 
+			catch (IOException e) { throw new RuntimeException(e);}
+		}
+		public void output(TemplateData context, Writer writer) {
+			Template tmpl = template;
+			if (loadDynamic && name!=null)
+				tmpl=compile(name);
+			try { 
+			    tmpl.apply(context.builder.build(), writer);
 			} 
 			catch (IOException e) { throw new RuntimeException(e);}
 		}

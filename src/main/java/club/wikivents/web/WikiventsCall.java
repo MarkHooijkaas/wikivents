@@ -2,6 +2,7 @@ package club.wikivents.web;
 
 import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.HttpUserCall;
+import org.kisst.http4j.handlebar.TemplateEngine.CompiledTemplate;
 import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
 
 import club.wikivents.model.User;
@@ -26,6 +27,7 @@ public class WikiventsCall extends HttpUserCall {
 	}
 	public TemplateData createTemplateData() { return new TemplateData(this); }
 	
+	public void output(CompiledTemplate template, TemplateData data) { template.output(data, getWriter());}
 
 	@Override public void ensureUser() {
 		if (user==null)

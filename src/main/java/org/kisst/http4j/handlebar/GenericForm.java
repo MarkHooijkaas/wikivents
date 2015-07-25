@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.kisst.http4j.HttpCall;
+import org.kisst.http4j.HttpUserCall;
 import org.kisst.http4j.HttpView;
 import org.kisst.http4j.handlebar.TemplateEngine.CompiledTemplate;
 import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
@@ -25,8 +26,6 @@ public abstract class GenericForm implements HttpView {
 	private final CompiledTemplate editTemplate;
 	private final CompiledTemplate listTemplate;
 	private final String prefix;
-	private final CompiledTemplate changeButtonTemplate;
-	private final CompiledTemplate submitButtonTemplate;
 
 	public GenericForm(TemplateEngine engine) { this(engine,"");}
 	public GenericForm(TemplateEngine engine, String prefix) {
@@ -49,8 +48,6 @@ public abstract class GenericForm implements HttpView {
 		this.listTemplate=engine.compile(null,
 				prefix+"list",
 				"form/list");
-		this.changeButtonTemplate=engine.compile(null, prefix+"changeButton", "form/changeButton");
-		this.submitButtonTemplate=engine.compile(null, prefix+"submitButton", "form/submitButton");
 	}
 	public Iterator<Field> fields() { return fields.values().iterator(); }
 
@@ -82,8 +79,8 @@ public abstract class GenericForm implements HttpView {
 		public class FieldValue {
 			public final Field field;
 			public FieldValue(Field f) { this.field=f;}
-			public String value() { return field.value(record);}
-			public SafeString edit() { return new SafeString(field.templateEdit.toString(new TemplateData(this)));}
+			public String value() { return field.value(Instance.this);}
+			public SafeString edit() { return new SafeString(field.templateEdit.toString( new TemplateData(this)));}
 			public SafeString show() { return new SafeString(field.templateShow.toString(new TemplateData(this))); }
 		}
 		public final Struct record;
@@ -96,8 +93,6 @@ public abstract class GenericForm implements HttpView {
 		}
 		public GenericForm form() { return GenericForm.this;}
 		public boolean userMayChange() { return true; } // TODO
-		public SafeString changeButton() { return new SafeString(toString(changeButtonTemplate)); }
-		public SafeString submitButton() { return new SafeString(toString(submitButtonTemplate)); }
 		public Collection<FieldValue> fields() { return fieldvalues.values(); }
 		@Override public Iterable<String> fieldNames() { return fieldvalues.keySet(); }
 		@Override public Object getDirectFieldValue(String name) { return fieldvalues.get(name); }
@@ -131,7 +126,8 @@ public abstract class GenericForm implements HttpView {
 			);
 			System.out.println(this.name+",show="+this.templateShow+",edit="+this.templateEdit);
 		}
-		public String value(Struct data) { return field.getString(data); }
+		public String value(Instance inst) { return field.getString(inst.record); }
+		//public String value(Struct data) { return field.getString(data); }
 		public String type() { 
 			String name=this.getClass().getSimpleName();
 			if (name.endsWith("Field"))
