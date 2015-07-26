@@ -13,10 +13,12 @@ public class UserCrudPage extends WikiventsPage {
 	private final HttpCrudDispatcher<User> handler;
 
 	public class Form extends GenericForm {
-		public Form(TemplateEngine engine) { super(engine,"user/user."); addAllFields(); }
-		public final TextField username = new TextField(User.schema.username, "Gebruikersnaam");
-		public final EmailField email = new EmailField(User.schema.email, "Email adres");
-		public final PasswordField password = new PasswordField(User.schema.password, "Wachtwoord");
+		public Form(TemplateEngine engine) { 
+			super(engine,"user/user.",
+					User.schema.username,
+					User.schema.email,
+					User.schema.password);
+		}
 		@Override public void validateCreate(String userid, HashStruct data) {}
 		@Override public void validateUpdate(String userid, Struct oldRecord, Struct newRecord) {}	}
 

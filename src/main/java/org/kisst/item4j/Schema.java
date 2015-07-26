@@ -11,6 +11,7 @@ import org.kisst.item4j.Item.Factory;
 import org.kisst.item4j.json.JsonParser;
 import org.kisst.item4j.struct.HashStruct;
 import org.kisst.item4j.struct.Struct;
+import org.kisst.util.AssertUtil;
 import org.kisst.util.ReflectionUtil;
 
 public class Schema<T> implements Type<T> {
@@ -65,8 +66,9 @@ public class Schema<T> implements Type<T> {
 			this.name=name; 
 			this.optional=false; 
 			this.allowsNull=false;
-			this.field=ReflectionUtil.getField(type.getJavaClass(), name);
+			this.field=ReflectionUtil.getField(getJavaClass(), name);
 			this.defaultValue=null;
+			AssertUtil.assertNotNull(field, "field "+getJavaClass()+"::"+name);
 		}
 		public Field(Builder builder) {
 			this.type=builder.type;
@@ -74,7 +76,8 @@ public class Schema<T> implements Type<T> {
 			this.optional=builder.optional; 
 			this.allowsNull=builder.allowsNull;
 			this.defaultValue=builder.defaultValue;
-			this.field=ReflectionUtil.getField(getType().getJavaClass(), getName());
+			this.field=ReflectionUtil.getField(getJavaClass(), getName());
+			AssertUtil.assertNotNull(field, "field "+getJavaClass()+"::"+name);
 		}
 		public Object getObject(Struct s) { 
 			Object result = s.getObject(getName(),null);
@@ -90,6 +93,7 @@ public class Schema<T> implements Type<T> {
 		}
 		public Object getObjectValue(Object obj) { 
 			try {
+				System.out.println(this+" "+this.getName()+this.field);
 				return field.get(obj);
 			}
 			catch (IllegalArgumentException e) { throw new RuntimeException(e); }

@@ -1,1 +1,1 @@
-<tr><th>{{field.label}}</th><td>{{field.value}}</td></tr>
+<tr><th>{{label}}</th><td>{{field.value}}</td></tr>

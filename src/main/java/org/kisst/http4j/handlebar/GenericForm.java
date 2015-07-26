@@ -1,10 +1,8 @@
 package org.kisst.http4j.handlebar;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.List;
 
 import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.HttpView;
@@ -12,82 +10,55 @@ import org.kisst.http4j.handlebar.TemplateEngine.CompiledTemplate;
 import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
 import org.kisst.item4j.Schema;
 import org.kisst.item4j.seq.ItemSequence;
+import org.kisst.item4j.struct.ReflectStruct;
 import org.kisst.item4j.struct.Struct;
-import org.kisst.util.ReflectionUtil;
 
-public abstract class GenericForm implements HttpView {
-	private final TemplateEngine engine;
+public abstract class GenericForm implements HttpView, Struct {
 	private final LinkedHashMap<String, Field> fields = new LinkedHashMap<String,Field>();
 	private final CompiledTemplate showTemplate;
 	private final CompiledTemplate editTemplate;
 	private final CompiledTemplate listTemplate;
-	private final String prefix;
 
-	public GenericForm(TemplateEngine engine) { this(engine,"");}
-	public GenericForm(TemplateEngine engine, String prefix) {
-		this.engine=engine;
-		this.prefix=prefix;
-		this.showTemplate=engine.compile(null,
-				prefix+"show",
-				"form/show");
-		this.editTemplate=engine.compile(null,
-				prefix+"edit",
-				"form/edit");
-		this.listTemplate=engine.compile(null,
-				prefix+"list",
-				"form/list");
+	public GenericForm(TemplateEngine engine, String prefix, Schema<?>.Field ... sfields) {
+		this.showTemplate=engine.compileTemplate(prefix+"show");
+		this.listTemplate=engine.compileTemplate(prefix+"list");
+		this.editTemplate=engine.compileTemplate(prefix+"edit");
+		for (Schema<?>.Field f:sfields)
+			fields.put(f.getName(), new Field(f));
 	}
 	public Iterator<Field> fields() { return fields.values().iterator(); }
+	@Override public Iterable<String> fieldNames() { return fields.keySet(); }
+	@Override public Object getDirectFieldValue(String name) { return fields.get(name); }
 
-	@Override public void showViewPage(HttpCall call, Struct data) {
-		new Instance(call,data).output(showTemplate); 
-	}
-	@Override public void showEditPage(HttpCall call, Struct data) {
-		new Instance(call,data).output(editTemplate); 
-	}
-	public void showList(HttpCall call, ItemSequence seq) {
+	@Override public void showViewPage(HttpCall call, Struct data) { new Instance(call,data).output(showTemplate); }
+	@Override public void showEditPage(HttpCall call, Struct data) { new Instance(call,data).output(editTemplate); }
+	
+	@Override public void showList(HttpCall call, ItemSequence seq) {
 		TemplateData context = new TemplateData(call);
 		context.add("list", seq);
 		call.output(listTemplate.toString(context)); 
 	}
 	
-	protected void addAllFields() { addAllFields(this.getClass());	}
-	
-	private void addAllFields(Class<?> cls) {
-		List<java.lang.reflect.Field> fs = ReflectionUtil.getAllDeclaredFieldsOfType(this.getClass(), Field.class);
-		for (java.lang.reflect.Field f: fs) {
-			fields.put(f.getName(), (Field) ReflectionUtil.getFieldValue(this,f.getName()));
-		}
-	}
-
-	
-	private final static List<String> fieldNames=Arrays.asList(new String[]{"value","name","label"});
-	
 	public class Instance implements Struct {
-		private final LinkedHashMap<String,FieldValue> fieldvalues=new LinkedHashMap<String,FieldValue>(fields.size());
-		public class FieldValue implements Struct {
-			public final Field field;
-			public FieldValue(Field f) { this.field=f;}
-			public String value() { return field.value(Instance.this);}
-			@Override public Iterable<String> fieldNames() { return fieldNames; }
-			@Override public Object getDirectFieldValue(String name) { 
-				if ("value".equals(name)) return value();
-				if ("name".equals(name)) return field.name;
-				if ("label".equals(name)) return field.label;
-				return UNKNOWN_FIELD;
-			}
-		}
+		private final LinkedHashMap<String, Field> fieldvalues;
 		public final Struct record;
 		public final  HttpCall call;
 		public Instance(HttpCall call, Struct record) {
 			this.call=call;
 			this.record=record;
-			for (Field f: fields.values())
-				fieldvalues.put(f.name, new FieldValue(f));
+			if (record==null)
+				this.fieldvalues=fields;
+			else {
+				this.fieldvalues= new LinkedHashMap<String,Field>();
+				for (Field f: fields.values()) {
+					System.out.println(f+" "+f.name+" "+f.field);
+					System.out.println("record:"+record);
+					fieldvalues.put(f.name, new Field(f.field,f.field.getObjectValue(record)));
+				}
+			}
 		}
 		public GenericForm form() { return GenericForm.this;}
-		public boolean userMayChange() { return true; } // TODO
-		public Collection<FieldValue> fields() { return fieldvalues.values(); }
+		public Collection<Field> fields() { return fieldvalues.values(); }
 		@Override public Iterable<String> fieldNames() { return fieldvalues.keySet(); }
 		@Override public Object getDirectFieldValue(String name) { return fieldvalues.get(name); }
 		public void output(CompiledTemplate templ) { call.output(toString(templ)); }
@@ -98,37 +69,16 @@ public abstract class GenericForm implements HttpView {
 		}
 	}
 	
-	public class Field {
+	public class Field extends ReflectStruct {
 		public final Schema<?>.Field field;
-		public final String label;
 		public final String name;
-		public Field(Schema<?>.Field field, String label) {
+		public final Object value;
+		public Field(Schema<?>.Field field) { this(field,null); }
+		public Field(Schema<?>.Field field, Object value) {
+			field.getClass();
 			this.field=field;
 			this.name=field.getName();
-			this.label=label;
+			this.value=value;;
 		}
-		public String value(Instance inst) { return field.getString(inst.record); }
-		public String type() { 
-			String name=this.getClass().getSimpleName();
-			if (name.endsWith("Field"))
-				name=name.substring(0, name.length()-5);
-			return name.toLowerCase();
-		}
-	}
-	public class TextField extends Field {
-		public TextField(Schema<?>.Field field, String label) { super(field,label); }
-	}
-	public class EmailField extends Field {
-		public EmailField(Schema<?>.Field field, String label) { super(field,label); }
-	}
-	public class PasswordField extends Field {
-		public PasswordField(Schema<?>.Field field, String label) { super(field,label); }
-	}
-	public class TextAreaField extends Field {
-		public final int rows;
-		public TextAreaField(Schema<?>.Field field, String label,  int rows) { super(field,label); this.rows=rows; }
-	}
-	public class DateField extends Field {
-		public DateField(Schema<?>.Field field, String label) { super(field,label);}
 	}
 }

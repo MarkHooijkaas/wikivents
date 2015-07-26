@@ -1,5 +1,5 @@
   <div class="form-group">
-    <label for="{{field.name}}">{{field.label}}</label>
+    <label for="{{field.name}}">{{label}}</label>
     <input type="{{field.type}}" class="form-control" id="{{field.name}}" name="{{field.name}}" value="{{field.value}}">
   </div>
   

@@ -9,10 +9,10 @@
       </tr>
     </thead>
     <tbody>
-	{{> form/field.show field=form.date}}
-	{{> form/field.show field=form.min}}
-	{{> form/field.show field=form.max}}
-	{{> form/field.show field=form.location}}
+	{{> form/field.show field=form.date     label="Datum"}}
+	{{> form/field.show field=form.min      label="Minimum aantal deelnemers"}}
+	{{> form/field.show field=form.max      label="Maximum aantal deelnemers"}}
+	{{> form/field.show field=form.location label="Locatie"}}
     </tbody>
   </table>
 
