@@ -36,7 +36,7 @@ public abstract class HttpCrudForm<T extends CrudObject> {
 	public void handleCreate(HttpCall call, String subPath) {
 		if (call.isGet()) {
 			TemplateData context=new TemplateData(call);
-			//context.add("form", null);
+			context.add("form", createFormData(call,null));
 			template.output(context, call.getWriter());
 		}
 		else if (call.isPost()) {
