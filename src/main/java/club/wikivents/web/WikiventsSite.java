@@ -53,6 +53,8 @@ public class WikiventsSite implements HttpCallHandler {
 				return "***";
 			if (userref==null)
 				return "nobody";
+			if (userref._id==null)
+				return "no-one";
 			User u=userref.get();
 			if (u==null)
 				return "unknown";
