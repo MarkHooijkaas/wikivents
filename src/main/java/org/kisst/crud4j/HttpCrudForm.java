@@ -9,11 +9,11 @@ import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
 import org.kisst.item4j.struct.MultiStruct;
 import org.kisst.item4j.struct.Struct;
 
-public abstract class HttpCrudDispatcher<T extends CrudObject> { //extends HttpCallDispatcher{
-	public class HttpForm extends FormData {
+public abstract class HttpCrudForm<T extends CrudObject> { //extends HttpCallDispatcher{
+	public class Data extends FormData {
 		public final HttpCall call;
-		public HttpForm(HttpCall call, Struct record) { super(record);  this.call=call; }
-		public boolean isAuthorized() { return HttpCrudDispatcher.this.isAuthorized(record, call); }
+		public Data(HttpCall call, Struct record) { super(record);  this.call=call; }
+		public boolean isAuthorized() { return HttpCrudForm.this.isAuthorized(record, call); }
 	}
 	
 	protected final CrudTable<T> table;
@@ -21,7 +21,7 @@ public abstract class HttpCrudDispatcher<T extends CrudObject> { //extends HttpC
 	private final CompiledTemplate template;
 	private final String name;
 	
-	public HttpCrudDispatcher(CrudTable<T> table, TemplateEngine engine, String name) {
+	public HttpCrudForm(CrudTable<T> table, TemplateEngine engine, String name) {
 		this.table=table;
 		this.engine=engine;
 		this.name=name;

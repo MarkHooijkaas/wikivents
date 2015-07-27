@@ -2,21 +2,21 @@ package club.wikivents.web;
 
 import static club.wikivents.model.User.schema;
 
-import org.kisst.crud4j.HttpCrudDispatcher;
+import org.kisst.crud4j.HttpCrudForm;
 import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.handlebar.FormData;
 import org.kisst.item4j.struct.Struct;
 
 import club.wikivents.model.User;
 
-public class UserCrudPage extends HttpCrudDispatcher<User> {
-	public class Form extends HttpForm {
+public class UserForm extends HttpCrudForm<User> {
+	public class Form extends Data {
 		public Form(HttpCall call, Struct record) { super(call, record); }
 		public final StringField username = new StringField(schema.username);
 		public final EmailField  email = new EmailField(schema.email);
 	}		
 
-	public UserCrudPage(WikiventsSite site) {
+	public UserForm(WikiventsSite site) {
 		super(site.model.users, site.engine, "user");
 	}
 

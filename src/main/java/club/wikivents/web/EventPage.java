@@ -7,7 +7,7 @@ import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
 
 public class EventPage extends WikiventsPage {
 	public EventPage(WikiventsSite site) { super(site);	}
-	public final EventCrudPage crud=new EventCrudPage(site);
+	public final EventForm crud=new EventForm(site);
 
 	public final HttpCallHandler list=new TemplatePage(site,"event/list", this::listAllEvents);
 	public final HttpCallHandler show=new TemplatePage(site,"event/show", this::eventRecord);

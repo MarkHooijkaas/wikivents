@@ -2,15 +2,15 @@ package club.wikivents.web;
 
 import static club.wikivents.model.Event.schema;
 
-import org.kisst.crud4j.HttpCrudDispatcher;
+import org.kisst.crud4j.HttpCrudForm;
 import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.handlebar.FormData;
 import org.kisst.item4j.struct.Struct;
 
 import club.wikivents.model.Event;
 
-public class EventCrudPage extends HttpCrudDispatcher<Event> {
-	public class Form extends HttpForm {
+public class EventForm extends HttpCrudForm<Event> {
+	public class Form extends Data {
 		public Form(HttpCall call, Struct record) { super(call, record); }
 		public final StringField title = new StringField(schema.title);
 		public final DateField date= new DateField(schema.date);
@@ -20,7 +20,7 @@ public class EventCrudPage extends HttpCrudDispatcher<Event> {
 		public final StringField description= new StringField(schema.description);
 	}
 
-	public EventCrudPage(WikiventsSite site) {
+	public EventForm(WikiventsSite site) {
 		super(site.model.events, site.engine, "event");
 	}
 
