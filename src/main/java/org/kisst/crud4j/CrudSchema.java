@@ -17,7 +17,9 @@ public class CrudSchema<T> extends Schema<T> {
 	public class RefField<RT extends CrudObject> extends Field {
 		public RefField(String name) { super(Type.javaString,name); }
 		public CrudTable<RT>.Ref getRef(CrudTable<RT> table, Struct s) {
-			String id = s.getString(getName());
+			String id = s.getString(getName(),null);
+			if (id==null)
+				return null;
 			String clsName=table.getSchema().getName();
 			//System.out.println("Getting ref "+getName()+" with value "+id+ " should be of format "+clsName+"(...)");
 			if (!(id.startsWith(clsName+"(") || id.endsWith(")")))
