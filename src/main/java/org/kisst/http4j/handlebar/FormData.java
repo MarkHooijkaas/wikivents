@@ -12,7 +12,7 @@ public class FormData {
 	
 	public FormData(Struct record) { this.record=record; }
 
-	public class Field extends ReflectStruct {
+	public class Field {
 		public final String name;
 		public final Object value;
 		public final String message;
@@ -49,7 +49,9 @@ public class FormData {
 	public class EmailField extends StringField {	
 		public EmailField(String name) { super(name); }
 		public EmailField(Schema<?>.Field field) { super(field); }
-		@Override public String validate() { 
+		@Override public String validate() {
+			if (stringValue==null)
+				return null; // TODO: should it be validated???
 			int atpos=stringValue.indexOf('@');
 			if (atpos<0)
 				return "email address should contain @";
