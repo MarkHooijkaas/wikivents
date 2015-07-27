@@ -49,13 +49,18 @@ public abstract class CrudTable<T extends CrudObject> implements TypedSequence<T
 		storage.createInStorage(doc);
 	}
 	public T read(String key) { 
+		T result;
 		if (cache!=null)
-			return cache.get(key);
-		Struct rec = storage.readFromStorage(key);
-		T obj = createObject(rec);
+			result=cache.get(key);
+		else {	
+			Struct rec = storage.readFromStorage(key);
+			result = createObject(rec);
+		}
 		//System.out.println("struct "+rec.getClass()+"="+rec);
 		//System.out.println("object "+obj.getClass()+"="+obj);
-		return obj;
+		if (result==null)
+			throw new RuntimeException("Could not find "+name+" for key "+key);
+		return result;
 	}
 	public void update(T oldValue, T newValue) {
 		checkSameId(oldValue, newValue);
