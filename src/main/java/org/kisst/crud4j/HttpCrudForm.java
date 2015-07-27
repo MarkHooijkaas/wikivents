@@ -9,7 +9,7 @@ import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
 import org.kisst.item4j.struct.MultiStruct;
 import org.kisst.item4j.struct.Struct;
 
-public abstract class HttpCrudForm<T extends CrudObject> { //extends HttpCallDispatcher{
+public abstract class HttpCrudForm<T extends CrudObject> {
 	public class Data extends FormData {
 		public final HttpCall call;
 		public Data(HttpCall call, Struct record) { super(record);  this.call=call; }
