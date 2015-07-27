@@ -22,6 +22,7 @@ package org.kisst.util;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -46,62 +47,92 @@ public class ReflectionUtil {
 		try {
 			Class<?> c = Class.forName(classname);
 			return getConstructor(c, signature);
-		} catch (ClassNotFoundException e) { throw new RuntimeException(e); }
+		} catch (ClassNotFoundException e) { throw new ReflectionException(null, null, e); }
 	}
 
 	public static Field getDeclaredField(Class<?> cls, String name) {
 		try {
 			return cls.getDeclaredField(name);
 		} 
-		catch (SecurityException e) {throw new RuntimeException(e); }
-		catch (NoSuchFieldException e) { return null; }
+		catch (SecurityException e) { throw new ReflectionException(cls, name, e); }
+		catch (NoSuchFieldException e) { throw new ReflectionException(cls, name, e); }
 	}
 	public static Field getField(Class<?> cls, String name) {
 		try {
 			return cls.getField(name);
 		} 
-		catch (SecurityException e) {throw new RuntimeException(e); }
-		catch (NoSuchFieldException e) { return null; }
+		catch (SecurityException e) { throw new ReflectionException(cls, name, e); }
+		catch (NoSuchFieldException e) { throw new ReflectionException(cls, name, e); }
 	}
-
+	public static Field getFieldOrNull(Class<?> cls, String fieldname) {
+		try {
+			return cls.getField(fieldname);
+		} 
+		catch (SecurityException e) { throw new ReflectionException(cls, fieldname, e); }
+		catch (NoSuchFieldException e) { return null;}
+	}
+	public static List<Field> getAllPublicFieldsOfType(Class<?> objectClass, Class<?> fieldClass) {
+		ArrayList<Field> result=new ArrayList<Field>();
+		try {
+			for (Field f : objectClass.getFields()) {
+				if (fieldClass.isAssignableFrom(f.getType())) {
+					result.add(f);
+					//System.out.println(smartClassName(objectClass)+"::"+f.getName());
+				}					
+			}
+			return result;
+		}
+		catch (IllegalArgumentException e) { throw new ReflectionException(objectClass, null, e); }
+	}
 	public static List<Field> getAllDeclaredFieldsOfType(Class<?> objectClass, Class<?> fieldClass) {
 		ArrayList<Field> result=new ArrayList<Field>();
 		try {
 			for (Field f : objectClass.getDeclaredFields()) {
 				if (fieldClass.isAssignableFrom(f.getType())) {
 					result.add(f);
-					System.out.println(smartClassName(objectClass)+"::"+f.getName());
+					//System.out.println(smartClassName(objectClass)+"::"+f.getName());
 				}					
 			}
 			return result;
 		}
-		catch (IllegalArgumentException e) { throw new RuntimeException(e); }
+		catch (IllegalArgumentException e) { throw new ReflectionException(objectClass, null, e); }
 	}
 
-	public static List<Object> getAllDeclaredFieldValuesOfType(Object obj, Class<?> type) {
-		ArrayList<Object> result=new ArrayList<Object>();
+	public static<T> List<T> getAllDeclaredFieldValuesOfType(Object obj, Class<T> type) {
+		ArrayList<T> result=new ArrayList<T>();
 		try {
 			for (Field f : obj.getClass().getDeclaredFields()) {
 				if (type.isAssignableFrom(f.getType())) {
-					result.add(f.get(obj));
-					System.out.println(smartClassName(obj)+"::"+f.getName());
+					@SuppressWarnings("unchecked")
+					T value = (T)f.get(obj);
+					result.add(value);
+					//System.out.println(smartClassName(obj)+"::"+f.getName());
 				}
 			}
 			return result;
 		}
-		catch (IllegalArgumentException e) { throw new RuntimeException(e); }
-		catch (IllegalAccessException e) { throw new RuntimeException(e); }
+		catch (IllegalArgumentException e) { throw new ReflectionException(obj, type, e); }
+		catch (IllegalAccessException e) { throw new ReflectionException(obj, type, e); }
 	}
 
-	public static final Object UNKNOWN_FIELD=new Object();
-	public static Object getFieldValue(Object obj, String fieldname) {
+	public static final Object UNKNOWN_FIELD=new Object() { @Override public String toString() { return "UNKNOWN_FIELD";} }; // TODO: make class with fieldname???
+	public static Object getFieldValueOrUnknownField(Object obj, String fieldname) {
 		try {
-			return obj.getClass().getField(fieldname).get(obj);
+			Field field = obj.getClass().getField(fieldname);
+			return field.get(obj);
 		}
-		catch (IllegalArgumentException e) { return UNKNOWN_FIELD; }
-		catch (IllegalAccessException e) { return UNKNOWN_FIELD; }
-		catch (NoSuchFieldException e) { return UNKNOWN_FIELD; }
-		catch (SecurityException e) { return UNKNOWN_FIELD; }
+		catch (IllegalArgumentException e) { throw new ReflectionException(obj, fieldname, e); }
+		catch (SecurityException e) { throw new ReflectionException(obj, fieldname, e); }
+		catch (NoSuchFieldException e) { return UNKNOWN_FIELD; } 
+		catch (IllegalAccessException e) { throw new ReflectionException(obj, fieldname, e); }
+	}
+	public static Object getFieldValue(Object obj, Field field) {
+		try {
+			return field.get(obj);
+		}
+		catch (IllegalArgumentException e) { throw new ReflectionException(obj, field, e); }
+		catch (IllegalAccessException e) { throw new ReflectionException(obj, field, e); }
+		catch (SecurityException e) { throw new ReflectionException(obj, field, e); }
 	}
 
 	
@@ -149,8 +180,8 @@ public class ReflectionUtil {
 			m.setAccessible(true);
 			return m.invoke(o, args);
 		}
-		catch (IllegalAccessException e) { throw new RuntimeException(e); }
-		catch (InvocationTargetException e) {e.getCause().printStackTrace(); throw new RuntimeException(e.getCause()); }
+		catch (IllegalAccessException e) {  throw new ReflectionException(o, m, e); }
+		catch (InvocationTargetException e) {e.getCause().printStackTrace();  throw new ReflectionException(o, m, e); }
 	}
 	public static Object invoke(Object o, String name, Object[] args) {
 		return invoke(o.getClass(),o, name, args);
@@ -159,7 +190,7 @@ public class ReflectionUtil {
 		try {
 			return invoke(o, c.getDeclaredMethod(name, getSignature(args)), args);
 		}
-		catch (NoSuchMethodException e) { throw new RuntimeException(e); }
+		catch (NoSuchMethodException e) { throw new ReflectionException(c, name, e); }
 	}
 
 	private static Class<?>[] getSignature(Object[] args) {
@@ -173,8 +204,8 @@ public class ReflectionUtil {
 		try {	
 			return Class.forName(name);
 		}
-		catch (IllegalArgumentException e) { throw new RuntimeException(e); }
-		catch (ClassNotFoundException e) { throw new RuntimeException(e); }
+		catch (IllegalArgumentException e) { throw new ReflectionException(name, null, e); }
+		catch (ClassNotFoundException e) { throw new ReflectionException(name, null, e); }
 	}
 
 	public static Object createObject(String classname, Object[] args) {
@@ -190,9 +221,9 @@ public class ReflectionUtil {
 			cons.setAccessible(true);
 			return cons.newInstance(args);
 		}
-		catch (IllegalAccessException e) { throw new RuntimeException(e); } 
-		catch (InstantiationException e) { throw new RuntimeException(e); }
-		catch (InvocationTargetException e) { throw new RuntimeException(e); }
+		catch (IllegalAccessException e) { throw new ReflectionException(cons, args, e); }
+		catch (InstantiationException e) { throw new ReflectionException(cons, args, e); }
+		catch (InvocationTargetException e) { throw new ReflectionException(cons, args, e); }
 	}
 
 	public static Object createObject(String classname) {
@@ -202,9 +233,9 @@ public class ReflectionUtil {
 		try {
 			return c.newInstance();
 		}
-		catch (IllegalArgumentException e) { throw new RuntimeException(e); }
-		catch (IllegalAccessException e) { throw new RuntimeException(e); } 
-		catch (InstantiationException e) { throw new RuntimeException(e); }
+		catch (IllegalArgumentException e) { throw new ReflectionException(c, null, e); }
+		catch (IllegalAccessException e) {  throw new ReflectionException(c, null, e); }
+		catch (InstantiationException e) {  throw new ReflectionException(c, null, e); }
 	}
 	
 	public static String toString(Object obj, String... fields) {
@@ -245,10 +276,34 @@ public class ReflectionUtil {
 					sep=", ";
 				}
 			} 
-			catch (IllegalArgumentException e) { throw new RuntimeException(e);} 
-			catch (IllegalAccessException e) { throw new RuntimeException(e);}
+			catch (IllegalArgumentException e) { throw new ReflectionException(obj, result, e);} 
+			catch (IllegalAccessException e) { throw new ReflectionException(obj, result, e);}
 		}
 		result.append(")");
 		return result.toString();
+	}
+	
+	public static class ReflectionException extends RuntimeException {
+		private static final long serialVersionUID = 1L;
+		public final Object target;
+		public final Object member;
+		public ReflectionException(Object target, Object member, Throwable e) {
+			super(msg(target,member)+": "+e.getMessage(),e);
+			this.target=target;
+			this.member=member;
+		}
+		private static String msg(Object target, Object member) {
+			String t=null;
+			String m=null;
+			if (target instanceof Class)
+				t=((Class<?>) target).getName();
+			else
+				t=""+t; // TODO: infinite recursion if this is in toString???
+			if (member instanceof Member)
+				m=((Member) member).getName();
+			else
+				m=""+member;
+			return "Reflection error when accessing "+m+" of class "+t;
+		}
 	}
 }

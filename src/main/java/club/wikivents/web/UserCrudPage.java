@@ -1,32 +1,28 @@
 package club.wikivents.web;
 
+import static club.wikivents.model.User.schema;
+
 import org.kisst.crud4j.HttpCrudDispatcher;
-import org.kisst.http4j.handlebar.GenericForm;
-import org.kisst.http4j.handlebar.TemplateEngine;
-import org.kisst.item4j.struct.HashStruct;
+import org.kisst.http4j.HttpCall;
+import org.kisst.http4j.handlebar.FormData;
 import org.kisst.item4j.struct.Struct;
 
 import club.wikivents.model.User;
 
-public class UserCrudPage extends WikiventsPage {
-	private final Form form;
-	private final HttpCrudDispatcher<User> handler;
+public class UserCrudPage extends HttpCrudDispatcher<User> {
+	public class Form extends HttpForm {
+		public Form(HttpCall call, Struct record) { super(call, record); }
+		public final StringField username = new StringField(schema.username);
+		public final EmailField  email = new EmailField(schema.email);
+	}		
 
-	public class Form extends GenericForm {
-		public Form(TemplateEngine engine) { 
-			super(engine,"user/user.",
-					User.schema.username,
-					User.schema.email,
-					User.schema.password);
-		}
-		@Override public void validateCreate(String userid, HashStruct data) {}
-		@Override public void validateUpdate(String userid, Struct oldRecord, Struct newRecord) {}	}
-
-	
 	public UserCrudPage(WikiventsSite site) {
-		super(site);
-		this.form = new Form(site.engine);
-		this.handler=new HttpCrudDispatcher<User>(model.users, form);
+		super(site.model.users, site.engine, "user");
 	}
-	@Override public void handle(WikiventsCall call, String subPath) { handler.handle(call, subPath); }
-}
+
+	@Override public FormData createFormData(HttpCall call, Struct struct) { return new Form(call,struct); }
+	@Override public boolean isAuthorized(Struct oldRecord, HttpCall call) {
+		if (call.userid==null)
+			return false;
+		return call.userid.equals(oldRecord.getString("_id" ,null));
+	}}

@@ -1,23 +1,48 @@
 package org.kisst.http4j;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.util.LinkedHashMap;
 
-public class HttpCallDispatcher<T extends HttpCall> implements HttpCallHandler<T> {
-	private final LinkedHashMap<String, HttpCallHandler<T>> map=new LinkedHashMap<String, HttpCallHandler<T>>();
+import org.kisst.util.ReflectionUtil;
 
-	private final HttpCallHandler<T> defaultHandler;
-	public HttpCallDispatcher(HttpCallHandler<T> defaultHandler) { 
-		this.defaultHandler=defaultHandler;
-	}
+public class HttpCallDispatcher implements HttpCallHandler {
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(ElementType.FIELD)
+	public @interface Path { public String dispatchPath(); }
 	
-	public HttpCallDispatcher<T> addHandler(String path, HttpCallHandler<T> handler) {
-		while (path.startsWith("/"))
-			path=path.substring(1);
-		map.put(path, handler);
-		return this;
+	
+	private final LinkedHashMap<String, HttpCallHandler> map=new LinkedHashMap<String, HttpCallHandler>();
+	private final HttpCallHandler home;
+
+	public HttpCallDispatcher(Object pages) {
+		HttpCallHandler tmpHome=null;
+		System.out.println("Loading fields from "+ReflectionUtil.smartClassName(pages.getClass()));
+		for (java.lang.reflect.Field f : ReflectionUtil.getAllDeclaredFieldsOfType(pages.getClass(), HttpCallHandler.class)) {
+			f.setAccessible(true);
+			Object h =ReflectionUtil.getFieldValue(pages, f);
+			String path=f.getName();
+			if (h==null || h.getClass()==Object.class)
+				continue;
+			HttpCallHandler handler=(HttpCallHandler) h;
+			// TODO: which wins if both annotation and instanceof are true????
+			if (h instanceof Path)
+				path=((Path) h).dispatchPath();
+			Path anno = f.getAnnotation(Path.class);
+			if (anno!=null)
+				path=anno.dispatchPath();
+			map.put(path, handler);
+			System.out.println("Adding url "+path+" with value "+handler);
+			if ("home".equals(path))
+				tmpHome=handler;
+					
+		}
+		this.home=tmpHome;
 	}
 
-	@Override public void handle(T call, String subPath) {
+	@Override public void handle(HttpCall call, String subPath) {
 		while (subPath.startsWith("/"))
 			subPath=subPath.substring(1);
 		int pos=subPath.indexOf("/");
@@ -30,10 +55,8 @@ public class HttpCallDispatcher<T extends HttpCall> implements HttpCallHandler<T
 			subPath="";
 		while (subPath.startsWith("/"))
 			subPath=subPath.substring(1);
-		HttpCallHandler<T> handler = map.get(name);
-		if (handler==null)
-			handler=defaultHandler;
-		//System.out.println("Handling {"+name+"} with subPath {"+subPath+"} with handler "+handler.getClass().getSimpleName());
+		HttpCallHandler handler = name.length()==0 ? home : map.get(name);
+		System.out.println("Handling {"+name+"} with subPath {"+subPath+"} with handler "+handler);
 		if (handler==null)
 			call.invalidPage();
 		else

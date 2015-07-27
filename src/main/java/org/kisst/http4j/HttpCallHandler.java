@@ -1,5 +1,6 @@
 package org.kisst.http4j;
 
-public interface HttpCallHandler<T extends HttpCall> {
-	public void handle(T call, String subPath);
+@FunctionalInterface
+public interface HttpCallHandler {
+	public void handle(HttpCall call, String subPath);
 }

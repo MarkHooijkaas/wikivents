@@ -1,7 +1,7 @@
 package org.kisst.http4j;
 
-public abstract class HttpBasicPage<T extends HttpCall> implements HttpCallHandler<T>{
-	@Override public void handle(T call, String subPath) {
+public abstract class HttpBasicPage implements HttpCallHandler{
+	@Override public void handle(HttpCall call, String subPath) {
 		String method = call.request.getMethod();
 		//System.out.println("handling "+method+" "+request.getRequestURI());
 		//System.out.println("handling "+method+" "+path);

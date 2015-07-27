@@ -1,5 +1,6 @@
 package club.wikivents.web;
 
+import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.HttpRequestStruct;
 import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
 import org.kisst.item4j.struct.Struct;
@@ -11,24 +12,20 @@ public class LoginPage extends TemplatePage {
 		super(site, "login.form");
 	}
 
-	@Override public void handle(WikiventsCall call, String subPath) { new Call(call).handle(subPath); }
-	
-	private class Call extends WikiventsCall {
-		public Call(WikiventsCall call) { super(call);}
-
-		@Override public void handleGet(String subPath) {
-			System.out.println(user);
-			TemplateData data = createTemplateData();
-			output(template.toString(data));
+	@Override public void handle(HttpCall httpcall, String subPath) {
+		WikiventsCall call=WikiventsCall.of(httpcall,model);
+		if (call.isGet()) {
+			//System.out.println(user);
+			TemplateData data = new TemplateData(call);
+			call.output(template.toString(data));
 		}
-		
-		@Override public void handlePost(String subPath) {
-			if ("true".equals(request.getParameter("logout"))) {
-				clearCookie();
-				redirect("");
+		else if (call.isPost()) {
+			if ("true".equals(call.request.getParameter("logout"))) {
+				call.clearCookie();
+				call.redirect("");
 				return;
 			}
-			Struct data=new HttpRequestStruct(request);
+			Struct data=new HttpRequestStruct(call.request);
 			for (String field:data.fieldNames())
 				System.out.println(field+"="+data.getObject(field));
 			String username=User.schema.username.getString(data);
@@ -40,19 +37,19 @@ public class LoginPage extends TemplatePage {
 				if (u.username.equals(username) || u.email.equals(username)) {
 					System.out.println("Found  "+u);
 					if (u.password.equals(password) ) {
-						setCookie(u._id);
-						redirect("/user/show/"+u._id);
+						call.setCookie(u._id);
+						call.redirect("/user/show/"+u._id);
 						return;
 					}
 					message="password incorrect";
 					break;
 				}
 			}
-			TemplateData data2 = createTemplateData();
+			TemplateData data2 = new TemplateData(call);
 			data2.add("message", message);
 			data2.add("username", username);
 			data2.add("password", password);
-			output(template.toString(data2));
+			call.output(template, data2);
 		}
 	}
 }

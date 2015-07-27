@@ -5,7 +5,7 @@ import org.kisst.http4j.handlebar.TemplateEngine;
 
 import club.wikivents.model.WikiventsModel;
 
-public class WikiventsPage extends HttpBasicPage<WikiventsCall>{
+public class WikiventsPage extends HttpBasicPage{
 	public final WikiventsModel model;
 	public final WikiventsSite site;
 	public final TemplateEngine engine;

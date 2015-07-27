@@ -19,6 +19,7 @@ public class Runner {
 	public Runner(String configfile) {
 		props.load(new File(configfile));
 		this.site=new WikiventsSite(props.getProps("wikivents"));
+		
 		this.server = new HttpServer(props,site);
 		
 	}

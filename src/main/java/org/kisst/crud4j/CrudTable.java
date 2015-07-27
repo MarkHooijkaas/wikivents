@@ -27,11 +27,11 @@ public abstract class CrudTable<T extends CrudObject> implements TypedSequence<T
 		else
 			cache=null;
 		if (cache!=null) {
-			System.out.println("Loading all "+name+" records to cache");
+			//System.out.println("Loading all "+name+" records to cache");
 			TypedSequence<Struct> seq = storage.findAll();
 			for (Struct rec:seq) {
 				T obj=createObject(rec);
-				System.out.println("caching "+obj);
+				//System.out.println("caching "+obj);
 				cache.put(obj._id, obj);
 			}
 		}

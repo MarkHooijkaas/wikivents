@@ -4,7 +4,7 @@
 
 
 <form role="form" method="POST">
-	{{> form/field.edit field=form.title    label="Ttil"}}
+	{{> form/field.edit field=form.title    label="Titel"}}
 	{{> form/field.editDate field=form.date     label="Datum"}}
 	{{> form/field.edit field=form.min      label="Minimum aantal deelnemers"}}
 	{{> form/field.edit field=form.max      label="Maximum aantal deelnemers"}}

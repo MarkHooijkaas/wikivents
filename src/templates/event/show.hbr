@@ -1,0 +1,23 @@
+{{> header}}
+
+<h1>{{record.title}}</h1>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Veld</th>
+        <th>waarde</th>
+      </tr>
+    </thead>
+    <tbody>
+	{{> form/field.show value=record.date     label="Datum"}}
+	{{> form/field.show value=record.min      label="Minimum aantal deelnemers"}}
+	{{> form/field.show value=record.max      label="Maximum aantal deelnemers"}}
+	{{> form/field.show value=record.location label="Locatie"}}
+    </tbody>
+  </table>
+
+{{> form/changeButton}}
+  
+  <div>{{record.description}}</div>
+  
+{{> footer}}

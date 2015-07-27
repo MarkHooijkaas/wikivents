@@ -1,83 +1,86 @@
 package org.kisst.crud4j;
 
-import org.kisst.http4j.HttpCallDispatcher;
-import org.kisst.http4j.HttpView;
+import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.HttpRequestStruct;
-import org.kisst.http4j.HttpUserCall;
-import org.kisst.item4j.struct.HashStruct;
+import org.kisst.http4j.handlebar.FormData;
+import org.kisst.http4j.handlebar.TemplateEngine;
+import org.kisst.http4j.handlebar.TemplateEngine.CompiledTemplate;
+import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
 import org.kisst.item4j.struct.MultiStruct;
 import org.kisst.item4j.struct.Struct;
 
-public class HttpCrudDispatcher<T extends CrudObject> extends HttpCallDispatcher<HttpUserCall>{
-	private final HttpView form;
-	protected final CrudTable<T> table;
-
-	public HttpCrudDispatcher(CrudTable<T> table, HttpView form) {
-		super(null);
-		this.form=form;
-		this.table=table;
-		addHandler("all",  (HttpUserCall call, String subPath) -> new ListCall(call).handle(subPath));
-		addHandler("new",  (HttpUserCall call, String subPath) -> new NewCall(call).handle(subPath));
-		addHandler("show", (HttpUserCall call, String subPath) -> new ShowCall(call,subPath).handle(subPath));
-		addHandler("edit", (HttpUserCall call, String subPath) -> new EditCall(call,subPath).handle(subPath));
-	}
-	public T read(String subPath) {
-		System.out.println("Searching "+subPath);
-		while (subPath.endsWith("?"))
-			subPath=subPath.substring(0,subPath.length()-1);
-		return table.read(subPath);
+public abstract class HttpCrudDispatcher<T extends CrudObject> { //extends HttpCallDispatcher{
+	public class HttpForm extends FormData {
+		public final HttpCall call;
+		public HttpForm(HttpCall call, Struct record) { super(record);  this.call=call; }
+		public boolean isAuthorized() { return HttpCrudDispatcher.this.isAuthorized(record, call); }
 	}
 	
-	private class ListCall extends HttpUserCall {
-		public ListCall(HttpUserCall call) { super(call); }
-		@Override public void handleGet(String subPath) { form.showList(this, table.findAll()); }
+	protected final CrudTable<T> table;
+	private final TemplateEngine engine;
+	private final CompiledTemplate template;
+	private final String name;
+	
+	public HttpCrudDispatcher(CrudTable<T> table, TemplateEngine engine, String name) {
+		this.table=table;
+		this.engine=engine;
+		this.name=name;
+		this.template=compileTemplate("edit");
+	}
+	
+	public CompiledTemplate compileTemplate(String actionName) { return engine.compileTemplate(name+"/"+actionName);}
+
+	public abstract FormData createFormData(HttpCall call, Struct struct);
+	public abstract boolean isAuthorized(Struct record, HttpCall call);
+
+	public void handleCreate(HttpCall call, String subPath) {
+		if (call.isGet()) {
+			TemplateData context=new TemplateData(call);
+			//context.add("form", null);
+			template.output(context, call.getWriter());
+		}
+		else if (call.isPost()) {
+			FormData input=createFormData(call,new HttpRequestStruct(call));
+			if (input.isValid()) {
+				T rec=table.createObject(input.record);
+				table.create(rec);
+				call.redirect("show/"+rec._id);
+			}
+			else {
+				TemplateData context=new TemplateData(call);
+				context.add("form", input);
+				template.output(context, call.getWriter());
+			}
+		}
+		else
+			call.invalidPage();
 	}
 
-	private class NewCall extends HttpUserCall {
-		public NewCall(HttpUserCall call) { super(call); }
-		@Override public void handleGet(String subPath) { form.showEditPage(this, new HttpRequestStruct(this)); }
-		@Override public void handlePost(String subPath) {
-			Struct input=new HttpRequestStruct(this);
-			HashStruct data = new HashStruct(input);
-			form.validateCreate(userid, data);
-			T rec=table.createObject(data);
-			table.create(rec);
-			redirect("show/"+rec._id);
+	public void handleEdit(HttpCall call, String subPath) {
+		T oldRecord = table.read(subPath);
+		if (! isAuthorized(oldRecord, call)) {
+			// TODO
 		}
+		if (call.isGet()) {
+			TemplateData context=new TemplateData(call);
+			context.add("form", createFormData(call,oldRecord));
+			template.output(context, call.getWriter());
+		}
+		else if (call.isPost()) {
+			FormData input=createFormData(call,new HttpRequestStruct(call));
+			if (input.isValid()) {
+				T newRecord=table.createObject(new MultiStruct(input.record,oldRecord));
+				System.out.println("Updating "+subPath+" old:"+oldRecord+" new:"+newRecord);
+				table.update(oldRecord, newRecord);
+				call.redirect("../show/"+newRecord._id);
+			}
+			else {
+				TemplateData context=new TemplateData(call);
+				context.add("form", input);
+				template.output(context, call.getWriter());
+			}
+		}
+		else
+			call.invalidPage();
 	}
-
-	private class ShowCall extends HttpUserCall {
-		private final T record;
-		public ShowCall(HttpUserCall call, String subPath) { 
-			super(call);
-			this.record=read(subPath);
-		}
-		@Override public void handleGet(String subPath) { form.showViewPage(this, record); }
-	}
-
-	private class EditCall extends HttpUserCall {
-		private final T record;
-		public EditCall(HttpUserCall call, String subPath) { 
-			super(call);
-			this.record=read(subPath);
-			checkAuthorized();	
-		}
-		@Override public void handleGet(String subPath) { form.showEditPage(this, record); }
-		@Override public void handlePost(String subPath) {
-			Struct input=new HttpRequestStruct(this);
-			T oldRecord=record;
-			T newRecord=table.createObject(new MultiStruct(input,oldRecord));
-			form.validateUpdate(userid, oldRecord, newRecord);
-			System.out.println("Updating "+subPath+" old:"+oldRecord+" new:"+newRecord);
-			table.update(oldRecord, newRecord);
-			redirect("../show/"+newRecord._id);
-		}
-		private void checkAuthorized() {
-			if (record==null)
-				return;
-			if (! record.mayBeChangedBy(userid))
-				throw new UnauthorizedException("Not Authorized user "+userid+" for "+record);
-		}
-	}
-
 }

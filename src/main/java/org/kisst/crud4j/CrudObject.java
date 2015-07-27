@@ -22,5 +22,5 @@ public abstract class CrudObject implements Struct {
 
 	@Override public String toString() { return toShortString(); }
 	@Override public Iterable<String> fieldNames() { return schema.fieldNames(); }
-	@Override public Object getDirectFieldValue(String name) { return ReflectionUtil.getFieldValue(this, name); }
+	@Override public Object getDirectFieldValue(String name) { return ReflectionUtil.getFieldValueOrUnknownField(this, name); }
 }

@@ -1,23 +1,17 @@
 package club.wikivents.web;
 
 import org.kisst.http4j.HttpCall;
-import org.kisst.http4j.HttpUserCall;
 import org.kisst.http4j.handlebar.TemplateEngine.CompiledTemplate;
 import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
 
 import club.wikivents.model.User;
 import club.wikivents.model.WikiventsModel;
 
-public class WikiventsCall extends HttpUserCall {
+public class WikiventsCall extends HttpCall {
 	public final WikiventsModel model;
 	public final User user;
 	
-	protected WikiventsCall(WikiventsCall call) {
-		super(call);
-		this.model=call.model;
-		this.user=call.user;
-	}
-	public WikiventsCall(HttpCall call, WikiventsModel model) {
+	private WikiventsCall(HttpCall call, WikiventsModel model) {
 		super(call);
 		this.model=model;
 		if (userid==null)
@@ -25,9 +19,26 @@ public class WikiventsCall extends HttpUserCall {
 		else
 			this.user=model.users.read(userid);
 	}
-	public TemplateData createTemplateData() { return new TemplateData(this); }
+	public static WikiventsCall of(HttpCall httpcall, WikiventsModel model) {
+		if (httpcall instanceof WikiventsCall)
+			return (WikiventsCall) httpcall;
+		return new WikiventsCall(httpcall,model);
+	}
+
 	
+	public TemplateData createTemplateData() { return new TemplateData(this); }
 	public void output(CompiledTemplate template, TemplateData data) { template.output(data, getWriter());}
+/*	public void output(CompiledTemplate template, Object ... objs) {
+		TemplateData context = new TemplateData(this);
+		String str="";
+		for (Object obj : objs) {
+			context.add(obj.getClass().getSimpleName().toLowerCase(), obj);
+			str +=obj.getClass().getSimpleName().toLowerCase()+",'";
+		}
+		context.add("context", str);
+		template.output(context, getWriter());
+	}
+*/
 
 	@Override public void ensureUser() {
 		if (user==null)

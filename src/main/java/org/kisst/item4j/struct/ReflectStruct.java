@@ -28,5 +28,5 @@ public class ReflectStruct implements Struct {
 		return result;
 	}
 	
-	@Override public Object getDirectFieldValue(String name) { return ReflectionUtil.getFieldValue(this, name); }
+	@Override public Object getDirectFieldValue(String name) { return ReflectionUtil.getFieldValueOrUnknownField(this, name); }
 }

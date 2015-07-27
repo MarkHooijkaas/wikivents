@@ -19,9 +19,9 @@ public class HttpServer extends AbstractHandler {
 
 	private Server server=null;
 	protected final Struct props;
-	private final HttpCallHandler<HttpCall> handler;
+	private final HttpCallHandler handler;
 
-	public HttpServer(Struct props, HttpCallHandler<HttpCall> handler) {
+	public HttpServer(Struct props, HttpCallHandler handler) {
 		this.props=props;
 		this.handler=handler;
 	}

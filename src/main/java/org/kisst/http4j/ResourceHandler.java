@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 import javax.servlet.http.HttpServletResponse;
 
 
-public class ResourceHandler<T extends HttpCall> implements HttpCallHandler<T> {
+public class ResourceHandler implements HttpCallHandler {
 	private static final long ONE_SECOND_IN_MILLIS = TimeUnit.SECONDS.toMillis(1);
 	private static final String ETAG_HEADER = "W/\"%s-%s\"";
 	private static final String CONTENT_DISPOSITION_HEADER = "inline;filename=\"%1$s\"; filename*=UTF-8''%1$s";

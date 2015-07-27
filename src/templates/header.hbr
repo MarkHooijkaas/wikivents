@@ -23,15 +23,15 @@
     <div>
       <ul class="nav navbar-nav">
 		<li class="active"><a href="/">Home</a></li>
-		<li><a href="/event/all">Alle activiteiten</a></li>
-		<li><a href="/user/all">Alle gebruikers</a></li>
-		<li><a href="/event/new">Maak een activiteit</a></li>
+		<li><a href="/event/list">Alle activiteiten</a></li>
+		<li><a href="/user/list">Alle gebruikers</a></li>
+		<li><a href="/event/create">Maak een activiteit</a></li>
 {{#if userid}}		
 		<li><a href="/user/show/{{userid}}">Mijn Profiel</a></li>
         <li><a href="/login">Logout {{user.username}}</a></li>
 {{else}}
         <li><a href="/login">Login</a></li>
-        <li><a href="/user/new">Registreer</a></li>
+        <li><a href="/user/create">Registreer</a></li>
 {{/if}}
       </ul>
     </div>
