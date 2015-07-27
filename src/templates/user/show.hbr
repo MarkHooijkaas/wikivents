@@ -6,7 +6,6 @@
     <tbody>
       {{> form/field.show value=record.username label="Gebruikersnaam"}}
       {{> form/field.show value=record.email label="email"}}
-      {{> form/field.show value=record.password label="wachtwoord"}}
     </tbody>
   </table>
 
