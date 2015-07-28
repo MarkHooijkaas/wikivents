@@ -86,14 +86,17 @@ public class FileStorage implements StructStorage {
 		System.out.println("loading all records from "+name);
 		int count=0;
 		for (File f:dir.listFiles()) {
-			String key=f.getName();
-			if (! key.endsWith(".rec"))
-				continue;
-			count++;
-			key=key.substring(0,key.length()-4);
-			
-			Struct doc=parser.parse(f);
-			list.add(doc);
+			try {
+				String key=f.getName();
+				if (! key.endsWith(".rec"))
+					continue;
+				count++;
+				key=key.substring(0,key.length()-4);
+
+				Struct doc=parser.parse(f);
+				list.add(doc);
+			}
+			catch (Exception e) { e.printStackTrace();}// TODO: return dummy placeholder
 		}
 		System.out.println("DONE loading "+count+" records from "+name+" in "+(System.currentTimeMillis()-start)+" milliseconds");
 		return new ArraySequence<Struct>(Struct.class,list);
