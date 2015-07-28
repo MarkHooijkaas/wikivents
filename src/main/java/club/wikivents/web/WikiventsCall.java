@@ -11,6 +11,8 @@ public class WikiventsCall extends HttpCall {
 	public final WikiventsModel model;
 	public final User user;
 	public final User authenticatedUser;
+	public final WikiventsCall call;
+	public final boolean authenticated;
 	
 	private WikiventsCall(HttpCall call, WikiventsModel model) {
 		super(call);
@@ -20,6 +22,8 @@ public class WikiventsCall extends HttpCall {
 		else
 			this.user=model.users.read(userid);
 		this.authenticatedUser=user;
+		this.call=this;
+		this.authenticated=(user!=null);
 	}
 	public static WikiventsCall of(HttpCall httpcall, WikiventsModel model) {
 		if (httpcall instanceof WikiventsCall)

@@ -11,6 +11,7 @@ import org.kisst.http4j.HttpCallHandler;
 import org.kisst.http4j.ResourceHandler;
 import org.kisst.http4j.handlebar.TemplateEngine;
 import org.kisst.item4j.struct.Struct;
+import org.kisst.util.ReflectionUtil;
 
 import club.wikivents.model.User;
 import club.wikivents.model.WikiventsModel;
@@ -48,17 +49,45 @@ public class WikiventsSite implements HttpCallHandler {
 	public void close() { model.close(); }
 	
 	public class Helper {
-		public CharSequence ensure(String userid, CrudTable<User>.Ref userref) {  
-			if (userid==null)
-				return "***";
-			if (userref==null)
-				return "nobody";
-			if (userref._id==null)
-				return "no-one";
-			User u=userref.get();
-			if (u==null)
-				return "unknown";
-			return u.username;
+		private boolean isLoggedIn(Object call) {
+			//System.out.println("Checking loggedIn for "+call);
+			if (call instanceof User)
+				return true;
+			if (call instanceof WikiventsCall) {
+				if (((WikiventsCall)call).authenticatedUser!=null)
+					return true;
+			}
+			return false;
 		}
+		public CharSequence priv(Object call, Object obj) {  
+			if (isLoggedIn(call))
+				return ""+obj;
+			return "***";
+		}
+
+		public CharSequence privUser(Object call, Object obj) {  
+			if (isLoggedIn(call))
+				return user(obj);
+			return "***";
+		}
+
+		public CharSequence user(Object obj) {  
+			if (obj==null)
+				return "nobody";
+			if (obj instanceof CrudTable<?>.Ref) {
+				CrudTable<?>.Ref ref=(CrudTable<?>.Ref) obj;
+				if (ref._id==null)
+					return "no-one";
+				if (ref.getTable()==model.users) {
+					User u=(User) ref.get();
+					if (u==null)
+						return "unknown";
+					return u.username;
+				}
+				return "invalidref("+ref.getTable().getName()+","+ref._id+")";
+			}
+			return "invaliduser("+ReflectionUtil.smartClassName(obj)+","+obj+")";
+		}
+		
 	}
 }
