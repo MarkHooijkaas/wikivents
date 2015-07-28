@@ -3,7 +3,6 @@ package club.wikivents.model;
 import org.kisst.crud4j.CrudModel;
 import org.kisst.crud4j.StructStorage;
 import org.kisst.item4j.Item;
-import org.kisst.item4j.Schema;
 import org.kisst.item4j.struct.Struct;
 
 
@@ -13,10 +12,10 @@ public class WikiventsModel extends CrudModel implements Item.Factory {
 	
 	public WikiventsModel(StructStorage ... tables){ 
 		super(tables);
-		Schema.globalFactory=this;
 	}
 
 	@Override public <T> T construct(Class<?> cls, Struct data) {
+		//System.out.println("creating "+ReflectionUtil.smartClassName(cls)+" from "+data);
 		if (Event.class==cls)
 			return cast(new Event(this, data));
 		else if (User.class==cls)
@@ -25,6 +24,9 @@ public class WikiventsModel extends CrudModel implements Item.Factory {
 			return cast(users.createRef(data.getString("_id")));
 		else if (Event.Table.Ref.class == cls)
 			return cast(events.createRef(data.getString("_id")));
+		else if (Event.Comment.class == cls)
+			return cast(new Event.Comment(this, data));
+		System.out.println("using normal factory");
 		return basicFactory.construct(cls, data);
 	}
 	@Override public <T> T construct(Class<?> cls, String data) { return basicFactory.construct(cls, data);}

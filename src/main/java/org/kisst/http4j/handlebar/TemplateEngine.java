@@ -37,7 +37,6 @@ public class TemplateEngine {
 			this.dir=null;
 		else
 			this.dir=new File(filedir);
-		System.out.println(props);
 		ClassPathTemplateLoader cp = new ClassPathTemplateLoader("/templates/",postfix);
 		if (dir==null)
 			this.handlebar=new Handlebars(cp);

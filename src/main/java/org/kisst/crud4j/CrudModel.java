@@ -1,8 +1,14 @@
 package org.kisst.crud4j;
 
-public class CrudModel {
+import org.kisst.item4j.Item;
+import org.kisst.item4j.Schema;
+
+public abstract class CrudModel implements Item.Factory {
 	private final StructStorage[] storage;
-	public CrudModel(StructStorage ... storage) { this.storage=storage;}
+	public CrudModel(StructStorage ... storage) {
+		Schema.globalFactory=this;
+		this.storage=storage;
+	}
 	
 	public StructStorage getStorage(Class<?> cls) {
 		for (StructStorage s: storage) {

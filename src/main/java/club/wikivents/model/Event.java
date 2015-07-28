@@ -64,6 +64,7 @@ public class Event extends CrudObject {
 	
 	public Event(WikiventsModel model, Struct props) {
 		super(schema, props);
+		//System.out.println("Creating Event with "+props);
 		this.model=model;
 		this.title=schema.title.getString(props);
 		this.description=schema.description.getString(props);
@@ -97,11 +98,8 @@ public class Event extends CrudObject {
 		public class Ref extends CrudTable<Event>.Ref { public Ref(String id) { super(id); } }
 		@Override public Ref createRef(String _id) { return new Ref(_id); }
 
-		//private final WikiventsModel model;
 		public Table(StructStorage storage, WikiventsModel model) { 
 			super(Event.schema, model, storage);
-			System.out.println("Model is "+model);
-			//this.model=model;
 		}
 		@Override public Event createObject(Struct doc) { return new Event((WikiventsModel) factory, doc); }
 	}

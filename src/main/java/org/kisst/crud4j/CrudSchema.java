@@ -19,6 +19,7 @@ public class CrudSchema<T> extends Schema<T> {
 		public RefField(String name) { super(Type.javaString,name); }
 		public CrudTable<RT>.Ref getRef(CrudTable<RT> table, Struct s) {
 			Object obj=s.getObject(getName(), null);
+			//System.out.println("Resolving ref "+getName()+" of class "+ReflectionUtil.smartClassName(obj)+" with value "+obj);
 			if (obj==null)
 				return null;
 			if (cls.isAssignableFrom(obj.getClass())) { // TODO: is this other way round?

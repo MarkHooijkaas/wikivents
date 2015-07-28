@@ -82,7 +82,7 @@ public abstract class CrudTable<T extends CrudObject> implements TypedSequence<T
 	public class Ref {
 		public final String _id;
 		protected Ref(String id) {this._id=id;}
-		public T get() {System.out.println("searching "+_id);return read(_id); }
+		public T get() { return read(_id); }
 		public CrudTable<T> getTable() { return CrudTable.this; }
 		@Override public boolean equals(Object obj) {
 			if (obj==this)

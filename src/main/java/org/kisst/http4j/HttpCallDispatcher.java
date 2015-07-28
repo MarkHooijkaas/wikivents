@@ -19,7 +19,7 @@ public class HttpCallDispatcher implements HttpCallHandler {
 
 	public HttpCallDispatcher(Object pages) {
 		HttpCallHandler tmpHome=null;
-		System.out.println("Loading fields from "+ReflectionUtil.smartClassName(pages.getClass()));
+		//System.out.println("Loading fields from "+ReflectionUtil.smartClassName(pages.getClass()));
 		for (java.lang.reflect.Field f : ReflectionUtil.getAllDeclaredFieldsOfType(pages.getClass(), HttpCallHandler.class)) {
 			f.setAccessible(true);
 			Object h =ReflectionUtil.getFieldValue(pages, f);
@@ -34,7 +34,7 @@ public class HttpCallDispatcher implements HttpCallHandler {
 			if (anno!=null)
 				path=anno.dispatchPath();
 			map.put(path, handler);
-			System.out.println("Adding url "+path+" with value "+handler);
+			//System.out.println("Adding url "+path+" with value "+handler);
 			if ("home".equals(path))
 				tmpHome=handler;
 					

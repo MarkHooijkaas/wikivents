@@ -130,8 +130,15 @@ public interface Item {
 			//System.out.println("result is "+result.getClass()+" "+result);
 			return cast(result);
 		}
+		if (obj instanceof Map) {
+			@SuppressWarnings("unchecked")
+			Struct struct=new MapStruct((Map<String,Object>)obj);
+			Object result = Schema.globalFactory.construct(cls,struct);
+			//System.out.println("result is "+result.getClass()+" "+result);
+			return cast(result);
+		}
 		//if (cls.isAssignableFrom(obj.getClass()))
-		return cast(obj);
+		throw new IllegalArgumentException("Can not convert "+obj+" to "+cls);
 	}
 		
 	public class Wrapper implements Item {

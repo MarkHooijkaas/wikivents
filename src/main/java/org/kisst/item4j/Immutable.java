@@ -194,8 +194,10 @@ public interface Immutable {
 			return new Immutable.Sequence.ArraySequence<E>(type, arr);
 		}
 		public static <E> Sequence<E> realCopy(Class<?> elementClass, Collection<? extends E> collection) {
+			//System.out.println("Converting "+collection.getClass()+" to Immutable.Sequence of "+ReflectionUtil.smartClassName(elementClass));
 			E[] arr = createArray(collection.size());
-			int i=0; for (E obj : collection) arr[i++]=obj;
+			int i=0; for (E obj : collection) 
+				arr[i++]=Item.asType(elementClass, obj);
 			return new Immutable.Sequence.ArraySequence<E>(elementClass, arr);
 		}
 

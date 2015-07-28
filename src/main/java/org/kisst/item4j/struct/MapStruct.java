@@ -12,7 +12,7 @@ public class MapStruct implements Struct {
 	@SuppressWarnings("unchecked")
 	public MapStruct(Map<String,?> map) { this.map=(Map<String, Object>) map; }
 	
-	
+	@Override public String toString() { return toString(2,null); }
 	@Override public Iterable<String> fieldNames() { return map.keySet(); }
 	@Override public Object getDirectFieldValue(String key) { return map.get(key); }
 	

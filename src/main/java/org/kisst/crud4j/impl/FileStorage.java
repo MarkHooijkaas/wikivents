@@ -83,7 +83,7 @@ public class FileStorage implements StructStorage {
 	@Override public TypedSequence<Struct> findAll() {
 		ArrayList<Struct> list=new ArrayList<Struct>();
 		long start= System.currentTimeMillis();
-		System.out.println("loading all records from "+name);
+		//System.out.println("loading all records from "+name);
 		int count=0;
 		for (File f:dir.listFiles()) {
 			try {
