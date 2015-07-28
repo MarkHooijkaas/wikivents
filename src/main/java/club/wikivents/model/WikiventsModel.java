@@ -26,6 +26,8 @@ public class WikiventsModel extends CrudModel implements Item.Factory {
 			return cast(events.createRef(data.getString("_id")));
 		else if (Event.Comment.class == cls)
 			return cast(new Event.Comment(this, data));
+		else if (Event.Guest.class == cls)
+			return cast(new Event.Guest(this, data));
 		System.out.println("using normal factory");
 		return basicFactory.construct(cls, data);
 	}

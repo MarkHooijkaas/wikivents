@@ -14,7 +14,7 @@ import org.kisst.item4j.struct.ReflectStruct;
 import org.kisst.item4j.struct.Struct;
 
 public class Event extends CrudObject {
-	public static class Guest {
+	public static class Guest extends ReflectStruct {
 		public final CrudTable<User>.Ref user;
 		public final Instant date;
 		public static final Schema schema=new Schema();
@@ -25,7 +25,11 @@ public class Event extends CrudObject {
 		}
 		public Guest(WikiventsModel model, Struct props) {
 			this.user=schema.user.getRef(model.users,props);
-			this.date=schema.date.getInstant(props);
+			Instant tmpdate = schema.date.getInstant(props);
+			if (tmpdate==null)
+				this.date=Instant.now();
+			else
+				this.date=tmpdate;
 		}
 	}
 	public static class Comment extends ReflectStruct {
@@ -116,7 +120,20 @@ public class Event extends CrudObject {
 			newComments=comments.growTail(comment);
 		HashStruct newEventData=new HashStruct(); 
 		newEventData.put(Event.schema.comments.getName(), newComments);
-		System.out.println(newComments);
+		Event newEvent = new Event(model, new MultiStruct(newEventData, this));
+		model.events.update(this, newEvent);
+	}
+	public void addGuest(User user) {
+		HashStruct data=new HashStruct(); 
+		data.put(Event.Comment.schema.user.getName(), user._id);
+		Event.Guest guest=new Event.Guest(model, data);
+		Immutable.Sequence<Guest> newSeq = null;
+		if (guests==null)
+			newSeq=Immutable.typedSequence(Guest.class, guest);
+		else
+			newSeq=guests.growTail(guest);
+		HashStruct newEventData=new HashStruct(); 
+		newEventData.put(Event.schema.guests.getName(), newSeq);
 		Event newEvent = new Event(model, new MultiStruct(newEventData, this));
 		model.events.update(this, newEvent);
 	}

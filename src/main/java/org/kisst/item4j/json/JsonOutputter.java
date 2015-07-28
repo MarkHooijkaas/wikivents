@@ -36,7 +36,6 @@ public class JsonOutputter {
 	}
 	public void write(PrintWriter out, ItemSequence seq) {
 		out.write('[');
-		System.out.println("seq size-"+seq.size()+" value="+seq);
 		boolean firstElement=true;
 		for (int i=0; i<seq.size(); i++) {
 			Item value=seq.getItem(i);

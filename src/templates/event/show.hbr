@@ -20,13 +20,29 @@
   </table>
 
 {{> show/changeButton}}
+
+  <h2>Deelnemers</h2>
+
+ <form role="form" method="POST" action="../addGuest/{{record._id}}">
+   <button type="submit" class="btn btn-default">Ik wil ook deelnemen</button>
+ </form>
+
+  <table class="table table-hover">
+    <tbody>
+{{#each record.guests}}
+<tr><td>{{privUser call user}}</td></tr>
+{{/each}}
+    </tbody>
+  </table>
    
  
+  
+  <h2>Commentaar</h2>
  <form role="form" method="POST" action="../addComment/{{record._id}}">
    <textarea  class="form-control" id="comment" name="comment" rows="5"></textarea>
    <button type="submit" class="btn btn-default">Voeg Commentaar toe</button>
  </form>
-  
+
   <table class="table table-hover">
     <tbody>
 {{#each record.comments}}

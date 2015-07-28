@@ -16,6 +16,7 @@ public class EventPage extends WikiventsPage {
 	public final HttpCallHandler edit=crud::handleEdit;
 	public final HttpCallHandler create=crud::handleCreate;
 	public final HttpCallHandler addComment=this::handleAddComment;
+	public final HttpCallHandler addGuest=this::handleAddGuest;
 	
 	public final HttpCallDispatcher handler=new HttpCallDispatcher(this); 	
 	@Override public void handle(HttpCall call, String subPath) { handler.handle(WikiventsCall.of(call, model), subPath); }
@@ -35,7 +36,17 @@ public class EventPage extends WikiventsPage {
 		event.addComment(call.user, text);
 		call.redirect("../show/"+event._id);
 	}
-
+	public void handleAddGuest(HttpCall httpcall, String subPath) {
+		WikiventsCall call=WikiventsCall.of(httpcall, model);
+		if (! call.isPost()) {
+			call.invalidPage();
+			return;
+		}
+		call.ensureUser();
+		Event event=model.events.read(subPath);
+		event.addGuest(call.user);
+		call.redirect("../show/"+event._id);
+	}
 	
 }
 

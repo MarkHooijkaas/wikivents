@@ -1,6 +1,7 @@
 package org.kisst.item4j.struct;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.HashSet;
 
 import org.kisst.util.ReflectionUtil;
@@ -22,8 +23,8 @@ public class ReflectStruct implements Struct {
 	@Override public Iterable<String> fieldNames() { 
 		HashSet<String> result= new HashSet<String>();
 		for (Field field: obj.getClass().getFields()) {
-			// TODO: check if field is transient and accessible etc
-			result.add(field.getName());
+			if (! Modifier.isStatic(field.getModifiers()))
+				result.add(field.getName());
 		}
 		return result;
 	}
