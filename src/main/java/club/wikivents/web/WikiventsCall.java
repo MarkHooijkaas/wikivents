@@ -10,6 +10,7 @@ import club.wikivents.model.WikiventsModel;
 public class WikiventsCall extends HttpCall {
 	public final WikiventsModel model;
 	public final User user;
+	public final User authenticatedUser;
 	
 	private WikiventsCall(HttpCall call, WikiventsModel model) {
 		super(call);
@@ -18,6 +19,7 @@ public class WikiventsCall extends HttpCall {
 			this.user=null;
 		else
 			this.user=model.users.read(userid);
+		this.authenticatedUser=user;
 	}
 	public static WikiventsCall of(HttpCall httpcall, WikiventsModel model) {
 		if (httpcall instanceof WikiventsCall)
