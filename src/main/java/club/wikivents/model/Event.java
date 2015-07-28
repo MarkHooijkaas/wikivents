@@ -111,7 +111,7 @@ public class Event extends CrudObject {
 	public void addComment(User user, String text) {
 		HashStruct data=new HashStruct(); 
 		data.put(Event.Comment.schema.comment.getName(), text);
-		data.put(Event.Comment.schema.user.getName(), "User("+user._id+")"); // TODO: ugly...
+		data.put(Event.Comment.schema.user.getName(), user._id);
 		Event.Comment comment=new Event.Comment(model, data);
 		Immutable.Sequence<Comment> newComments = null;
 		if (comments==null)
