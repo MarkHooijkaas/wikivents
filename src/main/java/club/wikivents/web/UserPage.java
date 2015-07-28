@@ -15,7 +15,13 @@ public class UserPage extends WikiventsPage {
 	public final HttpCallHandler create=crud::handleCreate;
 	
 	public final HttpCallDispatcher handler=new HttpCallDispatcher(this); 	
-	@Override public void handle(HttpCall call, String subPath) { handler.handle(call, subPath); }
+	@Override public void handle(HttpCall httpcall, String subPath) {
+		WikiventsCall call=WikiventsCall.of(httpcall, model);
+		if (call.authenticated)
+			handler.handle(call, subPath);
+		else
+			call.invalidPage();
+	}
 	
 	public void listAllUsers(TemplateData data, HttpCall httpcall, String subPath) { data.add("list", model.users.findAll()); }
 	public void userRecord(TemplateData data, HttpCall httpcall, String subPath) { data.add("record", model.users.read(subPath)); }

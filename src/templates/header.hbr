@@ -24,9 +24,9 @@
       <ul class="nav navbar-nav">
 		<li class="active"><a href="/">Home</a></li>
 		<li><a href="/event/list">Alle activiteiten</a></li>
+{{#if authenticated}}		
 		<li><a href="/user/list">Alle gebruikers</a></li>
 		<li><a href="/event/create">Maak een activiteit</a></li>
-{{#if userid}}		
 		<li><a href="/user/show/{{userid}}">Mijn Profiel</a></li>
         <li><a href="/login">Logout {{user.username}}</a></li>
 {{else}}

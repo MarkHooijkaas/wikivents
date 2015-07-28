@@ -8,5 +8,4 @@
   {{> edit/submitButton}}
 </form>
 
-
 {{> footer}}
