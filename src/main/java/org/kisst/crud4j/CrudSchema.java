@@ -4,7 +4,6 @@ import org.kisst.crud4j.CrudTable.Ref;
 import org.kisst.item4j.Schema;
 import org.kisst.item4j.Type;
 import org.kisst.item4j.struct.Struct;
-import org.kisst.util.ReflectionUtil;
 
 public class CrudSchema<T> extends Schema<T> {
 	public CrudSchema(Class<T> cls) { 
@@ -36,12 +35,7 @@ public class CrudSchema<T> extends Schema<T> {
 			String id = s.getString(getName(),null);
 			if (id==null)
 				return null;
-			String clsName=table.getSchema().getName();
 			//System.out.println("Getting ref "+getName()+" with value "+id+ " should be of format "+clsName+"(...)");
-			// Still support throw new RuntimeException("reference "+id+" should be of format "+clsName+"(...)");
-			if ((id.startsWith(clsName+"(") || id.endsWith(")")))
-				id=id.substring(clsName.length()+1, id.length()-1);
-			
 			return table.createRef(id);
 		}
 	}

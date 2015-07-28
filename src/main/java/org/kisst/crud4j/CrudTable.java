@@ -97,7 +97,7 @@ public abstract class CrudTable<T extends CrudObject> implements TypedSequence<T
 			return _id.equals((ref)._id);
 		}
 		@Override public int hashCode() { return _id.hashCode()+getTable().hashCode(); }
-		@Override public String toString() { return getTable().name+"("+_id+")"; }
+		@Override public String toString() { return _id; } //return getTable().name+"("+_id+")"; }
 	}
 	abstract public Ref createRef(String key);
 
