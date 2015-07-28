@@ -172,6 +172,16 @@ public interface Immutable {
 		public Class<?> getElementClass() { return elementClass; }
 
 
+		@Override public String toString() { 
+			StringBuilder result=new StringBuilder("[");
+			String sep="";
+			for( T obj: this) {
+				result.append(sep+obj);
+				sep=";";
+			}
+			result.append("]");
+			return result.toString();
+		}
 		public Sequence<T> subsequence(int start, int end) { return new SubSequence<T>(this, start, end); }
 		public Sequence<T> subsequence(int start) { return subsequence(start, size()); }
 
@@ -207,6 +217,7 @@ public interface Immutable {
 			return realCopy(type, collection);
 		}
 
+		public Sequence<T> growTail(T tail) { return new GrowTailSequence<T>(this, tail); }
 		public Sequence<T> removeFirst() { return subsequence(1); }
 		public Sequence<T> removeLast()  { return subsequence(0,size()-1); }
 		public Sequence<T> remove(int index) {
@@ -301,7 +312,22 @@ public interface Immutable {
 			@Override public int size() { return end-start; }
 			@Override public Object getObject(int index) { return seq.array[start+index]; }
 		}
-
+		private final static class GrowTailSequence<T> extends Immutable.Sequence<T> {
+			private final Sequence<T> seq;
+			private final T tail;
+			private final int size;
+			private  GrowTailSequence(Immutable.Sequence<T> seq, T tail) {
+				super(seq.elementClass);
+				this.seq=seq;
+				this.tail=tail;
+				this.size=seq.size()+1;
+			}
+			@Override public Iterator<T> iterator() { return new IndexIterator<T>(this);}
+			@Override public int size() { return size; }
+			@Override public Object getObject(int index) { return (index==size-1) ? tail : seq.getObject(index); }
+		}
+		
+		
 		private final static class MultiSequence<TT> extends Immutable.Sequence<TT> {
 			private final Immutable.Sequence<TT>[] sequences;
 			private final int size; 
