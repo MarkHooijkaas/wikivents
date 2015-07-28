@@ -38,3 +38,5 @@
   </div>
 </nav>
 <div class="container-fluid">
+
+{{context}}

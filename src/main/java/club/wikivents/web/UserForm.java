@@ -13,7 +13,7 @@ public class UserForm extends HttpCrudForm<User> {
 	public class Form extends Data {
 		public Form(HttpCall call, Struct record) { super(call, record); }
 		public final StringField username = new StringField(schema.username);
-		public final EmailField  email = new EmailField(schema.email);
+		public final StringField  email = new StringField(schema.email, this::validateEmail);
 	}		
 
 	public UserForm(WikiventsSite site) {

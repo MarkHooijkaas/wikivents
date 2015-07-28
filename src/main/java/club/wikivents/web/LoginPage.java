@@ -1,55 +1,49 @@
 package club.wikivents.web;
 
 import org.kisst.http4j.HttpCall;
-import org.kisst.http4j.HttpRequestStruct;
-import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
+import org.kisst.http4j.handlebar.FormData;
+import org.kisst.http4j.handlebar.HttpForm;
 import org.kisst.item4j.struct.Struct;
 
 import club.wikivents.model.User;
 
-public class LoginPage extends TemplatePage {
-	public LoginPage(WikiventsSite site) {
-		super(site, "login.form");
-	}
+public class LoginPage extends WikiventsPage {
+	private final HttpForm<Fields> form=new HttpForm<Fields>(engine.compileTemplate("login.form"), this::fields);
+	public LoginPage(WikiventsSite site) { super(site); }
 
+	public class Fields extends FormData {
+		public final User user=model.users.findUsername(record.getString("username",null));
+		public final StringField username = new StringField("username", this::validateUsername);
+		public final StringField password = new StringField("password", this::validatePassword);
+
+		public Fields(Struct record) { super(record); }
+		
+		public String validateUsername(Field f) { return (user!=null) ? null : "Unknown username "+f.value;} 
+		public String validatePassword(Field f) { 
+			if (user==null)
+				return null;
+			if (user.password.equals(f.value) )
+				return null;
+			return "Incorrect password";
+		} 
+
+	};
+	
+	public Fields fields(HttpCall call, String subPath, Struct input) { return new Fields(input); }
+	
 	@Override public void handle(HttpCall httpcall, String subPath) {
 		WikiventsCall call=WikiventsCall.of(httpcall,model);
-		if (call.isGet()) {
-			//System.out.println(user);
-			TemplateData data = new TemplateData(call);
-			call.output(template.toString(data));
+		if (call.isPost() && "true".equals(call.request.getParameter("logout"))) {
+			call.clearCookie();
+			call.redirect("");
+			return;
 		}
-		else if (call.isPost()) {
-			if ("true".equals(call.request.getParameter("logout"))) {
-				call.clearCookie();
-				call.redirect("");
-				return;
-			}
-			Struct data=new HttpRequestStruct(call.request);
-			for (String field:data.fieldNames())
-				System.out.println(field+"="+data.getObject(field));
-			String username=User.schema.username.getString(data);
-			String password=User.schema.password.getString(data);
-			System.out.println("login from"+username+"  password:"+password);
-			String message="Unknown user";
-			for (User u: this.model.users) { // TODO: use index on username and on email
-				System.out.println("Checking  "+u);
-				if (u.username.equals(username) || u.email.equals(username)) {
-					System.out.println("Found  "+u);
-					if (u.password.equals(password) ) {
-						call.setCookie(u._id);
-						call.redirect("/user/show/"+u._id);
-						return;
-					}
-					message="password incorrect";
-					break;
-				}
-			}
-			TemplateData data2 = new TemplateData(call);
-			data2.add("message", message);
-			data2.add("username", username);
-			data2.add("password", password);
-			call.output(template, data2);
-		}
+		Fields result = form.handle(call, subPath);
+		if (result==null)
+			return;
+		if (! result.user.password.equals(result.password.stringValue) ) 
+			throw new RuntimeException("Invalid login");
+		call.setCookie(result.user._id);
+		call.redirect("/user/show/"+result.user._id);
 	}
 }

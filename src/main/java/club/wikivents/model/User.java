@@ -36,5 +36,13 @@ public class User extends CrudObject {
 		
 		public Table(StructStorage storage, WikiventsModel model) { super(User.schema, model, storage);}
 		@Override public User createObject(Struct props) { return new User(props); }
+		
+		public User findUsername(String username) {
+			for (User u: this) { // TODO: use index on username and on email
+				if (u.username.equals(username) || u.email.equals(username))
+					return u;
+			}
+			return null;
+		}
 	}
 }
