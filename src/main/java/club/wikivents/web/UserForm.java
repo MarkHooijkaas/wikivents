@@ -19,7 +19,7 @@ public class UserForm extends HttpCrudForm<User> {
 	public UserForm(WikiventsSite site) {
 		super(site.model.users, site.engine, "user");
 	}
-
+	@Override protected boolean authenticationRequiredForCreate() { return false; } // otherwise you need to be logged in to create a user
 	@Override public FormData createFormData(HttpCall call, Struct struct) { return new Form(call,struct); }
 	@Override public boolean isAuthorized(Struct oldRecord, HttpCall call) {
 		if (call.userid==null)

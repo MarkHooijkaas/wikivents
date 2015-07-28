@@ -10,6 +10,7 @@ import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.AbstractHandler;
+import org.kisst.http4j.HttpCall.UnauthorizedException;
 import org.kisst.item4j.struct.Struct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,7 +66,13 @@ public class HttpServer extends AbstractHandler {
 			HttpCall call=new HttpCall(request,response);
 			handler.handle(call,request.getRequestURI());
 		}
-        catch (Exception e) {
+        catch (UnauthorizedException e) {
+        	try {
+				response.sendError(403, e.getMessage());
+			}
+        	catch (IOException e1) { e.printStackTrace(); }
+        }
+		catch (Exception e) {
         	try {
         		if (e instanceof HttpException) {
         			HttpException he=(HttpException) e;

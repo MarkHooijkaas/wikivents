@@ -46,8 +46,5 @@ public class WikiventsCall extends HttpCall {
 	}
 */
 
-	@Override public void ensureUser() {
-		if (user==null)
-			throw new UnauthorizedException("Not Authenticated");
-	}
+	@Override public void ensureUser() { if (user==null) throwUnauthorized("Not Authenticated"); }
 }

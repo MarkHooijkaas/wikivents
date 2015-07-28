@@ -17,10 +17,10 @@ public class UserPage extends WikiventsPage {
 	public final HttpCallDispatcher handler=new HttpCallDispatcher(this); 	
 	@Override public void handle(HttpCall httpcall, String subPath) {
 		WikiventsCall call=WikiventsCall.of(httpcall, model);
-		if (call.authenticated)
+		if (call.authenticated || subPath.equals("create"))
 			handler.handle(call, subPath);
 		else
-			call.invalidPage();
+			call.throwUnauthorized("You must be logged in to access the user pages");
 	}
 	
 	public void listAllUsers(TemplateData data, HttpCall httpcall, String subPath) { data.add("list", model.users.findAll()); }

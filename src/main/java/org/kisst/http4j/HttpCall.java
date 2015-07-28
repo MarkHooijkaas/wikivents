@@ -79,14 +79,12 @@ public class HttpCall {
 		return path;
 	}
 
-	public void ensureUser() {
-		if (userid==null)
-			throw new UnauthorizedException("Not Authenticated user");
-	}
-	public void ensureUser(String userId) {
+	public UnauthorizedException throwUnauthorized(String message) { throw new UnauthorizedException(message); }
+	public void ensureUser() { if (userid==null) throwUnauthorized("Not Authenticated user"); }
+	public void ensureUserId(String userId) {	
 		ensureUser();
 		if (userid== null || ! userid.equals(userId))
-			throw new UnauthorizedException("Not Authorized expected "+userId+" but got "+userid);
+			throwUnauthorized("Not Authorized expected "+userId+" but got "+userid);
 	}
 	
 	public void clearCookie() {
@@ -111,8 +109,6 @@ public class HttpCall {
 		}
 		return null;
 	}
-	public UnauthorizedException unauthorized(String message) { return new UnauthorizedException(message); }
-	
 	
 	private String decodeCookie(String cookie) {
 			//System.out.println("got cookie:"+cookie);

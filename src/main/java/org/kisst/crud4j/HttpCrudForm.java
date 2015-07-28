@@ -33,7 +33,10 @@ public abstract class HttpCrudForm<T extends CrudObject> {
 	public abstract FormData createFormData(HttpCall call, Struct struct);
 	public abstract boolean isAuthorized(Struct record, HttpCall call);
 
+	protected boolean authenticationRequiredForCreate() { return true; } // otherwise registration page will not work
 	public void handleCreate(HttpCall call, String subPath) {
+		if (authenticationRequiredForCreate())
+			call.ensureUser();
 		if (call.isGet()) {
 			TemplateData context=new TemplateData(call);
 			context.add("form", createFormData(call,null));
@@ -57,6 +60,7 @@ public abstract class HttpCrudForm<T extends CrudObject> {
 	}
 
 	public void handleEdit(HttpCall call, String subPath) {
+		call.ensureUser();
 		T oldRecord = table.read(subPath);
 		if (! isAuthorized(oldRecord, call)) {
 			// TODO
