@@ -134,6 +134,14 @@ public class ReflectionUtil {
 		catch (IllegalAccessException e) { throw new ReflectionException(obj, field, e); }
 		catch (SecurityException e) { throw new ReflectionException(obj, field, e); }
 	}
+	public static Object getFieldValue(Object obj, String name) {
+		try {
+			return getField(obj.getClass(),name).get(obj);
+		}
+		catch (IllegalArgumentException e) { throw new ReflectionException(obj, name, e); }
+		catch (IllegalAccessException e) { throw new ReflectionException(obj, name, e); }
+		catch (SecurityException e) { throw new ReflectionException(obj, name, e); }
+	}
 
 	
 	public static Method getMethod(Class<?> cls, String name, Class<?>[] signature) {

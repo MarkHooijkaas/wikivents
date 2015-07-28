@@ -12,7 +12,7 @@ import club.wikivents.model.Event;
 public class EventForm extends HttpCrudForm<Event> {
 	public class Form extends Data {
 		public Form(HttpCall call, Struct record) { super(call, record); }
-		public final Field organizer=new Field(schema.organizer.getName(), call.userid);
+		public final Field organizer=new Field(schema.organizer, call.userid);
 		public final Field title = new Field(schema.title);
 		public final Field date= new Field(schema.date);
 		public final Field min = new Field(schema.min);

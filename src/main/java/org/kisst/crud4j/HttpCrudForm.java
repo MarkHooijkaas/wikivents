@@ -45,9 +45,12 @@ public abstract class HttpCrudForm<T extends CrudObject> {
 		else if (call.isPost()) {
 			FormData input=createFormData(call,new HttpRequestStruct(call));
 			if (input.isValid()) {
-				T rec=table.createObject(input.record);
+				T rec=table.createObject(input);
 				table.create(rec);
-				call.redirect("show/"+rec._id);
+				if (call.userid==null)
+					call.redirect("/home"); // so a newly registered user will get a homepage
+				else
+					call.redirect("show/"+rec._id);
 			}
 			else {
 				TemplateData context=new TemplateData(call);

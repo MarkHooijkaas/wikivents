@@ -110,10 +110,10 @@ public class TemplateEngine {
 		public TemplateData(Object root) {
 			this.builder= Context.newBuilder(root)
 				.resolver(
+			        FieldValueResolver.INSTANCE,
 					StructValueResolver.INSTANCE,
 					MapValueResolver.INSTANCE,
 			        JavaBeanValueResolver.INSTANCE,
-			        FieldValueResolver.INSTANCE,
 			        MethodValueResolver.INSTANCE
 			    );
 		}
