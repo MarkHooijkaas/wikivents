@@ -1,5 +1,6 @@
 package org.kisst.crud4j;
 
+import org.kisst.crud4j.CrudTable.Ref;
 import org.kisst.item4j.Schema;
 import org.kisst.item4j.Type;
 import org.kisst.item4j.struct.Struct;
@@ -17,6 +18,19 @@ public class CrudSchema<T> extends Schema<T> {
 	public class RefField<RT extends CrudObject> extends Field {
 		public RefField(String name) { super(Type.javaString,name); }
 		public CrudTable<RT>.Ref getRef(CrudTable<RT> table, Struct s) {
+			Object obj=s.getObject(getName(), null);
+			if (obj==null)
+				return null;
+			if (cls.isAssignableFrom(obj.getClass())) { // TODO: is this other way round?
+				@SuppressWarnings("unchecked")
+				RT rec = (RT) obj;
+				return table.createRef(rec._id);
+			}
+			if (Ref.class.isAssignableFrom(obj.getClass())) { // TODO: is this other way round?
+				@SuppressWarnings("unchecked")
+				CrudTable<RT>.Ref result = (CrudTable<RT>.Ref) obj;
+				return result;
+			}
 			String id = s.getString(getName(),null);
 			if (id==null)
 				return null;
