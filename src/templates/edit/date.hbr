@@ -1,4 +1,4 @@
 <div class="form-group">
-    <label for="{{field.name}}">{{label}}</label>
-    <input class="form-control" type="text" id="mydatepicker" name="{{field.name}}" value="{{field.value}}" data-date-format="yyyy-mm-dd" >
+    <label for="{{name}}">{{label}}</label>
+    <input class="form-control" type="text" id="mydatepicker" name="{{name}}" value="{{value}}" data-date-format="yyyy-mm-dd" >
 </div>
