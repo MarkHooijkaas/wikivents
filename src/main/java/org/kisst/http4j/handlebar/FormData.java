@@ -22,15 +22,25 @@ public class FormData {
 	}
 
 
+	private static Object staticCalcValue(Struct rec, String name) {
+		if (rec==null)
+			return null;
+		return rec.getObject(name, null);
+	}
+	
 	@FunctionalInterface public interface Validator { public String validate(Field field); } 
 
 	public class Field {
 		public final String name;
 		public final Object value;
 		public final String message;
-		public Field(String name, Validator ... validators) {
+		public Field(Schema<?>.Field field, Object value, Validator ... validators) { this(field.getName(),value, validators);}
+		public Field(Schema<?>.Field field, Validator ... validators) { this(field.getName(),validators);}
+		public Field(String name, Validator ... validators) { this(name, (record==null) ? null : staticCalcValue(record, name), validators); }
+		public Field(String name, Object value, Validator ... validators) {
+			System.out.println("setting field "+name+" to value "+value);
 			this.name=name.trim();
-			this.value=(record==null) ? null : calcValue();
+			this.value=value;
 			for (Validator v: validators) {
 				String msg=v.validate(this);
 				if (msg!=null) {
@@ -45,21 +55,6 @@ public class FormData {
 				return null;
 			return record.getObject(name, null);
 		}
-	}
-
-	public class StringField extends Field {
-		public final String stringValue;
-		public StringField(String name, Validator ... validators) { super(name,validators); this.stringValue=(String) value;}
-		public StringField(Schema<?>.Field field, Validator ... validators) { this(field.getName(), validators); }
-		@Override protected Object calcValue() { 
-			if (record==null) return null;
-			return record.getString(name, null);
-		}
-	}
-
-	public class DateField extends Field {
-		public DateField(String name, Validator ... validators) { super(name,validators);}
-		public DateField(Schema<?>.Field field, Validator ... validators) { this(field.getName(),validators); }
 	}
 
 	public String validateEmail(Field field) {

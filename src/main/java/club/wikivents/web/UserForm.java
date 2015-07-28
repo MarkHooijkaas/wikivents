@@ -12,8 +12,8 @@ import club.wikivents.model.User;
 public class UserForm extends HttpCrudForm<User> {
 	public class Form extends Data {
 		public Form(HttpCall call, Struct record) { super(call, record); }
-		public final StringField username = new StringField(schema.username);
-		public final StringField  email = new StringField(schema.email, this::validateEmail);
+		public final Field username = new Field(schema.username);
+		public final Field  email   = new Field(schema.email, this::validateEmail);
 	}		
 
 	public UserForm(WikiventsSite site) {

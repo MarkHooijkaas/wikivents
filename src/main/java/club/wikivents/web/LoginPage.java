@@ -13,8 +13,8 @@ public class LoginPage extends WikiventsPage {
 
 	public class Fields extends FormData {
 		public final User user=model.users.findUsername(record.getString("username",null));
-		public final StringField username = new StringField("username", this::validateUsername);
-		public final StringField password = new StringField("password", this::validatePassword);
+		public final Field username = new Field("username", this::validateUsername);
+		public final Field password = new Field("password", this::validatePassword);
 
 		public Fields(Struct record) { super(record); }
 		
@@ -41,7 +41,7 @@ public class LoginPage extends WikiventsPage {
 		Fields result = form.handle(call, subPath);
 		if (result==null)
 			return;
-		if (! result.user.password.equals(result.password.stringValue) ) 
+		if (! result.user.password.equals(result.password.value) ) 
 			throw new RuntimeException("Invalid login");
 		call.setCookie(result.user._id);
 		call.redirect("/user/show/"+result.user._id);

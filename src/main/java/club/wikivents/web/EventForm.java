@@ -12,12 +12,13 @@ import club.wikivents.model.Event;
 public class EventForm extends HttpCrudForm<Event> {
 	public class Form extends Data {
 		public Form(HttpCall call, Struct record) { super(call, record); }
-		public final StringField title = new StringField(schema.title);
-		public final DateField date= new DateField(schema.date);
-		public final StringField min = new StringField(schema.min);
-		public final StringField max = new StringField(schema.max);
-		public final StringField location = new StringField(schema.location);
-		public final StringField description= new StringField(schema.description);
+		public final Field organizer=new Field(schema.organizer.getName(), call.userid);
+		public final Field title = new Field(schema.title);
+		public final Field date= new Field(schema.date);
+		public final Field min = new Field(schema.min);
+		public final Field max = new Field(schema.max);
+		public final Field location = new Field(schema.location);
+		public final Field description= new Field(schema.description);
 	}
 
 	public EventForm(WikiventsSite site) {
@@ -31,12 +32,14 @@ public class EventForm extends HttpCrudForm<Event> {
 		return ((WikiventsCall)call).userid.equals(oldRecord.getString("organizer" ,null));
 	}
 	
-	/*public void validateCreate(String userid, HashStruct data) {
+	/*
+	@Override public void validateCreate(String userid, Struct data) {
 		User.Table.Ref user=model.users.createRef(userid);
 		if (user==null)
 			throw new RuntimeException("no user");
 		data.put(Event.schema.organizer.getName(),user);
-	}*/
+	}
+	*/
 	//public void validateUpdate(String userid, Struct oldRecord, Struct newRecord) {}
 	
 	
