@@ -1,6 +1,9 @@
 {{> header}}
 
 <h1>{{record.title}}</h1>
+
+<div>{{record.description}}</div>
+
   <table class="table table-hover">
     <thead>
       <tr>
@@ -17,7 +20,19 @@
   </table>
 
 {{> show/changeButton}}
+   
+ 
+ <form role="form" method="POST" action="../addComment/{{record._id}}">
+   <textarea  class="form-control" id="comment" name="comment" rows="5"></textarea>
+   <button type="submit" class="btn btn-default">Voeg Commentaar toe</button>
+ </form>
   
-  <div>{{record.description}}</div>
+  <table class="table table-hover">
+    <tbody>
+{{#each record.comments}}
+<tr><th>{{privUser call user}}<br>@{{date}}</th><td>{{comment}}</td></tr>
+{{/each}}
+    </tbody>
+  </table>
   
 {{> footer}}
