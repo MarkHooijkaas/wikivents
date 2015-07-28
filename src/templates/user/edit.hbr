@@ -3,7 +3,7 @@
 <form role="form" method="post">
   {{> edit/text form.username label="Gebruikersnaam"}}
   {{> edit/text form.email    label="email"}}
-  {{> edit/text form.password label="wachtwoord"}}
+ {{!-- {{> edit/text form.password label="wachtwoord"}} --}}
   
   {{> edit/submitButton}}
 </form>
