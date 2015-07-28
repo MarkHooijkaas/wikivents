@@ -56,7 +56,7 @@ public class HttpCallDispatcher implements HttpCallHandler {
 		while (subPath.startsWith("/"))
 			subPath=subPath.substring(1);
 		HttpCallHandler handler = name.length()==0 ? home : map.get(name);
-		System.out.println("Handling {"+name+"} with subPath {"+subPath+"} with handler "+handler);
+		//System.out.println("Handling {"+name+"} with subPath {"+subPath+"} with handler "+handler);
 		if (handler==null)
 			call.invalidPage();
 		else
