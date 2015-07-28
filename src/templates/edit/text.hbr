@@ -1,0 +1,5 @@
+  <div class="form-group">
+    <label for="{{name}}">{{label}}: <i>{{message}}</i></label>
+    <input type="{{#if type}}{{type}}{{else}}text{{/if}}" class="form-control" id="{{name}}" name="{{name}}" value="{{value}}">
+  </div>
+  

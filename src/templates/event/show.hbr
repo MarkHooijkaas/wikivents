@@ -9,14 +9,14 @@
       </tr>
     </thead>
     <tbody>
-	{{> form/field.show value=record.date     label="Datum"}}
-	{{> form/field.show value=record.min      label="Minimum aantal deelnemers"}}
-	{{> form/field.show value=record.max      label="Maximum aantal deelnemers"}}
-	{{> form/field.show value=record.location label="Locatie"}}
+	{{> show/text value=record.date     label="Datum"}}
+	{{> show/text value=record.min      label="Minimum aantal deelnemers"}}
+	{{> show/text value=record.max      label="Maximum aantal deelnemers"}}
+	{{> show/text value=record.location label="Locatie"}}
     </tbody>
   </table>
 
-{{> form/changeButton}}
+{{> show/changeButton}}
   
   <div>{{record.description}}</div>
   

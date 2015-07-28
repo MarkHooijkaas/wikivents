@@ -1,14 +1,14 @@
 {{> header}}
 
-<h1>{{user.username}}</h1>
+<h1>{{record.username}}</h1>
 
   <table class="table table-hover">
     <tbody>
-      {{> form/field.show value=record.username label="Gebruikersnaam"}}
-      {{> form/field.show value=record.email label="email"}}
+      {{> show/text value=record.username label="Gebruikersnaam"}}
+      {{> show/text value=record.email label="email"}}
     </tbody>
   </table>
 
-{{> form/changeButton}}
+{{> show/changeButton}}
   
 {{> footer}}
