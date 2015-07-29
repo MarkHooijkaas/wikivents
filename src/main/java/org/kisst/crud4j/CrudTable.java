@@ -19,11 +19,11 @@ public abstract class CrudTable<T extends CrudObject> implements TypedSequence<T
 	private final Index[] indices;
 
 	private boolean alwaysCheckId=true;
-	public CrudTable(CrudSchema<T> schema, Item.Factory factory, StructStorage storage) { 
+	public CrudTable(CrudModel model, CrudSchema<T> schema) { 
+		this.factory=model;
 		this.schema=schema;
-		this.indices=new Index[0]; // TODO
-		this.factory=factory;
-		this.storage=storage;
+		this.storage=model.getStorage(schema.cls);
+		this.indices=model.getIndices(schema.cls);
 		this.name=schema.cls.getSimpleName();
 		if (storage.useCache())
 			cache=new ConcurrentHashMap<String,T>();
@@ -37,6 +37,8 @@ public abstract class CrudTable<T extends CrudObject> implements TypedSequence<T
 					T obj=createObject(rec);
 					//System.out.println("caching "+obj);
 					cache.put(obj._id, obj);
+					for (Index index: indices) 
+						index.notifyCreate(obj);
 				}
 				catch (Exception e) { e.printStackTrace(); /*ignore*/ } // TODO: return dummy activity
 			}

@@ -1,8 +1,7 @@
-unknown user with cookie can still create activity: userid is not checked
-show organizer name
-guests
-comments
-custom form templates
+unique index for usernames, emailadresses, joining events
+method for changing immutable object
+authorization framework
+
 multiple skins
 jar file with resources
 logging

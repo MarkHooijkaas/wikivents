@@ -38,7 +38,7 @@ public class User extends CrudObject {
 		@Override public Ref createRef(String _id) { return new Ref(_id); }
 		
 		public Table(WikiventsModel model) { 
-			super(User.schema, model, model.getStorage(User.class));
+			super(model, User.schema);
 			this.usernameIndex=model.getUniqueIndex(User.class, User.schema.username);
 			this.emailIndex=model.getUniqueIndex(User.class, User.schema.email);
 		}

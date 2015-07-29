@@ -18,9 +18,9 @@ public abstract class CrudModel implements Item.Factory {
 	}
 
 	public StructStorage getStorage(Class<?> cls) {
-		for (StorageOption o: options) {
-			if (o instanceof StructStorage && o.getRecordClass()==cls)
-				return (StructStorage) o;
+		for (StorageOption opt: options) {
+			if (opt instanceof StructStorage && opt.getRecordClass()==cls)
+				return (StructStorage) opt;
 		}
 		/*// not needed since the fields aren't initalized yet when this (the superconstructor is called)
 		for (StructStorage s: ReflectionUtil.getAllDeclaredFieldValuesOfType(this, StructStorage.class)) {
@@ -33,8 +33,11 @@ public abstract class CrudModel implements Item.Factory {
 	public Index[] getIndices(Class<?> cls) {
 		ArrayList<Index> result=new ArrayList<Index>();
 		for (StorageOption opt: options) {
-			if (opt instanceof Index && opt.getRecordClass()==cls)
+			System.out.println("Checking index "+opt);
+			if (opt instanceof Index && opt.getRecordClass()==cls) {
 				result.add((Index) opt);
+				System.out.println("Using index "+opt);
+			}
 		}
 		/*// not needed since the fields aren't initalized yet when this (the superconstructor is called)
 		for (Index idx: ReflectionUtil.getAllDeclaredFieldValuesOfType(this, Index.class)) {

@@ -102,9 +102,7 @@ public class Event extends CrudObject {
 		public class Ref extends CrudTable<Event>.Ref { public Ref(String id) { super(id); } }
 		@Override public Ref createRef(String _id) { return new Ref(_id); }
 
-		public Table(StructStorage storage, WikiventsModel model) { 
-			super(Event.schema, model, storage);
-		}
+		public Table(StructStorage storage, WikiventsModel model) { super(model, Event.schema); }
 		@Override public Event createObject(Struct doc) { return new Event((WikiventsModel) factory, doc); }
 	}
 

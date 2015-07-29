@@ -10,7 +10,13 @@ public abstract class Index implements StorageOption {
 	protected Index(Class<?> recordClass, Schema<?>.Field[] fields) { this.recordClass=recordClass;	this.fields=fields;	}
 
 	@Override public Class<?> getRecordClass() { return this.recordClass; }
-	
+	@Override public String toString() { return this.getClass().getSimpleName()+"("+getRecordClass().getSimpleName()+"::"+fieldnames()+")"; }
+	public String fieldnames() {
+		String result = fields[0].getName();
+		for (int i=1; i<fields.length; i++)
+			result+=", "+fields[i].getName();
+		return result;
+	}
 	public String getKey(Struct obj) {
 		String result="";
 		for (Schema<?>.Field field : fields)

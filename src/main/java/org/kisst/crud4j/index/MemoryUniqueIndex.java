@@ -12,9 +12,9 @@ public class MemoryUniqueIndex extends UniqueIndex {
 
 	@Override public Struct get(String ... values) { return map.get(getKey(values)); }
 
-
 	@Override public void notifyCreate(Struct newRecord) {
 		String newkey = getKey(newRecord);
+		System.out.println("Indexing "+newkey);
 		if (map.get(newkey)!=null)
 			throw new RuntimeException("key "+newkey+" is not unique");
 		map.put(newkey, newRecord);
