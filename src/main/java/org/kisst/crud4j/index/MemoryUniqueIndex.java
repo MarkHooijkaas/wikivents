@@ -1,5 +1,6 @@
 package org.kisst.crud4j.index;
 
+import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.kisst.crud4j.CrudObject;
@@ -10,7 +11,7 @@ public class MemoryUniqueIndex<T extends CrudObject> extends UniqueIndex<T> {
 	private ConcurrentHashMap<String, T> map=new ConcurrentHashMap<String, T>();
 
 	@SafeVarargs
-	public MemoryUniqueIndex(CrudSchema<T> schema, Schema<T>.StringField ... fields) { super(schema, fields); }
+	public MemoryUniqueIndex(CrudSchema<T> schema, Schema<T>.Field ... fields) { super(schema, fields); }
 
 	@Override public T get(String ... values) { return map.get(getKey(values)); }
 
@@ -37,4 +38,6 @@ public class MemoryUniqueIndex<T extends CrudObject> extends UniqueIndex<T> {
 	}
 
 	@Override public void notifyDelete(T oldRecord) { map.remove(getKey(oldRecord)); }
+
+	public Collection<T> getAll() { return map.values(); } // needed for cache, but not for general cache use
 }

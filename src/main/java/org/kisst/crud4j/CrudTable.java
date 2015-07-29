@@ -1,42 +1,45 @@
 package org.kisst.crud4j;
 
 import java.util.Iterator;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.kisst.crud4j.index.Index;
+import org.kisst.crud4j.index.MemoryUniqueIndex;
 import org.kisst.item4j.Immutable;
 import org.kisst.item4j.Item;
 import org.kisst.item4j.seq.TypedSequence;
 import org.kisst.item4j.struct.MultiStruct;
 import org.kisst.item4j.struct.Struct;
+import org.kisst.util.ArrayUtil;
 
 public abstract class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 	protected final CrudSchema<T> schema;
 	protected final Item.Factory factory;
 	private final String name;
 	private final StructStorage storage;
-	private final ConcurrentHashMap<String,T> cache;
+	private final MemoryUniqueIndex<T> cache;
 	private final Index<T>[] indices;
 
 	private boolean alwaysCheckId=true;
 	public CrudTable(CrudModel model, CrudSchema<T> schema) { 
 		this.factory=model;
 		this.schema=schema;
-		this.storage=model.getStorage(schema.cls);
-		this.indices=model.getIndices(schema.cls);
 		this.name=schema.cls.getSimpleName();
-		if (storage.useCache())
-			cache=new ConcurrentHashMap<String,T>();
-		else
+		this.storage=model.getStorage(schema.cls);
+		if (storage.useCache()) {
+			cache=new MemoryUniqueIndex<T>(schema, schema.getKeyField());
+			this.indices=ArrayUtil.join(cache,model.getIndices(schema.cls));
+		}
+		else {
 			cache=null;
+			this.indices=model.getIndices(schema.cls);
+
+		}
 		if (cache!=null) {
 			//System.out.println("Loading all "+name+" records to cache");
 			TypedSequence<Struct> seq = storage.findAll();
 			for (Struct rec:seq) {
 				try {
 					T obj=createObject(rec);
-					//System.out.println("caching "+obj);
-					cache.put(obj._id, obj);
 					for (Index<T> index: indices) 
 						index.notifyCreate(obj);
 				}
@@ -52,8 +55,6 @@ public abstract class CrudTable<T extends CrudObject> implements TypedSequence<T
 	public T createObject(Struct doc) { return schema.createObject(doc); }
 
 	public synchronized void create(T doc) {
-		if (cache!=null)
-			cache.put(doc._id, doc);
 		for(Index<T> index : indices) index.notifyCreate(doc);
 		storage.createInStorage(doc);
 		// TODO : rollback indices in case of Exception?
@@ -74,8 +75,6 @@ public abstract class CrudTable<T extends CrudObject> implements TypedSequence<T
 	}
 	public synchronized void update(T oldValue, T newValue) {
 		checkSameId(oldValue, newValue);
-		if (cache!=null)
-			cache.put(newValue._id, newValue);
 		for(Index<T> index : indices) index.notifyUpdate(oldValue, newValue);
 		storage.updateInStorage(oldValue, newValue); 
 		// TODO : rollback indices in case of Exception?
@@ -84,7 +83,6 @@ public abstract class CrudTable<T extends CrudObject> implements TypedSequence<T
 		update(oldValue, createObject(new MultiStruct(newFields, oldValue))); 
 	}
 	public synchronized void delete(T oldValue) {
-		cache.remove(oldValue._id);
 		storage.deleteInStorage(oldValue);
 		for(Index<T> index : indices) index.notifyDelete(oldValue);
 		// TODO : rollback indices in case of Exception?
@@ -124,7 +122,7 @@ public abstract class CrudTable<T extends CrudObject> implements TypedSequence<T
 	}
 	public TypedSequence<T> findAll() {
 		if (cache!=null)  
-			return Immutable.Sequence.smartCopy(schema.getJavaClass(),cache.values());
+			return Immutable.Sequence.smartCopy(schema.getJavaClass(),cache.getAll());
 		return Immutable.Sequence.realCopy(schema.getJavaClass(),storage.findAll());
 	}
 
