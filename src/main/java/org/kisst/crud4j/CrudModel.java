@@ -30,12 +30,12 @@ public abstract class CrudModel implements Item.Factory {
 		*/
 		throw new RuntimeException("Unknown Storage for type "+cls.getSimpleName());
 	}
-	public Index[] getIndices(Class<?> cls) {
-		ArrayList<Index> result=new ArrayList<Index>();
+	@SuppressWarnings("unchecked")
+	public<T extends CrudObject> Index<T>[] getIndices(Class<?> cls) {
+		ArrayList<Index<T>> result=new ArrayList<Index<T>>();
 		for (StorageOption opt: options) {
-			System.out.println("Checking index "+opt);
 			if (opt instanceof Index && opt.getRecordClass()==cls) {
-				result.add((Index) opt);
+				result.add((Index<T>) opt);
 				System.out.println("Using index "+opt);
 			}
 		}
@@ -45,16 +45,17 @@ public abstract class CrudModel implements Item.Factory {
 				result.add(idx);
 		}
 		*/
-		Index[] arr=new Index[result.size()];
+		Index<T>[] arr=new Index[result.size()];
 		for (int i=0; i<result.size(); i++)
 			arr[i]=result.get(i);
 		return arr;
 	}
 	
-	public UniqueIndex getUniqueIndex(Class<?> cls, Schema<?>.Field ... fields) {
+	public <T extends CrudObject> UniqueIndex<T> getUniqueIndex(Class<?> cls, Schema<?>.Field ... fields) {
 		for (StorageOption opt: options) {
 			if (opt instanceof UniqueIndex && opt.getRecordClass()==cls) {
-				UniqueIndex idx=(UniqueIndex) opt;
+				@SuppressWarnings("unchecked")
+				UniqueIndex<T> idx=(UniqueIndex<T>) opt;
 				if (Arrays.equals(fields, idx.fields))
 					return idx;
 			}

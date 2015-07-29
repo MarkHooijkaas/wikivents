@@ -16,7 +16,7 @@ public abstract class CrudTable<T extends CrudObject> implements TypedSequence<T
 	private final String name;
 	private final StructStorage storage;
 	private final ConcurrentHashMap<String,T> cache;
-	private final Index[] indices;
+	private final Index<T>[] indices;
 
 	private boolean alwaysCheckId=true;
 	public CrudTable(CrudModel model, CrudSchema<T> schema) { 
@@ -37,7 +37,7 @@ public abstract class CrudTable<T extends CrudObject> implements TypedSequence<T
 					T obj=createObject(rec);
 					//System.out.println("caching "+obj);
 					cache.put(obj._id, obj);
-					for (Index index: indices) 
+					for (Index<T> index: indices) 
 						index.notifyCreate(obj);
 				}
 				catch (Exception e) { e.printStackTrace(); /*ignore*/ } // TODO: return dummy activity
@@ -54,7 +54,7 @@ public abstract class CrudTable<T extends CrudObject> implements TypedSequence<T
 	public synchronized void create(T doc) {
 		if (cache!=null)
 			cache.put(doc._id, doc);
-		for(Index index : indices) index.notifyCreate(doc);
+		for(Index<T> index : indices) index.notifyCreate(doc);
 		storage.createInStorage(doc);
 		// TODO : rollback indices in case of Exception?
 	}
@@ -76,7 +76,7 @@ public abstract class CrudTable<T extends CrudObject> implements TypedSequence<T
 		checkSameId(oldValue, newValue);
 		if (cache!=null)
 			cache.put(newValue._id, newValue);
-		for(Index index : indices) index.notifyUpdate(oldValue, newValue);
+		for(Index<T> index : indices) index.notifyUpdate(oldValue, newValue);
 		storage.updateInStorage(oldValue, newValue); 
 		// TODO : rollback indices in case of Exception?
 	}
@@ -86,7 +86,7 @@ public abstract class CrudTable<T extends CrudObject> implements TypedSequence<T
 	public synchronized void delete(T oldValue) {
 		cache.remove(oldValue._id);
 		storage.deleteInStorage(oldValue);
-		for(Index index : indices) index.notifyDelete(oldValue);
+		for(Index<T> index : indices) index.notifyDelete(oldValue);
 		// TODO : rollback indices in case of Exception?
 	}
 

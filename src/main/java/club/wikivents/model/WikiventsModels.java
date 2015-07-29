@@ -14,8 +14,8 @@ public class WikiventsModels {
 		return new WikiventsModel(
 			new FileStorage(User.schema, props),
 			new FileStorage(Event.schema, props),
-			new MemoryUniqueIndex(User.class, User.schema.username),
-			new MemoryUniqueIndex(User.class, User.schema.email)
+			new MemoryUniqueIndex<User>(User.schema, User.schema.username),
+			new MemoryUniqueIndex<User>(User.schema, User.schema.email)
 		);
 	}
 

@@ -31,8 +31,8 @@ public class User extends CrudObject {
 	}
 	
 	public static class Table extends CrudTable<User> {
-		public final UniqueIndex usernameIndex;
-		public final UniqueIndex emailIndex;
+		public final UniqueIndex<User> usernameIndex;
+		public final UniqueIndex<User> emailIndex;
 		
 		public class Ref extends CrudTable<User>.Ref { public Ref(String id) { super(id); } }
 		@Override public Ref createRef(String _id) { return new Ref(_id); }

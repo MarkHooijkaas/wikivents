@@ -1,15 +1,17 @@
 package org.kisst.crud4j.index;
 
+import org.kisst.crud4j.CrudObject;
+import org.kisst.crud4j.CrudSchema;
 import org.kisst.crud4j.StorageOption;
 import org.kisst.item4j.Schema;
 import org.kisst.item4j.struct.Struct;
 
-public abstract class Index implements StorageOption {
-	public final Schema<?>.Field[] fields;
-	private Class<?> recordClass;
-	protected Index(Class<?> recordClass, Schema<?>.Field[] fields) { this.recordClass=recordClass;	this.fields=fields;	}
+public abstract class Index<T extends CrudObject> implements StorageOption {
+	public final CrudSchema<T>.Field[] fields;
+	private CrudSchema<T> schema;
+	protected Index(CrudSchema<T> schema, CrudSchema<T>.Field[] fields) { this.schema=schema;	this.fields=fields;	}
 
-	@Override public Class<?> getRecordClass() { return this.recordClass; }
+	@Override public Class<T> getRecordClass() { return this.schema.getJavaClass(); }
 	@Override public String toString() { return this.getClass().getSimpleName()+"("+getRecordClass().getSimpleName()+"::"+fieldnames()+")"; }
 	public String fieldnames() {
 		String result = fields[0].getName();
@@ -30,7 +32,7 @@ public abstract class Index implements StorageOption {
 		return result;
 	}
 
-	abstract public void notifyCreate(Struct record);
-	abstract public void notifyUpdate(Struct oldRecord, Struct newRecord);
-	abstract public void notifyDelete(Struct oldRecord);
+	abstract public void notifyCreate(T record);
+	abstract public void notifyUpdate(T oldRecord, T newRecord);
+	abstract public void notifyDelete(T oldRecord);
 }

@@ -12,7 +12,7 @@ public class LoginPage extends WikiventsPage {
 	public LoginPage(WikiventsSite site) { super(site); }
 
 	public class Fields extends FormData {
-		public final User user=model.users.findUsername(record.getString("username",null));
+		public final User user=model.users.usernameIndex.get(record.getString("username",null));
 		public final Field username = new Field("username", this::validateUsername);
 		public final Field password = new Field("password", this::validatePassword);
 

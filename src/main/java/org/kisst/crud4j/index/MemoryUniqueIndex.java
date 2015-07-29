@@ -2,17 +2,19 @@ package org.kisst.crud4j.index;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.kisst.crud4j.CrudObject;
+import org.kisst.crud4j.CrudSchema;
 import org.kisst.item4j.Schema;
-import org.kisst.item4j.struct.Struct;
 
-public class MemoryUniqueIndex extends UniqueIndex {
-	private ConcurrentHashMap<String, Struct> map=new ConcurrentHashMap<String, Struct>();
+public class MemoryUniqueIndex<T extends CrudObject> extends UniqueIndex<T> {
+	private ConcurrentHashMap<String, T> map=new ConcurrentHashMap<String, T>();
 
-	public MemoryUniqueIndex(Class<?> recordClass, Schema<?>.StringField ... fields) { super(recordClass, fields); }
+	@SafeVarargs
+	public MemoryUniqueIndex(CrudSchema<T> schema, Schema<T>.StringField ... fields) { super(schema, fields); }
 
-	@Override public Struct get(String ... values) { return map.get(getKey(values)); }
+	@Override public T get(String ... values) { return map.get(getKey(values)); }
 
-	@Override public void notifyCreate(Struct newRecord) {
+	@Override public void notifyCreate(T newRecord) {
 		String newkey = getKey(newRecord);
 		System.out.println("Indexing "+newkey);
 		if (map.get(newkey)!=null)
@@ -21,7 +23,7 @@ public class MemoryUniqueIndex extends UniqueIndex {
 	}
 
 
-	@Override public void notifyUpdate(Struct oldRecord, Struct newRecord) {
+	@Override public void notifyUpdate(T oldRecord, T newRecord) {
 		String oldkey = getKey(oldRecord);
 		String newkey = getKey(newRecord);
 		if (oldkey.equals(newkey))
@@ -34,5 +36,5 @@ public class MemoryUniqueIndex extends UniqueIndex {
 		}
 	}
 
-	@Override public void notifyDelete(Struct oldRecord) { map.remove(getKey(oldRecord)); }
+	@Override public void notifyDelete(T oldRecord) { map.remove(getKey(oldRecord)); }
 }
