@@ -3,6 +3,7 @@ package org.kisst.crud4j;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.kisst.crud4j.index.Index;
 import org.kisst.item4j.Immutable;
 import org.kisst.item4j.Item;
 import org.kisst.item4j.seq.TypedSequence;
@@ -15,10 +16,12 @@ public abstract class CrudTable<T extends CrudObject> implements TypedSequence<T
 	private final String name;
 	private final StructStorage storage;
 	private final ConcurrentHashMap<String,T> cache;
+	private final Index[] indices;
 
 	private boolean alwaysCheckId=true;
 	public CrudTable(CrudSchema<T> schema, Item.Factory factory, StructStorage storage) { 
 		this.schema=schema;
+		this.indices=new Index[0]; // TODO
 		this.factory=factory;
 		this.storage=storage;
 		this.name=schema.cls.getSimpleName();
@@ -46,10 +49,12 @@ public abstract class CrudTable<T extends CrudObject> implements TypedSequence<T
 
 	public T createObject(Struct doc) { return schema.createObject(doc); }
 
-	public void create(T doc) {
+	public synchronized void create(T doc) {
 		if (cache!=null)
 			cache.put(doc._id, doc);
+		for(Index index : indices) index.notifyCreate(doc);
 		storage.createInStorage(doc);
+		// TODO : rollback indices in case of Exception?
 	}
 	public T read(String key) { 
 		T result;
@@ -65,18 +70,22 @@ public abstract class CrudTable<T extends CrudObject> implements TypedSequence<T
 			throw new RuntimeException("Could not find "+name+" for key "+key);
 		return result;
 	}
-	public void update(T oldValue, T newValue) {
+	public synchronized void update(T oldValue, T newValue) {
 		checkSameId(oldValue, newValue);
 		if (cache!=null)
 			cache.put(newValue._id, newValue);
+		for(Index index : indices) index.notifyUpdate(oldValue, newValue);
 		storage.updateInStorage(oldValue, newValue); 
+		// TODO : rollback indices in case of Exception?
 	}
 	public void updateFields(T oldValue, Struct newFields) { 
 		update(oldValue, createObject(new MultiStruct(newFields, oldValue))); 
 	}
-	public void delete(T oldValue) {
+	public synchronized void delete(T oldValue) {
 		cache.remove(oldValue._id);
 		storage.deleteInStorage(oldValue);
+		for(Index index : indices) index.notifyDelete(oldValue);
+		// TODO : rollback indices in case of Exception?
 	}
 
 	public class Ref {
@@ -123,7 +132,9 @@ public abstract class CrudTable<T extends CrudObject> implements TypedSequence<T
 	@Override public Iterator<T> iterator() { return findAll().iterator(); }
 	@Override public Class<?> getElementClass() { return schema.cls; }
 
-	public interface UniqueIndex<T extends CrudObject> { public T get(String field); }
+	/*
+	public interface UniqueIndex<T extends CrudObject> { public CrudTable<T>.Ref get(String ... field); }
 	public interface MultiIndex<T extends CrudObject> { public TypedSequence<T> get(String field); }
 	public interface OrderedIndex<T extends CrudObject> { public TypedSequence<T> get(String field);}
+	*/
 }

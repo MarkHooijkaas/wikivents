@@ -7,7 +7,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.kisst.crud4j.CrudSchema;
 import org.kisst.crud4j.StructStorage;
-import org.kisst.item4j.Schema;
 import org.kisst.item4j.json.JsonOutputter;
 import org.kisst.item4j.json.JsonParser;
 import org.kisst.item4j.seq.ArraySequence;
@@ -21,7 +20,6 @@ public class FileStorage implements StructStorage {
 	private final JsonParser parser=new JsonParser();
 	private final JsonOutputter outputter = new JsonOutputter(null);
 	private final CrudSchema<?>.IdField keyField;
-	private final ArrayList<Index> indices=new ArrayList<Index>();
 	private final CrudSchema<?> schema;
 	private final boolean useCache;
 
@@ -43,7 +41,6 @@ public class FileStorage implements StructStorage {
 	@Override public boolean useCache() { return useCache;}
 
 	@Override public Class<?> getRecordClass() { return schema.cls; }
-	public Index addIndex(Index idx) { indices.add(idx); return idx; }
 	
 	@Override public String createInStorage(Struct value) {
 		String key = keyField.getString(value);
@@ -102,77 +99,15 @@ public class FileStorage implements StructStorage {
 		return new ArraySequence<Struct>(Struct.class,list);
 	}
 	
-	@Override public UniqueIndex useUniqueIndex(Schema<?>.Field... fields) { 
-		MyUniqueIndex index = new MyUniqueIndex(fields); 
-		addIndex(index);
-		return index;
-	}
-	@Override public MultiIndex useMultiIndex(Schema<?>.Field... fields) { 
-		MyMultiIndex index = new MyMultiIndex(fields); 
-		addIndex(index);
-		return index;
-	}
-	private class Index {
-		@SuppressWarnings("unused")
-		private final CrudSchema<?>.Field[] fields;
-		protected Index(CrudSchema<?>.Field ... fields) {
-			this.fields=fields;
-		}
-		public void notifyCreate(Struct record) {}
-		public void notifyUpdate(Struct oldRecord, Struct newRecord) {}
-		public void notifyDelete(Struct oldRecord) {}
-	}
-	private class MyUniqueIndex extends Index implements UniqueIndex {
-		private MyUniqueIndex(CrudSchema<?>.Field ... fields) { super(fields); }
-		@Override public Struct get(String... values) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-	}
-	private class MyMultiIndex extends Index implements MultiIndex {
-		private MyMultiIndex(CrudSchema<?>.Field ... fields) { super(fields); }
-		@Override public TypedSequence<Struct> get(String... values) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-	}
 
-	public void create(Struct doc) {
-		try {
-			for(Index index : indices)
-				index.notifyCreate(doc);
-			this.createInStorage(doc);
-		}
-		catch (RuntimeException e) {
-			// TODO: rollback
-			throw e;
-		}
-	}
+	public void create(Struct doc) { this.createInStorage(doc);	}
 	public Struct read(String key) { 
 		return this.readFromStorage(key);
 	}
 	public void update(Struct oldValue, Struct newValue) {
 		//checkSameId(oldValue, newValue);
-		try {
-			for(Index index : indices)
-				index.notifyUpdate(oldValue,newValue);
-			this.updateInStorage(oldValue, newValue); 
-		}
-		catch (RuntimeException e) {
-			// TODO: rollback
-			throw e;
-		}
+		this.updateInStorage(oldValue, newValue); 
 	}
 	
-	public void delete(Struct oldValue) {
-		try {
-			for(Index index : indices)
-				index.notifyDelete(oldValue);
-			this.deleteInStorage(oldValue);
-		}
-		catch (RuntimeException e) {
-			// TODO: rollback
-			throw e;
-		}
-	}
+	public void delete(Struct oldValue) { this.deleteInStorage(oldValue);}
 }

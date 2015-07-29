@@ -1,27 +1,32 @@
 package club.wikivents.model;
 
-import org.kisst.crud4j.StructStorage;
 import org.kisst.crud4j.impl.FileStorage;
 import org.kisst.crud4j.impl.MongoDb;
 import org.kisst.crud4j.impl.MongoStorage;
+import org.kisst.crud4j.index.MemoryUniqueIndex;
 import org.kisst.item4j.struct.HashStruct;
 import org.kisst.item4j.struct.MultiStruct;
 import org.kisst.item4j.struct.Struct;
 
 public class WikiventsModels {
-	public static WikiventsModel createFileModel(Struct props) {
-		final StructStorage userStorage=new FileStorage(User.schema, props);
-		final StructStorage eventStorage=new FileStorage(Event.schema, props);
-		return new WikiventsModel(userStorage,eventStorage);
+
+	private static WikiventsModel createFileModel(Struct props) {
+		return new WikiventsModel(
+			new FileStorage(User.schema, props),
+			new FileStorage(Event.schema, props),
+			new MemoryUniqueIndex(User.class, User.schema.username),
+			new MemoryUniqueIndex(User.class, User.schema.email)
+		);
 	}
 
 	public static WikiventsModel createMongoModel(Struct props) {
 		HashStruct defaults= new HashStruct();
 		defaults.put("mongodb", "wikivents");
 		MongoDb db = new MongoDb(new MultiStruct(props,defaults), MongoCodecs.options()); 
-		final StructStorage userStorage=new MongoStorage(User.schema, props, db);
-		final StructStorage eventStorage=new MongoStorage(Event.schema, props, db);
-		WikiventsModel model = new WikiventsModel(userStorage,eventStorage);
+		WikiventsModel model = new WikiventsModel(
+			new MongoStorage(User.schema, props, db),
+			new MongoStorage(Event.schema, props, db)
+		);
 		MongoCodecs.setModel(model);
 		return model;
 	}

@@ -3,7 +3,7 @@ package club.wikivents.model;
 import org.kisst.crud4j.CrudObject;
 import org.kisst.crud4j.CrudSchema;
 import org.kisst.crud4j.CrudTable;
-import org.kisst.crud4j.StructStorage;
+import org.kisst.crud4j.index.UniqueIndex;
 import org.kisst.item4j.struct.Struct;
 
 public class User extends CrudObject {
@@ -31,10 +31,17 @@ public class User extends CrudObject {
 	}
 	
 	public static class Table extends CrudTable<User> {
+		public final UniqueIndex usernameIndex;
+		public final UniqueIndex emailIndex;
+		
 		public class Ref extends CrudTable<User>.Ref { public Ref(String id) { super(id); } }
 		@Override public Ref createRef(String _id) { return new Ref(_id); }
 		
-		public Table(StructStorage storage, WikiventsModel model) { super(User.schema, model, storage);}
+		public Table(WikiventsModel model) { 
+			super(User.schema, model, model.getStorage(User.class));
+			this.usernameIndex=model.getUniqueIndex(User.class, User.schema.username);
+			this.emailIndex=model.getUniqueIndex(User.class, User.schema.email);
+		}
 		@Override public User createObject(Struct props) { return new User(props); }
 		
 		public User findUsername(String username) {

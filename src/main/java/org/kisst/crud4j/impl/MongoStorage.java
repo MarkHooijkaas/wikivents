@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.kisst.crud4j.CrudSchema;
 import org.kisst.crud4j.StructStorage;
-import org.kisst.item4j.Schema;
 import org.kisst.item4j.seq.ArraySequence;
 import org.kisst.item4j.seq.TypedSequence;
 import org.kisst.item4j.struct.Struct;
@@ -13,7 +12,6 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.mongodb.DuplicateKeyException;
 
 public class MongoStorage implements StructStorage {
 
@@ -65,11 +63,7 @@ public class MongoStorage implements StructStorage {
 		finally { cursor.close(); }
 	}
 
-	@Override public UniqueIndex useUniqueIndex(Schema<?>.Field ... fields) { return new MyUniqueIndex(fields);} 
-	@Override public MultiIndex  useMultiIndex(Schema<?>.Field ... fields) { return new MyMultiIndex(fields); } 
-	//public OrderedIndex  useOrderedIndex(SchkeyField) { return null; } // TODO
-
-	
+/*
 	private class MyUniqueIndex extends Index implements UniqueIndex {
 		private MyUniqueIndex(CrudSchema<?>.Field ... fields) {
 			super(fields);
@@ -109,7 +103,7 @@ public class MongoStorage implements StructStorage {
 			try {
 				collection.createIndex(keys, options);
 			}
-			catch (DuplicateKeyException e) { /* ignore */ } // TODO better way to ensure index
+			catch (DuplicateKeyException e) {  } // TODO better way to ensure index
 		}
 		protected DBCursor query(String ... values) {
 			if (fields.length!=values.length)
@@ -121,4 +115,5 @@ public class MongoStorage implements StructStorage {
 			return collection.find(keys);
 		} 
 	}
+	*/
 }
