@@ -132,8 +132,8 @@ public abstract class CrudTable<T extends CrudObject> implements TypedSequence<T
 	@Override public Iterator<T> iterator() { return findAll().iterator(); }
 	@Override public Class<?> getElementClass() { return schema.cls; }
 
+	public interface UniqueIndex<T extends CrudObject> { public T get(String ... field); }
 	/*
-	public interface UniqueIndex<T extends CrudObject> { public CrudTable<T>.Ref get(String ... field); }
 	public interface MultiIndex<T extends CrudObject> { public TypedSequence<T> get(String field); }
 	public interface OrderedIndex<T extends CrudObject> { public TypedSequence<T> get(String field);}
 	*/

@@ -3,8 +3,8 @@ package org.kisst.crud4j;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.kisst.crud4j.CrudTable.UniqueIndex;
 import org.kisst.crud4j.index.Index;
-import org.kisst.crud4j.index.UniqueIndex;
 import org.kisst.item4j.Item;
 import org.kisst.item4j.Schema;
 
@@ -56,7 +56,7 @@ public abstract class CrudModel implements Item.Factory {
 			if (opt instanceof UniqueIndex && opt.getRecordClass()==cls) {
 				@SuppressWarnings("unchecked")
 				UniqueIndex<T> idx=(UniqueIndex<T>) opt;
-				if (Arrays.equals(fields, idx.fields))
+				if (Arrays.equals(fields, ((Index<?>)idx).fields))
 					return idx;
 			}
 		}

@@ -3,7 +3,6 @@ package club.wikivents.model;
 import org.kisst.crud4j.CrudObject;
 import org.kisst.crud4j.CrudSchema;
 import org.kisst.crud4j.CrudTable;
-import org.kisst.crud4j.index.UniqueIndex;
 import org.kisst.item4j.struct.Struct;
 
 public class User extends CrudObject {
