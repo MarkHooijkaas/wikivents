@@ -1,5 +1,7 @@
 package org.kisst.type4j.registry;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.LinkedHashMap;
@@ -39,5 +41,7 @@ public class ReflectionFieldsTypeRegistry implements TypeRegistry, DeeplyImmutab
 			return null;
 		return (SmartType<T>) ReflectionUtil.getFieldValue(object, field);  
 	}
+	
+	@Retention( RetentionPolicy.RUNTIME )
 	public @interface JavaClass {	public Class<?> value(); }
 }
