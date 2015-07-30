@@ -4,13 +4,14 @@ import java.time.Instant;
 
 import org.kisst.crud4j.CrudRef;
 import org.kisst.crud4j.CrudSchema;
-import org.kisst.item4j.struct.ReflectStruct;
+import org.kisst.crud4j.CrudModelObject;
 import org.kisst.item4j.struct.Struct;
 
-public class Guest extends ReflectStruct {
+public class Guest extends CrudModelObject {
 	public final CrudRef<User> user;
 	public final Instant date;
 	public Guest(WikiventsModel model, Struct data) {
+		super(schema);
 		this.user=schema.user.getRef(model.users ,data);
 		this.date = schema.date.getInstantOrNow(data);
 	}

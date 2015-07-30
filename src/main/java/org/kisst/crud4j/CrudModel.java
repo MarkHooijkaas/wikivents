@@ -1,5 +1,6 @@
 package org.kisst.crud4j;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -8,6 +9,7 @@ import org.kisst.crud4j.CrudTable.OrderedIndex;
 import org.kisst.crud4j.CrudTable.UniqueIndex;
 import org.kisst.item4j.Item;
 import org.kisst.item4j.Schema;
+import org.kisst.item4j.struct.Struct;
 import org.kisst.util.ReflectionUtil;
 
 public abstract class CrudModel implements Item.Factory {
@@ -15,7 +17,6 @@ public abstract class CrudModel implements Item.Factory {
 
 	public CrudModel() { this(new StorageOption[0]); }
 	public CrudModel(StorageOption[] options) {
-		Schema.globalFactory=this; // TODO: big hack
 		this.options=options;
 	}
 
@@ -29,12 +30,6 @@ public abstract class CrudModel implements Item.Factory {
 			if (opt instanceof StructStorage && opt.getRecordClass()==cls)
 				return (StructStorage) opt;
 		}
-		/*// not needed since the fields aren't initalized yet when this (the superconstructor is called)
-		for (StructStorage s: ReflectionUtil.getAllDeclaredFieldValuesOfType(this, StructStorage.class)) {
-			if (s.getRecordClass()==cls)
-				return s;
-		}
-		*/
 		throw new RuntimeException("Unknown Storage for type "+cls.getSimpleName());
 	}
 	@SuppressWarnings("unchecked")
@@ -46,12 +41,6 @@ public abstract class CrudModel implements Item.Factory {
 				System.out.println("Using index "+opt);
 			}
 		}
-		/*// not needed since the fields aren't initalized yet when this (the superconstructor is called)
-		for (Index idx: ReflectionUtil.getAllDeclaredFieldValuesOfType(this, Index.class)) {
-			if (idx.getRecordClass()==cls)
-				result.add(idx);
-		}
-		*/
 		Index<T>[] arr=new Index[result.size()];
 		for (int i=0; i<result.size(); i++)
 			arr[i]=result.get(i);
@@ -83,6 +72,19 @@ public abstract class CrudModel implements Item.Factory {
 		}
 		throw new RuntimeException("Unknown OrderedIndex for type "+cls.getSimpleName());
 	}
+
+	@Override public <T> T construct(Class<?> cls, Struct data) {
+		if (CrudModelObject.class.isAssignableFrom(cls)) {
+			Constructor<?> cons = CrudSchema.findModelBasedConstructor(cls);
+			return cast(ReflectionUtil.createObject(cons, new Object[] {this, data}));
+		}
+		//for (CrudTable<?> table: ReflectionUtil.getAllDeclaredFieldValuesOfType(this, CrudTable.class)) {
+		//	if (table.schema.getJavaClass()==cls)
+		//		return (T) table.schema.createObject(this, data);
+		//}
+		return basicFactory.construct(cls, data);
+	}
+	@Override public <T> T construct(Class<?> cls, String data) { return basicFactory.construct(cls, data);}
 
 
 }

@@ -29,7 +29,7 @@ public interface Item {
 	default public float asFloat() { return asFloat(asObject()); }
 	default public double asDouble() { return asDouble(asObject()); }
 	default public boolean asBoolean() { return asBoolean(asObject()); }
-	default public <T> T asType(Class<T> cls) { return asType(cls,asObject()); }
+	default public <T> T asType(Factory factory, Class<T> cls) { return asType(factory, cls,asObject()); }
 	
 	public static String asString(Object obj) { 
 		if (obj==null) return null; 
@@ -115,25 +115,27 @@ public interface Item {
 		throw new ClassCastException("Can not make a ItemSequence of type "+obj.getClass()+", "+obj);
 	}
 	@SuppressWarnings("unchecked")
-	public static <T> Immutable.Sequence<T> asTypedSequence(Class<?> type, Object obj) {
+	public static <T> Immutable.Sequence<T> asTypedSequence(Item.Factory factory, Class<?> type, Object obj) {
 		if (obj==null) return null; 
-		if (obj instanceof TypedSequence) return Immutable.Sequence.smartCopy(type,(TypedSequence<T>) obj);
-		if (obj instanceof Collection)   return Immutable.Sequence.smartCopy(type, (Collection<T>) obj);
+		if (obj instanceof TypedSequence) return Immutable.Sequence.smartCopy(factory, type,(TypedSequence<T>) obj);
+		if (obj instanceof Collection)   return Immutable.Sequence.smartCopy(factory, type, (Collection<T>) obj);
 		throw new ClassCastException("Can not make a ItemSequence of type "+obj.getClass()+", "+obj);
 	}
 	
-	public static <T> T asType(Class<?> cls, Object obj) {
+	@SuppressWarnings("unchecked")
+	public static <T> T asType(Factory factory, Class<?> cls, Object obj) {
 		if (obj==null) return null;
+		if (cls.isAssignableFrom(obj.getClass()))
+			return (T) obj;
 		//System.out.println("Converting "+obj+" to "+cls);
 		if (obj instanceof Struct) {
-			Object result = Schema.globalFactory.construct(cls,(Struct)obj);
+			Object result = factory.construct(cls,(Struct)obj);
 			//System.out.println("result is "+result.getClass()+" "+result);
 			return cast(result);
 		}
 		if (obj instanceof Map) {
-			@SuppressWarnings("unchecked")
 			Struct struct=new MapStruct((Map<String,Object>)obj);
-			Object result = Schema.globalFactory.construct(cls,struct);
+			Object result = factory.construct(cls,struct);
 			//System.out.println("result is "+result.getClass()+" "+result);
 			return cast(result);
 		}
@@ -188,4 +190,10 @@ public interface Item {
 			}
 		}
 	}
+	
+//	public static final DummyFactory dummyFactory=new DummyFactory();
+//	public static class DummyFactory implements Factory {
+//		public <T> T construct(Class<?> cls, Struct data) { throw new RuntimeException("Factory should not be needed"); }
+//		public <T> T construct(Class<?> cls, String data) { throw new RuntimeException("Factory should not be needed"); }
+//	}
 }

@@ -85,10 +85,10 @@ public interface Struct {
 		if (obj==null) return defaultValue;
 		return Item.asInstant(obj);
 	}
-	default public<T> T getType(Class<?> cls, String path, T defaultValue) {
+	default public<T> T getType(Item.Factory factory, Class<?> cls, String path, T defaultValue) {
 		Object obj= getObject(path,null); 
 		if (obj==null) return defaultValue;
-		return Item.asType(cls, obj);
+		return Item.asType(factory, cls, obj);
 	}
 	default public Struct getStruct(String path, Struct defaultValue) {
 		Object obj= getObject(path,null); 
@@ -100,10 +100,10 @@ public interface Struct {
 		if (obj==null) return defaultValue;
 		return Item.asItemSequence(obj);
 	}
-	default public<T> Immutable.Sequence<T> getTypedSequence(Class<?> type, String path, Immutable.Sequence<T> defaultValue) { 
+	default public<T> Immutable.Sequence<T> getTypedSequence(Item.Factory factory, Class<?> type, String path, Immutable.Sequence<T> defaultValue) { 
 		Object obj= getObject(path,null); 
 		if (obj==null) return defaultValue;
-		return Item.asTypedSequence(type,getObject(path)); 
+		return Item.asTypedSequence(factory, type,getObject(path));  
 	} 
 
 
@@ -146,10 +146,10 @@ public interface Struct {
 	default public LocalTime getLocalTime(String path) { return Item.asLocalTime(getObject(path)); }
 	default public LocalDateTime getLocalDateTime(String path) { return Item.asLocalDateTime(getObject(path)); }
 	default public Instant getInstant(String path) { return Item.asInstant(getObject(path)); }
-	default public<T> T getType(Class<?> cls, String path) { return Item.asType(cls,getObject(path)); }
+	default public<T> T getType(Item.Factory factory, Class<?> cls, String path) { return Item.asType(factory, cls,getObject(path)); }
 	default public Struct getStruct(String path) { return Item.asStruct(getObject(path)); } 
 	default public Immutable.ItemSequence getItemSequence(String path) { return Item.asItemSequence(getObject(path)); } 
-	default public<T> Immutable.Sequence<T> getTypedSequence(Class<?> type, String path) { return Item.asTypedSequence(type,getObject(path)); } 
+	default public<T> Immutable.Sequence<T> getTypedSequence(Item.Factory factory, Class<?> type, String path) { return Item.asTypedSequence(factory, type,getObject(path)); } 
 
 	public static final Object UNKNOWN_FIELD=ReflectionUtil.UNKNOWN_FIELD;
 	public class UnknownFieldException extends RuntimeException {

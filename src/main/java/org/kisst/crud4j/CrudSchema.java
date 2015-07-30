@@ -12,9 +12,13 @@ public class CrudSchema<T> extends Schema<T> {
 	
 	public CrudSchema(Class<T> cls) { 
 		super(cls); 
-		this.modelcons=ReflectionUtil.getFirstCompatibleConstructor(cls, new Class<?>[]{ CrudModel.class, Struct.class} );
-		if (this.modelcons==null)
+		this.modelcons=findModelBasedConstructor(cls);
+	}
+	public static Constructor<?> findModelBasedConstructor(Class<?>cls) {
+		Constructor<?> result=ReflectionUtil.getFirstCompatibleConstructor(cls, new Class<?>[]{ CrudModel.class, Struct.class} );
+		if (result==null)
 			throw new RuntimeException("No valid constructor for "+cls.getSimpleName());
+		return result;
 	}
 	
 	@SuppressWarnings("unchecked")

@@ -32,8 +32,8 @@ public class Event extends CrudObject implements Comparable<Event> {
 		this.min=schema.min.getInt(data);
 		this.max=schema.max.getInt(data);
 		this.organizer=schema.organizer.getRef(model.users, data);//new SimpleRef(props.getString("organizer",null));
-		this.guests=data.getTypedSequence(Guest.class,"guests", null);
-		this.comments=data.getTypedSequence(Comment.class,"comments", null);
+		this.guests=data.getTypedSequence(model, Guest.class,"guests", null);
+		this.comments=data.getTypedSequence(model, Comment.class,"comments", null);
 	}
 
 	public static final Schema schema=new Schema();

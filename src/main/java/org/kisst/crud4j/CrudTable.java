@@ -9,7 +9,7 @@ import org.kisst.item4j.struct.MultiStruct;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.util.ArrayUtil;
 
-public class CrudTable<T extends CrudObject> implements TypedSequence<T> { //, StructStorage<T> {
+public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 	protected final CrudObjectSchema<T> schema;
 	protected final CrudModel model;
 	private final String name;
@@ -123,8 +123,8 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> { //, S
 	}
 	public TypedSequence<T> findAll() {
 		if (cache!=null)  
-			return Immutable.Sequence.smartCopy(schema.getJavaClass(),cache.getAll());
-		return Immutable.Sequence.realCopy(schema.getJavaClass(),storage.findAll());
+			return Immutable.Sequence.smartCopy(model, schema.getJavaClass(),cache.getAll());
+		return Immutable.Sequence.realCopy(model, schema.getJavaClass(),storage.findAll());
 	}
 
 

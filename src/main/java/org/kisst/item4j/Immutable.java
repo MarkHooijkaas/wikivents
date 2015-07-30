@@ -186,37 +186,37 @@ public interface Immutable {
 		public Sequence<T> subsequence(int start) { return subsequence(start, size()); }
 
 		@SuppressWarnings("unchecked")
-		public static <E> Sequence<E> realCopy(Class<?> type, org.kisst.item4j.seq.ItemSequence seq) {
+		public static <E> Sequence<E> realCopy(Item.Factory factory, Class<?> type, org.kisst.item4j.seq.ItemSequence seq) {
 			E[] arr = createArray(seq.size());
 			int i=0; 
 			for (Object obj: seq.objects())
-				arr[i++]= (E) Item.asType(type, obj); 
+				arr[i++]= (E) Item.asType(factory, type, obj); 
 			return new Immutable.Sequence.ArraySequence<E>(type, arr);
 		}
-		public static <E> Sequence<E> realCopy(Class<?> elementClass, Collection<? extends E> collection) {
+		public static <E> Sequence<E> realCopy(Item.Factory factory, Class<?> elementClass, Collection<? extends E> collection) {
 			//System.out.println("Converting "+collection.getClass()+" to Immutable.Sequence of "+ReflectionUtil.smartClassName(elementClass));
 			E[] arr = createArray(collection.size());
 			int i=0; for (E obj : collection) 
-				arr[i++]=Item.asType(elementClass, obj);
+				arr[i++]=Item.asType(factory, elementClass, obj);
 			return new Immutable.Sequence.ArraySequence<E>(elementClass, arr);
 		}
 
 		@SuppressWarnings("unchecked")
-		public static <E> Sequence<E> smartCopy(Class<?> type, org.kisst.item4j.seq.ItemSequence seq) {
+		public static <E> Sequence<E> smartCopy(Item.Factory factory, Class<?> type, org.kisst.item4j.seq.ItemSequence seq) {
 			if (seq==null) throw new NullPointerException("Can not make smartCopy of null");
 			if (seq instanceof TypedSequence) {
 				if (type==seq.getElementClass())
 					return (Sequence<E>) seq;
-				return Immutable.Sequence.realCopy(type,  seq);
+				return Immutable.Sequence.realCopy(factory, type,  seq);
 			}
 			if (seq instanceof Collection)
-				return realCopy(type,(Collection<E>) seq);
+				return realCopy(factory, type,(Collection<E>) seq);
 			throw new ClassCastException("Can not make a TypedSequence of type "+seq.getClass()+", "+seq);
 		}
-		public static <E> Sequence<E> smartCopy(Class<?> type, Collection<? extends E> collection) {
+		public static <E> Sequence<E> smartCopy(Item.Factory factory, Class<?> type, Collection<? extends E> collection) {
 			if (collection instanceof org.kisst.item4j.seq.ItemSequence ) 
-				return smartCopy(type, (org.kisst.item4j.seq.ItemSequence) collection); 
-			return realCopy(type, collection);
+				return smartCopy(factory, type, (org.kisst.item4j.seq.ItemSequence) collection); 
+			return realCopy(factory, type, collection);
 		}
 
 		public Sequence<T> growTail(T tail) { return new GrowTailSequence<T>(this, tail); }
@@ -245,7 +245,7 @@ public interface Immutable {
 		}
 
 		@SuppressWarnings({ "unchecked", "rawtypes" })
-		public Sequence<T> join(Collection<T> ... collections) {
+		public Sequence<T> join(Item.Factory factory, Collection<T> ... collections) {
 			Sequence<T>[] result= createArray(collections.length+1);
 			result[0]=this;
 			int i=1;
@@ -253,7 +253,7 @@ public interface Immutable {
 				if (col instanceof Sequence)
 					result[i++]=(Sequence<T>) col;
 				else if (!elementClass.isAssignableFrom(col.getClass()))
-					result[i++]=(Sequence<T>) smartCopy(elementClass, col);
+					result[i++]=(Sequence<T>) smartCopy(factory, elementClass, col);
 			}
 			return new MultiSequence(elementClass, result);
 		}

@@ -6,11 +6,12 @@ import org.kisst.item4j.struct.SingleItemStruct;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.util.ReflectionUtil;
 
-public abstract class CrudObject implements Struct {
+public abstract class CrudObject extends CrudModelObject {//implements Struct {
 	public final CrudTable<?> table;
 	//public final CrudSchema<?> schema;
 	public final String _id;
 	public <T extends CrudObject> CrudObject(CrudTable<T> table, Struct data) {
+		super(table.schema);
 		this.table=table;
 		//this.schema=table.schema;
 		this._id=createUniqueKey(data); 
@@ -28,11 +29,11 @@ public abstract class CrudObject implements Struct {
 	@SuppressWarnings("unchecked")
 	public<T extends CrudObject> CrudRef<T> getRef() { return new CrudRef<T>((CrudTable<T>)table, _id); }
 	
+	/*
 	@Override public String toString() { return toShortString(); }
 	@Override public Iterable<String> fieldNames() { return table.schema.fieldNames(); }
 	@Override public Object getDirectFieldValue(String name) { return ReflectionUtil.getFieldValueOrUnknownField(this, name); }
 	
-	@SuppressWarnings("unchecked")
 	public <T extends CrudObject> T modified(CrudModel model, Struct modifiedFields) {
 		return (T) table.schema.createObject(model, new MultiStruct(modifiedFields, this));
 	}
@@ -40,5 +41,5 @@ public abstract class CrudObject implements Struct {
 	public <T extends CrudObject> T modified(CrudModel model, CrudSchema<T>.Field field, Object value) {
 		return modified(model, new SingleItemStruct(field.getName(), value));
 	}
-
+*/
 }
