@@ -7,7 +7,6 @@ import org.kisst.crud4j.CrudObjectSchema;
 import org.kisst.crud4j.CrudRef;
 import org.kisst.item4j.Immutable;
 import org.kisst.item4j.struct.HashStruct;
-import org.kisst.item4j.struct.MultiStruct;
 import org.kisst.item4j.struct.Struct;
 
 public class Event extends CrudObject implements Comparable<Event> {
@@ -67,9 +66,7 @@ public class Event extends CrudObject implements Comparable<Event> {
 		model.events.update(this, newEvent);
 	}
 	public void addGuest(WikiventsModel model, User user) {
-		HashStruct data=new HashStruct(); 
-		data.put("user", user._id);
-		Guest guest=new Guest(model, data);
+		Guest guest=new Guest(model, user);
 		Immutable.Sequence<Guest> newSeq = null;
 		if (guests==null)
 			newSeq=Immutable.typedSequence(Guest.class, guest);
@@ -77,7 +74,7 @@ public class Event extends CrudObject implements Comparable<Event> {
 			newSeq=guests.growTail(guest);
 		HashStruct newEventData=new HashStruct(); 
 		newEventData.put("guests", newSeq);
-		Event newEvent = new Event(model, new MultiStruct(newEventData, this));
+		Event newEvent = this.modified(model, schema.guests, newSeq);
 		model.events.update(this, newEvent);
 	}
 

@@ -10,6 +10,12 @@ import org.kisst.item4j.struct.Struct;
 public class Guest extends CrudModelObject {
 	public final CrudRef<User> user;
 	public final Instant date;
+	
+	public Guest(WikiventsModel model, User u) {
+		super(schema);
+		this.user=u.getRef();
+		this.date=Instant.now();
+	}
 	public Guest(WikiventsModel model, Struct data) {
 		super(schema);
 		this.user=schema.user.getRef(model.users ,data);
