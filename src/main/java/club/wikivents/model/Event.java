@@ -23,7 +23,7 @@ public class Event extends CrudObject implements Comparable<Event> {
 	//private final WikiventsModel model;
 	
 	public Event(WikiventsModel model, Struct data) {
-		super(schema, data);
+		super(model.events, data);
 		//System.out.println("Creating Event with "+props);
 		this.title=schema.title.getString(data);
 		this.description=schema.description.getString(data);
@@ -57,18 +57,13 @@ public class Event extends CrudObject implements Comparable<Event> {
 	@Override public boolean mayBeChangedBy(String userId) { return _id.equals(userId); }
 	
 	public void addComment(WikiventsModel model, User user, String text) {
-		HashStruct data=new HashStruct(); 
-		data.put("comment", text);
-		data.put("user", user._id);
-		Comment comment=new Comment(model,data);
+		Comment comment=new Comment(user,text);
 		Immutable.Sequence<Comment> newComments = null;
 		if (comments==null)
 			newComments=Immutable.typedSequence(Comment.class, comment);
 		else
 			newComments=comments.growTail(comment);
-		HashStruct newEventData=new HashStruct(); 
-		newEventData.put("comments", newComments);
-		Event newEvent = new Event(model, new MultiStruct(newEventData, this));
+		Event newEvent = this.modified(model, schema.comments, newComments);
 		model.events.update(this, newEvent);
 	}
 	public void addGuest(WikiventsModel model, User user) {

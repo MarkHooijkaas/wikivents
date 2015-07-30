@@ -79,7 +79,7 @@ public abstract class HttpCrudForm<T extends CrudObject> {
 			FormData input=createFormData(call,new HttpRequestStruct(call));
 			if (input.isValid()) {
 				T newRecord=createObject(new MultiStruct(input.record,oldRecord));
-				System.out.println("Updating "+subPath+" old:"+oldRecord+" new:"+newRecord);
+				//System.out.println("Updating "+subPath+" old:"+oldRecord+" new:"+newRecord);
 				table.update(oldRecord, newRecord);
 				call.redirect("../show/"+newRecord.getString("_id"));
 			}

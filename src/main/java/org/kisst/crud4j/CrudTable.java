@@ -32,17 +32,20 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> { //, S
 			this.indices=model.getIndices(schema.cls);
 
 		}
-		if (cache!=null) {
-			//System.out.println("Loading all "+name+" records to cache");
-			TypedSequence<Struct> seq = storage.findAll();
-			for (Struct rec:seq) {
-				try {
-					T obj=createObject(rec);
-					for (Index<T> index: indices) 
-						index.notifyCreate(obj);
-				}
-				catch (Exception e) { e.printStackTrace(); /*ignore*/ } // TODO: return dummy activity
+	}
+	// This can not be done in the constructor, because then the CrudObjects will hae a null table
+	public void initcache() { 
+		if (cache==null) 
+			return;
+		//System.out.println("Loading all "+name+" records to cache");
+		TypedSequence<Struct> seq = storage.findAll();
+		for (Struct rec:seq) {
+			try {
+				T obj=createObject(rec);
+				for (Index<T> index: indices) 
+					index.notifyCreate(obj);
 			}
+			catch (Exception e) { e.printStackTrace(); /*ignore*/ } // TODO: return dummy activity
 		}
 	}
 	public void close() { storage.close(); }

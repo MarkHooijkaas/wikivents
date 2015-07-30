@@ -10,7 +10,7 @@ public class User extends CrudObject {
 	public final String password;
 	
 	public User(WikiventsModel model, Struct data) {
-		super(schema, data);
+		super(model.users, data);
 		this.username=schema.username.getString(data);
 		this.email=schema.email.getString(data);
 		this.password=schema.password.getString(data);

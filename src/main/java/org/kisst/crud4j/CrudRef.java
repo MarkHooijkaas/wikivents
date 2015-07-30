@@ -8,4 +8,5 @@ public class CrudRef<T extends CrudObject> {
 		this._id=_id; 
 	}
 	public T get() { return table.read(_id); }
+	@Override public String toString() { return _id; } //return "Ref("+table.getName()+":"+_id+")";}
 }

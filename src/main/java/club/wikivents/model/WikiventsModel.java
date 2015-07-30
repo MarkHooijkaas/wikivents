@@ -11,7 +11,7 @@ public class WikiventsModel extends CrudModel implements Item.Factory {
 	public final CrudTable<User>  users  = new CrudTable<User>(this, User.schema);
 	public final CrudTable<Event> events = new CrudTable<Event>(this, Event.schema);
 
-	public WikiventsModel(StorageOption ... tables){ super(tables);	}
+	public WikiventsModel(StorageOption ... storage){ super(storage); initModel(); }
 
 	@Override public <T> T construct(Class<?> cls, Struct data) {
 		//System.out.println("creating "+ReflectionUtil.smartClassName(cls)+" from "+data);
@@ -23,7 +23,7 @@ public class WikiventsModel extends CrudModel implements Item.Factory {
 			return cast(new Comment(this,data));
 		else if (Guest.class == cls)
 			return cast(new Guest(this,data));
-		System.out.println("using normal factory");
+		//System.out.println("using normal factory");
 		return basicFactory.construct(cls, data);
 	}
 	@Override public <T> T construct(Class<?> cls, String data) { return basicFactory.construct(cls, data);}

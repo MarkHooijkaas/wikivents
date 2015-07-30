@@ -8,6 +8,7 @@ import org.kisst.crud4j.CrudTable.OrderedIndex;
 import org.kisst.crud4j.CrudTable.UniqueIndex;
 import org.kisst.item4j.Item;
 import org.kisst.item4j.Schema;
+import org.kisst.util.ReflectionUtil;
 
 public abstract class CrudModel implements Item.Factory {
 	private final StorageOption[] options;
@@ -18,6 +19,11 @@ public abstract class CrudModel implements Item.Factory {
 		this.options=options;
 	}
 
+	public void initModel() {
+		for (CrudTable<?> table: ReflectionUtil.getAllDeclaredFieldValuesOfType(this, CrudTable.class))
+			table.initcache();
+	}
+	
 	public StructStorage getStorage(Class<?> cls) {
 		for (StorageOption opt: options) {
 			if (opt instanceof StructStorage && opt.getRecordClass()==cls)

@@ -12,6 +12,12 @@ public  class Comment extends ReflectStruct {
 	public final Instant date;
 	public final String comment;
 
+	public Comment(User u, String comment) {
+		this.user=u.getRef();
+		this.date=Instant.now();
+		this.comment=comment;
+	}
+
 	public Comment(WikiventsModel model, Struct props) {
 		this.user=schema.user.getRef(model.users ,props);
 		this.date = schema.date.getInstantOrNow(props);
