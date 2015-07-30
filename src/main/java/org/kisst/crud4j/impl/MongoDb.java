@@ -1,7 +1,7 @@
 package org.kisst.crud4j.impl;
 
 import org.bson.codecs.configuration.CodecRegistry;
-import org.kisst.crud4j.CrudRef;
+import org.kisst.crud4j.CrudTable.CrudRef;
 import org.kisst.item4j.struct.Struct;
 
 import com.mongodb.DB;

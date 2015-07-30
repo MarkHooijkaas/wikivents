@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 import org.kisst.crud4j.CrudObject;
 import org.kisst.crud4j.CrudObjectSchema;
-import org.kisst.crud4j.CrudRef;
+import org.kisst.crud4j.CrudTable.CrudRef;
 import org.kisst.item4j.Immutable;
 import org.kisst.item4j.struct.Struct;
 

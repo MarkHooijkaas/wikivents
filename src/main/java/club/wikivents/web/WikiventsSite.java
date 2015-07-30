@@ -4,7 +4,7 @@ package club.wikivents.web;
 
 import java.io.File;
 
-import org.kisst.crud4j.CrudRef;
+import org.kisst.crud4j.CrudTable.CrudRef;
 import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.HttpCallDispatcher;
 import org.kisst.http4j.HttpCallHandler;

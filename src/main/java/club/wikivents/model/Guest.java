@@ -2,9 +2,9 @@ package club.wikivents.model;
 
 import java.time.Instant;
 
-import org.kisst.crud4j.CrudRef;
-import org.kisst.crud4j.CrudSchema;
 import org.kisst.crud4j.CrudModelObject;
+import org.kisst.crud4j.CrudSchema;
+import org.kisst.crud4j.CrudTable.CrudRef;
 import org.kisst.item4j.struct.Struct;
 
 public class Guest extends CrudModelObject {

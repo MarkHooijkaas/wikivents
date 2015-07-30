@@ -75,16 +75,11 @@ public abstract class CrudModel implements Item.Factory {
 	}
 
 	@Override public <T> T construct(Class<?> cls, Struct data) {
-		System.out.println("Looking to construct "+cls.getName());
 		if (CrudModelObject.class.isAssignableFrom(cls)) {
-			System.out.println("Trying to construct "+cls.getName());
+			//System.out.println("Trying to construct "+cls.getName());
 			Constructor<?> cons = CrudSchema.findModelBasedConstructor(cls);
 			return cast(ReflectionUtil.createObject(cons, new Object[] {this, data}));
 		}
-		//for (CrudTable<?> table: ReflectionUtil.getAllDeclaredFieldValuesOfType(this, CrudTable.class)) {
-		//	if (table.schema.getJavaClass()==cls)
-		//		return (T) table.schema.createObject(this, data);
-		//}
 		return basicFactory.construct(cls, data);
 	}
 	@Override public <T> T construct(Class<?> cls, String data) { return basicFactory.construct(cls, data);}

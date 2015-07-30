@@ -2,6 +2,7 @@ package org.kisst.crud4j;
 
 import java.lang.reflect.Constructor;
 
+import org.kisst.crud4j.CrudTable.CrudRef;
 import org.kisst.item4j.Schema;
 import org.kisst.item4j.Type;
 import org.kisst.item4j.struct.Struct;
@@ -14,6 +15,9 @@ public class CrudSchema<T> extends Schema<T> {
 		super(cls); 
 		this.modelcons=findModelBasedConstructor(cls);
 	}
+	
+	// TODO: The order of Constructors is important, because in case of Guest, they both fullfill the signature (CrudModel, Struct)
+	// in order to prevent this, ReflectionUtil should look for the most specific constructor, not the first
 	public static Constructor<?> findModelBasedConstructor(Class<?>cls) {
 		Constructor<?> result=ReflectionUtil.getFirstCompatibleConstructor(cls, new Class<?>[]{ CrudModel.class, Struct.class} );
 		if (result==null)

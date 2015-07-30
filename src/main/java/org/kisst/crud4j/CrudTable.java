@@ -92,6 +92,18 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 	}
 
 	
+	public static final class CrudRef<TT extends CrudObject> {
+		public final CrudTable<TT> table;
+		public final String _id;
+		private CrudRef(CrudTable<TT> table, String _id) { 
+			this.table=table; 
+			this._id=_id; 
+		}
+		public TT get() { return table.read(_id); }
+		@Override public String toString() { return _id; } //return "Ref("+table.getName()+":"+_id+")";}
+	}
+
+	
 	public CrudRef<T> createRef(String key) { return new CrudRef<T>(this,key); }
 
 	private void checkSameId(T oldValue, T newValue) {
