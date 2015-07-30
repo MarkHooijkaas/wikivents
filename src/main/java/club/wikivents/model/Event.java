@@ -6,14 +6,13 @@ import java.time.LocalDate;
 import org.kisst.crud4j.CrudObject;
 import org.kisst.crud4j.CrudSchema;
 import org.kisst.crud4j.CrudTable;
-import org.kisst.crud4j.StructStorage;
 import org.kisst.item4j.Immutable;
 import org.kisst.item4j.struct.HashStruct;
 import org.kisst.item4j.struct.MultiStruct;
 import org.kisst.item4j.struct.ReflectStruct;
 import org.kisst.item4j.struct.Struct;
 
-public class Event extends CrudObject {
+public class Event extends CrudObject implements Comparable<Event> {
 	public static class Guest extends ReflectStruct {
 		public final CrudTable<User>.Ref user;
 		public final Instant date;
@@ -102,7 +101,12 @@ public class Event extends CrudObject {
 		public class Ref extends CrudTable<Event>.Ref { public Ref(String id) { super(id); } }
 		@Override public Ref createRef(String _id) { return new Ref(_id); }
 
-		public Table(StructStorage storage, WikiventsModel model) { super(model, Event.schema); }
+		public final OrderedIndex<Event> ordered;
+
+		public Table(WikiventsModel model) { 
+			super(model, Event.schema);
+			this.ordered=model.getOrderedIndex(Event.class);
+		}
 		@Override public Event createObject(Struct doc) { return new Event((WikiventsModel) factory, doc); }
 	}
 
@@ -135,4 +139,6 @@ public class Event extends CrudObject {
 		Event newEvent = new Event(model, new MultiStruct(newEventData, this));
 		model.events.update(this, newEvent);
 	}
+
+	@Override public int compareTo(Event other) { return this.date.compareTo(other.date);}
 }

@@ -8,8 +8,7 @@ import org.kisst.item4j.struct.Struct;
 
 public class WikiventsModel extends CrudModel implements Item.Factory {
 	public final User.Table users=new User.Table(this);
-	public final Event.Table events=new Event.Table(getStorage(Event.class),this);
-	
+	public final Event.Table events=new Event.Table(this);
 
 	public WikiventsModel(StorageOption ... tables){ 
 		super(tables);

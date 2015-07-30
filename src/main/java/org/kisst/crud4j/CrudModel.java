@@ -3,8 +3,9 @@ package org.kisst.crud4j;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.kisst.crud4j.CrudTable.Index;
+import org.kisst.crud4j.CrudTable.OrderedIndex;
 import org.kisst.crud4j.CrudTable.UniqueIndex;
-import org.kisst.crud4j.index.Index;
 import org.kisst.item4j.Item;
 import org.kisst.item4j.Schema;
 
@@ -56,7 +57,7 @@ public abstract class CrudModel implements Item.Factory {
 			if (opt instanceof UniqueIndex && opt.getRecordClass()==cls) {
 				@SuppressWarnings("unchecked")
 				UniqueIndex<T> idx=(UniqueIndex<T>) opt;
-				if (Arrays.equals(fields, ((Index<?>)idx).fields))
+				if (Arrays.equals(fields, idx.fields()))
 					return idx;
 			}
 		}
@@ -65,5 +66,17 @@ public abstract class CrudModel implements Item.Factory {
 			fieldnames+=", "+fields[i].getName();
 		throw new RuntimeException("Unknown UniqueIndex for type "+cls.getSimpleName()+" and field(s) "+fieldnames);
 	}
+
+	@SuppressWarnings("unchecked")
+	public <T extends CrudObject> OrderedIndex<T> getOrderedIndex(Class<T> cls) {
+		for (StorageOption opt: options) {
+			if (opt instanceof OrderedIndex && opt.getRecordClass()==cls) {
+				System.out.println("Using OrderedIndex "+opt);
+				return (OrderedIndex<T>) opt;
+			}
+		}
+		throw new RuntimeException("Unknown OrderedIndex for type "+cls.getSimpleName());
+	}
+
 
 }

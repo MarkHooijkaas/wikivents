@@ -8,7 +8,7 @@ import org.kisst.crud4j.CrudSchema;
 import org.kisst.crud4j.CrudTable;
 import org.kisst.item4j.Schema;
 
-public class MemoryUniqueIndex<T extends CrudObject> extends Index<T>  implements CrudTable.UniqueIndex<T> {
+public class MemoryUniqueIndex<T extends CrudObject> extends FieldIndex<T>  implements CrudTable.UniqueIndex<T> {
 	private ConcurrentHashMap<String, T> map=new ConcurrentHashMap<String, T>();
 
 	@SafeVarargs

@@ -10,8 +10,9 @@
       </tr>
     </thead>
     <tbody>
-{{#each list}}  
-      <tr>
+		
+{{#each model.events.ordered.all}}  
+	  <tr>
         <td>{{date}}</td>
         <td>{{privUser authenticatedUser organizer}}</td>
         <td><a href="/event/show/{{_id}}">{{title}}</a></td>

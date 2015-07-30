@@ -2,7 +2,6 @@ package org.kisst.crud4j;
 
 import java.util.Iterator;
 
-import org.kisst.crud4j.index.Index;
 import org.kisst.crud4j.index.MemoryUniqueIndex;
 import org.kisst.item4j.Immutable;
 import org.kisst.item4j.Item;
@@ -132,7 +131,19 @@ public abstract class CrudTable<T extends CrudObject> implements TypedSequence<T
 	@Override public Iterator<T> iterator() { return findAll().iterator(); }
 	@Override public Class<?> getElementClass() { return schema.cls; }
 
-	public interface UniqueIndex<T extends CrudObject> { public T get(String ... field); }
+	public interface Index<T extends CrudObject> {
+		public Class<T> getRecordClass(); 
+		public void notifyCreate(T record);
+		public void notifyUpdate(T oldRecord, T newRecord);
+		public void notifyDelete(T oldRecord);
+	}
+	public interface UniqueIndex<T extends CrudObject> extends Index<T >{
+		public CrudSchema<T>.Field[] fields();
+		public T get(String ... field); 
+	}
+	public interface OrderedIndex<T extends CrudObject> extends Index<T >{
+		public Iterable<T> all(); 
+	}
 	/*
 	public interface MultiIndex<T extends CrudObject> { public TypedSequence<T> get(String field); }
 	public interface OrderedIndex<T extends CrudObject> { public TypedSequence<T> get(String field);}
