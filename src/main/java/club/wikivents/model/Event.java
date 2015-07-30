@@ -22,18 +22,18 @@ public class Event extends CrudObject implements Comparable<Event> {
 	public final Immutable.Sequence<Comment> comments;
 	//private final WikiventsModel model;
 	
-	public Event(WikiventsModel model, Struct props) {
-		super(props);
+	public Event(WikiventsModel model, Struct data) {
+		super(schema, data);
 		//System.out.println("Creating Event with "+props);
-		this.title=schema.title.getString(props);
-		this.description=schema.description.getString(props);
-		this.location=schema.location.getString(props);
-		this.date=schema.date.getLocalDate(props);
-		this.min=schema.min.getInt(props);
-		this.max=schema.max.getInt(props);
-		this.organizer=schema.organizer.getRef(model.users, props);//new SimpleRef(props.getString("organizer",null));
-		this.guests=props.getTypedSequence(Guest.class,"guests", null);
-		this.comments=props.getTypedSequence(Comment.class,"comments", null);
+		this.title=schema.title.getString(data);
+		this.description=schema.description.getString(data);
+		this.location=schema.location.getString(data);
+		this.date=schema.date.getLocalDate(data);
+		this.min=schema.min.getInt(data);
+		this.max=schema.max.getInt(data);
+		this.organizer=schema.organizer.getRef(model.users, data);//new SimpleRef(props.getString("organizer",null));
+		this.guests=data.getTypedSequence(Guest.class,"guests", null);
+		this.comments=data.getTypedSequence(Comment.class,"comments", null);
 	}
 
 	public static final Schema schema=new Schema();

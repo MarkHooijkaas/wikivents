@@ -57,6 +57,7 @@ public class FileStorage implements StructStorage {
 		return Long.toHexString(System.currentTimeMillis())+Integer.toHexString(i);
 	}
 	@Override public Struct read(String key) {
+		System.out.println("Reading "+key);
 		return parser.parse(getFile(key));
 	}
 	@Override public void update(Struct oldValue, Struct newValue) {

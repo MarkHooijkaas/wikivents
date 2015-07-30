@@ -15,6 +15,7 @@ import org.bson.codecs.EncoderContext;
 import org.bson.codecs.configuration.CodecProvider;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
+import org.kisst.crud4j.CrudRef;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
@@ -25,12 +26,13 @@ public class MongoCodecs {
 	private static WikiventsModel model=null;
 	public static void setModel(WikiventsModel model) {MongoCodecs.model=model;}
 
-	public static class UserRefCodec implements Codec<User.Table.Ref> {
-		@Override   public void encode(BsonWriter writer, User.Table.Ref t, EncoderContext ec) {
+	@SuppressWarnings("rawtypes")
+	public static class CrudRefCodec implements Codec<CrudRef> {
+		@Override   public void encode(BsonWriter writer, CrudRef t, EncoderContext ec) {
 			writer.writeString(t.toString());  
 		}
-		@Override public Class<User.Table.Ref> getEncoderClass() { return User.Table.Ref.class; }
-		@Override public User.Table.Ref decode(BsonReader reader, DecoderContext dc) {
+		@Override public Class<CrudRef> getEncoderClass() { return CrudRef.class; }
+		@Override public CrudRef<?> decode(BsonReader reader, DecoderContext dc) {
 			String json = reader.readString();
 			return model.users.createRef(json);
 		}
@@ -55,8 +57,8 @@ public class MongoCodecs {
 		@Override public <T> Codec<T> get(final Class<T> clazz, final CodecRegistry registry) {                      
 	        if (clazz == Document.class)                      
 	            return (Codec<T>) new DocumentCodec(registry, bsonTypeClassMap);           
-	        if (clazz == User.Table.Ref.class)                      
-	            return (Codec<T>) new UserRefCodec();           
+	        if (clazz == CrudRef.class)                      
+	            return (Codec<T>) new CrudRefCodec();           
 	        return null;                                                                                   
 	    }                                                                                                  
 	}
@@ -77,7 +79,7 @@ public class MongoCodecs {
 		DocumentCodecProvider documentCodecProvider = new DocumentCodecProvider(bsonTypeClassMap); 
 		Codec<LocalDate> instantCodec = new LocalDateCodec();   
 		CodecRegistry codecRegistry = 
-				CodecRegistries.fromRegistries(CodecRegistries.fromCodecs(instantCodec,new UserRefCodec()),
+				CodecRegistries.fromRegistries(CodecRegistries.fromCodecs(instantCodec,new CrudRefCodec()),
 				CodecRegistries.fromProviders(documentCodecProvider),
 				defaultCodecRegistry);
 		

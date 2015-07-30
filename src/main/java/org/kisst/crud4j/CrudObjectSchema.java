@@ -1,6 +1,5 @@
 package org.kisst.crud4j;
 
-import org.kisst.item4j.Schema;
 import org.kisst.item4j.Type;
 
 public class CrudObjectSchema<T> extends CrudSchema<T> {
@@ -9,7 +8,7 @@ public class CrudObjectSchema<T> extends CrudSchema<T> {
 	}
 	public final IdField _id = new IdField();
 	
-	public Schema<T>.Field getKeyField() { return _id;}
+	public IdField getKeyField() { return _id;}
 
 	public class IdField extends Field {
 		public IdField() { super(Type.javaString, "_id"); }

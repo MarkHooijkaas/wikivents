@@ -2,7 +2,7 @@ package org.kisst.crud4j.impl;
 
 import java.util.ArrayList;
 
-import org.kisst.crud4j.CrudSchema;
+import org.kisst.crud4j.CrudObjectSchema;
 import org.kisst.crud4j.StructStorage;
 import org.kisst.item4j.seq.ArraySequence;
 import org.kisst.item4j.seq.TypedSequence;
@@ -16,12 +16,12 @@ import com.mongodb.DBObject;
 public class MongoStorage implements StructStorage {
 
 	private final DBCollection collection;
-	private final CrudSchema<?>.IdField keyField;
-	private final CrudSchema<?> schema;
+	private final CrudObjectSchema<?>.IdField keyField;
+	private final CrudObjectSchema<?> schema;
 	private final boolean useCache;
 	private final MongoDb db;
 	
-	public MongoStorage(CrudSchema<?> schema, Struct props, MongoDb db) {
+	public MongoStorage(CrudObjectSchema<?> schema, Struct props, MongoDb db) {
 		this.schema=schema;
 		this.db=db;
 		this.collection=db.getCollection(schema.cls.getSimpleName());
@@ -32,25 +32,25 @@ public class MongoStorage implements StructStorage {
 
 	@Override public void close() { db.closeMongoDB(); }
 	@Override public Class<?> getRecordClass() { return schema.cls; }
-	@Override public String createInStorage(Struct value) {
+	@Override public String create(Struct value) {
 		//db.printEncoder();
 		MongoStruct doc = new MongoStruct(value);
         collection.insert(doc.data);
         return keyField.getString(doc);
 	}
-	@Override public Struct readFromStorage(String key) {
+	@Override public Struct read(String key) {
 		BasicDBObject query = new BasicDBObject(keyField.getName(), key);
 		DBCursor cursor = collection.find(query);
 		try {
 			return new MongoStruct(cursor.next());
 		} finally { cursor.close(); }		
 	}
-	@Override public void updateInStorage(Struct oldValue, Struct newValue) {
+	@Override public void update(Struct oldValue, Struct newValue) {
 		MongoStruct oldDoc= new MongoStruct(oldValue);
 		MongoStruct newDoc= new MongoStruct(newValue);
         collection.update(oldDoc.data, newDoc.data);
 	}
-	@Override public void deleteInStorage(Struct oldValue){ collection.remove(new MongoStruct(oldValue).data); } 
+	@Override public void delete(Struct oldValue){ collection.remove(new MongoStruct(oldValue).data); } 
 
 	@Override public TypedSequence<Struct> findAll() {
 		ArrayList<Struct> list=new ArrayList<Struct>();

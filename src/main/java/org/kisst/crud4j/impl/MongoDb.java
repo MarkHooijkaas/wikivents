@@ -1,14 +1,13 @@
 package org.kisst.crud4j.impl;
 
 import org.bson.codecs.configuration.CodecRegistry;
+import org.kisst.crud4j.CrudRef;
 import org.kisst.item4j.struct.Struct;
 
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
-
-import club.wikivents.model.User;
 
 public class MongoDb {
 	private final MongoClient mongoClient;
@@ -28,6 +27,6 @@ public class MongoDb {
 	public void printEncoder() {
 		MongoClientOptions options = mongoClient.getMongoClientOptions();
 		CodecRegistry reg = options.getCodecRegistry();
-		System.out.println(reg.get(User.Table.Ref.class));
+		System.out.println(reg.get(CrudRef.class));
 	}
 }
