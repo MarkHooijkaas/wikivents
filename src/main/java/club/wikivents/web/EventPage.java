@@ -32,7 +32,7 @@ public class EventPage extends WikiventsPage {
 		}
 		call.ensureUser();
 		String text=call.request.getParameter("comment");
-		Event event=new Event(model.events.read(subPath));
+		Event event=model.events.read(subPath);
 		event.addComment(model, call.user, text);
 		call.redirect("../show/"+event._id);
 	}
@@ -43,7 +43,7 @@ public class EventPage extends WikiventsPage {
 			return;
 		}
 		call.ensureUser();
-		Event event=new Event(model.events.read(subPath));
+		Event event=model.events.read(subPath);
 		event.addGuest(model, call.user);
 		call.redirect("../show/"+event._id);
 	}

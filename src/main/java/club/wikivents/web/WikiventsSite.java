@@ -4,6 +4,7 @@ package club.wikivents.web;
 
 import java.io.File;
 
+import org.kisst.crud4j.CrudRef;
 import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.HttpCallDispatcher;
 import org.kisst.http4j.HttpCallHandler;
@@ -69,13 +70,22 @@ public class WikiventsSite implements HttpCallHandler {
 			return "***";
 		}
 
+		@SuppressWarnings("unchecked")
 		public CharSequence user(Object obj) {  
 			if (obj==null)
 				return "nobody";
+			if (obj instanceof CrudRef) {
+				try {
+					return ((CrudRef<User>) obj).get().username;
+				}
+				catch(RuntimeException e) {return "Unknown("+obj+")"; }
+			}
 			if (obj instanceof String) {
-				User u=new User(model.users.read((String) obj));
-				//if (u==null)				return "unknown";
-				return u.username;
+				try {
+					User u=model.users.read((String) obj);
+					return u.username;
+				}
+				catch(RuntimeException e) {return "unknown("+obj+")"; }
 			}
 			return "invalidref("+obj+")";
 		}

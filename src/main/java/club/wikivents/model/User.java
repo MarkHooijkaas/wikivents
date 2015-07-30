@@ -1,19 +1,28 @@
 package club.wikivents.model;
 
-import org.kisst.item4j.struct.ReflectStruct;
+import org.kisst.crud4j.CrudObject;
+import org.kisst.crud4j.CrudObjectSchema;
 import org.kisst.item4j.struct.Struct;
 
-public class User extends ReflectStruct {
-	public final String _id;
+public class User extends CrudObject {
 	public final String username;
 	public final String email;
 	public final String password;
 	
-	public User(Struct data) {
-		this._id=data.getString("_id");
-		this.username=data.getString("username");
-		this.email=data.getString("email");
-		this.password=data.getString("password");
+	public User(WikiventsModel model, Struct data) {
+		super(data);
+		this.username=schema.username.getString(data);
+		this.email=schema.email.getString(data);
+		this.password=schema.password.getString(data);
 		
 	}
+	
+	public static final Schema schema=new Schema();
+	public static class Schema extends CrudObjectSchema<User> {
+		public Schema() { super(User.class); addAllFields();}
+		public final StringField username = new StringField("username"); 
+		public final StringField email    = new StringField("email"); 
+		public final StringField password = new StringField("password"); 
+	}
+	@Override public boolean mayBeChangedBy(String userId) { return _id.equals(userId); }
 }

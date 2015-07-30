@@ -11,4 +11,5 @@ public interface StructStorage extends StorageOption {
 	public void delete(Struct oldValue);
 	public TypedSequence<Struct> findAll();
 	default public void close() {}
+	public boolean useCache();
 }

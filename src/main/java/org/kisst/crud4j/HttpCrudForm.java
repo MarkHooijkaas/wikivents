@@ -9,19 +9,19 @@ import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
 import org.kisst.item4j.struct.MultiStruct;
 import org.kisst.item4j.struct.Struct;
 
-public abstract class HttpCrudForm<T extends Struct> {
+public abstract class HttpCrudForm<T extends CrudObject> {
 	public class Data extends FormData {
 		public final HttpCall call;
 		public Data(HttpCall call, Struct record) { super(record);  this.call=call; }
 		public boolean isAuthorized() { return HttpCrudForm.this.isAuthorized(record, call); }
 	}
 	
-	protected final StructStorage table;
+	protected final CrudTable<T> table;
 	private final TemplateEngine engine;
 	private final CompiledTemplate template;
 	private final String name;
 	
-	public HttpCrudForm(StructStorage table, TemplateEngine engine, String name) {
+	public HttpCrudForm(CrudTable<T> table, TemplateEngine engine, String name) {
 		this.table=table;
 		this.engine=engine;
 		this.name=name;

@@ -16,14 +16,16 @@ import org.kisst.util.FileUtil;
 public class FileStorage implements StructStorage {
 	private final File dir;
 	private final String name;
+	private final boolean useCache;
 	private final JsonParser parser=new JsonParser();
 	private final JsonOutputter outputter = new JsonOutputter(null);
 	//private final CrudSchema<?>.IdField keyField;
 	private final Class<?> cls;
-
+	
 	
 	public FileStorage(Class<?> cls, File maindir, boolean useCache) {
 		this.cls=cls;
+		this.useCache=useCache;
 		this.name=cls.getSimpleName();
 		dir=new File(maindir,name);
 		if (! dir.exists())
@@ -36,6 +38,8 @@ public class FileStorage implements StructStorage {
 	}
 	@Override public Class<?> getRecordClass() { return cls; }
 	private String getKey(Struct record) { return record.getString("_id"); }
+
+	@Override public boolean useCache() { return useCache;}
 	
 	@Override public String create(Struct value) {
 		String key = getKey(value);

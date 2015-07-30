@@ -158,5 +158,6 @@ public class Schema<T> implements Type<T> {
 		public InstantField(String name) { super(Type.javaLocalDate, name); }
 		public InstantField(Builder builder) { super(builder); }
 		public Instant getInstant(Struct s) { return s.getInstant(getName(),null); }
+		public Instant getInstantOrNow(Struct s) { return s.getInstant(getName(),Instant.now()); }
 	}
 }

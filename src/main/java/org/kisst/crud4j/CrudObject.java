@@ -5,12 +5,11 @@ import org.kisst.item4j.struct.Struct;
 import org.kisst.util.ReflectionUtil;
 
 public abstract class CrudObject implements Struct {
-	public final CrudSchema<?> schema;
 	public final String _id;
-	public CrudObject(CrudSchema<?> schema, Struct data) { 
-		this.schema= schema;
+	public CrudObject(Struct data) { 
 		this._id=createUniqueKey(data); 
 	}
+	public String getKey() { return _id;} 
 	protected String createUniqueKey(Struct data) {
 		String key= data.getString("_id",null);
 		if (key==null)
@@ -21,6 +20,6 @@ public abstract class CrudObject implements Struct {
 	abstract public boolean mayBeChangedBy(String userId);
 
 	@Override public String toString() { return toShortString(); }
-	@Override public Iterable<String> fieldNames() { return schema.fieldNames(); }
+	@Override public Iterable<String> fieldNames() { throw new RuntimeException("unsupported to test if used");}
 	@Override public Object getDirectFieldValue(String name) { return ReflectionUtil.getFieldValueOrUnknownField(this, name); }
 }

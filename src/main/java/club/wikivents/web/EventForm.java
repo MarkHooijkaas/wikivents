@@ -30,6 +30,6 @@ public class EventForm extends HttpCrudForm<Event> {
 		return ((WikiventsCall)call).userid.equals(oldRecord.getString("organizer" ,null));
 	}
 
-	@Override public Event createObject(Struct input) { return new Event(input); }
+	@Override public Event createObject(Struct input) { return table.createObject(input); }
 }
 
