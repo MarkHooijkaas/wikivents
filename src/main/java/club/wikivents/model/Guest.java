@@ -11,15 +11,18 @@ public class Guest extends CrudModelObject {
 	public final CrudRef<User> user;
 	public final Instant date;
 	
-	public Guest(WikiventsModel model, User u) {
-		super(schema);
-		this.user=u.getRef();
-		this.date=Instant.now();
-	}
+
+	// TODO: The order of Constructors is important, because they both fullfill the signature (CrudModel, Struct)
+	// in order to prevent this, ReflectionUtil should look for the most specific constructor, not the first
 	public Guest(WikiventsModel model, Struct data) {
 		super(schema);
 		this.user=schema.user.getRef(model.users ,data);
 		this.date = schema.date.getInstantOrNow(data);
+	}
+	public Guest(WikiventsModel model, User u) {
+		super(schema);
+		this.user=u.getRef();
+		this.date=Instant.now();
 	}
 	
 	public static final Schema schema=new Schema();

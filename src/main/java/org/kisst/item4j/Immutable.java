@@ -369,6 +369,14 @@ public interface Immutable {
 					result[i-start]=get(i);
 				return new ArraySequence<TT>(getElementClass(), result); }
 		}
+	}
 
+	public static EmptySequence<?> EMPTY=new EmptySequence<>();
+	public final class EmptySequence<TT> extends Immutable.Sequence<TT> {
+		private EmptySequence() { super(null); }
+		@Override public int size() { return 0;}
+		@Override public TT getObject(int index) { throw new IndexOutOfBoundsException();}
+		@Override public Iterator<TT> iterator() { return new IndexIterator<TT>(this);}
+		
 	}
 }

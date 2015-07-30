@@ -105,6 +105,9 @@ public interface Struct {
 		if (obj==null) return defaultValue;
 		return Item.asTypedSequence(factory, type,getObject(path));  
 	} 
+	default public<T> Immutable.Sequence<T> getTypedSequenceOrEmpty(Item.Factory factory, Class<?> type, String path) {
+		return Item.cast(getTypedSequence(factory, type, path, Immutable.Sequence.EMPTY));
+	}
 
 
 	default public String toShortString() { return toString(1,""); }

@@ -6,7 +6,6 @@ import org.kisst.crud4j.CrudObject;
 import org.kisst.crud4j.CrudObjectSchema;
 import org.kisst.crud4j.CrudRef;
 import org.kisst.item4j.Immutable;
-import org.kisst.item4j.struct.HashStruct;
 import org.kisst.item4j.struct.Struct;
 
 public class Event extends CrudObject implements Comparable<Event> {
@@ -31,8 +30,8 @@ public class Event extends CrudObject implements Comparable<Event> {
 		this.min=schema.min.getInt(data);
 		this.max=schema.max.getInt(data);
 		this.organizer=schema.organizer.getRef(model.users, data);//new SimpleRef(props.getString("organizer",null));
-		this.guests=data.getTypedSequence(model, Guest.class,"guests", null);
-		this.comments=data.getTypedSequence(model, Comment.class,"comments", null);
+		this.guests=data.getTypedSequenceOrEmpty(model, Guest.class,"guests");
+		this.comments=data.getTypedSequenceOrEmpty(model, Comment.class,"comments");
 	}
 
 	public static final Schema schema=new Schema();
@@ -57,24 +56,12 @@ public class Event extends CrudObject implements Comparable<Event> {
 	
 	public void addComment(WikiventsModel model, User user, String text) {
 		Comment comment=new Comment(user,text);
-		Immutable.Sequence<Comment> newComments = null;
-		if (comments==null)
-			newComments=Immutable.typedSequence(Comment.class, comment);
-		else
-			newComments=comments.growTail(comment);
-		Event newEvent = this.modified(model, schema.comments, newComments);
+		Event newEvent = this.modified(model, schema.comments, comments.growTail(comment));
 		model.events.update(this, newEvent);
 	}
 	public void addGuest(WikiventsModel model, User user) {
 		Guest guest=new Guest(model, user);
-		Immutable.Sequence<Guest> newSeq = null;
-		if (guests==null)
-			newSeq=Immutable.typedSequence(Guest.class, guest);
-		else
-			newSeq=guests.growTail(guest);
-		HashStruct newEventData=new HashStruct(); 
-		newEventData.put("guests", newSeq);
-		Event newEvent = this.modified(model, schema.guests, newSeq);
+		Event newEvent = this.modified(model, schema.guests, guests.growTail(guest));
 		model.events.update(this, newEvent);
 	}
 
