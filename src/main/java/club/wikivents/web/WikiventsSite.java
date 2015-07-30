@@ -4,14 +4,12 @@ package club.wikivents.web;
 
 import java.io.File;
 
-import org.kisst.crud4j.CrudTable;
 import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.HttpCallDispatcher;
 import org.kisst.http4j.HttpCallHandler;
 import org.kisst.http4j.ResourceHandler;
 import org.kisst.http4j.handlebar.TemplateEngine;
 import org.kisst.item4j.struct.Struct;
-import org.kisst.util.ReflectionUtil;
 
 import club.wikivents.model.User;
 import club.wikivents.model.WikiventsModel;
@@ -22,7 +20,7 @@ public class WikiventsSite implements HttpCallHandler {
 	public final TemplateEngine engine;
 	public final HttpCallHandler handler;
 	public final Pages pages;
-	
+
 	public class Pages {
 		public final HttpCallHandler home=new TemplatePage(WikiventsSite.this, "home");
 		public final HttpCallHandler user=new UserPage(WikiventsSite.this);
@@ -45,9 +43,9 @@ public class WikiventsSite implements HttpCallHandler {
 	}
 	@Override public void handle(HttpCall call, String subPath) { this.handler.handle(call, subPath);}
 
-	
+
 	public void close() { model.close(); }
-	
+
 	public class Helper {
 		private boolean isLoggedIn(Object call) {
 			//System.out.println("Checking loggedIn for "+call);
@@ -74,20 +72,13 @@ public class WikiventsSite implements HttpCallHandler {
 		public CharSequence user(Object obj) {  
 			if (obj==null)
 				return "nobody";
-			if (obj instanceof CrudTable<?>.Ref) {
-				CrudTable<?>.Ref ref=(CrudTable<?>.Ref) obj;
-				if (ref._id==null)
-					return "no-one";
-				if (ref.getTable()==model.users) {
-					User u=(User) ref.get();
-					if (u==null)
-						return "unknown";
-					return u.username;
-				}
-				return "invalidref("+ref.getTable().getName()+","+ref._id+")";
+			if (obj instanceof String) {
+				User u=new User(model.users.read((String) obj));
+				//if (u==null)				return "unknown";
+				return u.username;
 			}
-			return "invaliduser("+ReflectionUtil.smartClassName(obj)+","+obj+")";
+			return "invalidref("+obj+")";
 		}
-		
+
 	}
 }

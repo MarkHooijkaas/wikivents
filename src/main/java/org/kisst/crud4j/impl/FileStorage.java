@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.kisst.crud4j.CrudSchema;
 import org.kisst.crud4j.StructStorage;
 import org.kisst.item4j.json.JsonOutputter;
 import org.kisst.item4j.json.JsonParser;
@@ -19,31 +18,27 @@ public class FileStorage implements StructStorage {
 	private final String name;
 	private final JsonParser parser=new JsonParser();
 	private final JsonOutputter outputter = new JsonOutputter(null);
-	private final CrudSchema<?>.IdField keyField;
-	private final CrudSchema<?> schema;
-	private final boolean useCache;
+	//private final CrudSchema<?>.IdField keyField;
+	private final Class<?> cls;
 
 	
-	public FileStorage(CrudSchema<?> schema, File maindir, boolean useCache) {
-		this.schema=schema;
-		this.keyField = schema.getKeyField();
-		this.name=schema.cls.getSimpleName();
-		this.useCache=useCache;				
+	public FileStorage(Class<?> cls, File maindir, boolean useCache) {
+		this.cls=cls;
+		this.name=cls.getSimpleName();
 		dir=new File(maindir,name);
 		if (! dir.exists())
 			dir.mkdirs();
 		//loadAllRecords();
 		
 	}
-	public FileStorage(CrudSchema<?> schema, Struct props) {
-		this(schema,new File(props.getString("datadir", "data")),props.getBoolean("useCache",true)); 
+	public FileStorage(Class<?> cls, Struct props) {
+		this(cls,new File(props.getString("datadir", "data")),props.getBoolean("useCache",true)); 
 	}
-	@Override public boolean useCache() { return useCache;}
-
-	@Override public Class<?> getRecordClass() { return schema.cls; }
+	@Override public Class<?> getRecordClass() { return cls; }
+	private String getKey(Struct record) { return record.getString("_id"); }
 	
-	@Override public String createInStorage(Struct value) {
-		String key = keyField.getString(value);
+	@Override public String create(Struct value) {
+		String key = getKey(value);
 		if (key==null)
 			key=createUniqueKey();
 		File f = getFile(key);
@@ -57,16 +52,16 @@ public class FileStorage implements StructStorage {
 		int i=number.incrementAndGet();
 		return Long.toHexString(System.currentTimeMillis())+Integer.toHexString(i);
 	}
-	@Override public Struct readFromStorage(String key) {
+	@Override public Struct read(String key) {
 		return parser.parse(getFile(key));
 	}
-	@Override public void updateInStorage(Struct oldValue, Struct newValue) {
+	@Override public void update(Struct oldValue, Struct newValue) {
 		// The newValue may contain an id, but that is ignored
-		String oldId = keyField.getString(oldValue);
+		String oldId = getKey(oldValue);
 		File f = getFile(oldId);
 		FileUtil.saveString(f, outputter.createString(newValue));
 	}
-	@Override public void deleteInStorage(Struct oldValue)  {
+	@Override public void delete(Struct oldValue)  {
 		checkForConcurrentModification(oldValue);
 		getFile(oldValue).delete();
 	}
@@ -75,7 +70,7 @@ public class FileStorage implements StructStorage {
 		
 	}
 	private File getFile(String key) { return new File(dir, key+".rec"); }
-	private File getFile(Struct obj) { return getFile(keyField.getString(obj));}
+	private File getFile(Struct obj) { return getFile(getKey(obj));}
 	
 	@Override public TypedSequence<Struct> findAll() {
 		ArrayList<Struct> list=new ArrayList<Struct>();
@@ -98,16 +93,4 @@ public class FileStorage implements StructStorage {
 		System.out.println("DONE loading "+count+" records from "+name+" in "+(System.currentTimeMillis()-start)+" milliseconds");
 		return new ArraySequence<Struct>(Struct.class,list);
 	}
-	
-
-	public void create(Struct doc) { this.createInStorage(doc);	}
-	public Struct read(String key) { 
-		return this.readFromStorage(key);
-	}
-	public void update(Struct oldValue, Struct newValue) {
-		//checkSameId(oldValue, newValue);
-		this.updateInStorage(oldValue, newValue); 
-	}
-	
-	public void delete(Struct oldValue) { this.deleteInStorage(oldValue);}
 }

@@ -1,7 +1,5 @@
 package club.wikivents.web;
 
-import static club.wikivents.model.Event.schema;
-
 import org.kisst.crud4j.HttpCrudForm;
 import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.handlebar.FormData;
@@ -12,13 +10,13 @@ import club.wikivents.model.Event;
 public class EventForm extends HttpCrudForm<Event> {
 	public class Form extends Data {
 		public Form(HttpCall call, Struct record) { super(call, record); }
-		public final Field organizer=new Field(schema.organizer, call.userid);
-		public final Field title = new Field(schema.title);
-		public final Field date= new Field(schema.date);
-		public final Field min = new Field(schema.min);
-		public final Field max = new Field(schema.max);
-		public final Field location = new Field(schema.location);
-		public final Field description= new Field(schema.description);
+		public final Field organizer=new Field("organizer", call.userid);
+		public final Field title = new Field("title");
+		public final Field date= new Field("date");
+		public final Field min = new Field("min");
+		public final Field max = new Field("max");
+		public final Field location = new Field("location");
+		public final Field description= new Field("description");
 	}
 
 	public EventForm(WikiventsSite site) {
@@ -31,19 +29,7 @@ public class EventForm extends HttpCrudForm<Event> {
 			return false;
 		return ((WikiventsCall)call).userid.equals(oldRecord.getString("organizer" ,null));
 	}
-	
-	/*
-	@Override public void validateCreate(String userid, Struct data) {
-		User.Table.Ref user=model.users.createRef(userid);
-		if (user==null)
-			throw new RuntimeException("no user");
-		data.put(Event.schema.organizer.getName(),user);
-	}
-	*/
-	//public void validateUpdate(String userid, Struct oldRecord, Struct newRecord) {}
-	
-	
-	
-	//@Override public void handle(WikiventsCall call, String subPath) { handler.handle(call, subPath); }
+
+	@Override public Event createObject(Struct input) { return new Event(input); }
 }
 

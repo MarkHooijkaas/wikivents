@@ -1,7 +1,5 @@
 package club.wikivents.web;
 
-import static club.wikivents.model.User.schema;
-
 import org.kisst.crud4j.HttpCrudForm;
 import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.handlebar.FormData;
@@ -12,9 +10,9 @@ import club.wikivents.model.User;
 public class UserForm extends HttpCrudForm<User> {
 	public class Form extends Data {
 		public Form(HttpCall call, Struct record) { super(call, record); }
-		public final Field username = new Field(schema.username);
-		public final Field  email   = new Field(schema.email, this::validateEmail);
-		public final Field password = new Field(schema.password, this::validateStrongPassword);
+		public final Field username = new Field("username");
+		public final Field  email   = new Field("email", this::validateEmail);
+		public final Field password = new Field("password", this::validateStrongPassword);
 	}		
 
 	public UserForm(WikiventsSite site) {
@@ -26,4 +24,6 @@ public class UserForm extends HttpCrudForm<User> {
 		if (call.userid==null)
 			return false;
 		return call.userid.equals(oldRecord.getString("_id" ,null));
-	}}
+	}
+	@Override public User createObject(Struct input) { return new User(input); }
+}

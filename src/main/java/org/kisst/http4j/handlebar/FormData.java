@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kisst.item4j.Item;
-import org.kisst.item4j.Schema;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.util.ReflectionUtil;
 
@@ -47,8 +46,6 @@ public class FormData implements Struct {
 		public final String name;
 		public final Object value;
 		public final String message;
-		public Field(Schema<?>.Field field, Object value, Validator ... validators) { this(field.getName(),value, validators);}
-		public Field(Schema<?>.Field field, Validator ... validators) { this(field.getName(),validators);}
 		public Field(String name, Validator ... validators) { this(name, (record==null) ? null : staticCalcValue(record, name), validators); }
 		public Field(String name, Object value, Validator ... validators) {
 			//System.out.println("setting field "+name+" to value "+value);

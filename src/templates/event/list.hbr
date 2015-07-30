@@ -11,7 +11,7 @@
     </thead>
     <tbody>
 		
-{{#each model.events.ordered.all}}  
+{{#each list}}  
 	  <tr>
         <td>{{date}}</td>
         <td>{{privUser authenticatedUser organizer}}</td>

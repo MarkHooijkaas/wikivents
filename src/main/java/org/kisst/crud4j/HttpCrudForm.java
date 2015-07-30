@@ -9,19 +9,19 @@ import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
 import org.kisst.item4j.struct.MultiStruct;
 import org.kisst.item4j.struct.Struct;
 
-public abstract class HttpCrudForm<T extends CrudObject> {
+public abstract class HttpCrudForm<T extends Struct> {
 	public class Data extends FormData {
 		public final HttpCall call;
 		public Data(HttpCall call, Struct record) { super(record);  this.call=call; }
 		public boolean isAuthorized() { return HttpCrudForm.this.isAuthorized(record, call); }
 	}
 	
-	protected final CrudTable<T> table;
+	protected final StructStorage table;
 	private final TemplateEngine engine;
 	private final CompiledTemplate template;
 	private final String name;
 	
-	public HttpCrudForm(CrudTable<T> table, TemplateEngine engine, String name) {
+	public HttpCrudForm(StructStorage table, TemplateEngine engine, String name) {
 		this.table=table;
 		this.engine=engine;
 		this.name=name;
@@ -30,6 +30,7 @@ public abstract class HttpCrudForm<T extends CrudObject> {
 	
 	public CompiledTemplate compileTemplate(String actionName) { return engine.compileTemplate(name+"/"+actionName);}
 
+	abstract public T createObject(Struct input);
 	public abstract FormData createFormData(HttpCall call, Struct struct);
 	public abstract boolean isAuthorized(Struct record, HttpCall call);
 
@@ -45,12 +46,12 @@ public abstract class HttpCrudForm<T extends CrudObject> {
 		else if (call.isPost()) {
 			FormData input=createFormData(call,new HttpRequestStruct(call));
 			if (input.isValid()) {
-				T rec=table.createObject(input);
+				T rec=createObject(input);
 				table.create(rec);
 				if (call.userid==null)
 					call.redirect("/home"); // so a newly registered user will get a homepage
 				else
-					call.redirect("show/"+rec._id);
+					call.redirect("show/"+rec.getString("_id"));
 			}
 			else {
 				TemplateData context=new TemplateData(call);
@@ -62,12 +63,13 @@ public abstract class HttpCrudForm<T extends CrudObject> {
 			call.invalidPage();
 	}
 
+
 	public void handleEdit(HttpCall call, String subPath) {
 		call.ensureUser();
-		T oldRecord = table.read(subPath);
-		if (! isAuthorized(oldRecord, call)) {
+		T oldRecord = createObject(table.read(subPath));
+		//if (! isAuthorized(oldRecord, call)) {
 			// TODO
-		}
+		//}
 		if (call.isGet()) {
 			TemplateData context=new TemplateData(call);
 			context.add("form", createFormData(call,oldRecord));
@@ -76,10 +78,10 @@ public abstract class HttpCrudForm<T extends CrudObject> {
 		else if (call.isPost()) {
 			FormData input=createFormData(call,new HttpRequestStruct(call));
 			if (input.isValid()) {
-				T newRecord=table.createObject(new MultiStruct(input.record,oldRecord));
+				T newRecord=createObject(new MultiStruct(input.record,oldRecord));
 				System.out.println("Updating "+subPath+" old:"+oldRecord+" new:"+newRecord);
 				table.update(oldRecord, newRecord);
-				call.redirect("../show/"+newRecord._id);
+				call.redirect("../show/"+newRecord.getString("_id"));
 			}
 			else {
 				TemplateData context=new TemplateData(call);
