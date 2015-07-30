@@ -91,26 +91,7 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 		// TODO : rollback indices in case of Exception?
 	}
 
-	public class Ref {
-		public final String _id;
-		protected Ref(String id) {this._id=id;}
-		public T get() { return read(_id); }
-		public CrudTable<T> getTable() { return CrudTable.this; }
-		@Override public boolean equals(Object obj) {
-			if (obj==this)
-				return true;
-			if (obj==null)
-				return false;
-			if (! (obj instanceof CrudTable.Ref))
-				return false;
-			CrudTable<?>.Ref ref = (CrudTable<?>.Ref)obj;
-			if (this.getTable()!=ref.getTable())
-				return false;
-			return _id.equals((ref)._id);
-		}
-		@Override public int hashCode() { return _id.hashCode()+getTable().hashCode(); }
-		@Override public String toString() { return _id; } //return getTable().name+"("+_id+")"; }
-	}
+	
 	public CrudRef<T> createRef(String key) { return new CrudRef<T>(this,key); }
 
 	private void checkSameId(T oldValue, T newValue) {
