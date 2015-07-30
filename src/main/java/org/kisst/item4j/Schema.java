@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.LinkedHashMap;
 
-import org.kisst.item4j.Item.Factory;
 import org.kisst.item4j.json.JsonParser;
 import org.kisst.item4j.struct.HashStruct;
 import org.kisst.item4j.struct.Struct;
@@ -15,7 +14,7 @@ import org.kisst.util.AssertUtil;
 import org.kisst.util.ReflectionUtil;
 
 public class Schema<T> implements Type<T> {
-	public static Factory globalFactory=Factory.basicFactory;
+	//public static Factory globalFactory=Factory.basicFactory;
 
 	private final LinkedHashMap<String, Field> fields=new LinkedHashMap<String, Field>(); // TODO: make Immutable
 	public final Class<T> cls;

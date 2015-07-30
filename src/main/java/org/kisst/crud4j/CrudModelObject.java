@@ -21,5 +21,4 @@ public abstract class CrudModelObject implements Struct {
 	public <T extends CrudModelObject> T modified(CrudModel model, CrudSchema<T>.Field field, Object value) {
 		return modified(model, new SingleItemStruct(field.getName(), value));
 	}
-
 }

@@ -24,7 +24,11 @@ public abstract class CrudModel implements Item.Factory {
 		for (CrudTable<?> table: ReflectionUtil.getAllDeclaredFieldValuesOfType(this, CrudTable.class))
 			table.initcache();
 	}
-	
+	public void close() {
+		for (CrudTable<?> table : ReflectionUtil.getAllDeclaredFieldValuesOfType(this, CrudTable.class))
+			table.close();
+	}
+
 	public StructStorage getStorage(Class<?> cls) {
 		for (StorageOption opt: options) {
 			if (opt instanceof StructStorage && opt.getRecordClass()==cls)
