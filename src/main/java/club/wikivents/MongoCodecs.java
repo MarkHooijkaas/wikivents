@@ -1,4 +1,4 @@
-package club.wikivents.model;
+package club.wikivents;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -19,6 +19,9 @@ import org.kisst.crud4j.CrudRef;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
+
+import club.wikivents.model.User;
+import club.wikivents.model.WikiventsModel;
 
 public class MongoCodecs {
 	// The model (and users table) will be constructed using the Storage objects, so the user table

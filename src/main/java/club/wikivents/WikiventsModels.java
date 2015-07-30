@@ -1,4 +1,4 @@
-package club.wikivents.model;
+package club.wikivents;
 
 import org.kisst.crud4j.impl.FileStorage;
 import org.kisst.crud4j.impl.MongoDb;
@@ -8,6 +8,10 @@ import org.kisst.crud4j.index.MemoryUniqueIndex;
 import org.kisst.item4j.struct.HashStruct;
 import org.kisst.item4j.struct.MultiStruct;
 import org.kisst.item4j.struct.Struct;
+
+import club.wikivents.model.Event;
+import club.wikivents.model.User;
+import club.wikivents.model.WikiventsModel;
 
 public class WikiventsModels {
 

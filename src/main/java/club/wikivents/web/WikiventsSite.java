@@ -12,9 +12,9 @@ import org.kisst.http4j.ResourceHandler;
 import org.kisst.http4j.handlebar.TemplateEngine;
 import org.kisst.item4j.struct.Struct;
 
+import club.wikivents.WikiventsModels;
 import club.wikivents.model.User;
 import club.wikivents.model.WikiventsModel;
-import club.wikivents.model.WikiventsModels;
 
 public class WikiventsSite implements HttpCallHandler {
 	public final WikiventsModel model;

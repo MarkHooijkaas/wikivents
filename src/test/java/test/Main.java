@@ -8,9 +8,9 @@ import org.apache.log4j.Logger;
 import org.kisst.item4j.struct.HashStruct;
 import org.kisst.props4j.SimpleProps;
 
+import club.wikivents.WikiventsModels;
 import club.wikivents.model.User;
 import club.wikivents.model.WikiventsModel;
-import club.wikivents.model.WikiventsModels;
 
 public class Main {
 	public static void main(String[] args) {
