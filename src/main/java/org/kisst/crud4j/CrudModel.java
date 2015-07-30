@@ -4,9 +4,6 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.kisst.crud4j.CrudTable.Index;
-import org.kisst.crud4j.CrudTable.OrderedIndex;
-import org.kisst.crud4j.CrudTable.UniqueIndex;
 import org.kisst.item4j.Item;
 import org.kisst.item4j.Schema;
 import org.kisst.item4j.struct.Struct;
@@ -90,5 +87,22 @@ public abstract class CrudModel implements Item.Factory {
 	}
 	@Override public <T> T construct(Class<?> cls, String data) { return basicFactory.construct(cls, data);}
 
+	public interface Index<T extends CrudObject> {
+		public Class<T> getRecordClass(); 
+		public void notifyCreate(T record);
+		public void notifyUpdate(T oldRecord, T newRecord);
+		public void notifyDelete(T oldRecord);
+	}
+	public interface UniqueIndex<T extends CrudObject> extends Index<T >{
+		public CrudSchema<T>.Field[] fields();
+		public T get(String ... field); 
+	}
+	public interface OrderedIndex<T extends CrudObject> extends Index<T >{
+		public Iterable<T> all(); 
+	}
+	/*
+	public interface MultiIndex<T extends CrudObject> { public TypedSequence<T> get(String field); }
+	public interface OrderedIndex<T extends CrudObject> { public TypedSequence<T> get(String field);}
+	*/
 
 }

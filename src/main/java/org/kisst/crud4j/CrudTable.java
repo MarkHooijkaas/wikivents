@@ -2,6 +2,7 @@ package org.kisst.crud4j;
 
 import java.util.Iterator;
 
+import org.kisst.crud4j.CrudModel.Index;
 import org.kisst.crud4j.index.MemoryUniqueIndex;
 import org.kisst.item4j.Immutable;
 import org.kisst.item4j.seq.TypedSequence;
@@ -18,6 +19,7 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 	private final Index<T>[] indices;
 
 	private boolean alwaysCheckId=true;
+	@SuppressWarnings("unchecked")
 	public CrudTable(CrudModel model, CrudObjectSchema<T> schema) { 
 		this.model=model;
 		this.schema=schema;
@@ -25,7 +27,7 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 		this.storage=model.getStorage(schema.cls);
 		if (storage.useCache()) {
 			cache=new MemoryUniqueIndex<T>(schema, schema.getKeyField());
-			this.indices=ArrayUtil.join(cache,model.getIndices(schema.cls));
+			this.indices=(Index<T>[]) ArrayUtil.join(cache,model.getIndices(schema.cls));
 		}
 		else {
 			cache=null;
@@ -132,22 +134,4 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 	@Override public Object getObject(int index) { return findAll().get(index); }
 	@Override public Iterator<T> iterator() { return findAll().iterator(); }
 	@Override public Class<?> getElementClass() { return schema.cls; }
-
-	public interface Index<T extends CrudObject> {
-		public Class<T> getRecordClass(); 
-		public void notifyCreate(T record);
-		public void notifyUpdate(T oldRecord, T newRecord);
-		public void notifyDelete(T oldRecord);
-	}
-	public interface UniqueIndex<T extends CrudObject> extends Index<T >{
-		public CrudSchema<T>.Field[] fields();
-		public T get(String ... field); 
-	}
-	public interface OrderedIndex<T extends CrudObject> extends Index<T >{
-		public Iterable<T> all(); 
-	}
-	/*
-	public interface MultiIndex<T extends CrudObject> { public TypedSequence<T> get(String field); }
-	public interface OrderedIndex<T extends CrudObject> { public TypedSequence<T> get(String field);}
-	*/
 }

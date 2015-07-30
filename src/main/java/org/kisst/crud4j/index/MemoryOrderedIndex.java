@@ -2,11 +2,11 @@ package org.kisst.crud4j.index;
 
 import java.util.concurrent.ConcurrentSkipListMap;
 
+import org.kisst.crud4j.CrudModel.OrderedIndex;
 import org.kisst.crud4j.CrudObject;
 import org.kisst.crud4j.CrudSchema;
-import org.kisst.crud4j.CrudTable;
 
-public class MemoryOrderedIndex<T extends CrudObject> extends Index<T> implements CrudTable.OrderedIndex<T> {
+public class MemoryOrderedIndex<T extends CrudObject> extends Index<T> implements OrderedIndex<T> {
 	private ConcurrentSkipListMap<T,T> set;
 	
 	public MemoryOrderedIndex(CrudSchema<T> schema) { 

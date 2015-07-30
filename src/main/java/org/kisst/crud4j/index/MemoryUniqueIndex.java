@@ -3,12 +3,12 @@ package org.kisst.crud4j.index;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.kisst.crud4j.CrudModel.UniqueIndex;
 import org.kisst.crud4j.CrudObject;
 import org.kisst.crud4j.CrudSchema;
-import org.kisst.crud4j.CrudTable;
 import org.kisst.item4j.Schema;
 
-public class MemoryUniqueIndex<T extends CrudObject> extends FieldIndex<T>  implements CrudTable.UniqueIndex<T> {
+public class MemoryUniqueIndex<T extends CrudObject> extends FieldIndex<T>  implements UniqueIndex<T> {
 	private ConcurrentHashMap<String, T> map=new ConcurrentHashMap<String, T>();
 
 	@SafeVarargs

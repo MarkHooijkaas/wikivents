@@ -1,5 +1,4 @@
-unique index for usernames, emailadresses, joining events
-method for changing immutable object
+if unique index fails, cache can be corrupted with some indices updated and others not
 authorization framework
 
 multiple skins
