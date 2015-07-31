@@ -3,13 +3,13 @@ package org.kisst.type4j;
 public interface SmartType<T> extends DeeplyImmutable {
 	public Class<T> getJavaClass();
 
-	default public T convertFrom(Object obj) { return this.copyFrom(obj); } 
-	default public T copyFrom(Object obj) { return this.deepCopyFrom(obj); }
-	public T deepCopyFrom(Object obj);
+	default public T convertFrom(Object obj) { return this.privateVersionOf(obj); } 
+	default public T privateVersionOf(Object obj) { return this.deepCopyOf(obj); }
+	public T deepCopyOf(Object obj);
 
 	default public T convertFromOrNull(Object obj) { return obj==null ? null : this.convertFrom(obj); } 
-	default public T copyFromOrNull(Object obj) { return obj==null ? null : this.copyFrom(obj); }
-	default public T deepCopyFromOrNull(Object obj) { return obj==null ? null : this.deepCopyFrom(obj); }
+	default public T copyFromOrNull(Object obj) { return obj==null ? null : this.privateVersionOf(obj); }
+	default public T deepCopyFromOrNull(Object obj) { return obj==null ? null : this.deepCopyOf(obj); }
 
 	
 	default boolean isAllwaysImmutable() { return this.isAllwaysDeeplyImmutable() || Immutable.class.isAssignableFrom(this.getClass()); }

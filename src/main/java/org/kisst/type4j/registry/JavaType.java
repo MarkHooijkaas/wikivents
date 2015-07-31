@@ -12,7 +12,7 @@ public interface JavaType {// extends ReflectionFieldsTypeRegistry  {
 		public StringParseType(Class<T> cls, Function<String ,T> convertor) { this.cls=cls; this.convertor=convertor; }
 			@Override public Class<T> getJavaClass() { return this.cls; }
 		@SuppressWarnings("unchecked")
-		@Override public T deepCopyFrom(Object obj) {
+		@Override public T deepCopyOf(Object obj) {
 			if (cls.isAssignableFrom(obj.getClass()))
 				return (T) obj;
 			return convertor.apply(obj.toString());
