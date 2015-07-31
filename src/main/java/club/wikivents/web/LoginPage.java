@@ -18,9 +18,12 @@ public class LoginPage extends WikiventsPage {
 
 		public Fields(Struct record) { super(record); }
 		
+		// TODO: what is correct behaviour? Should we validate these fields??? w 
 		public String validateUsername(Field f) { return (user!=null) ? null : "Unknown username "+f.value;} 
 		public String validatePassword(Field f) { 
 			if (user==null)
+				return null;
+			if (user.password==null)
 				return null;
 			if (user.password.equals(f.value) )
 				return null;
@@ -41,6 +44,10 @@ public class LoginPage extends WikiventsPage {
 		Fields result = form.handle(call, subPath);
 		if (result==null)
 			return;
+		if (result.user.password==null) { // user has no password, so don't let him/her log in 
+			call.redirect("");
+			return; 
+		}
 		if (! result.user.password.equals(result.password.value) ) 
 			throw new RuntimeException("Invalid login");
 		call.setCookie(result.user._id);
