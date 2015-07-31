@@ -60,6 +60,9 @@ public class Event extends CrudObject implements Comparable<Event> {
 		model.events.update(this, newEvent);
 	}
 	public void addGuest(WikiventsModel model, User user) {
+		for (Guest g : guests)
+			if (g.user._id.equals(user._id)) // already member
+				return;
 		Guest guest=new Guest(model, user);
 		Event newEvent = this.modified(model, schema.guests, guests.growTail(guest));
 		model.events.update(this, newEvent);
