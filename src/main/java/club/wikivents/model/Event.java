@@ -32,7 +32,9 @@ public class Event extends CrudObject implements Comparable<Event> {
 		this.organizer=schema.organizer.getRef(model.users, data);//new SimpleRef(props.getString("organizer",null));
 		this.guests=data.getTypedSequenceOrEmpty(model, Guest.class,"guests");
 		this.comments=data.getTypedSequenceOrEmpty(model, Comment.class,"comments");
+		
 	}
+	public String guestCount() { return guests.size()<=max ? guests.size()+"" : max+"+"+(guests.size()-max); }   
 
 	public static final Schema schema=new Schema();
 	public static class Schema extends CrudObjectSchema<Event> {

@@ -7,6 +7,7 @@
         <th>Organisator</th>
         <th>activiteit</th>
         <th>plaats</th>
+        <th>aantal</th>
       </tr>
     </thead>
     <tbody>
@@ -17,6 +18,7 @@
         <td>{{privUser authenticatedUser organizer}}</td>
         <td><a href="/event/show/{{_id}}">{{title}}</a></td>
         <td>{{location}}</td>
+        <td>{{guestCount}}/{{max}}</td>
       </tr>
 {{/each}}
     </tbody>
