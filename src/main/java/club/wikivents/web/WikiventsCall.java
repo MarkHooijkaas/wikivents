@@ -20,7 +20,7 @@ public class WikiventsCall extends HttpCall {
 		if (userid==null)
 			this.user=null;
 		else
-			this.user=model.users.read(userid);
+			this.user=model.users.readOrNull(userid);
 		this.authenticatedUser=user;
 		this.call=this;
 		this.authenticated=(user!=null);

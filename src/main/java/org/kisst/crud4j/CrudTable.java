@@ -62,7 +62,14 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 		storage.create(doc);
 		// TODO : rollback indices in case of Exception?
 	}
-	public T read(String key) { 
+
+	public T read(String key) {
+		T result=readOrNull(key);
+		if (result==null)
+			throw new RuntimeException("Could not find "+name+" for key "+key);
+		return result;
+	}
+	public T readOrNull(String key) {  
 		T result;
 		if (cache!=null)
 			result=cache.get(key);
@@ -72,8 +79,6 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 		}
 		//System.out.println("struct "+rec.getClass()+"="+rec);
 		//System.out.println("object "+obj.getClass()+"="+obj);
-		if (result==null)
-			throw new RuntimeException("Could not find "+name+" for key "+key);
 		return result;
 	}
 	public synchronized void update(T oldValue, T newValue) {
