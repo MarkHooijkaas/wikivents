@@ -57,13 +57,10 @@ public class EventPage extends WikiventsPage {
 		}
 		call.ensureUser();
 		String username=call.request.getParameter("newOrganizer");
-		System.out.println("User "+username);
 		User newOrganizer=model.usernameIndex.get(username);
 		if (newOrganizer==null)
 			return; // TODO: message
-		System.out.println("User "+newOrganizer);
 		Event event=model.events.read(subPath);
-		System.out.println("Event "+event);
 		event.addOrganizer(model, newOrganizer);
 		call.redirect("../show/"+event._id);
 	}

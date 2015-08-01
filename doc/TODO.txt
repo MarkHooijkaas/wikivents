@@ -17,10 +17,8 @@ immutable struct
 events
 event/all?
 GET POST event/new
-GET      event/:id
-GET      event/:id/comments
-GET POST event/edit/:id
-GET POST event/:id/comments/new
-GET POST event/:id/guests
-GET POST event/:id/guest/new
-GET POST event/:id/guest/:idx/delete
+GET POST event/edit/id
+GET      event/show/id
+    POST event/addGuest/id
+    POST event/addComment/id
+    POST event/addOrganizer (id in POST data)
