@@ -5,6 +5,8 @@ import org.kisst.http4j.HttpCallDispatcher;
 import org.kisst.http4j.HttpCallHandler;
 import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
 
+import club.wikivents.model.User;
+
 public class UserPage extends WikiventsPage {
 	public UserPage(WikiventsSite site) { super(site);	}
 	public final UserForm crud=new UserForm(site);
@@ -12,7 +14,9 @@ public class UserPage extends WikiventsPage {
 	public final HttpCallHandler list=new TemplatePage(site,"user/list", this::listAllUsers);
 	public final HttpCallHandler show=new TemplatePage(site,"user/show", this::userRecord);
 	public final HttpCallHandler edit=crud::handleEdit;
-	public final HttpCallHandler create=crud::handleCreate;
+	public final HttpCallHandler create=crud::handleCreate;	
+	public final HttpCallHandler addFriend=this::handleAddFriend;
+
 	
 	public final HttpCallDispatcher handler=new HttpCallDispatcher(this); 	
 	@Override public void handle(HttpCall httpcall, String subPath) {
@@ -26,5 +30,16 @@ public class UserPage extends WikiventsPage {
 	public void listAllUsers(TemplateData data, HttpCall httpcall, String subPath) { data.add("list", model.users.findAll()); }
 	public void userRecord(TemplateData data, HttpCall httpcall, String subPath) { data.add("record", model.users.read(subPath)); }
 
+	public void handleAddFriend(HttpCall httpcall, String subPath) {
+		WikiventsCall call=WikiventsCall.of(httpcall, model);
+		if (! call.isPost()) {
+			call.invalidPage();
+			return;
+		}
+		call.ensureUser();
+		User friend=model.users.read(subPath);
+		call.user.addFriend(model, friend);
+		call.redirect("../show/"+call.user._id);
+	}
 }
 
