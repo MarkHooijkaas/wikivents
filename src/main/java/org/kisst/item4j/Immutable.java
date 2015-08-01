@@ -185,6 +185,13 @@ public interface Immutable {
 		public Sequence<T> subsequence(int start, int end) { return new SubSequence<T>(this, start, end); }
 		public Sequence<T> subsequence(int start) { return subsequence(start, size()); }
 
+		@SafeVarargs
+		public static <E> Sequence<E> of(Class<E> type, E ... elements) {
+			// TODO: safecopy
+			return new Immutable.Sequence.ArraySequence<E>(type, elements);
+		}
+
+		
 		@SuppressWarnings("unchecked")
 		public static <E> Sequence<E> realCopy(Item.Factory factory, Class<?> type, org.kisst.item4j.seq.ItemSequence seq) {
 			E[] arr = createArray(seq.size());

@@ -97,10 +97,10 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 	}
 
 	
-	public static final class CrudRef<TT extends CrudObject> {
+	public static class CrudRef<TT extends CrudObject> {
 		public final CrudTable<TT> table;
 		public final String _id;
-		private CrudRef(CrudTable<TT> table, String _id) { 
+		protected CrudRef(CrudTable<TT> table, String _id) { 
 			this.table=table; 
 			this._id=_id; 
 		}

@@ -1,7 +1,9 @@
 package club.wikivents.model;
 
+import org.kisst.crud4j.CrudModelObject;
 import org.kisst.crud4j.CrudObject;
 import org.kisst.crud4j.CrudObjectSchema;
+import org.kisst.crud4j.CrudTable.CrudRef;
 import org.kisst.item4j.Immutable;
 import org.kisst.item4j.struct.Struct;
 
@@ -17,6 +19,10 @@ public class User extends CrudObject {
 		this.email=schema.email.getString(data);
 		this.password=schema.password.getString(data);
 		this.friends=schema.friends.getSequence(model, data);
+	}
+	
+	public static class Ref extends CrudRef<User> implements CrudModelObject {
+		public Ref(WikiventsModel model, String _id) { super(model.users, _id); }
 	}
 	
 	public static final Schema schema=new Schema();

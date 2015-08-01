@@ -76,13 +76,20 @@ public abstract class CrudModel implements Item.Factory {
 
 	@Override public <T> T construct(Class<?> cls, Struct data) {
 		if (CrudModelObject.class.isAssignableFrom(cls)) {
-			//System.out.println("Trying to construct "+cls.getName());
+			System.out.println("Trying to construct "+cls.getName());
 			Constructor<?> cons=ReflectionUtil.getConstructor(cls, new Class<?>[]{ this.getClass(), Struct.class} );
 			return cast(ReflectionUtil.createObject(cons, new Object[] {this, data}));
 		}
 		return basicFactory.construct(cls, data);
 	}
-	@Override public <T> T construct(Class<?> cls, String data) { return basicFactory.construct(cls, data);}
+	@Override public <T> T construct(Class<?> cls, String data) { 
+		if (CrudModelObject.class.isAssignableFrom(cls)) {
+			System.out.println("Trying to construct "+cls.getName());
+			Constructor<?> cons=ReflectionUtil.getConstructor(cls, new Class<?>[]{ this.getClass(), String.class} );
+			return cast(ReflectionUtil.createObject(cons, new Object[] {this, data}));
+		}
+		return basicFactory.construct(cls, data);
+	}
 
 	public interface Index<T extends CrudObject> {
 		public Class<T> getRecordClass(); 

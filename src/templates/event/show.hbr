@@ -1,7 +1,7 @@
 {{> header}}
 
 <h1>{{record.title}}</h1>
-
+<b>{{record.organizerNames}}</b>
 <div>{{record.description}}</div>
 
   <table class="table table-hover">
@@ -20,6 +20,11 @@
   </table>
 
 {{> show/changeButton}}
+<form role="form" method="POST" action="../addOrganizer/{{record._id}}">
+	<input type="text" name="newOrganizer">
+	<button type="submit" class="btn btn-default">Voeg organisator toe</button>
+</form>
+
 
   <h2>Deelnemers</h2>
 

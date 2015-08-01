@@ -139,6 +139,11 @@ public interface Item {
 			//System.out.println("result is "+result.getClass()+" "+result);
 			return cast(result);
 		}
+		if (obj instanceof String) {
+			Object result = factory.construct(cls,(String) obj);
+			//System.out.println("result is "+result.getClass()+" "+result);
+			return cast(result);
+		}
 		//if (cls.isAssignableFrom(obj.getClass()))
 		throw new IllegalArgumentException("Can not convert "+obj+" to "+cls);
 	}
