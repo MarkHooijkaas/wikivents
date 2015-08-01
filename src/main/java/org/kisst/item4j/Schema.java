@@ -7,6 +7,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.LinkedHashMap;
 
+import org.kisst.crud4j.CrudModel;
+import org.kisst.item4j.Immutable.Sequence;
 import org.kisst.item4j.json.JsonParser;
 import org.kisst.item4j.struct.HashStruct;
 import org.kisst.item4j.struct.Struct;
@@ -158,5 +160,16 @@ public class Schema<T> implements Type<T> {
 		public InstantField(Builder builder) { super(builder); }
 		public Instant getInstant(Struct s) { return s.getInstant(getName(),null); }
 		public Instant getInstantOrNow(Struct s) { return s.getInstant(getName(),Instant.now()); }
+	}
+	public class SequenceField<RT> extends Field {
+		private final Class<?> elementClass;
+		@SuppressWarnings("unchecked")
+		public SequenceField(Class<?> cls, String name) { 
+			super(new Type.Java<RT>((Class<RT>) cls,null), name); // TODO: parser is null
+			this.elementClass=cls;
+		} 
+		public Sequence<RT> getSequence(CrudModel model, Struct data) {
+			return data.getTypedSequenceOrEmpty(model, elementClass, name);
+		}
 	}
 }
