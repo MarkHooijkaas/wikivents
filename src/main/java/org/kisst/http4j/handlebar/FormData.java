@@ -72,7 +72,7 @@ public class FormData implements Struct {
 			return null;
 		String stringValue = Item.asString(field.value);
 		if (stringValue==null)
-			return null; // TODO: should it be validated???Ø
+			return null; // TODO: should it be validated???
 		int atpos=stringValue.indexOf('@');
 		if (atpos<0)
 			return "email address should contain @";
