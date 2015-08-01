@@ -20,13 +20,13 @@ public interface Type<T> {
 	}
 
 	public static final Java<String> javaString=new Java<String>(String.class, str -> str);
-	public static final Java<Boolean> javaBoolean=new Java<Boolean>(Boolean.class, str -> Boolean.parseBoolean(str));
-	public static final Java<Integer> javaInteger=new Java<Integer>(Integer.class, str -> Integer.parseInt(str));
-	public static final Java<Long> javaLong=new Java<Long>(Long.class, str -> Long.parseLong(str));
-	public static final Java<LocalDate> javaLocalDate=new Java<LocalDate>(LocalDate.class, str -> LocalDate.parse(str));
-	public static final Java<LocalTime> javaLocalTime =new Java<LocalTime>(LocalTime.class, str -> LocalTime.parse(str));
-	public static final Java<LocalDateTime> javaLocalDateTime =new Java<LocalDateTime>(LocalDateTime.class, str -> LocalDateTime.parse(str));
-	public static final Java<Instant> javaInstant =new Java<Instant>(Instant.class, str -> Instant.parse(str));
+	public static final Java<Boolean> javaBoolean=new Java<Boolean>(Boolean.class, Boolean::parseBoolean);
+	public static final Java<Integer> javaInteger=new Java<Integer>(Integer.class, Integer::parseInt);
+	public static final Java<Long> javaLong=new Java<Long>(Long.class, Long::parseLong);
+	public static final Java<LocalDate> javaLocalDate=new Java<LocalDate>(LocalDate.class, LocalDate::parse);
+	public static final Java<LocalTime> javaLocalTime =new Java<LocalTime>(LocalTime.class, LocalTime::parse);
+	public static final Java<LocalDateTime> javaLocalDateTime =new Java<LocalDateTime>(LocalDateTime.class, LocalDateTime::parse);
+	public static final Java<Instant> javaInstant =new Java<Instant>(Instant.class, Instant::parse);
 
 	public interface Parser<T> {
 		T parseString(String str);
