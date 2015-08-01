@@ -39,7 +39,7 @@
 	</target>
 	
 	<target name="compile" description="Compiles Java files" depends="init">
-		<javac srcdir="${srcdir}/java" destdir="${builddir}/classes" debug="on" optimize="on" target="1.5"  includeantruntime="false">
+		<javac srcdir="${srcdir}/java" destdir="${builddir}/classes" debug="on" optimize="on" target="1.8"  includeantruntime="false">
 		    <compilerarg value="-Xlint"/>
 			<classpath>
 				<fileset dir="lib">
