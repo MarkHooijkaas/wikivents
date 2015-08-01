@@ -2,7 +2,6 @@ package club.wikivents.web;
 
 
 
-import org.kisst.crud4j.CrudTable.CrudRef;
 import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.HttpCallDispatcher;
 import org.kisst.http4j.HttpCallHandler;
@@ -36,7 +35,6 @@ public class WikiventsSite implements HttpCallHandler {
 	public WikiventsSite(Struct props) {
 		this.model=WikiventsModels.createModel(props);
 		this.engine=new TemplateEngine(props.getStruct("handlebars"));
-		//engine.registerHelpers(new MyHelpers());
 		engine.registerUserHelpers(User.class, "authenticatedUser");
 		this.pages=new Pages();
 		this.handler = new HttpCallDispatcher(pages);
@@ -46,50 +44,4 @@ public class WikiventsSite implements HttpCallHandler {
 
 	public void close() { model.close(); }
 
-
-	
-	public class MyHelpers {
-		private boolean isLoggedIn(Object call) {
-			//System.out.println("Checking loggedIn for "+call);
-			if (call instanceof User)
-				return true;
-			if (call instanceof WikiventsCall) {
-				if (((WikiventsCall)call).authenticatedUser!=null)
-					return true;
-			}
-			return false;
-		}
-		public CharSequence priv(Object call, Object obj) {  
-			if (isLoggedIn(call))
-				return ""+obj;
-			return "***";
-		}
-
-		public CharSequence privUser(Object call, Object obj) {  
-			if (isLoggedIn(call))
-				return user(obj);
-			return "***";
-		}
-
-		@SuppressWarnings("unchecked")
-		public CharSequence user(Object obj) {  
-			if (obj==null)
-				return "nobody";
-			if (obj instanceof CrudRef) {
-				try {
-					return ((CrudRef<User>) obj).get().username;
-				}
-				catch(RuntimeException e) {return "Unknown("+obj+")"; }
-			}
-			if (obj instanceof String) {
-				try {
-					User u=model.users.read((String) obj);
-					return u.username;
-				}
-				catch(RuntimeException e) {return "unknown("+obj+")"; }
-			}
-			return "invalidref("+obj+")";
-		}
-
-	}
 }
