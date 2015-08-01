@@ -1,5 +1,5 @@
 if unique index fails, cache can be corrupted with some indices updated and others not
-authorization framework
+oneway storage of password, change password form, encryption of cookie
 
 multiple skins
 jar file with resources
@@ -8,12 +8,13 @@ wysiwyg editor for description, comments
 foto's users
 foto's event
 
-friends
 groups
 references
 immutable struct
+efficent handling of ref.get when db not in memory
 
 
+rethink the url's with POST params
 events
 event/all?
 GET POST event/new

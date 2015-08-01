@@ -14,6 +14,14 @@
    <button type="submit" class="btn btn-default">Voeg toe aan mijn vrienden</button>
  </form>
  
+ {{#ifMayChange record}}
+ <form role="form" method="POST" action="../changePassword">
+ 	<label for="">Wachtwoord</label><input type="password" name="newPassword">
+ 	<label for="">Wachtwoord Controle</label><input type="password" name="checkNewPassword">
+ 	<button type="submit" class="btn btn-default">Verander wachtwoord</button>
+ </form>
+ {{/ifMayChange}}
+ 
  <h2>Vrienden</h2>
    <table class="table table-hover">
      <tbody>

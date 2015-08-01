@@ -35,14 +35,14 @@ public class Main {
 		HashStruct doc=new HashStruct();
 		User.schema.username.setValue(doc, "Mark1967");
 		User.schema.email.setValue(doc, "mark@wikivents.nl");
-		User.schema.password.setValue(doc, "secret");
+		//User.schema.password.setValue(doc, "secret");
 		//model.users().create(new User(doc));
 		//model.users.create(new User(doc));
 		//debug("Added user");
 
 		User.schema.username.setValue(doc, "PKO");
 		User.schema.email.setValue(doc, "pko@wikivents.nl");
-		User.schema.password.setValue(doc, "secret");
+		//User.schema.password.setValue(doc, "secret");
 		//model.users.create(new User(doc));
 		//debug("Added user");
 

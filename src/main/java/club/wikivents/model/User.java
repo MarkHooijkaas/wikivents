@@ -7,12 +7,15 @@ import org.kisst.crud4j.CrudTable.CrudRef;
 import org.kisst.http4j.handlebar.AccessChecker;
 import org.kisst.item4j.Immutable;
 import org.kisst.item4j.struct.Struct;
+import org.kisst.item4j.struct.VarargStruct;
+import org.kisst.util.PasswordEncryption;
 
 public class User extends CrudObject implements AccessChecker<User>{
 	public final WikiventsModel model;
 	public final String username;
 	public final String email;
-	public final String password;
+	public final String passwordSalt;
+	public final String encryptedPassword;
 	public final boolean isAdmin;
 	public final Immutable.Sequence<Friend> friends;
 
@@ -21,7 +24,8 @@ public class User extends CrudObject implements AccessChecker<User>{
 		this.model=model;
 		this.username=schema.username.getString(data);
 		this.email=schema.email.getString(data);
-		this.password=schema.password.getString(data);
+		this.passwordSalt=schema.passwordSalt.getString(data);
+		this.encryptedPassword=schema.encryptedPassword.getString(data);
 		this.friends=schema.friends.getSequence(model, data);
 		this.isAdmin=schema.isAdmin.getBoolean(data,false);
 	}
@@ -36,7 +40,8 @@ public class User extends CrudObject implements AccessChecker<User>{
 		public Schema() { super(User.class); addAllFields();}
 		public final StringField username = new StringField("username"); 
 		public final StringField email    = new StringField("email"); 
-		public final StringField password = new StringField("password"); 
+		public final StringField passwordSalt = new StringField("passwordSalt"); 
+		public final StringField encryptedPassword = new StringField("encryptedPassword"); 
 		public final BooleanField isAdmin = new BooleanField("isAdmin"); 
 		public final SequenceField<Friend> friends  = new SequenceField<Friend>(Friend.class,"friends");  
 	}
@@ -67,5 +72,27 @@ public class User extends CrudObject implements AccessChecker<User>{
 		Friend newFriend = new Friend(model, user);
 		User newUser= this.modified(model, schema.friends, friends.growTail(newFriend));
 		model.users.update(this, newUser);
+	}
+	
+	public void changePassword(String newPassword) {
+		String salt = PasswordEncryption.createSaltString();
+		String pw = PasswordEncryption.encryptPassword(newPassword, salt);
+		User newUser= this.modified(model, new VarargStruct(
+				schema.passwordSalt,  salt,
+				schema.encryptedPassword, pw));
+		model.users.update(this, newUser);
+	}
+	
+	
+	public boolean checkPassword(String password) {
+		if (password==null)
+			return false;
+		if (PasswordEncryption.authenticate(password, encryptedPassword, passwordSalt))
+			return true;
+		try {
+			Thread.sleep(1000); // prevent brute force
+		}
+		catch (InterruptedException e) {throw new RuntimeException(e); }
+		return false;
 	}
 }

@@ -12,7 +12,11 @@ public class HttpCallDispatcher implements HttpCallHandler {
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.FIELD)
 	public @interface Path { public String dispatchPath(); }
-	
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(ElementType.FIELD)
+	public @interface PostOnly { }
+
 	
 	private final LinkedHashMap<String, HttpCallHandler> map=new LinkedHashMap<String, HttpCallHandler>();
 	private final HttpCallHandler home;

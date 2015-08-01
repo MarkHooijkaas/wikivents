@@ -1,7 +1,5 @@
 package club.wikivents.web;
 
-
-
 import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.HttpCallDispatcher;
 import org.kisst.http4j.HttpCallHandler;
@@ -38,6 +36,10 @@ public class WikiventsSite implements HttpCallHandler {
 		engine.registerUserHelpers(User.class, "authenticatedUser");
 		this.pages=new Pages();
 		this.handler = new HttpCallDispatcher(pages);
+		//for (User u :model.users) {
+		//	if (u.encryptedPassword==null)
+		//		u.setPassword(u.password);
+		//}
 	}
 	@Override public void handle(HttpCall call, String subPath) { this.handler.handle(call, subPath);}
 
