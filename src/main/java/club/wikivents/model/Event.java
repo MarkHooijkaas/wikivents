@@ -30,8 +30,8 @@ public class Event extends CrudObject implements Comparable<Event> {
 		this.min=schema.min.getInt(data);
 		this.max=schema.max.getInt(data);
 		this.organizer=schema.organizer.getRef(model.users, data);//new SimpleRef(props.getString("organizer",null));
-		this.guests=data.getTypedSequenceOrEmpty(model, Guest.class,"guests");
-		this.comments=data.getTypedSequenceOrEmpty(model, Comment.class,"comments");
+		this.guests=schema.guests.getSequence(model, data);//data.getTypedSequenceOrEmpty(model, Guest.class,"guests");
+		this.comments=schema.comments.getSequence(model, data);//data.getTypedSequenceOrEmpty(model, Comment.class,"comments");
 		
 	}
 	public String guestCount() { return guests.size()<=max ? guests.size()+"" : max+"+"+(guests.size()-max); }   
@@ -48,8 +48,8 @@ public class Event extends CrudObject implements Comparable<Event> {
 		public final LocalDateField date = new LocalDateField("date"); 
 		public final StringField location = new StringField("location"); 
 		public final StringField description = new StringField("description"); 
-		public final StringField guests= new StringField("guests"); // TODO: these are not String fields 
-		public final StringField comments= new StringField("comments"); 
+		public final SequenceField<Guest> guests= new SequenceField<Guest>(Guest.class,"guests"); 
+		public final SequenceField<Comment> comments= new SequenceField<Comment>(Comment.class,"comments"); 
 	}
 
 

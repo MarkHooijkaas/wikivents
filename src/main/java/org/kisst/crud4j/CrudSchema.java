@@ -53,10 +53,14 @@ public class CrudSchema<T> extends Schema<T> {
 	
 
 	public class SequenceField<RT> extends Field {
+		private final Class<?> elementClass;
 		@SuppressWarnings("unchecked")
-		public SequenceField(Class<?> cls, String name) { super(new Type.Java<RT>((Class<RT>) cls,null), name); } // TODO: parser is null
+		public SequenceField(Class<?> cls, String name) { 
+			super(new Type.Java<RT>((Class<RT>) cls,null), name); // TODO: parser is null
+			this.elementClass=cls;
+		} 
 		public Sequence<RT> getSequence(CrudModel model, Struct data) {
-			return data.getTypedSequenceOrEmpty(model, cls, name);
+			return data.getTypedSequenceOrEmpty(model, elementClass, name);
 		}
 	}
 
