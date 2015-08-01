@@ -1,4 +1,4 @@
-<project name="wikivents">
+<project name="wikivents" default="jar">
 	<target name="init">
 		<property file="user.properties"/>
 		<property file="version.properties"/>
@@ -59,9 +59,8 @@
 				<attribute name="Class-Path" value="${manifest.classpath}"/>
 				<attribute name="Main-Class" value="club.wikivents.Runner"/>
 			</manifest>
-			<zipfileset dir="${srcdir}/java" includes="*.template"/>
+			<zipfileset dir="src/resources" prefix="resources"/>
 			<zipfileset dir="." includes="version.properties"/>
-			<zipfileset dir="${srcdir}/java" includes="club/wikivents/web/*.template"/>
 	    </jar>
 	</target>
 
