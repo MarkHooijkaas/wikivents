@@ -3,6 +3,7 @@ package org.kisst.crud4j;
 import java.lang.reflect.Constructor;
 
 import org.kisst.crud4j.CrudTable.CrudRef;
+import org.kisst.item4j.Immutable.Sequence;
 import org.kisst.item4j.Schema;
 import org.kisst.item4j.Type;
 import org.kisst.item4j.struct.Struct;
@@ -60,4 +61,15 @@ public class CrudSchema<T> extends Schema<T> {
 			return table.createRef(id);
 		}
 	}
+	
+
+	public class SequenceField<RT> extends Field {
+		@SuppressWarnings("unchecked")
+		public SequenceField(Class<?> cls, String name) { super(new Type.Java<RT>((Class<RT>) cls,null), name); } // TODO: parser is null
+		public Sequence<RT> getSequence(CrudModel model, Struct data) {
+			return data.getTypedSequenceOrEmpty(model, cls, name);
+		}
+	}
+
+
 }
