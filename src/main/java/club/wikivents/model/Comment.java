@@ -23,4 +23,4 @@ public  class Comment extends ReflectStruct implements CrudModelObject{
 		this.date = data.getInstant("date",Instant.now());
 		this.comment=data.getString("comment");
 	}
-	}
+}
