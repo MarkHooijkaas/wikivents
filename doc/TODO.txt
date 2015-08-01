@@ -1,5 +1,6 @@
 if unique index fails, cache can be corrupted with some indices updated and others not
-oneway storage of password, change password form, encryption of cookie
+encryption of cookie
+better in-page forms, conciser java code, message if not ok
 
 multiple skins
 jar file with resources
