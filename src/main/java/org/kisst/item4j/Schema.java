@@ -52,8 +52,8 @@ public class Schema<T> implements Type<T> {
 	}
 
 	public class Field {
-		private final Type<?> type;
-		private final String name;
+		public final Type<?> type;
+		public final String name;
 		private final boolean optional;
 		private final boolean allowsNull;
 		private final Object defaultValue;
