@@ -10,24 +10,13 @@ import org.kisst.item4j.struct.Struct;
 import org.kisst.util.ReflectionUtil;
 
 public class CrudSchema<T> extends Schema<T> {
-	private Constructor<?> modelcons;
-	
-	public CrudSchema(Class<T> cls) { 
-		super(cls); 
-		this.modelcons=findModelBasedConstructor(cls);
-	}
-	
-	// TODO: The order of Constructors is important, because in case of Guest, they both fullfill the signature (CrudModel, Struct)
-	// in order to prevent this, ReflectionUtil should look for the most specific constructor, not the first
-	public static Constructor<?> findModelBasedConstructor(Class<?>cls) {
-		Constructor<?> result=ReflectionUtil.getFirstCompatibleConstructor(cls, new Class<?>[]{ CrudModel.class, Struct.class} );
-		if (result==null)
-			throw new RuntimeException("No valid constructor for "+cls.getSimpleName());
-		return result;
-	}
+	public CrudSchema(Class<T> cls) {  super(cls); }
 	
 	@SuppressWarnings("unchecked")
-	public T createObject(CrudModel model, Struct doc) { return (T) ReflectionUtil.createObject(modelcons, new Object[]{model, doc} );}
+	public T createObject(CrudModel model, Struct doc) { 
+		Constructor<?> cons=ReflectionUtil.getConstructor(cls, new Class<?>[]{ model.getClass(), Struct.class} );
+		return (T) ReflectionUtil.createObject(cons, new Object[]{model, doc} );
+	}
 	
 	
 	public class RefField<RT extends CrudObject> extends Field {
