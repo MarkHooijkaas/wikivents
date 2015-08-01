@@ -28,7 +28,7 @@ public class ResourceHandler implements HttpCallHandler {
 	public static final int DEFAULT_STREAM_BUFFER_SIZE = 102400;
 
 	private final ResourceFinder finder;
-	public ResourceHandler(ResourceFinder finder) { this.finder=finder; } 
+	public ResourceHandler(String prefix, String dirname) { this.finder=new ResourceFinder(prefix, new File(dirname)); } 
 	public void handle(HttpCall call, String subPath) {
 		try {
 			call.response.reset();
@@ -118,34 +118,19 @@ public class ResourceHandler implements HttpCallHandler {
 		public long getContentLength();
 		public InputStream getInputStream() throws IOException;
 	}
-	public interface ResourceFinder {
-		public Resource findResource(String name);
-	}
 
-	public static class FileResourceFinder implements ResourceFinder {
-		private final File dir;
-		public FileResourceFinder(File dir) {this.dir=dir;} 
-		public Resource findResource(String name) { return new FileResource(name); }
-		private class FileResource implements Resource {
-			private final File file;
-			public FileResource(String name) { this.file=new File(dir,name); 
-				//System.out.println(file.getAbsolutePath());
-			}
-			@Override public String getFileName() { return file.getName();}
-			@Override public long getLastModified() { return file.lastModified();}
-			@Override public long getContentLength() { return file.length();}
-			@Override public InputStream getInputStream() {
-				try {
-					return new FileInputStream(file);
-				}
-				catch (FileNotFoundException e) { throw new RuntimeException(e);}
-			}
-		}
-	}
-	public static class ClasspathResourceFinder implements ResourceFinder {
+	public static class ResourceFinder {
 		private final String prefix;
-		public ClasspathResourceFinder(String prefix) {this.prefix=prefix;} 
-		public Resource findResource(String name) { return new ClassPathResource(prefix+name); }
+		private final File[] dirs;
+		public ResourceFinder(String prefix, File ... dirs) {this.prefix=prefix; this.dirs=dirs; } 
+		public Resource findResource(String name) { 
+			for (File dir : dirs) {
+				File f = new File(dir,name);
+				if (f.exists())
+					return new FileResource(f);
+			}
+			return new ClassPathResource(prefix+name); 
+		}
 		private class ClassPathResource implements Resource {
 			private final String name;
 			//private final URL url;
@@ -155,6 +140,19 @@ public class ResourceHandler implements HttpCallHandler {
 			@Override public long getContentLength() { return 0;}
 			@Override public InputStream getInputStream() {
 				return this.getClass().getClassLoader().getResourceAsStream(name);
+			}
+		}
+		private class FileResource implements Resource {
+			private final File file;
+			public FileResource(File f) { this.file=f;}
+			@Override public String getFileName() { return file.getName();}
+			@Override public long getLastModified() { return file.lastModified();}
+			@Override public long getContentLength() { return file.length();}
+			@Override public InputStream getInputStream() {
+				try {
+					return new FileInputStream(file);
+				}
+				catch (FileNotFoundException e) { throw new RuntimeException(e);}
 			}
 		}
 	}

@@ -2,8 +2,6 @@ package club.wikivents.web;
 
 
 
-import java.io.File;
-
 import org.kisst.crud4j.CrudTable.CrudRef;
 import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.HttpCallDispatcher;
@@ -23,17 +21,18 @@ public class WikiventsSite implements HttpCallHandler {
 	public final Pages pages;
 
 	public class Pages {
+		
 		public final HttpCallHandler home=new TemplatePage(WikiventsSite.this, "home");
 		public final HttpCallHandler user=new UserPage(WikiventsSite.this);
 		public final HttpCallHandler event=new EventPage(WikiventsSite.this);
 		public final HttpCallHandler login=new LoginPage(WikiventsSite.this);
-		public final HttpCallHandler resources=new ResourceHandler(new ResourceHandler.FileResourceFinder(new File("src/resources")));
-		public final HttpCallHandler css=new ResourceHandler(new ResourceHandler.FileResourceFinder(new File("src/resources/css")));
-		public final HttpCallHandler scripts=new ResourceHandler(new ResourceHandler.FileResourceFinder(new File("src/resources/scripts")));
-		public final HttpCallHandler js=new ResourceHandler(new ResourceHandler.FileResourceFinder(new File("src/resources/js")));
-		public final HttpCallHandler images=new ResourceHandler(new ResourceHandler.FileResourceFinder(new File("src/resources/images")));
+		public final HttpCallHandler resources=new ResourceHandler("", "src/resources");
+		public final HttpCallHandler css=new ResourceHandler("", "src/resources/css");
+		public final HttpCallHandler scripts=new ResourceHandler("", "src/resources/scripts");
+		public final HttpCallHandler js=new ResourceHandler("", "src/resources/js");
+		public final HttpCallHandler images=new ResourceHandler("", "src/resources/images");
 		@HttpCallDispatcher.Path(dispatchPath="favicon.ico")
-		public final HttpCallHandler favicon =new ResourceHandler(new ResourceHandler.FileResourceFinder(new File("src/resources/favicon.ico")));
+		public final HttpCallHandler favicon =new ResourceHandler("", "src/resources/favicon.ico");
 	}
 	public WikiventsSite(Struct props) {
 		this.model=WikiventsModels.createModel(props);
