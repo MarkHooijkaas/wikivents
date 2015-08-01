@@ -118,7 +118,7 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 		if (newId!=null) {
 			String oldId = schema.getKeyField().getString(oldValue);
 			if (!newId.equals(oldId))
-				throw new IllegalArgumentException("Trying to update object with id "+oldId+" with object with id "+newId);
+				throw new IllegalArgumentException("Trying to update object with id "+oldId+" with object with id "+newId+": "+oldValue+"->"+newValue);
 		}
 	}
 	public TypedSequence<T> findAll() {

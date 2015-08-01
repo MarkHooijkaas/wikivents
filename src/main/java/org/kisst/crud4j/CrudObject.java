@@ -4,7 +4,7 @@ import org.bson.types.ObjectId;
 import org.kisst.crud4j.CrudTable.CrudRef;
 import org.kisst.item4j.struct.Struct;
 
-public abstract class CrudObject extends CrudModelObject {
+public abstract class CrudObject extends SchemaObject {
 	public final CrudTable<?> table;
 	public final String _id;
 	public <T extends CrudObject> CrudObject(CrudTable<T> table, Struct data) {
