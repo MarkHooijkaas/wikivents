@@ -69,7 +69,7 @@ public class Event extends CrudObject implements Comparable<Event> {
 
 
 	
-	@Override public boolean mayBeChangedBy(String userId) { return _id.equals(userId); }
+	public boolean mayBeChangedBy(User user) { return user.isAdmin || isOrganizer(user); }
 	
 	public void addComment(WikiventsModel model, User user, String text) {
 		Comment comment=new Comment(user,text);

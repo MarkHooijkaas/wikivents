@@ -35,7 +35,7 @@
   <table class="table table-hover">
     <tbody>
 {{#each record.guests}}
-<tr><td>{{privUser call user}}</td></tr>
+<tr><td>{{priv user}}</td></tr>
 {{/each}}
     </tbody>
   </table>
@@ -51,7 +51,7 @@
   <table class="table table-hover">
     <tbody>
 {{#each record.comments}}
-<tr><th>{{privUser call user}}<br>@{{date}}</th><td>{{comment}}</td></tr>
+<tr><th>{{priv user}}<br>@{{date}}</th><td>{{comment}}</td></tr>
 {{/each}}
     </tbody>
   </table>

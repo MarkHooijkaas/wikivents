@@ -21,7 +21,6 @@ public class WikiventsSite implements HttpCallHandler {
 	public final Pages pages;
 
 	public class Pages {
-		
 		public final HttpCallHandler home=new TemplatePage(WikiventsSite.this, "home");
 		public final HttpCallHandler user=new UserPage(WikiventsSite.this);
 		public final HttpCallHandler event=new EventPage(WikiventsSite.this);
@@ -37,7 +36,8 @@ public class WikiventsSite implements HttpCallHandler {
 	public WikiventsSite(Struct props) {
 		this.model=WikiventsModels.createModel(props);
 		this.engine=new TemplateEngine(props.getStruct("handlebars"));
-		engine.registerHelpers(new Helper());
+		//engine.registerHelpers(new MyHelpers());
+		engine.registerUserHelpers(User.class, "authenticatedUser");
 		this.pages=new Pages();
 		this.handler = new HttpCallDispatcher(pages);
 	}
@@ -46,7 +46,9 @@ public class WikiventsSite implements HttpCallHandler {
 
 	public void close() { model.close(); }
 
-	public class Helper {
+
+	
+	public class MyHelpers {
 		private boolean isLoggedIn(Object call) {
 			//System.out.println("Checking loggedIn for "+call);
 			if (call instanceof User)

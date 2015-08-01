@@ -20,7 +20,7 @@ public class WikiventsCall extends HttpCall {
 		if (userid==null)
 			this.user=null;
 		else
-			this.user=model.users.readOrNull(userid);
+			this.user=model.users.readOrNull(userid); // TODO cache info in cookie, so table does not to be read with every call
 		this.authenticatedUser=user;
 		this.call=this;
 		this.authenticated=(user!=null);
@@ -34,17 +34,6 @@ public class WikiventsCall extends HttpCall {
 	
 	public TemplateData createTemplateData() { return new TemplateData(this); }
 	public void output(CompiledTemplate template, TemplateData data) { template.output(data, getWriter());}
-/*	public void output(CompiledTemplate template, Object ... objs) {
-		TemplateData context = new TemplateData(this);
-		String str="";
-		for (Object obj : objs) {
-			context.add(obj.getClass().getSimpleName().toLowerCase(), obj);
-			str +=obj.getClass().getSimpleName().toLowerCase()+",'";
-		}
-		context.add("context", str);
-		template.output(context, getWriter());
-	}
-*/
 
 	@Override public void ensureUser() { if (user==null) throwUnauthorized("Not Authenticated"); }
 }

@@ -12,6 +12,7 @@ import org.kisst.item4j.struct.Struct;
 import com.github.jknack.handlebars.Context;
 import com.github.jknack.handlebars.Context.Builder;
 import com.github.jknack.handlebars.Handlebars;
+import com.github.jknack.handlebars.Helper;
 import com.github.jknack.handlebars.Template;
 import com.github.jknack.handlebars.context.FieldValueResolver;
 import com.github.jknack.handlebars.context.JavaBeanValueResolver;
@@ -44,9 +45,15 @@ public class TemplateEngine {
 			this.handlebar=new Handlebars(new CompositeTemplateLoader(new FileTemplateLoader(dir,postfix),cp));
 	}
 
-	public void registerHelpers(Object helpers) {
-		handlebar.registerHelpers(helpers);
+	public <T> void registerHelper(String name, Helper<T> helper) { handlebar.registerHelper(name, helper); }
+	public void registerHelpers(Object helpers) { handlebar.registerHelpers(helpers); }
+	public <T> void registerUserHelpers(Class<T> cls, String path) {
+		UserHelpers<T> h = new UserHelpers<T>(cls, path);
+		handlebar.registerHelper("ifMayChange", h.new IfMayChangeHelper()); 
+		handlebar.registerHelper("ifMayView",   h.new IfMayViewHelper());
+		handlebar.registerHelpers(h.new SimpleHelpers());
 	}
+
 	public boolean exists(String templateName) { return new File(dir,templateName+postfix).exists(); } // TODO: handle classpath
 
 	public CompiledTemplate compile(CompiledTemplate defaultTemplate, String ... names) {

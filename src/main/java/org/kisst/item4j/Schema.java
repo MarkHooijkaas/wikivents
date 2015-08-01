@@ -128,7 +128,7 @@ public class Schema<T> implements Type<T> {
 	public class BooleanField extends Field {//implements Schema.BooleanField {
 		public BooleanField(String name) { super(Type.javaBoolean, name); }
 		public BooleanField(Builder builder) { super(builder); }
-		public boolean getBoolean(Struct s) { return s.getBoolean(getName(),false); }
+		public boolean getBoolean(Struct s, boolean defaultValue) { return s.getBoolean(getName(),defaultValue); }
 	}
 	public class IntField extends Field {//implements Schema.IntegerField {
 		public IntField(String name) { super(Type.javaInteger, name); }

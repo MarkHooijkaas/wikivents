@@ -20,7 +20,6 @@ public abstract class CrudObject extends SchemaObject {
 		return key;
 	}
 	protected String uniqueKey() { return new ObjectId().toHexString();}
-	abstract public boolean mayBeChangedBy(String userId);
 
 	@SuppressWarnings("unchecked")
 	public<T extends CrudObject> CrudRef<T> getRef() { return (CrudRef<T>) table.createRef(_id);}

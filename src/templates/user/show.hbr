@@ -1,6 +1,7 @@
 {{> header}}
 
 <h1>{{record.username}}</h1>
+{{> show/changeButton}}
 
   <table class="table table-hover">
     <tbody>
@@ -8,9 +9,7 @@
       {{> show/text value=record.email label="email"}}
     </tbody>
   </table>
-
-{{> show/changeButton}}
- 
+	 
  <form role="form" method="POST" action="../addFriend/{{record._id}}">
    <button type="submit" class="btn btn-default">Voeg toe aan mijn vrienden</button>
  </form>
@@ -19,7 +18,7 @@
    <table class="table table-hover">
      <tbody>
  {{#each record.friends}}
- <tr><td>{{privUser call user}} @{{since}}</td></tr>
+ <tr><td>{{priv name}} @{{since}}</td></tr>
  {{/each}}
      </tbody>
    </table>

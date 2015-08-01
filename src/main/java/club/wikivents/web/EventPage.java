@@ -21,7 +21,11 @@ public class EventPage extends WikiventsPage {
 	public final HttpCallHandler addOrganizer=this::handleAddOrganizer;
 	
 	public final HttpCallDispatcher handler=new HttpCallDispatcher(this); 	
-	@Override public void handle(HttpCall call, String subPath) { handler.handle(WikiventsCall.of(call, model), subPath); }
+	@Override public void handle(HttpCall httpcall, String subPath) {
+		WikiventsCall call = WikiventsCall.of(httpcall, model);
+		// add data to call
+		handler.handle(call, subPath);
+	}
 	
 	public void listAllEvents(TemplateData data, HttpCall httpcall, String subPath) { data.add("list", model.events.findAll()); }
 	public void eventRecord(TemplateData data, HttpCall httpcall, String subPath) { data.add("record", model.events.read(subPath)); }
