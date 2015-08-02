@@ -24,13 +24,13 @@ public class WikiventsSite implements HttpCallHandler {
 		public final HttpCallHandler event=new EventPage(WikiventsSite.this);
 		public final HttpCallHandler login  = loginPage::handleLogin;
 		public final HttpCallHandler logout = loginPage::handleLogout;
-		public final HttpCallHandler resources=new ResourceHandler("", "src/resources");
-		public final HttpCallHandler css=new ResourceHandler("", "src/resources/css");
-		public final HttpCallHandler scripts=new ResourceHandler("", "src/resources/scripts");
-		public final HttpCallHandler js=new ResourceHandler("", "src/resources/js");
-		public final HttpCallHandler images=new ResourceHandler("", "src/resources/images");
+		public final HttpCallHandler resources=new ResourceHandler("resources/", "src/resources");
+		public final HttpCallHandler css=new ResourceHandler("resources/css/", "src/resources/css");
+		public final HttpCallHandler scripts=new ResourceHandler("resources/scripts/", "src/resources/scripts");
+		public final HttpCallHandler js=new ResourceHandler("resources/js/", "src/resources/js");
+		public final HttpCallHandler images=new ResourceHandler("resources/images/", "src/resources/images");
 		@HttpCallDispatcher.Path(dispatchPath="favicon.ico")
-		public final HttpCallHandler favicon =new ResourceHandler("", "src/resources/favicon.ico");
+		public final HttpCallHandler favicon =new ResourceHandler("resources/favicon.ico", "src/resources/favicon.ico");
 	}
 	public WikiventsSite(Struct props) {
 		this.model=WikiventsModels.createModel(props);

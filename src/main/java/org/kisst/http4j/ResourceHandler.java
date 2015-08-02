@@ -87,6 +87,7 @@ public class ResourceHandler implements HttpCallHandler {
 		catch (IOException e) { throw new RuntimeException(e);}
 		call.response.setHeader("Content-Disposition", String.format(CONTENT_DISPOSITION_HEADER, fileName));
 
+		System.out.println(fileName+":"+contentLength);
 		if (contentLength != -1) {
 			call.response.setHeader("Content-Length", String.valueOf(contentLength));
 		}
@@ -137,7 +138,7 @@ public class ResourceHandler implements HttpCallHandler {
 			public ClassPathResource(String name) { this.name=name;} // this.url=this.getClass().getClassLoader().getResource(name);}
 			@Override public String getFileName() { return name;}
 			@Override public long getLastModified() { return System.currentTimeMillis();}
-			@Override public long getContentLength() { return 0;}
+			@Override public long getContentLength() { return -1;}
 			@Override public InputStream getInputStream() {
 				return this.getClass().getClassLoader().getResourceAsStream(name);
 			}
