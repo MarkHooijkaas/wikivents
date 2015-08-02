@@ -53,7 +53,7 @@ public class Schema<T> implements Type<T> {
 		catch (IllegalAccessException e) { throw new RuntimeException(e); }
 	}
 
-	public class Field {
+	public class Field implements HasName {
 		public final Type<?> type;
 		public final String name;
 		private final boolean optional;

@@ -6,8 +6,8 @@ import org.kisst.crud4j.CrudObjectSchema;
 import org.kisst.crud4j.CrudTable.CrudRef;
 import org.kisst.http4j.handlebar.AccessChecker;
 import org.kisst.item4j.Immutable;
+import org.kisst.item4j.struct.HashStruct;
 import org.kisst.item4j.struct.Struct;
-import org.kisst.item4j.struct.VarargStruct;
 import org.kisst.util.PasswordEncryption;
 
 public class User extends CrudObject implements AccessChecker<User>{
@@ -77,9 +77,9 @@ public class User extends CrudObject implements AccessChecker<User>{
 	public void changePassword(String newPassword) {
 		String salt = PasswordEncryption.createSaltString();
 		String pw = PasswordEncryption.encryptPassword(newPassword, salt);
-		User newUser= this.modified(model, new VarargStruct(
-				schema.passwordSalt,  salt,
-				schema.encryptedPassword, pw));
+		User newUser= this.modified(model, new HashStruct()
+			.add(schema.passwordSalt,  salt)
+			.add(schema.encryptedPassword, pw));
 		model.users.update(this, newUser);
 	}
 	
