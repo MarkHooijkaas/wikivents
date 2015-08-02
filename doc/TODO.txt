@@ -1,18 +1,24 @@
+MUSTHAVE
 if unique index fails, cache can be corrupted with some indices updated and others not
+locking of mutation
 encryption of cookie
 better in-page forms, conciser java code, message if not ok
+reset password mechanism
+foto's users
 
+NICE
+email
 multiple skins
 jar file with resources
 logging
 wysiwyg editor for description, comments
-foto's users
 foto's event
+efficent handling of ref.get when db not in memory
 
+LATER
 groups
 references
 immutable struct
-efficent handling of ref.get when db not in memory
 
 
 rethink the url's with POST params
