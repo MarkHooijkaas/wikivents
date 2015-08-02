@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="src" path="src/test/java"/>
-	<classpathentry kind="lib" path="lib/servlet-api-2.5.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.13.jar"/>
 	<classpathentry kind="lib" path="lib/compiler-0.9.0.jar"/>
 	<classpathentry kind="lib" path="lib/handlebars-2.2.2.jar"/>
