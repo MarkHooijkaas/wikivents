@@ -67,7 +67,7 @@ public class ObjectSchema<T> implements Schema, Type<T> {
 			this.name=name; 
 			this.optional=false; 
 			this.allowsNull=false;
-			this.field=ReflectionUtil.getField(getJavaClass(), name);
+			this.field=ReflectionUtil.getField(ObjectSchema.this.getJavaClass(), name);
 			this.defaultValue=null;
 			AssertUtil.assertNotNull(field, "field "+getJavaClass()+"::"+name);
 		}
@@ -77,7 +77,7 @@ public class ObjectSchema<T> implements Schema, Type<T> {
 			this.optional=builder.optional; 
 			this.allowsNull=builder.allowsNull;
 			this.defaultValue=builder.defaultValue;
-			this.field=ReflectionUtil.getField(getJavaClass(), getName());
+			this.field=ReflectionUtil.getField(ObjectSchema.this.getJavaClass(), getName());
 			AssertUtil.assertNotNull(field, "field "+getJavaClass()+"::"+name);
 		}
 		public Object getObject(Struct s) { 
