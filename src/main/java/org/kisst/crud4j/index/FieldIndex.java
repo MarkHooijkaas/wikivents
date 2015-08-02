@@ -5,7 +5,7 @@ import java.util.Arrays;
 import org.kisst.crud4j.CrudObject;
 import org.kisst.crud4j.CrudSchema;
 import org.kisst.crud4j.StorageOption;
-import org.kisst.item4j.Schema;
+import org.kisst.item4j.ObjectSchema;
 import org.kisst.item4j.struct.Struct;
 
 public abstract class FieldIndex<T extends CrudObject> extends Index<T> implements StorageOption {
@@ -23,7 +23,7 @@ public abstract class FieldIndex<T extends CrudObject> extends Index<T> implemen
 	}
 	public String getKey(Struct obj) {
 		String result="";
-		for (Schema<?>.Field field : fields)
+		for (ObjectSchema<?>.Field field : fields)
 			result+="|"+field.getString(obj); // should be unique when fields don't have | in it
 		return result;
 	}

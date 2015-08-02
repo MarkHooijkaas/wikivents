@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.kisst.item4j.Item;
-import org.kisst.item4j.Schema;
+import org.kisst.item4j.ObjectSchema;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.util.ReflectionUtil;
 
@@ -48,7 +48,7 @@ public abstract class CrudModel implements Item.Factory {
 		return arr;
 	}
 	
-	public <T extends CrudObject> UniqueIndex<T> getUniqueIndex(Class<?> cls, Schema<?>.Field ... fields) {
+	public <T extends CrudObject> UniqueIndex<T> getUniqueIndex(Class<?> cls, ObjectSchema<?>.Field ... fields) {
 		for (StorageOption opt: options) {
 			if (opt instanceof UniqueIndex && opt.getRecordClass()==cls) {
 				@SuppressWarnings("unchecked")

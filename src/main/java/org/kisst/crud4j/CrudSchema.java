@@ -2,11 +2,11 @@ package org.kisst.crud4j;
 
 import java.lang.reflect.Constructor;
 
-import org.kisst.item4j.Schema;
+import org.kisst.item4j.ObjectSchema;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.util.ReflectionUtil;
 
-public class CrudSchema<T> extends Schema<T> {
+public class CrudSchema<T> extends ObjectSchema<T> {
 	public CrudSchema(Class<T> cls) {  super(cls); }
 	
 	@SuppressWarnings("unchecked")

@@ -6,13 +6,13 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.kisst.crud4j.CrudModel.UniqueIndex;
 import org.kisst.crud4j.CrudObject;
 import org.kisst.crud4j.CrudSchema;
-import org.kisst.item4j.Schema;
+import org.kisst.item4j.ObjectSchema;
 
 public class MemoryUniqueIndex<T extends CrudObject> extends FieldIndex<T>  implements UniqueIndex<T> {
 	private ConcurrentHashMap<String, T> map=new ConcurrentHashMap<String, T>();
 
 	@SafeVarargs
-	public MemoryUniqueIndex(CrudSchema<T> schema, Schema<T>.Field ... fields) { super(schema, fields); }
+	public MemoryUniqueIndex(CrudSchema<T> schema, ObjectSchema<T>.Field ... fields) { super(schema, fields); }
 
 	@Override public T get(String ... values) { return map.get(getKey(values)); }
 

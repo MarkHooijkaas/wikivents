@@ -2,15 +2,15 @@ package org.kisst.crud4j;
 
 import java.lang.reflect.Constructor;
 
-import org.kisst.item4j.Schema;
+import org.kisst.item4j.ObjectSchema;
 import org.kisst.item4j.struct.MultiStruct;
 import org.kisst.item4j.struct.SingleItemStruct;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.util.ReflectionUtil;
 
 public abstract class SchemaObject implements Struct, CrudModelObject {
-	public final Schema<?> schema;
-	public <T extends SchemaObject> SchemaObject(Schema<T> schema) { this.schema=schema; }
+	public final ObjectSchema<?> schema;
+	public <T extends SchemaObject> SchemaObject(ObjectSchema<T> schema) { this.schema=schema; }
 
 	@Override public String toString() { return toShortString(); }
 	@Override public Iterable<String> fieldNames() { return schema.fieldNames(); }
