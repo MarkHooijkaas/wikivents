@@ -18,6 +18,4 @@ public class Friend extends ReflectStruct implements CrudModelObject {
 		this.user=new User.Ref(model, u._id);
 		this.since=Instant.now();
 	}
-	public String name() { return user.get().username; }
-	//@Override public String toString() { return "Friend("+user._id+")"; }
 }

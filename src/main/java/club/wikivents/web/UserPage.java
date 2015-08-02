@@ -30,7 +30,14 @@ public class UserPage extends WikiventsPage {
 	}
 	
 	public void listAllUsers(TemplateData data, HttpCall httpcall, String subPath) { data.add("list", model.users.findAll()); }
-	public void userRecord(TemplateData data, HttpCall httpcall, String subPath) { data.add("record", model.users.read(subPath)); }
+	public void userRecord(TemplateData data, HttpCall httpcall, String subPath) {
+		User record;
+		if (subPath.startsWith(":"))
+			record=model.users.read(subPath.substring(1));
+		else
+			record=model.usernameIndex.get(subPath);
+		data.add("record", record);
+	}
 
 	public void handleAddFriend(HttpCall httpcall, String subPath) {
 		WikiventsCall call=WikiventsCall.of(httpcall, model);

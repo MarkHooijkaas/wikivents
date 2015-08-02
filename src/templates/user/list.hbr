@@ -10,9 +10,8 @@
     <tbody>
 {{#each list}}  
       <tr>
-        <td><a href="/user/show/{{_id}}">{{username}}</a></td>
+        <td>{{&link}}</td>
         <td>{{email}}</td>
-        <td>{{_id}}</td>
       </tr>
 {{/each}}
     </tbody>

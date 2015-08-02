@@ -50,6 +50,12 @@ public class Event extends CrudObject implements Comparable<Event> {
 			sj.add(r.get().username);
 		return sj.toString();
 	}
+	public String organizerLinks() {
+		StringJoiner sj = new StringJoiner(", ");
+		for (User.Ref r : organizers)
+			sj.add(r.link());
+		return sj.toString();
+	}
 	
 	public static final Schema schema=new Schema();
 	public static class Schema extends CrudObjectSchema<Event> {

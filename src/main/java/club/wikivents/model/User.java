@@ -10,6 +10,7 @@ import org.kisst.item4j.struct.HashStruct;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.util.PasswordEncryption;
 
+
 public class User extends CrudObject implements AccessChecker<User>{
 	public final WikiventsModel model;
 	public final String username;
@@ -29,9 +30,16 @@ public class User extends CrudObject implements AccessChecker<User>{
 		this.friends=schema.friends.getSequence(model, data);
 		this.isAdmin=schema.isAdmin.getBoolean(data,false);
 	}
+	public String link() { 	return "<a href=\"/user/show/"+username+"\">"+username+"</a>"; } 
 	
 	public static class Ref extends CrudRef<User> implements CrudModelObject {
 		public Ref(WikiventsModel model, String _id) { super(model.users, _id); }
+		public String link() { 
+			User u=get0();
+			if (u==null)
+				return "unknown";
+			return u.link();
+		} 
 		public String name() {
 			 // TODO: this will be inefficient if database not in memory
 			User u=get0();
