@@ -1,35 +1,57 @@
 package club.wikivents.web;
 
-import org.kisst.crud4j.HttpCrudForm;
 import org.kisst.http4j.HttpCall;
-import org.kisst.http4j.handlebar.FormData;
-import org.kisst.item4j.struct.Struct;
+import org.kisst.http4j.form.HttpFormData;
+import org.kisst.http4j.handlebar.TemplateEngine.CompiledTemplate;
 
 import club.wikivents.model.Event;
 
-public class EventForm extends HttpCrudForm<Event> {
-	public class Form extends Data {
-		public Form(HttpCall call, Struct record) { super(call, record); }
-		public final Field organizer=new Field("organizer", call.userid);
-		public final Field title = new Field("title");
-		public final Field date= new Field("date");
-		public final Field min = new Field("min");
-		public final Field max = new Field("max");
-		public final Field location = new Field("location");
-		public final Field description= new Field("description");
+public class EventForm extends WikiventsThing {
+	public EventForm(WikiventsSite site) { super(site);	}
+
+	private final CompiledTemplate template=engine.compileTemplate("event/edit");
+
+	public class Form extends HttpFormData {
+		public Form(HttpCall call) { super(call, template); }
+		public final InputField organizer=new InputField("organizer", call.userid);
+		public final InputField title = new InputField("title");
+		public final InputField date= new InputField("date");
+		public final InputField min = new InputField("min");
+		public final InputField max = new InputField("max");
+		public final InputField location = new InputField("location");
+		public final InputField description= new InputField("description");
 	}
 
-	public EventForm(WikiventsSite site) {
-		super(site.model.events, site.engine, "event");
+	public void handleCreate(HttpCall call, String subPath) {
+		Form formdata = new Form(call);
+		if (call.isGet()) 
+			formdata.showForm();
+		else {
+			if (formdata.isValid())
+				model.events.create(new Event(model, formdata.record));
+			formdata.handle();
+		}
+	}
+	
+	public void handleEdit(HttpCall httpcall, String subPath) {
+		WikiventsCall call = WikiventsCall.of(httpcall, model);
+		Event oldRecord = model.events.read(subPath);
+		Form formdata = new Form(call);
+		
+		if (! oldRecord.mayBeChangedBy(call.user))
+			formdata.error("Not authorized");
+		
+		if (call.isGet())
+			formdata.showForm();
+		else {
+			if (formdata.isValid()) {
+				Event newRecord=oldRecord.modified(model, formdata.record);
+				System.out.println("Updating "+subPath+" old:"+oldRecord+" new:"+newRecord);
+				model.events.update(oldRecord, newRecord);
+			}
+			formdata.handle();
+		}
 	}
 
-	@Override public FormData createFormData(HttpCall call, Struct struct) { return new Form(call,struct); }
-	@Override public boolean isAuthorized(Struct oldRecord, HttpCall call) {
-		if (((WikiventsCall)call).userid==null)
-			return false;
-		return ((WikiventsCall)call).userid.equals(oldRecord.getString("organizer" ,null));
-	}
-
-	@Override public Event createObject(Struct input) { return table.createObject(input); }
 }
 

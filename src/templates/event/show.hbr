@@ -20,11 +20,12 @@
   </table>
 
 {{> show/changeButton}}
+{{#ifMayChange record}}
 <form role="form" method="POST" action="../addOrganizer/{{record._id}}">
 	<input type="text" name="newOrganizer">
 	<button type="submit" class="btn btn-default">Voeg organisator toe</button>
 </form>
-
+{{/ifMayChange}}
 
   <h2>Deelnemers</h2>
 

@@ -16,12 +16,14 @@ public class WikiventsSite implements HttpCallHandler {
 	public final TemplateEngine engine;
 	public final HttpCallHandler handler;
 	public final Pages pages;
+	public final LoginPage loginPage;
 
 	public class Pages {
 		public final HttpCallHandler home=new TemplatePage(WikiventsSite.this, "home");
 		public final HttpCallHandler user=new UserPage(WikiventsSite.this);
 		public final HttpCallHandler event=new EventPage(WikiventsSite.this);
-		public final HttpCallHandler login=new LoginPage(WikiventsSite.this);
+		public final HttpCallHandler login  = loginPage::handleLogin;
+		public final HttpCallHandler logout = loginPage::handleLogout;
 		public final HttpCallHandler resources=new ResourceHandler("", "src/resources");
 		public final HttpCallHandler css=new ResourceHandler("", "src/resources/css");
 		public final HttpCallHandler scripts=new ResourceHandler("", "src/resources/scripts");
@@ -34,6 +36,7 @@ public class WikiventsSite implements HttpCallHandler {
 		this.model=WikiventsModels.createModel(props);
 		this.engine=new TemplateEngine(props.getStruct("handlebars"));
 		engine.registerUserHelpers(User.class, "authenticatedUser");
+		this.loginPage=new LoginPage(this);
 		this.pages=new Pages();
 		this.handler = new HttpCallDispatcher(pages);
 		//for (User u :model.users) {
@@ -41,7 +44,10 @@ public class WikiventsSite implements HttpCallHandler {
 		//		u.setPassword(u.password);
 		//}
 	}
-	@Override public void handle(HttpCall call, String subPath) { this.handler.handle(call, subPath);}
+	@Override public void handle(HttpCall httpcall, String subPath) {
+		WikiventsCall call = WikiventsCall.of(httpcall, model);
+		this.handler.handle(call, subPath);
+	}
 
 
 	public void close() { model.close(); }

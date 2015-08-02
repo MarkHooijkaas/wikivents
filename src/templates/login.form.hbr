@@ -3,7 +3,7 @@
 {{#if userid}}
 Je bent ingelogd als {{user.username}}
 
-<form role="form" method="post" action="/login">
+<form role="form" method="post" action="/logout">
   <div class="checkbox">
     <label>Wil je uitloggen?</label>
   </div>

@@ -1,26 +1,25 @@
 package club.wikivents.web;
 
 import org.kisst.http4j.HttpCall;
-import org.kisst.http4j.handlebar.FormData;
-import org.kisst.http4j.handlebar.HttpForm;
-import org.kisst.item4j.struct.Struct;
+import org.kisst.http4j.form.HttpFormData;
+import org.kisst.http4j.handlebar.TemplateEngine.CompiledTemplate;
 
 import club.wikivents.model.User;
 
-public class LoginPage extends WikiventsPage {
-	private final HttpForm<Fields> form=new HttpForm<Fields>(engine.compileTemplate("login.form"), this::fields);
+public class LoginPage extends WikiventsThing {
 	public LoginPage(WikiventsSite site) { super(site); }
+	private final CompiledTemplate template=engine.compileTemplate("login.form");
 
-	public class Fields extends FormData {
+	public class Fields extends HttpFormData {
+		public Fields(HttpCall call) { super(call,template); }
+
 		public final User user=model.usernameIndex.get(record.getString("username",null));
-		public final Field username = new Field("username", this::validateUsername);
-		public final Field password = new Field("password", this::validatePassword);
-
-		public Fields(Struct record) { super(record); }
+		public final InputField username = new InputField("username", this::validateUsername);
+		public final InputField password = new InputField("password", this::validatePassword);
 		
 		// TODO: what is correct behaviour? Should we validate these fields??? w 
-		public String validateUsername(Field f) { return (user!=null) ? null : "Unknown username "+f.value;} 
-		public String validatePassword(Field f) { 
+		public String validateUsername(InputField f) { return (user!=null) ? null : "Unknown username "+f.value;} 
+		public String validatePassword(InputField f) { 
 			if (user==null)
 				return null;
 			if (user.checkPassword((String) f.value))
@@ -29,26 +28,25 @@ public class LoginPage extends WikiventsPage {
 		} 
 
 	};
-	
-	public Fields fields(HttpCall call, String subPath, Struct input) { return new Fields(input); }
-	
-	@Override public void handle(HttpCall httpcall, String subPath) {
-		WikiventsCall call=WikiventsCall.of(httpcall,model);
+
+
+	public void handleLogout(HttpCall call, String subPath) {
 		if (call.isPost() && "true".equals(call.request.getParameter("logout"))) {
 			call.clearCookie();
-			call.redirect("");
-			return;
+			call.redirect("/home");
 		}
-		Fields result = form.handle(call, subPath);
-		if (result==null)
-			return;
-		if (result.user.encryptedPassword==null) { // user has no password, so don't let him/her log in 
-			call.redirect("");
-			return; 
+	}
+
+	
+	public void handleLogin(HttpCall httpcall, String subPath) {
+		WikiventsCall call=WikiventsCall.of(httpcall,model);
+		Fields data = new Fields(call);
+		if (call.isGet())
+			data.showForm();
+		else {
+			if (data.isValid())
+				call.setCookie(data.user._id);
+			data.handle();
 		}
-		if (! result.user.checkPassword((String) result.password.value) ) 
-			throw new RuntimeException("Invalid login");
-		call.setCookie(result.user._id);
-		call.redirect("/user/show/"+result.user._id);
 	}
 }
