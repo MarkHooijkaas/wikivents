@@ -15,7 +15,7 @@ import org.kisst.item4j.struct.Struct;
 import org.kisst.util.AssertUtil;
 import org.kisst.util.ReflectionUtil;
 
-public class ObjectSchema<T> implements Type<T> {
+public class ObjectSchema<T> implements Schema, Type<T> {
 	//public static Factory globalFactory=Factory.basicFactory;
 
 	private final LinkedHashMap<String, Field> fields=new LinkedHashMap<String, Field>(); // TODO: make Immutable
@@ -53,7 +53,7 @@ public class ObjectSchema<T> implements Type<T> {
 		catch (IllegalAccessException e) { throw new RuntimeException(e); }
 	}
 
-	public class Field implements HasName {
+	public class Field implements Schema.Field {
 		public final Type<?> type;
 		public final String name;
 		private final boolean optional;
@@ -102,6 +102,7 @@ public class ObjectSchema<T> implements Type<T> {
 		}
 		public void setValue(HashStruct doc, Object value) { doc.put(getName(), value); } 
 
+		public Class<?> getJavaClass() { return this.type.getJavaClass(); }
 		public Type<?> getType() { return this.type; }
 		public String getName() { return this.name; }
 		public boolean isOptional() { return optional; }
