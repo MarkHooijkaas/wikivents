@@ -22,13 +22,17 @@ public class EventForm extends WikiventsThing {
 		public final InputField description= new InputField("description");
 	}
 
-	public void handleCreate(HttpCall call, String subPath) {
+	public void handleCreate(HttpCall httpcall, String subPath) {
+		WikiventsCall call = WikiventsCall.of(httpcall, model);
 		Form formdata = new Form(call);
 		if (call.isGet()) 
 			formdata.showForm();
 		else {
-			if (formdata.isValid())
-				model.events.create(new Event(model, formdata.record));
+			if (formdata.isValid()) {
+				Event evt = new Event(model, formdata.record);
+				model.events.create(evt);
+				evt.addOrganizer(model, call.user);
+			}
 			formdata.handle();
 		}
 	}
