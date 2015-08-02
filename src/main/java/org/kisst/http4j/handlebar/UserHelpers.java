@@ -75,7 +75,7 @@ public class UserHelpers<T> {
 			//System.out.println("Object:"+obj);
 			T user=getUserOrNull(options);
 			if (user!=null)
-				return ""+obj;
+				return obj==null?null:""+obj;
 			return "***";
 		}
 		public CharSequence debug(Object obj) {

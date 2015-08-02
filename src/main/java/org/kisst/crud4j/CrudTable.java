@@ -105,6 +105,7 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 			this._id=_id; 
 		}
 		public TT get() { return table.read(_id); }
+		public TT get0() { return table.readOrNull(_id); }
 		@Override public String toString() { return _id; } //return "Ref("+table.getName()+":"+_id+")";}
 	}
 

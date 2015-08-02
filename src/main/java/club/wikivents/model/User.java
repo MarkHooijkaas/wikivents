@@ -32,7 +32,13 @@ public class User extends CrudObject implements AccessChecker<User>{
 	
 	public static class Ref extends CrudRef<User> implements CrudModelObject {
 		public Ref(WikiventsModel model, String _id) { super(model.users, _id); }
-		public String name() { return get().username; } // TODO: this will be inefficient if database not in memory
+		public String name() {
+			 // TODO: this will be inefficient if database not in memory
+			User u=get0();
+			if (u==null)
+				return "unknown";
+			return u.username; 
+		}
 	}
 	
 	public static final Schema schema=new Schema();
