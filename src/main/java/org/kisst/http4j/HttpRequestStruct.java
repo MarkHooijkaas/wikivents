@@ -12,7 +12,5 @@ public class HttpRequestStruct implements Struct {
 
 	@Override public String toString() { return toShortString(); }
 	@Override public Object getDirectFieldValue(String name) { return request.getParameter(name); }
-	@SuppressWarnings("unchecked")
 	@Override public Iterable<String> fieldNames() { return request.getParameterMap().keySet(); }
-
 }
