@@ -102,6 +102,21 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 		Sequence<ST> newSequence = oldSequence.growTail(value);
 		updateField(oldValue, field, newSequence);
 	}
+	public synchronized <ST> int removeSequenceItem(T oldValue, ObjectSchema<T>.SequenceField<ST> field, ST value) {
+		Sequence<ST> oldSequence = field.getSequence(model, oldValue);
+		int index=0;
+		for (ST it: oldSequence) {
+			System.out.println("Checkng "+it);
+			if (it.equals(value)) { // TODO: will equals work?
+				System.out.println("Removing "+it);
+				Sequence<ST> newSequence = oldSequence.remove(index);
+				updateField(oldValue, field, newSequence);
+				return 1;
+			}
+			index++;
+		}
+		return 0;
+	}
 
 	
 	

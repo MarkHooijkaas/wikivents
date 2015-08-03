@@ -88,17 +88,28 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 				return true;
 		return false;
 	}
+	public Guest findGuest(User user) {
+		for (Guest g : guests)
+			if (g.user._id.equals(user._id)) // already member
+				return g;
+		return null;
+	}
 	public void addGuest(WikiventsModel model, User user) {
 		if (isGuest(user))
 			return;
 		model.events.addSequenceItem(this, schema.guests, new Guest(model, user));
+	}
+	public void removeGuest(WikiventsModel model, User user) {
+		Guest g=findGuest(user);
+		System.out.println("FOUND GUEST "+g);
+		if (g!=null)
+			model.events.removeSequenceItem(this, schema.guests, g);
 	}
 	public boolean isOrganizer(User user) {
 		for (User.Ref r: organizers) {
 			if (r._id.equals(user._id)) 
 				return true;
 		}
-		System.out.println("not an organizer");
 		return false;
 	}
 
