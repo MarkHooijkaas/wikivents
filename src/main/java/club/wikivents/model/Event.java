@@ -43,7 +43,8 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 		this.comments=schema.comments.getSequence(model, data);//data.getTypedSequenceOrEmpty(model, Comment.class,"comments");
 		
 	}
-	
+	@Override public String getUniqueSortingKey() { return ""+date+"|"+_id; }
+
 	public String guestCount() { return guests.size()<=max ? guests.size()+"" : max+"+"+(guests.size()-max); }   
 	public String organizerNames() {
 		StringJoiner sj = new StringJoiner(", ");

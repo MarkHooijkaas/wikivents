@@ -99,8 +99,10 @@ public abstract class CrudModel implements Item.Factory {
 		public CrudSchema<T>.Field[] fields();
 		public T get(String ... field); 
 	}
-	public interface OrderedIndex<T extends CrudObject> extends Index<T >{
-		public Iterable<T> all(); 
+	public interface OrderedIndex<T extends CrudObject> extends Index<T >, Iterable<T>{
+		public Iterable<T> tailList(String fromKey); 
+		public Iterable<T> headList(String toKey);  
+		public Iterable<T> subList(String fromKey,String toKey); 
 	}
 	/*
 	public interface MultiIndex<T extends CrudObject> { public TypedSequence<T> get(String field); }

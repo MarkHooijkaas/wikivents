@@ -1,18 +1,20 @@
 MUSTHAVE
 encryption of cookie
-better in-page forms, conciser java code, message if not ok
 reset password mechanism
+layout 
+
 foto's users
-sorted events
+email
 
 
 NICE
-email
+wysiwyg editor for description, comments
+better in-page forms, conciser java code, message if not ok
 multiple skins
 logging
-wysiwyg editor for description, comments
 foto's event
 efficent handling of ref.get when db not in memory
+formatting of files
 
 LATER
 groups

@@ -12,7 +12,7 @@
     </thead>
     <tbody>
 		
-{{#each list}}  
+{{#each model.futureEvents}} 
 	  <tr>
         <td>{{date}}</td>
         <td>{{&priv organizerLinks}}</td>

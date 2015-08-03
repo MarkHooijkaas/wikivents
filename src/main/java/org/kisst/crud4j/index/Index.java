@@ -6,7 +6,7 @@ import org.kisst.crud4j.CrudTable.ChangeHandler;
 import org.kisst.crud4j.StorageOption;
 
 public abstract class Index<T extends CrudObject> implements StorageOption, ChangeHandler<T> {
-	private final CrudSchema<T> schema;
+	public final CrudSchema<T> schema;
 	protected Index(CrudSchema<T> schema) { this.schema=schema;	}
 	
 	@Override public Class<T> getRecordClass() { return this.schema.getJavaClass(); }

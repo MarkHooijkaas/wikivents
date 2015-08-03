@@ -1,34 +1,26 @@
 package org.kisst.crud4j.index;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 import org.kisst.crud4j.CrudModel.OrderedIndex;
 import org.kisst.crud4j.CrudObject;
 import org.kisst.crud4j.CrudSchema;
-import org.kisst.crud4j.CrudTable;
 
-public class MemoryOrderedIndex<T extends CrudObject> extends Index<T> implements OrderedIndex<T> {
-	private ConcurrentSkipListMap<T,T> set;
-	
-	public MemoryOrderedIndex(CrudSchema<T> schema) { 
-		super(schema);
-		this.set=new ConcurrentSkipListMap<T,T>();
-	}
+public class MemoryOrderedIndex<T extends CrudObject> extends AbstractKeyedIndex<T> implements OrderedIndex<T> {
+	private final ConcurrentSkipListMap<String, T> map=new ConcurrentSkipListMap<String,T>();
 
-	@Override public Iterable<T> all() { return set.values(); }
+	public MemoryOrderedIndex(CrudSchema<T> schema) { super(schema); }
 
-	@Override public boolean allow(CrudTable<T>.Change change) { return true; }
-	@Override public void commit(CrudTable<T>.Change change) {
-		if (change.newRecord!=null)
-			set.put(change.newRecord,change.newRecord);
-		if (change.oldRecord!=null)
-			set.remove(change.oldRecord);
-	}
+	@Override protected void add(String key, T record) { map.put(key, record); }
+	@Override protected void remove(String key) { map.remove(key); }
+	@Override protected String calcUniqueKey(T record) { return record.getUniqueSortingKey(); }
+	@Override public boolean keyExists(String key) { return map.containsKey(key); }
 
-	@Override public void rollback(CrudTable<T>.Change change) {
-		if (change.oldRecord!=null)
-			set.put(change.oldRecord,change.oldRecord);
-		if (change.newRecord!=null)
-			set.remove(change.newRecord);
-	}
+	@Override public Iterator<T> iterator() { return map.values().iterator(); }
+
+	@Override public Collection<T> tailList(String fromKey) { return map.tailMap(fromKey).values(); } 
+	@Override public Collection<T> headList(String toKey) { return map.tailMap(toKey).values(); } 
+	@Override public Collection<T> subList(String fromKey,String toKey) { return map.subMap(fromKey, toKey).values(); } 
 }

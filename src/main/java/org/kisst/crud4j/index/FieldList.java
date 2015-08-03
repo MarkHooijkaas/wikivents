@@ -4,17 +4,17 @@ import java.util.Arrays;
 
 import org.kisst.crud4j.CrudObject;
 import org.kisst.crud4j.CrudSchema;
-import org.kisst.crud4j.StorageOption;
 import org.kisst.item4j.ObjectSchema;
 import org.kisst.item4j.struct.Struct;
 
-public abstract class FieldIndex<T extends CrudObject> extends Index<T> implements StorageOption {
+public class FieldList<T extends CrudObject> { 
 	private final CrudSchema<T>.Field[] fields;
-	protected FieldIndex(CrudSchema<T> schema, CrudSchema<T>.Field[] fields) { super(schema);	this.fields=fields;	}
+	@SafeVarargs
+	protected FieldList (CrudSchema<T>.Field ... fields) { this.fields=fields;	}
 
-	public CrudSchema<T>.Field[] fields() { return Arrays.copyOf(fields,fields.length); }
+	public ObjectSchema<T>.Field[] fields() { return Arrays.copyOf(fields,fields.length); }
 	
-	@Override public String toString() { return this.getClass().getSimpleName()+"("+getRecordClass().getSimpleName()+"::"+fieldnames()+")"; }
+	@Override public String toString() { return this.getClass().getSimpleName()+"("+fieldnames()+")"; }
 	public String fieldnames() {
 		String result = fields[0].getName();
 		for (int i=1; i<fields.length; i++)
@@ -33,4 +33,5 @@ public abstract class FieldIndex<T extends CrudObject> extends Index<T> implemen
 			result+="|"+str;
 		return result;
 	}
+	
 }

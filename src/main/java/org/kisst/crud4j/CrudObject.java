@@ -24,4 +24,5 @@ public abstract class CrudObject extends SchemaObject {
 	@SuppressWarnings("unchecked")
 	public<T extends CrudObject> CrudRef<T> getRef() { return (CrudRef<T>) table.createRef(_id);}
 	
+	public String getUniqueSortingKey() { return _id; }
 }
