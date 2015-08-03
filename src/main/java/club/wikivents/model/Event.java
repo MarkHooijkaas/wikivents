@@ -6,12 +6,13 @@ import java.util.StringJoiner;
 import org.kisst.crud4j.CrudObject;
 import org.kisst.crud4j.CrudObjectSchema;
 import org.kisst.crud4j.CrudTable.CrudRef;
+import org.kisst.http4j.handlebar.AccessChecker;
 import org.kisst.item4j.Immutable;
 import org.kisst.item4j.Immutable.Sequence;
 import org.kisst.item4j.Item;
 import org.kisst.item4j.struct.Struct;
 
-public class Event extends CrudObject implements Comparable<Event> {
+public class Event extends CrudObject implements Comparable<Event>, AccessChecker<User> {
 	public final String title;
 	public final String location;
 	public final String description;
@@ -75,12 +76,11 @@ public class Event extends CrudObject implements Comparable<Event> {
 
 
 	
-	public boolean mayBeChangedBy(User user) { return user.isAdmin || isOrganizer(user); }
+	@Override public boolean mayBeChangedBy(User user) { return user.isAdmin || isOrganizer(user); }
+	@Override public boolean mayBeViewedBy(User user) { return true; }
 	
 	public void addComment(WikiventsModel model, User user, String text) {
-		Comment comment=new Comment(user,text);
-		Event newEvent = this.modified(model, schema.comments, comments.growTail(comment));
-		model.events.update(this, newEvent);
+		model.events.addSequenceItem(this, schema.comments, new Comment(user,text));
 	}
 	public boolean isGuest(User user) {
 		for (Guest g : guests)
@@ -91,16 +91,12 @@ public class Event extends CrudObject implements Comparable<Event> {
 	public void addGuest(WikiventsModel model, User user) {
 		if (isGuest(user))
 			return;
-		Guest guest=new Guest(model, user);
-		Event newEvent = this.modified(model, schema.guests, guests.growTail(guest));
-		model.events.update(this, newEvent);
+		model.events.addSequenceItem(this, schema.guests, new Guest(model, user));
 	}
 	public boolean isOrganizer(User user) {
-		System.out.println("checking "+user);
-		for (CrudRef<User> r: organizers) {
-			if (r._id.equals(user._id)) // already member
+		for (User.Ref r: organizers) {
+			if (r._id.equals(user._id)) 
 				return true;
-			System.out.println("not ");
 		}
 		System.out.println("not an organizer");
 		return false;
@@ -109,10 +105,9 @@ public class Event extends CrudObject implements Comparable<Event> {
 	public void addOrganizer(WikiventsModel model, User user) {
 		if (isOrganizer(user))
 			return;
-		Event newEvent = this.modified(model, schema.organizers, organizers.growTail(new User.Ref(model, user._id)));
-		System.out.println("newEvent"+newEvent);
-		model.events.update(this, newEvent);
+		model.events.addSequenceItem(this, schema.organizers, new User.Ref(model, user._id));
 	}
 
 	@Override public int compareTo(Event other) { return this.date.compareTo(other.date);}
+
 }

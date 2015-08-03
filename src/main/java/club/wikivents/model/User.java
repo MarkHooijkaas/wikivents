@@ -83,18 +83,16 @@ public class User extends CrudObject implements AccessChecker<User>{
 		for (Friend f: friends) // check if already in my friends
 			if (f.user._id.equals(user._id)) // TODO: when Friend with no user, this will throw NPE
 				return;
-		Friend newFriend = new Friend(model, user);
-		User newUser= this.modified(model, schema.friends, friends.growTail(newFriend));
-		model.users.update(this, newUser);
+		model.users.addSequenceItem(this, schema.friends, new Friend(model, user));
 	}
 	
 	public void changePassword(String newPassword) {
 		String salt = PasswordEncryption.createSaltString();
 		String pw = PasswordEncryption.encryptPassword(newPassword, salt);
-		User newUser= this.modified(model, new HashStruct()
+		model.users.updateFields(this, new HashStruct()
 			.add(schema.passwordSalt,  salt)
-			.add(schema.encryptedPassword, pw));
-		model.users.update(this, newUser);
+			.add(schema.encryptedPassword, pw)
+		);
 	}
 	
 	

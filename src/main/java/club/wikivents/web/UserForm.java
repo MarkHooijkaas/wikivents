@@ -18,10 +18,11 @@ public class UserForm extends WikiventsThing {
 		public final InputField  email   = new InputField("email", this::validateEmail);
 		
 		@Override public String successUrl() {
+			WikiventsCall wcall = WikiventsCall.of(call, model);
 			if (call.userid==null)
 				return "/home"; // TODO: redirect a new user to a password screen
 			else
-				return "show/"+call.userid;
+				return "/user/show/"+wcall.user.username;
 		}
 	}
 
@@ -48,11 +49,8 @@ public class UserForm extends WikiventsThing {
 		if (call.isGet())
 			new Form(call,oldRecord).showForm();
 		else {
-			if (formdata.isValid()) {
-				User newRecord=oldRecord.modified(model, formdata.record);
-				System.out.println("Updating "+subPath+" old:"+oldRecord+" new:"+newRecord);
-				model.users.update(oldRecord, newRecord);
-			}
+			if (formdata.isValid()) 
+				model.users.updateFields(oldRecord, formdata.record);
 			formdata.handle();
 		}
 	}

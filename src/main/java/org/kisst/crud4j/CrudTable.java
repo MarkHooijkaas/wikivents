@@ -5,8 +5,12 @@ import java.util.Iterator;
 import org.kisst.crud4j.CrudModel.Index;
 import org.kisst.crud4j.index.MemoryUniqueIndex;
 import org.kisst.item4j.Immutable;
+import org.kisst.item4j.Immutable.Sequence;
+import org.kisst.item4j.ObjectSchema;
+import org.kisst.item4j.Schema.Field;
 import org.kisst.item4j.seq.TypedSequence;
 import org.kisst.item4j.struct.MultiStruct;
+import org.kisst.item4j.struct.SingleItemStruct;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.util.ArrayUtil;
 
@@ -81,15 +85,26 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 		//System.out.println("object "+obj.getClass()+"="+obj);
 		return result;
 	}
-	public synchronized void update(T oldValue, T newValue) {
+	private synchronized void update(T oldValue, T newValue) {
 		checkSameId(oldValue, newValue);
 		for(Index<T> index : indices) index.notifyUpdate(oldValue, newValue);
 		storage.update(oldValue, newValue); 
 		// TODO : rollback indices in case of Exception?
 	}
-	public void updateFields(T oldValue, Struct newFields) { 
+	public synchronized void updateFields(T oldValue, Struct newFields) { 
 		update(oldValue, createObject(new MultiStruct(newFields, oldValue))); 
 	}
+	public synchronized void updateField(T oldValue, Field field, Object newValue) { 
+		updateFields(oldValue, new SingleItemStruct(field.getName(),newValue)); 
+	}
+	public synchronized <ST> void addSequenceItem(T oldValue, ObjectSchema<T>.SequenceField<ST> field, ST value) {
+		Sequence<ST> oldSequence = field.getSequence(model, oldValue);
+		Sequence<ST> newSequence = oldSequence.growTail(value);
+		updateField(oldValue, field, newSequence);
+	}
+
+	
+	
 	public synchronized void delete(T oldValue) {
 		storage.delete(oldValue);
 		for(Index<T> index : indices) index.notifyDelete(oldValue);

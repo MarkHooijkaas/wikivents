@@ -20,6 +20,7 @@
   </table>
 
 {{> show/changeButton}}
+
 {{#ifMayChange record}}
 <form role="form" method="POST" action="../addOrganizer/{{record._id}}">
 	<input type="text" name="newOrganizer">

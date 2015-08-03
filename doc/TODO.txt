@@ -9,7 +9,6 @@ foto's users
 NICE
 email
 multiple skins
-jar file with resources
 logging
 wysiwyg editor for description, comments
 foto's event

@@ -1,7 +1,5 @@
 {{> header}}
 
-this:{{debug this}}<br>
-form:{{debug form}}<br>
 <form role="form" method="post">
   {{> edit/text form.username label="Gebruikersnaam"}}
   {{> edit/text form.email    label="email"}}

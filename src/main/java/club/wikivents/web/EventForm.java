@@ -3,6 +3,7 @@ package club.wikivents.web;
 import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.form.HttpFormData;
 import org.kisst.http4j.handlebar.TemplateEngine.CompiledTemplate;
+import org.kisst.item4j.struct.Struct;
 
 import club.wikivents.model.Event;
 
@@ -12,6 +13,8 @@ public class EventForm extends WikiventsThing {
 	private final CompiledTemplate template=engine.compileTemplate("event/edit");
 
 	public class Form extends HttpFormData {
+		public Form(HttpCall call, Struct data) { super(call, data, template); }
+
 		public Form(HttpCall call) { super(call, template); }
 		public final InputField organizer=new InputField("organizer", call.userid);
 		public final InputField title = new InputField("title");
@@ -40,19 +43,17 @@ public class EventForm extends WikiventsThing {
 	public void handleEdit(HttpCall httpcall, String subPath) {
 		WikiventsCall call = WikiventsCall.of(httpcall, model);
 		Event oldRecord = model.events.read(subPath);
+		System.out.println(oldRecord);
 		Form formdata = new Form(call);
 		
 		if (! oldRecord.mayBeChangedBy(call.user))
 			formdata.error("Not authorized");
 		
 		if (call.isGet())
-			formdata.showForm();
+			new Form(call,oldRecord).showForm();
 		else {
-			if (formdata.isValid()) {
-				Event newRecord=oldRecord.modified(model, formdata.record);
-				System.out.println("Updating "+subPath+" old:"+oldRecord+" new:"+newRecord);
-				model.events.update(oldRecord, newRecord);
-			}
+			if (formdata.isValid())
+				model.events.updateFields(oldRecord, formdata.record);
 			formdata.handle();
 		}
 	}
