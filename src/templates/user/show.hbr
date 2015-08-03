@@ -1,6 +1,7 @@
 {{> header}}
 
 <h1>{{record.username}}</h1>
+
 {{> show/changeButton}}
 
   <table class="table table-hover">

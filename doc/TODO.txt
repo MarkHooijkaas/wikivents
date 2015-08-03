@@ -1,10 +1,10 @@
 MUSTHAVE
-if unique index fails, cache can be corrupted with some indices updated and others not
-locking of mutation
 encryption of cookie
 better in-page forms, conciser java code, message if not ok
 reset password mechanism
 foto's users
+sorted events
+
 
 NICE
 email
@@ -18,7 +18,7 @@ LATER
 groups
 references
 immutable struct
-
+record locking instead of table locking
 
 rethink the url's with POST params
 events

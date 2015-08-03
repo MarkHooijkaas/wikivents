@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.kisst.crud4j.CrudTable.ChangeHandler;
 import org.kisst.item4j.Item;
 import org.kisst.item4j.ObjectSchema;
 import org.kisst.item4j.struct.Struct;
@@ -34,15 +35,15 @@ public abstract class CrudModel implements Item.Factory {
 		throw new RuntimeException("Unknown Storage for type "+cls.getSimpleName());
 	}
 	@SuppressWarnings("unchecked")
-	public<T extends CrudObject> Index<T>[] getIndices(Class<?> cls) {
-		ArrayList<Index<T>> result=new ArrayList<Index<T>>();
+	public<T extends CrudObject> ChangeHandler<T>[] getIndices(Class<?> cls) {
+		ArrayList<ChangeHandler<T>> result=new ArrayList<ChangeHandler<T>>();
 		for (StorageOption opt: options) {
 			if (opt instanceof Index && opt.getRecordClass()==cls) {
-				result.add((Index<T>) opt);
+				result.add((ChangeHandler<T>) opt);
 				System.out.println("Using index "+opt);
 			}
 		}
-		Index<T>[] arr=new Index[result.size()];
+		ChangeHandler<T>[] arr=new ChangeHandler[result.size()];
 		for (int i=0; i<result.size(); i++)
 			arr[i]=result.get(i);
 		return arr;
@@ -93,9 +94,6 @@ public abstract class CrudModel implements Item.Factory {
 
 	public interface Index<T extends CrudObject> {
 		public Class<T> getRecordClass(); 
-		public void notifyCreate(T record);
-		public void notifyUpdate(T oldRecord, T newRecord);
-		public void notifyDelete(T oldRecord);
 	}
 	public interface UniqueIndex<T extends CrudObject> extends Index<T >{
 		public CrudSchema<T>.Field[] fields();

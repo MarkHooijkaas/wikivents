@@ -2,7 +2,6 @@ package org.kisst.crud4j;
 
 import java.util.Iterator;
 
-import org.kisst.crud4j.CrudModel.Index;
 import org.kisst.crud4j.index.MemoryUniqueIndex;
 import org.kisst.item4j.Immutable;
 import org.kisst.item4j.Immutable.Sequence;
@@ -13,14 +12,18 @@ import org.kisst.item4j.struct.MultiStruct;
 import org.kisst.item4j.struct.SingleItemStruct;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.util.ArrayUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
+	public final Logger logger = LoggerFactory.getLogger(CrudTable.class);
+	
 	protected final CrudObjectSchema<T> schema;
 	protected final CrudModel model;
 	private final String name;
 	private final StructStorage storage;
 	private final MemoryUniqueIndex<T> cache;
-	private final Index<T>[] indices;
+	private final ChangeHandler<T>[] indices;
 
 	private boolean alwaysCheckId=true;
 	@SuppressWarnings("unchecked")
@@ -31,7 +34,7 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 		this.storage=model.getStorage(schema.cls);
 		if (storage.useCache()) {
 			cache=new MemoryUniqueIndex<T>(schema, schema.getKeyField());
-			this.indices=(Index<T>[]) ArrayUtil.join(cache,model.getIndices(schema.cls));
+			this.indices=(ChangeHandler<T>[]) ArrayUtil.join(cache,model.getIndices(schema.cls));
 		}
 		else {
 			cache=null;
@@ -48,10 +51,9 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 		for (Struct rec:seq) {
 			try {
 				T obj=createObject(rec);
-				for (Index<T> index: indices) 
-					index.notifyCreate(obj);
+				executeChange(new Change(null,obj));
 			}
-			catch (Exception e) { e.printStackTrace(); /*ignore*/ } // TODO: return dummy activity
+			catch (RuntimeException e) { e.printStackTrace(); /*ignore*/ } // TODO: return dummy activity
 		}
 	}
 	public void close() { storage.close(); }
@@ -61,10 +63,9 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 
 	public T createObject(Struct doc) { return schema.createObject(model, doc); }
 
-	public synchronized void create(T doc) {
-		for(Index<T> index : indices) index.notifyCreate(doc);
-		storage.create(doc);
-		// TODO : rollback indices in case of Exception?
+	public synchronized void create(T newValue) {
+		if (executeChange(new Change(null,newValue)))
+			storage.create(newValue);
 	}
 
 	public T read(String key) {
@@ -87,9 +88,8 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 	}
 	private synchronized void update(T oldValue, T newValue) {
 		checkSameId(oldValue, newValue);
-		for(Index<T> index : indices) index.notifyUpdate(oldValue, newValue);
-		storage.update(oldValue, newValue); 
-		// TODO : rollback indices in case of Exception?
+		if (executeChange(new Change(oldValue,newValue)))
+			storage.update(oldValue, newValue); 
 	}
 	public synchronized void updateFields(T oldValue, Struct newFields) { 
 		update(oldValue, createObject(new MultiStruct(newFields, oldValue))); 
@@ -121,9 +121,8 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 	
 	
 	public synchronized void delete(T oldValue) {
-		storage.delete(oldValue);
-		for(Index<T> index : indices) index.notifyDelete(oldValue);
-		// TODO : rollback indices in case of Exception?
+		if (executeChange(new Change(oldValue,null)))
+			storage.delete(oldValue);
 	}
 
 	
@@ -163,4 +162,66 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 	@Override public Object getObject(int index) { return findAll().get(index); }
 	@Override public Iterator<T> iterator() { return findAll().iterator(); }
 	@Override public Class<?> getElementClass() { return schema.cls; }
+	
+	public class Change {
+		public final T oldRecord;
+		public final T newRecord;
+		public Change(T oldRecord, T newRecord) { this.oldRecord=oldRecord; this.newRecord=newRecord; }
+		@Override public String toString() { return "Change("+oldRecord+","+newRecord+")"; } 
+	}
+	public interface ChangeHandler<TT extends CrudObject> {
+		public boolean allow(CrudTable<TT>.Change change); 
+		public void commit(CrudTable<TT>.Change change); 
+		public void rollback(CrudTable<TT>.Change change); 
+	}
+
+	private final static Logger changeLogger = LoggerFactory.getLogger(CrudTable.Change.class);
+	
+	private boolean executeChange(Change change) {
+		changeLogger.info("applying {}", change);
+		if (allow(change))
+			return commmit(change);
+		return false;
+	}
+
+	private boolean allow(Change change) {
+		changeLogger.debug("asking to allow {}",change);
+		for (ChangeHandler<T> res : indices) {
+			try { 
+				changeLogger.debug("asking {}",res);
+				if (! res.allow(change)) {
+					changeLogger.warn("Resource {} refused {}",res,change);
+					return false;
+				}
+			} 
+			catch(RuntimeException e) { 
+				logger.error("Error preparing {}", change, e);
+				return false;
+			}
+		}
+		return true;
+	}
+
+	
+	private boolean commmit(Change change) {
+		changeLogger.debug("commiting {}",change);
+		for (int index=0; index<indices.length; index++) {
+			ChangeHandler<T> res = indices[index];
+			changeLogger.debug("commiting in {}",res);
+			try { res.commit(change); } 
+			catch(RuntimeException e) { 
+				changeLogger.error("Error commiting {}", change, e);
+				rollback(change,index-1);
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private void rollback(Change change, int highestIndex) {
+		for (int index=highestIndex; index>=0; index--) {
+			try { indices[index].rollback(change); } 
+			catch(RuntimeException e) { changeLogger.error("Error rolling back {}", change, e);}
+		}
+	}
 }

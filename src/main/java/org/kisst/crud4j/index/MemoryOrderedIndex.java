@@ -5,6 +5,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 import org.kisst.crud4j.CrudModel.OrderedIndex;
 import org.kisst.crud4j.CrudObject;
 import org.kisst.crud4j.CrudSchema;
+import org.kisst.crud4j.CrudTable;
 
 public class MemoryOrderedIndex<T extends CrudObject> extends Index<T> implements OrderedIndex<T> {
 	private ConcurrentSkipListMap<T,T> set;
@@ -16,10 +17,18 @@ public class MemoryOrderedIndex<T extends CrudObject> extends Index<T> implement
 
 	@Override public Iterable<T> all() { return set.values(); }
 
-	@Override public void notifyCreate(T newRecord) {set.put(newRecord,newRecord);} 
-	@Override public void notifyUpdate(T oldRecord, T newRecord) {
-		set.put(newRecord,newRecord);
-		set.remove(oldRecord);
+	@Override public boolean allow(CrudTable<T>.Change change) { return true; }
+	@Override public void commit(CrudTable<T>.Change change) {
+		if (change.newRecord!=null)
+			set.put(change.newRecord,change.newRecord);
+		if (change.oldRecord!=null)
+			set.remove(change.oldRecord);
 	}
-	@Override public void notifyDelete(T oldRecord) { set.remove(oldRecord); }
+
+	@Override public void rollback(CrudTable<T>.Change change) {
+		if (change.oldRecord!=null)
+			set.put(change.oldRecord,change.oldRecord);
+		if (change.newRecord!=null)
+			set.remove(change.newRecord);
+	}
 }
