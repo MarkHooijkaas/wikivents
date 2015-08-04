@@ -11,6 +11,7 @@ public class TemplatePage extends WikiventsPage {
 		super(site);
 		this.templateName = templateName;
 		this.enrichers=enrichers;
+		site.defaultTheme.getTemplate(templateName); // check if exists in defaultTheme
 	}
 
 	@Override public void handle(HttpCall httpcall, String subPath) {

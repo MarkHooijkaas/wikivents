@@ -9,7 +9,9 @@
 
 <div class="col-xs-4">
 
+{{#ifMayView this}}
 	{{> include/show.field value=record.organizerLinks     label="Organisator"}}
+{{/ifMayView}}
 	{{> include/show.field value=record.date     label="Datum"}}
 	{{> include/show.field value=record.min      label="Min"}}
 	{{> include/show.field value=record.max      label="Max"}}
@@ -29,25 +31,26 @@
   <h2>Deelnemers</h2>
 
 
-  <table class="table table-hover">
-    <tbody>
+  <div>
 {{#each record.guests}}
 
-<tr><td>
+<row>
 {{#ifMayChange this}}
- <form role="form" method="POST" action="/event/removeGuest/{{record._id}}">
-   {{&priv user.link}}
-   <button type="submit" class="btn btn-default" aria-label="Annuleer deelname">
-    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-  </button>
-</form>
+		<form role="form" method="POST" action="/event/removeGuest/{{record._id}}">
+			{{&priv user.link}}
+			<button type="submit" class="btn btn-default btn-xs" aria-label="Annuleer deelname">
+		 		<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+			</button>
+		</form>
 {{else}}
-{{&priv user.link}}
+		{{&priv user.link}}
 {{/ifMayChange}}
-</td></tr>
+</row>
+
 {{/each}}
-    </tbody>
-  </table>
+ </div>
+  
+  
  <form role="form" method="POST" action="../addGuest/{{record._id}}">
    <button type="submit" class="btn btn-default">Ik wil ook deelnemen</button>
  </form>
@@ -55,6 +58,7 @@
 
  </row>
  
+{{#ifMayView this}}
   
   <h2>Commentaar</h2>
  <form role="form" method="POST" action="../addComment/{{record._id}}">
@@ -69,5 +73,8 @@
 {{/each}}
     </tbody>
   </table>
+
+{{/ifMayView}}
+
   
 {{> include/page.end}}

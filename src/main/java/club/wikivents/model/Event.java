@@ -79,7 +79,7 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 
 
 	
-	@Override public boolean mayBeChangedBy(User user) { return user.isAdmin || isOrganizer(user); }
+	@Override public boolean mayBeChangedBy(User user) { return user!=null && (user.isAdmin || isOrganizer(user)); }
 	@Override public boolean mayBeViewedBy(User user) { return true; }
 	
 	public void addComment(WikiventsModel model, User user, String text) {

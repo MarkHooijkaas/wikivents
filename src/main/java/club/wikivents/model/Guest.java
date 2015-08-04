@@ -20,7 +20,7 @@ public class Guest extends ReflectStruct implements CrudModelObject, AccessCheck
 		this.date=Instant.now();
 	}
 	
-	@Override public boolean mayBeChangedBy(User user) { return user.isAdmin || this.user._id.equals(user._id); }
+	@Override public boolean mayBeChangedBy(User user) { return user!=null && (user.isAdmin || this.user._id.equals(user._id)); }
 	@Override public boolean mayBeViewedBy(User user) { return user!=null; }
 
 }

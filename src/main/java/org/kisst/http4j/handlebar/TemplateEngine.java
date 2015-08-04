@@ -30,11 +30,13 @@ public class TemplateEngine {
 	private final Handlebars handlebar;
 	//private final File dir;
 	private final String postfix;
+	private final String dirnames;
 	
 	public TemplateEngine(Struct props) {
 		this.props=props;
 		this.loadDynamic=props.getBoolean("loadDynamic",false); // TODO: handlebars seems to load dynamically always
 		String filedir = props.getString("file.dir", null);
+		this.dirnames=filedir;
 		this.postfix = props.getString("postfix", ".hbr");
 		TemplateLoader cp = new ClassPathTemplateLoader("/templates/",postfix);
 		if (filedir!=null) {
@@ -49,6 +51,7 @@ public class TemplateEngine {
 					.with(new ConcurrentMapTemplateCache());;
 	}
 
+	@Override public String toString() { return "TemplateEngine("+dirnames+")"; }
 	public <T> void registerHelper(String name, Helper<T> helper) { handlebar.registerHelper(name, helper); }
 	public void registerHelpers(Object helpers) { handlebar.registerHelpers(helpers); }
 	public <T> void registerUserHelpers(Class<T> cls, String path) {

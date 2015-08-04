@@ -17,7 +17,9 @@ public class WikiventsSite implements HttpCallHandler {
 	public final HttpCallHandler handler;
 	public final Pages pages;
 	public final LoginPage loginPage;
-	private final HashMap<String, WikiventsTheme> themes= new HashMap<String, WikiventsTheme>();  
+	public final  WikiventsTheme defaultTheme;  
+
+	private final HashMap<String, WikiventsTheme> themes= new HashMap<String, WikiventsTheme>();
 	
 	public class Pages {
 		public final HttpCallHandler home=new TemplatePage(WikiventsSite.this, "home");
@@ -39,7 +41,8 @@ public class WikiventsSite implements HttpCallHandler {
 		//engine.registerUserHelpers(User.class, "authenticatedUser");
 		Struct themeProps = props.getStruct("theme");
 		for (String name: themeProps.fieldNames())
-			themes.put(name, new WikiventsTheme(themeProps.getStruct(name))); 
+			themes.put(name, new WikiventsTheme(themeProps.getStruct(name)));
+		this.defaultTheme=themes.get("default");
 		this.loginPage=new LoginPage(this);
 		this.pages=new Pages();
 		this.handler = new HttpCallDispatcher(pages);
