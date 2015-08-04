@@ -15,6 +15,7 @@ public class User extends CrudObject implements AccessChecker<User>{
 	public final WikiventsModel model;
 	public final String username;
 	public final String email;
+	public final String city;
 	public final String passwordSalt;
 	public final String encryptedPassword;
 	public final boolean isAdmin;
@@ -25,6 +26,7 @@ public class User extends CrudObject implements AccessChecker<User>{
 		this.model=model;
 		this.username=schema.username.getString(data);
 		this.email=schema.email.getString(data);
+		this.city=schema.city.getString(data);
 		this.passwordSalt=schema.passwordSalt.getString(data);
 		this.encryptedPassword=schema.encryptedPassword.getString(data);
 		this.friends=schema.friends.getSequence(model, data);
@@ -54,6 +56,7 @@ public class User extends CrudObject implements AccessChecker<User>{
 		public Schema() { super(User.class); addAllFields();}
 		public final StringField username = new StringField("username"); 
 		public final StringField email    = new StringField("email"); 
+		public final StringField city = new StringField("city"); 
 		public final StringField passwordSalt = new StringField("passwordSalt"); 
 		public final StringField encryptedPassword = new StringField("encryptedPassword"); 
 		public final BooleanField isAdmin = new BooleanField("isAdmin"); 

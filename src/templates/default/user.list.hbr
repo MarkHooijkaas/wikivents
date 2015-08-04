@@ -4,6 +4,7 @@
     <thead>
       <tr>
         <th>Naam</th>
+        <th>Woonplaats</th>
         <th>Email</th>
       </tr>
     </thead>
@@ -11,6 +12,7 @@
 {{#each list}}  
       <tr>
         <td>{{&link}}</td>
+        <td>{{city}}</td>
         <td>{{email}}</td>
       </tr>
 {{/each}}

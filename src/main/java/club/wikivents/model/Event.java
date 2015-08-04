@@ -12,6 +12,8 @@ import org.kisst.item4j.Immutable.Sequence;
 import org.kisst.item4j.Item;
 import org.kisst.item4j.struct.Struct;
 
+import com.github.jknack.handlebars.Handlebars.SafeString;
+
 public class Event extends CrudObject implements Comparable<Event>, AccessChecker<User> {
 	public final String title;
 	public final String location;
@@ -52,11 +54,11 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 			sj.add(r.get().username);
 		return sj.toString();
 	}
-	public String organizerLinks() {
+	public SafeString organizerLinks() {
 		StringJoiner sj = new StringJoiner(", ");
 		for (User.Ref r : organizers)
 			sj.add(r.link());
-		return sj.toString();
+		return new SafeString(sj.toString());
 	}
 	
 	public static final Schema schema=new Schema();

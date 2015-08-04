@@ -8,7 +8,8 @@
 
 <div class="container">
       {{> include/show.field value=record.username label="Gebruikersnaam"}}
-      {{> include/show.field value=record.email label="email"}}
+      {{> include/show.field value=record.email    label="email"}}
+      {{> include/show.field value=record.city     label="Woonplaats"}}
 </div>	 
 
 {{#ifMayChange record}}

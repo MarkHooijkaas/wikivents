@@ -1,4 +1,4 @@
 <div class="row">
-	<div class="col-xs-2"><label>{{label}}</label></div>
-	<div class="col-xs-10"><span>{{value}}</span></div>
+	<div class="col-xs-4"><label>{{label}}</label></div>
+	<div class="col-xs-8"><span>{{value}}</span></div>
 </div>

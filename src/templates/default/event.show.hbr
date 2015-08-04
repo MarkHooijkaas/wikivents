@@ -1,15 +1,21 @@
 {{> include/page.begin}}
 
 <h1>{{record.title}}</h1>
-<b>Georganiseerd door {{& record.organizerLinks}}</b>
-<div>{{record.description}}</div>
+<row>
 
-<div>
-	{{> include/show.field value=record.date     label="Datum"}}
-	{{> include/show.field value=record.min      label="Minimum aantal deelnemers"}}
-	{{> include/show.field value=record.max      label="Maximum aantal deelnemers"}}
-	{{> include/show.field value=record.location label="Locatie"}}
+<div class="col-xs-8">
+  {{record.description}}
 </div>
+
+<div class="col-xs-4">
+
+	{{> include/show.field value=record.organizerLinks     label="Organisator"}}
+	{{> include/show.field value=record.date     label="Datum"}}
+	{{> include/show.field value=record.min      label="Min"}}
+	{{> include/show.field value=record.max      label="Max"}}
+	{{> include/show.field value=record.location label="Locatie"}}
+
+
 
 {{> include/show.changeButton}}
 
@@ -22,24 +28,32 @@
 
   <h2>Deelnemers</h2>
 
- <form role="form" method="POST" action="../addGuest/{{record._id}}">
-   <button type="submit" class="btn btn-default">Ik wil ook deelnemen</button>
- </form>
 
   <table class="table table-hover">
     <tbody>
 {{#each record.guests}}
-<tr><td>{{&priv user.link}}
+
+<tr><td>
 {{#ifMayChange this}}
  <form role="form" method="POST" action="/event/removeGuest/{{record._id}}">
-   <button type="submit" class="btn btn-default">Verwijder me</button>
- </form>
+   {{&priv user.link}}
+   <button type="submit" class="btn btn-default" aria-label="Annuleer deelname">
+    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+  </button>
+</form>
+{{else}}
+{{&priv user.link}}
 {{/ifMayChange}}
 </td></tr>
 {{/each}}
     </tbody>
   </table>
-   
+ <form role="form" method="POST" action="../addGuest/{{record._id}}">
+   <button type="submit" class="btn btn-default">Ik wil ook deelnemen</button>
+ </form>
+</div>
+
+ </row>
  
   
   <h2>Commentaar</h2>
