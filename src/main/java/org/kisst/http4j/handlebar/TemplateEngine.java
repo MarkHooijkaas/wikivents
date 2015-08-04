@@ -14,6 +14,7 @@ import com.github.jknack.handlebars.Context.Builder;
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Helper;
 import com.github.jknack.handlebars.Template;
+import com.github.jknack.handlebars.cache.ConcurrentMapTemplateCache;
 import com.github.jknack.handlebars.context.FieldValueResolver;
 import com.github.jknack.handlebars.context.JavaBeanValueResolver;
 import com.github.jknack.handlebars.context.MapValueResolver;
@@ -21,12 +22,13 @@ import com.github.jknack.handlebars.context.MethodValueResolver;
 import com.github.jknack.handlebars.io.ClassPathTemplateLoader;
 import com.github.jknack.handlebars.io.CompositeTemplateLoader;
 import com.github.jknack.handlebars.io.FileTemplateLoader;
+import com.github.jknack.handlebars.io.TemplateLoader;
 
 public class TemplateEngine {
 	public final Struct props;
 	public final boolean loadDynamic;
 	private final Handlebars handlebar;
-	private final File dir;
+	//private final File dir;
 	private final String postfix;
 	
 	public TemplateEngine(Struct props) {
@@ -34,15 +36,17 @@ public class TemplateEngine {
 		this.loadDynamic=props.getBoolean("loadDynamic",false); // TODO: handlebars seems to load dynamically always
 		String filedir = props.getString("file.dir", null);
 		this.postfix = props.getString("postfix", ".hbr");
-		if (filedir==null)
-			this.dir=null;
-		else
-			this.dir=new File(filedir);
-		ClassPathTemplateLoader cp = new ClassPathTemplateLoader("/templates/",postfix);
-		if (dir==null)
-			this.handlebar=new Handlebars(cp);
-		else
-			this.handlebar=new Handlebars(new CompositeTemplateLoader(new FileTemplateLoader(dir,postfix),cp));
+		TemplateLoader cp = new ClassPathTemplateLoader("/templates/",postfix);
+		if (filedir!=null) {
+			String[] dirs = filedir.split(",");
+			TemplateLoader[] loaders=new TemplateLoader[dirs.length+1];
+			for (int i=0; i<dirs.length; i++)
+				loaders[i]=new FileTemplateLoader(new File(dirs[i]),postfix);
+			loaders[dirs.length]=cp;
+			cp=new CompositeTemplateLoader(loaders);
+		}
+			this.handlebar=new Handlebars(cp)
+					.with(new ConcurrentMapTemplateCache());;
 	}
 
 	public <T> void registerHelper(String name, Helper<T> helper) { handlebar.registerHelper(name, helper); }
@@ -54,17 +58,7 @@ public class TemplateEngine {
 		handlebar.registerHelpers(h.new SimpleHelpers());
 	}
 
-	public boolean exists(String templateName) { return new File(dir,templateName+postfix).exists(); } // TODO: handle classpath
-
-	public CompiledTemplate compile(CompiledTemplate defaultTemplate, String ... names) {
-		for (String name:names) {
-			if (exists(name)) {
-				System.out.println("Compiling "+name);
-				return compileTemplate(name);
-			}
-		}
-		return defaultTemplate;
-	}
+	//public boolean exists(String templateName) { return new File(dir,templateName+postfix).exists(); } // TODO: handle classpath
 
 	public CompiledTemplate compileTemplate(String templateName) { return new CompiledTemplate(templateName); }
 	private Template compile(String templateName) {
