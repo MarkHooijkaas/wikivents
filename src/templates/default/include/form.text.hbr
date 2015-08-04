@@ -1,5 +1,10 @@
-  <div class="form-group">
-    <label for="{{name}}">{{label}}: <i>{{message}}</i></label>
-    <input type="{{#if type}}{{type}}{{else}}text{{/if}}" class="form-control" id="{{name}}" name="{{name}}" value="{{value}}">
+ <row>
+ <div class="form-group col-xs-12">
+    <label for="{{name}}"  class="col-xs-2">{{label}}: <i>{{message}}</i></label>
+    <div class="col-xs-4">
+    	<input type="{{#if type}}{{type}}{{else}}text{{/if}}" class="form-control" id="{{name}}" name="{{name}}" value="{{value}}">
+    </div>
+    <div class="col-xs-6"></div>
   </div>
+  </row>
   
