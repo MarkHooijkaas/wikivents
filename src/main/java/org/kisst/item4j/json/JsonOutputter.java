@@ -12,9 +12,9 @@ public class JsonOutputter {
 	//private final String indentString;
 	public JsonOutputter(String indent) { }//this.indentString=indent; }
 
-	public String createString(Struct struct) {
+	public String createString(Object obj) {
 		StringWriter out=new StringWriter();
-		write(new PrintWriter(out), struct);
+		write(new PrintWriter(out), obj);
 		return out.toString();
 	}
 

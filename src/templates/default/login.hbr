@@ -1,0 +1,21 @@
+{{> include/page.begin}}
+
+{{#if userid}}
+Je bent al ingelogd als {{user.username}}
+
+Om uit te loggen kan je naar de <a href="/logout">Uitlog pagina</a> gaan.
+
+{{else}}
+
+<form role="form" method="post" action="/login">
+  {{> include/form.text form.username label="Gebruikersnaam"}}
+  {{> include/form.text form.password label="Wachtwoord" type="password"}}
+  <button type="submit" class="btn btn-default">Inloggen</button>
+</form>
+
+{{/if}}
+
+
+{{message}}
+
+{{> include/page.end}}

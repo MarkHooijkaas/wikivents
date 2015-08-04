@@ -40,7 +40,7 @@ public abstract class CrudModel implements Item.Factory {
 		for (StorageOption opt: options) {
 			if (opt instanceof Index && opt.getRecordClass()==cls) {
 				result.add((ChangeHandler<T>) opt);
-				System.out.println("Using index "+opt);
+				//System.out.println("Using index "+opt);
 			}
 		}
 		ChangeHandler<T>[] arr=new ChangeHandler[result.size()];

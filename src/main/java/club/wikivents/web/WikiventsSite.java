@@ -26,7 +26,7 @@ public class WikiventsSite implements HttpCallHandler {
 		public final HttpCallHandler user=new UserPage(WikiventsSite.this);
 		public final HttpCallHandler event=new EventPage(WikiventsSite.this);
 		public final HttpCallHandler login  = loginPage::handleLogin;
-		public final HttpCallHandler logout = loginPage::handleLogout;
+		public final HttpCallHandler logout = new LogoutPage(WikiventsSite.this);
 		public final HttpCallHandler resources=new ResourceHandler("resources/", "src/resources");
 		public final HttpCallHandler css=new ResourceHandler("resources/css/", "src/resources/css");
 		public final HttpCallHandler scripts=new ResourceHandler("resources/scripts/", "src/resources/scripts");

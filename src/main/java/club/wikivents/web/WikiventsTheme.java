@@ -18,7 +18,8 @@ public class WikiventsTheme extends TemplateTheme {
 	}
 	
 	CompiledTemplate home = template("home");
-	CompiledTemplate login = template("login.form");
+	CompiledTemplate login = template("login");
+	CompiledTemplate logout = template("logout");
 	CompiledTemplate userShow = template("user.show");
 	CompiledTemplate userEdit = template("user.edit");
 	CompiledTemplate userList = template("user.list");

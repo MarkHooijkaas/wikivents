@@ -40,6 +40,7 @@ public class WikiventsCall extends HttpCall {
 
 	
 	public TemplateData createTemplateData() { return new TemplateData(this); }
+	public void output(CompiledTemplate template) { template.output(new TemplateData(this), getWriter());}
 	public void output(CompiledTemplate template, TemplateData data) { template.output(data, getWriter());}
 
 	@Override public void ensureUser() { if (user==null) throwUnauthorized("Not Authenticated"); }

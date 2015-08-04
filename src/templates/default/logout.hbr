@@ -1,7 +1,6 @@
 {{> include/page.begin}}
 
 {{#if userid}}
-Je bent ingelogd als {{user.username}}
 
 <form role="form" method="post" action="/logout">
   <div class="checkbox">
@@ -13,15 +12,8 @@ Je bent ingelogd als {{user.username}}
 
 {{else}}
 
-<form role="form" method="post" action="/login">
-  {{> include/form.text form.username label="Gebruikersnaam"}}
-  {{> include/form.text form.password label="Wachtwoord" type="password"}}
-  <button type="submit" class="btn btn-default">Inloggen</button>
-</form>
+Je bent niet ingelogd 
 
 {{/if}}
-
-
-{{message}}
 
 {{> include/page.end}}
