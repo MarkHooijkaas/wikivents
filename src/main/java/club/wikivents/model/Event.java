@@ -104,7 +104,6 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 	}
 	public void removeGuest(WikiventsModel model, User user) {
 		Guest g=findGuest(user);
-		System.out.println("FOUND GUEST "+g);
 		if (g!=null)
 			model.events.removeSequenceItem(this, schema.guests, g);
 	}

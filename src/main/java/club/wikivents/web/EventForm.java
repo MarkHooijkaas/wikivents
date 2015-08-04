@@ -10,9 +10,9 @@ public class EventForm extends WikiventsThing {
 	public EventForm(WikiventsSite site) { super(site);	}
 
 	public class Form extends HttpFormData {
-		public Form(WikiventsCall call, Struct data) { super(call, data, call.getTheme().userEdit); }
+		public Form(WikiventsCall call, Struct data) { super(call, data, call.getTheme().eventEdit); }
 
-		public Form(WikiventsCall call) { super(call, call.getTheme().userEdit); }
+		public Form(WikiventsCall call) { super(call, call.getTheme().eventEdit); }
 		public final InputField organizer=new InputField("organizer", call.userid);
 		public final InputField title = new InputField("title");
 		public final InputField date= new InputField("date");
@@ -40,7 +40,6 @@ public class EventForm extends WikiventsThing {
 	public void handleEdit(HttpCall httpcall, String subPath) {
 		WikiventsCall call = WikiventsCall.of(httpcall, model);
 		Event oldRecord = model.events.read(subPath);
-		System.out.println(oldRecord);
 		Form formdata = new Form(call);
 		
 		if (! oldRecord.mayBeChangedBy(call.user))

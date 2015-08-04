@@ -87,7 +87,7 @@ public class ResourceHandler implements HttpCallHandler {
 		catch (IOException e) { throw new RuntimeException(e);}
 		call.response.setHeader("Content-Disposition", String.format(CONTENT_DISPOSITION_HEADER, fileName));
 
-		System.out.println(fileName+":"+contentLength);
+		//System.out.println(fileName+":"+contentLength);
 		if (contentLength != -1) {
 			call.response.setHeader("Content-Length", String.valueOf(contentLength));
 		}

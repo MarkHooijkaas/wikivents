@@ -30,10 +30,10 @@ public class Runner {
 	}
 	
 	public static void main(String[] args) {
-		PropertyConfigurator.configure("config/log4j.properties");
-		Runner runner=new Runner("config/wikivents.properties");
 		long ts=System.currentTimeMillis();
 		System.out.println("Starting INIT");
+		PropertyConfigurator.configure("config/log4j.properties");
+		Runner runner=new Runner("config/wikivents.properties");
 		System.out.println("End INIT: "+(System.currentTimeMillis()-ts));
 		runner.run();
 		System.out.println("SITE stopped");
