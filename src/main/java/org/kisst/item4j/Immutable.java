@@ -271,14 +271,14 @@ public interface Immutable {
 
 
 		private static class MyIterator<E> implements Iterator<E> {
-			private final E[] array;
+			private final Sequence<E> seq;
 			private int index;
 			private final int end;
-			private MyIterator(E[] array, int begin, int end) {
-				this.array=array; this.index=begin;	this.end=end;
+			private MyIterator(Sequence<E> seq, int begin, int end) {
+				this.seq=seq; this.index=begin;	this.end=end;
 			}
 			@Override public boolean hasNext() { return index<end; }
-			@Override public E next() { return array[index++]; }
+			@Override public E next() { return seq.get(index++); }
 			@Override public void remove() { throw new RuntimeException("not implemented");}
 		}
 
@@ -290,36 +290,34 @@ public interface Immutable {
 			}
 			@Override public int size() { return array.length; }
 			@Override public Object getObject(int index) { return array[index]; }
-			@Override public Iterator<T> iterator() { return new MyIterator<T>(array, 0, array.length);}
+			@Override public Iterator<T> iterator() { return new MyIterator<T>(this, 0, array.length);}
 		}
 
 		private final static class SubSequence<T> extends Immutable.Sequence<T> {
-			private final ArraySequence<T> seq;
+			private final Sequence<T> seq;
 			private final int start;
 			private final int end;
 			private  SubSequence(Immutable.Sequence<T> seq, int start, int end) {
 				super(seq.elementClass);
-				if (seq instanceof ArraySequence) {
-					this.seq=(ArraySequence<T>) seq;
-					this.start=start;
-					this.end=end;
-				}
-				else if (seq instanceof SubSequence) {
+				if (seq instanceof SubSequence) {
 					SubSequence<T> sub = (SubSequence<T>) seq;
 					this.seq=sub.seq;
 					this.start=sub.start+start;
 					this.end=sub.start+end;
 				}
-				else
-					throw new RuntimeException("Unsupported Immutable.Sequence type "+seq.getClass()); // should never happen
+				else {
+					this.seq=seq;
+					this.start=start;
+					this.end=end;
+				}
 				seq.checkIndex(this.start);
 				seq.checkIndex(this.end);
 				if (this.start>this.end)
 					throw new IndexOutOfBoundsException("subsequence start "+start+" should be less or equal to end "+end);
 			}
-			@Override public Iterator<T> iterator() { return new MyIterator<T>(seq.array, start, end);}
+			@Override public Iterator<T> iterator() { return new MyIterator<T>(seq, start, end);}
 			@Override public int size() { return end-start; }
-			@Override public Object getObject(int index) { return seq.array[start+index]; }
+			@Override public Object getObject(int index) { return seq.getObject(start+index); }
 		}
 		private final static class GrowTailSequence<T> extends Immutable.Sequence<T> {
 			private final Sequence<T> seq;
