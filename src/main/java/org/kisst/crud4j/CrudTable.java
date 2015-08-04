@@ -106,9 +106,7 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 		Sequence<ST> oldSequence = field.getSequence(model, oldValue);
 		int index=0;
 		for (ST it: oldSequence) {
-			System.out.println("Checkng "+it);
 			if (it.equals(value)) { // TODO: will equals work?
-				System.out.println("Removing "+it);
 				Sequence<ST> newSequence = oldSequence.remove(index);
 				updateField(oldValue, field, newSequence);
 				return 1;
