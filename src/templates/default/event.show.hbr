@@ -60,7 +60,7 @@
 
  </row>
  
-{{#ifMayView this}}
+{{#ifMayView record}}
   
   <h2>Commentaar</h2>
  <form role="form" method="POST" action="../addComment/{{record._id}}">
