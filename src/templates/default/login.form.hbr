@@ -1,4 +1,4 @@
-{{> header}}
+{{> include/page.begin}}
 
 {{#if userid}}
 Je bent ingelogd als {{user.username}}
@@ -14,8 +14,8 @@ Je bent ingelogd als {{user.username}}
 {{else}}
 
 <form role="form" method="post" action="/login">
-  {{> edit/text form.username label="Gebruikersnaam"}}
-  {{> edit/text form.password label="Wachtwoord" type="password"}}
+  {{> include/form.text form.username label="Gebruikersnaam"}}
+  {{> include/form.text form.password label="Wachtwoord" type="password"}}
   <div class="checkbox">
     <label><input type="checkbox"> Remember me</label>
   </div>
@@ -27,4 +27,4 @@ Je bent ingelogd als {{user.username}}
 
 {{message}}
 
-{{> footer}}
+{{> include/page.end}}

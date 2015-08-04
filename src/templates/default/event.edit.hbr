@@ -1,0 +1,16 @@
+{{> include/page.begin}}
+
+<script > $(document).ready(function(){ $('#mydatepicker').datepicker() }); </script>
+
+<form role="form" method="POST">
+	{{> include/form.text     form.title    label="Titel"}}
+	{{> include/form.date     form.date     label="Datum"}}
+	{{> include/form.text     form.min      label="Minimum aantal deelnemers"}}
+	{{> include/form.text     form.max      label="Maximum aantal deelnemers"}}
+	{{> include/form.text     form.location label="Locatie"}}
+	{{> include/form.textarea form.description label="Omschrijving" rows=10}}
+
+	{{> include/form.submitButton}}
+</form>
+
+{{> include/page.end}}

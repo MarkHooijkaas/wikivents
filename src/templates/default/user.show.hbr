@@ -1,0 +1,53 @@
+{{> include/page.begin}}
+
+<h1>Profiel van {{record.username}}</h1>
+
+
+{{#ifMayView record}}
+
+
+<div class="container">
+      {{> include/show.field value=record.username label="Gebruikersnaam"}}
+      {{> include/show.field value=record.email label="email"}}
+</div>	 
+
+{{#ifMayChange record}}
+
+{{> include/show.changeButton}}
+
+{{> include/modal.begin title="Wijzig wachtwoord"}}
+ <form role="form" method="POST" action="/user/changePassword">
+ 	<label for="">Wachtwoord</label><input type="password" name="newPassword">
+ 	<label for="">Wachtwoord Controle</label><input type="password" name="checkNewPassword">
+ 	<button type="submit" class="btn btn-default">Verander wachtwoord</button>
+ </form>
+{{> include/modal.end}}
+
+{{/ifMayChange}}
+ 
+ <h2>Vrienden</h2>
+   <table class="table table-hover">
+     <tbody>
+ {{#each record.friends}}
+ <tr><td>{{&priv user.link}} @{{since}}</td></tr>
+ {{/each}}
+     </tbody>
+   </table>
+ 
+ {{else}}
+
+<div class="col-xs-12"> Alleen vrienden mogen details zien</div>
+
+ <form role="form" method="POST" action="../addFriend/{{record._id}}">
+   <button type="submit" class="btn btn-default">Voeg {{record.username}} toe aan mijn vrienden</button>
+ </form>
+ 
+ <div class="col-xs-12">
+  N.B. Door {{record.username}} aan je vrienden toe te voegen, geef je {{record.username}} recht om jouw gegevens te zien. 
+ Dit geeft je echter nog niet het recht om zijn/haar gegevens te zien.
+ Daarvoor moet {{record.username}} je aan zijn/haar vriendenlijst toevoegen.
+</div>
+
+ {{/ifMayView}}
+ 
+{{> include/page.end}}

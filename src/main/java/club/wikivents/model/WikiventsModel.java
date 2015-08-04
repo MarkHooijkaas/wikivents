@@ -6,9 +6,17 @@ import org.kisst.crud4j.CrudModel;
 import org.kisst.crud4j.CrudTable;
 import org.kisst.crud4j.StorageOption;
 
+import club.wikivents.web.WikiventsSite;
+
 
 public class WikiventsModel extends CrudModel {
-	public WikiventsModel(StorageOption ... storage){ super(storage); initModel(); }
+	public final WikiventsSite site;
+
+	public WikiventsModel(WikiventsSite site, StorageOption ... storage){ 
+		super(storage);
+		this.site=site;
+		initModel(); 
+	}
 
 	public final CrudTable<User>  users  = new CrudTable<User>(this, User.schema);
 	public final CrudTable<Event> events = new CrudTable<Event>(this, Event.schema);

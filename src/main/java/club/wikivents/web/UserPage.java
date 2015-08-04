@@ -12,8 +12,8 @@ public class UserPage extends WikiventsPage {
 	public UserPage(WikiventsSite site) { super(site);	}
 	public final UserForm crud=new UserForm(site);
 
-	public final HttpCallHandler list=new TemplatePage(site,"user/list", this::listAllUsers);
-	public final HttpCallHandler show=new TemplatePage(site,"user/show", this::userRecord);
+	public final HttpCallHandler list=new TemplatePage(site,"user.list", this::listAllUsers);
+	public final HttpCallHandler show=new TemplatePage(site,"user.show", this::userRecord);
 	public final HttpCallHandler edit=crud::handleEdit;
 	public final HttpCallHandler create=crud::handleCreate;	
 	@PostOnly public final HttpCallHandler addFriend=this::handleAddFriend;
@@ -44,7 +44,7 @@ public class UserPage extends WikiventsPage {
 		call.ensureUser();
 		User friend=model.users.read(subPath);
 		call.user.addFriend(model, friend);
-		call.redirect("../show/"+call.user._id);
+		call.redirect("/user/show/"+call.user.username);
 	}
 
 	public void changePassword(HttpCall httpcall, String subPath) {
@@ -55,7 +55,7 @@ public class UserPage extends WikiventsPage {
 		if (! newPassword.equals(checkNewPassword))
 			return; // TODO: show message
 		call.user.changePassword(newPassword);
-		call.redirect("show/"+call.user._id);
+		call.redirect("/user/show/"+call.user.username);
 	}
 }
 

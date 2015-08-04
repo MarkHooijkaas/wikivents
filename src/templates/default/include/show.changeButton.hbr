@@ -1,0 +1,5 @@
+{{#ifMayChange record}}
+<form role="form" method="GET" action="../edit/{{record._id}}" class="btn">
+  <button type="submit" class="btn btn-info btn-lg">Wijzig gegevens</button>
+</form>
+{{/ifMayChange}}

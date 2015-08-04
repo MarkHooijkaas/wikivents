@@ -1,0 +1,5 @@
+{{> include/page.begin}}
+
+Deze pagina bestaat niet
+
+{{> include/page.end}}

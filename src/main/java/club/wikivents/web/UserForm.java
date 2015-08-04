@@ -2,7 +2,6 @@ package club.wikivents.web;
 
 import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.form.HttpFormData;
-import org.kisst.http4j.handlebar.TemplateEngine.CompiledTemplate;
 import org.kisst.item4j.struct.Struct;
 
 import club.wikivents.model.User;
@@ -10,10 +9,8 @@ import club.wikivents.model.User;
 public class UserForm extends WikiventsThing {
 	public UserForm(WikiventsSite site) { super(site); }
 	
-	private final CompiledTemplate template=engine.compileTemplate("user/edit");
-	
 	public class Form extends HttpFormData {
-		public Form(HttpCall call, Struct data) { super(call, data, template); }
+		public Form(WikiventsCall call, Struct data) { super(call, data, call.getTheme().userEdit); }
 		public final InputField username = new InputField("username");
 		public final InputField  email   = new InputField("email", this::validateEmail);
 		
@@ -27,7 +24,8 @@ public class UserForm extends WikiventsThing {
 	}
 
 	
-	public void handleCreate(HttpCall call, String subPath) {
+	public void handleCreate(HttpCall httpcall, String subPath) {
+		WikiventsCall call = WikiventsCall.of(httpcall, model);
 		Form formdata = new Form(call,null);
 		if (call.isGet()) 
 			formdata.showForm();

@@ -12,8 +12,8 @@ public class EventPage extends WikiventsPage {
 	public EventPage(WikiventsSite site) { super(site);	}
 	public final EventForm crud=new EventForm(site);
 
-	public final HttpCallHandler list=new TemplatePage(site,"event/list", this::listAllEvents);
-	public final HttpCallHandler show=new TemplatePage(site,"event/show", this::eventRecord);
+	public final HttpCallHandler list=new TemplatePage(site,"event.list", this::listAllEvents);
+	public final HttpCallHandler show=new TemplatePage(site,"event.show", this::eventRecord);
 	public final HttpCallHandler edit=crud::handleEdit;
 	public final HttpCallHandler create=crud::handleCreate;
 	public final HttpCallHandler addComment=this::handleAddComment;

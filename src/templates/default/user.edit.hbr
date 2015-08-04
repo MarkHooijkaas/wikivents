@@ -1,0 +1,14 @@
+{{> include/page.begin}}
+
+<form role="form" method="post">
+  {{> include/form.text form.username label="Gebruikersnaam"}}
+  {{> include/form.text form.email    label="email"}}
+  
+  {{#unless authenticated}}
+  {{> include/form.text form.password label="Kies een wachtwoord"}}
+  {{/unless}}
+  
+  {{> include/form.submitButton}}
+</form>
+
+{{> include/page.end}}

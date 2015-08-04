@@ -31,3 +31,36 @@ GET      event/show/id
     POST event/addGuest/id
     POST event/addComment/id
     POST event/addOrganizer (id in POST data)
+
+    
+PAGES
+home
+myhome?s
+user
+myaccount
+	logout
+	edit
+	change password
+events future, past, my, going-to
+	list/table
+	selector/tabs
+event
+	- title
+	- info (location, date, time)
+	- description
+	- guests
+	- organizer
+actions
+	- user/edit
+	- user/addFriend
+	- user/changePassword
+	- event/addGuest
+	- event/addComment
+
+
+
+
+
+
+
+

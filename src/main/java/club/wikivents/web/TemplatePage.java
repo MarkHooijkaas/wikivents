@@ -1,16 +1,15 @@
 package club.wikivents.web;
 
 import org.kisst.http4j.HttpCall;
-import org.kisst.http4j.handlebar.TemplateEngine.CompiledTemplate;
 import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
 
 public class TemplatePage extends WikiventsPage {
-	public final CompiledTemplate template;
+	public final String templateName;
 	private final DataEnricher[] enrichers;
 	
 	public TemplatePage(WikiventsSite site, String templateName, DataEnricher ... enrichers) {
 		super(site);
-		this.template = engine.compileTemplate(templateName);
+		this.templateName = templateName;
 		this.enrichers=enrichers;
 	}
 
@@ -18,7 +17,7 @@ public class TemplatePage extends WikiventsPage {
 		WikiventsCall call=WikiventsCall.of(httpcall,model);
 		TemplateData data = call.createTemplateData();
 		addTemplateData(data, httpcall, subPath);
-		call.output(template,data);
+		call.output(call.getTheme().getTemplate(templateName),data);
 	}
 
 	protected  void addTemplateData(TemplateData data, HttpCall httpcall, String subPath) {

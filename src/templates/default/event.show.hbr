@@ -1,25 +1,17 @@
-{{> header}}
+{{> include/page.begin}}
 
 <h1>{{record.title}}</h1>
 <b>Georganiseerd door {{& record.organizerLinks}}</b>
 <div>{{record.description}}</div>
 
-  <table class="table table-hover">
-    <thead>
-      <tr>
-        <th>Veld</th>
-        <th>waarde</th>
-      </tr>
-    </thead>
-    <tbody>
-	{{> show/text value=record.date     label="Datum"}}
-	{{> show/text value=record.min      label="Minimum aantal deelnemers"}}
-	{{> show/text value=record.max      label="Maximum aantal deelnemers"}}
-	{{> show/text value=record.location label="Locatie"}}
-    </tbody>
-  </table>
+<div>
+	{{> include/show.field value=record.date     label="Datum"}}
+	{{> include/show.field value=record.min      label="Minimum aantal deelnemers"}}
+	{{> include/show.field value=record.max      label="Maximum aantal deelnemers"}}
+	{{> include/show.field value=record.location label="Locatie"}}
+</div>
 
-{{> show/changeButton}}
+{{> include/show.changeButton}}
 
 {{#ifMayChange record}}
 <form role="form" method="POST" action="../addOrganizer/{{record._id}}">
@@ -64,4 +56,4 @@
     </tbody>
   </table>
   
-{{> footer}}
+{{> include/page.end}}

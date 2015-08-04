@@ -2,7 +2,6 @@ package club.wikivents.web;
 
 import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.form.HttpFormData;
-import org.kisst.http4j.handlebar.TemplateEngine.CompiledTemplate;
 import org.kisst.item4j.struct.Struct;
 
 import club.wikivents.model.Event;
@@ -10,12 +9,10 @@ import club.wikivents.model.Event;
 public class EventForm extends WikiventsThing {
 	public EventForm(WikiventsSite site) { super(site);	}
 
-	private final CompiledTemplate template=engine.compileTemplate("event/edit");
-
 	public class Form extends HttpFormData {
-		public Form(HttpCall call, Struct data) { super(call, data, template); }
+		public Form(WikiventsCall call, Struct data) { super(call, data, call.getTheme().userEdit); }
 
-		public Form(HttpCall call) { super(call, template); }
+		public Form(WikiventsCall call) { super(call, call.getTheme().userEdit); }
 		public final InputField organizer=new InputField("organizer", call.userid);
 		public final InputField title = new InputField("title");
 		public final InputField date= new InputField("date");

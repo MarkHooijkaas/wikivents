@@ -1,4 +1,4 @@
-{{>header}}
+{{>include/page.begin}}
 
   <table class="table table-hover">
     <thead>
@@ -17,4 +17,4 @@
     </tbody>
   </table>
   
-{{>footer}}
+{{>include/page.end}}

@@ -2,16 +2,14 @@ package club.wikivents.web;
 
 import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.form.HttpFormData;
-import org.kisst.http4j.handlebar.TemplateEngine.CompiledTemplate;
 
 import club.wikivents.model.User;
 
 public class LoginPage extends WikiventsThing {
 	public LoginPage(WikiventsSite site) { super(site); }
-	private final CompiledTemplate template=engine.compileTemplate("login.form");
 
 	public class Fields extends HttpFormData {
-		public Fields(HttpCall call) { super(call,template); }
+		public Fields(WikiventsCall call) { super(call,call.getTheme().login); }
 
 		public final User user=model.usernameIndex.get(record.getString("username",null));
 		public final InputField username = new InputField("username", this::validateUsername);

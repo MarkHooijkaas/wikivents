@@ -25,7 +25,7 @@ public class Main {
 		props.load(new File(configFile));
 
 
-		WikiventsModel model = WikiventsModels.createModel(props.getProps("wikivents"));
+		WikiventsModel model = WikiventsModels.createModel(null, props.getProps("wikivents"));
 		debug("created model");
 
 		for (User u: model.users.findAll())

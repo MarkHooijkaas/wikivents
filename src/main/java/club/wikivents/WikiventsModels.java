@@ -12,11 +12,12 @@ import org.kisst.item4j.struct.Struct;
 import club.wikivents.model.Event;
 import club.wikivents.model.User;
 import club.wikivents.model.WikiventsModel;
+import club.wikivents.web.WikiventsSite;
 
 public class WikiventsModels {
 
-	private static WikiventsModel createFileModel(Struct props) {
-		return new WikiventsModel(
+	private static WikiventsModel createFileModel(WikiventsSite site, Struct props) {
+		return new WikiventsModel(site,
 			new FileStorage(User.class, props),
 			new FileStorage(Event.class, props),
 			new MemoryUniqueIndex<User>(User.schema, User.schema.username),
@@ -25,11 +26,11 @@ public class WikiventsModels {
 		);
 	}
 
-	public static WikiventsModel createMongoModel(Struct props) {
+	public static WikiventsModel createMongoModel(WikiventsSite site, Struct props) {
 		HashStruct defaults= new HashStruct();
 		defaults.put("mongodb", "wikivents");
 		MongoDb db = new MongoDb(new MultiStruct(props,defaults), MongoCodecs.options()); 
-		WikiventsModel model = new WikiventsModel(
+		WikiventsModel model = new WikiventsModel(site, 
 			new MongoStorage(User.schema, props, db),
 			new MongoStorage(Event.schema, props, db),
 			new MemoryUniqueIndex<User>(User.schema, User.schema.username),
@@ -40,10 +41,10 @@ public class WikiventsModels {
 		return model;
 	}
 	
-	public static WikiventsModel createModel(Struct props) {
+	public static WikiventsModel createModel(WikiventsSite site, Struct props) {
 		String storage = props.getString("storage", "file");
 		if ("file".equals(storage))
-			return WikiventsModels.createFileModel(props.getStruct("file.storage",Struct.EMPTY));
+			return WikiventsModels.createFileModel(site, props.getStruct("file.storage",Struct.EMPTY));
 	//	else if ("mongo".equals(storage))
 		//	return WikiventsModels.createMongoModel(props.getStruct("mongo.storage",Struct.EMPTY));
 		else

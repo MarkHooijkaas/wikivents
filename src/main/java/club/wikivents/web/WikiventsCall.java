@@ -36,4 +36,11 @@ public class WikiventsCall extends HttpCall {
 	public void output(CompiledTemplate template, TemplateData data) { template.output(data, getWriter());}
 
 	@Override public void ensureUser() { if (user==null) throwUnauthorized("Not Authenticated"); }
+
+	public WikiventsTheme getTheme() {
+		String theme=request.getParameter("wikiventsTheme");
+		if (theme==null)
+			theme="default";
+		return model.site.getTheme(theme);
+	}
 }
