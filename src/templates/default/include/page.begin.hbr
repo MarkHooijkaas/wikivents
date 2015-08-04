@@ -7,6 +7,7 @@
 	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="/resources/datepicker/css/datepicker.css">
     <link rel="stylesheet" href="/resources/datepicker/less/datepicker.less">
+    <link rel="stylesheet" href="/css/wikivents.css">
 
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
@@ -27,8 +28,13 @@
 {{#if authenticated}}		
 		<li><a href="/user/list">Alle gebruikers</a></li>
 		<li><a href="/event/create">Maak een activiteit</a></li>
-		<li><a href="/user/show/{{user.username}}">Mijn Profiel</a></li>
-        <li><a href="/login">Logout {{user.username}}</a></li>
+		<li class="dropdown">
+			<a class="dropdown-toggle" data-toggle="dropdown"> {{user.username}} <span class="caret"> </span></a>
+			<ul class="dropdown-menu">
+				<li><a href="/user/show/{{user.username}}">Mijn profiel</a></li>
+				<li><a href="/login">Uitloggen</a></li> <!-- make a dialog to confirm that you want to logout -->
+			</ul>
+		</li>		
 {{else}}
         <li><a href="/login">Login</a></li>
         <li><a href="/user/create">Registreer</a></li>

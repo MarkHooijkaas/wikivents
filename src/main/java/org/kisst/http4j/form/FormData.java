@@ -3,6 +3,7 @@ package org.kisst.http4j.form;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kisst.item4j.HasName;
 import org.kisst.item4j.Item;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.util.ReflectionUtil;
@@ -46,6 +47,7 @@ public class FormData  {
 		public final String name;
 		public final String value;
 		public final String message;
+		public InputField(HasName name, Validator ... validators) { this(name.getName(), validators); }
 		public InputField(String name, Validator ... validators) { this(name, (record==null) ? null : staticCalcValue(record, name), validators); }
 		public InputField(String name, String value, Validator ... validators) {
 			//System.out.println("setting field "+name+" to value "+value);

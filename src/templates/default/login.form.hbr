@@ -16,9 +16,6 @@ Je bent ingelogd als {{user.username}}
 <form role="form" method="post" action="/login">
   {{> include/form.text form.username label="Gebruikersnaam"}}
   {{> include/form.text form.password label="Wachtwoord" type="password"}}
-  <div class="checkbox">
-    <label><input type="checkbox"> Remember me</label>
-  </div>
   <button type="submit" class="btn btn-default">Inloggen</button>
 </form>
 

@@ -5,6 +5,7 @@
 
 {{#ifMayView record}}
 
+<img src="{{record.avatarUrl}}"/>
 
 <div class="container">
       {{> include/show.field value=record.username label="Gebruikersnaam"}}

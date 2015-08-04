@@ -3,8 +3,10 @@
 <h1>{{record.title}}</h1>
 <row>
 
-<div class="col-xs-8">
-  {{record.description}}
+<div class="col-xs-8 panel panel-default">
+  <div class="panel-body">
+  	{{record.description}}
+    </div>
 </div>
 
 <div class="col-xs-4">

@@ -16,6 +16,7 @@ public class User extends CrudObject implements AccessChecker<User>{
 	public final String username;
 	public final String email;
 	public final String city;
+	public final String avatarUrl;
 	public final String passwordSalt;
 	public final String encryptedPassword;
 	public final boolean isAdmin;
@@ -27,12 +28,18 @@ public class User extends CrudObject implements AccessChecker<User>{
 		this.username=schema.username.getString(data);
 		this.email=schema.email.getString(data);
 		this.city=schema.city.getString(data);
+		this.avatarUrl=schema.avatarUrl.getString(data);
 		this.passwordSalt=schema.passwordSalt.getString(data);
 		this.encryptedPassword=schema.encryptedPassword.getString(data);
 		this.friends=schema.friends.getSequence(model, data);
 		this.isAdmin=schema.isAdmin.getBoolean(data,false);
 	}
-	public String link() { 	return "<a href=\"/user/show/"+username+"\">"+username+"</a>"; } 
+	public String link() {
+		String img="";
+		if (avatarUrl!=null)
+			img="<img class=\"link-avatar\" src=\""+avatarUrl+"\"> ";
+		return "<a href=\"/user/show/"+username+"\">"+img+username+"</a>"; 
+	} 
 	
 	public static class Ref extends CrudRef<User> implements CrudModelObject {
 		public Ref(WikiventsModel model, String _id) { super(model.users, _id); }
@@ -57,6 +64,7 @@ public class User extends CrudObject implements AccessChecker<User>{
 		public final StringField username = new StringField("username"); 
 		public final StringField email    = new StringField("email"); 
 		public final StringField city = new StringField("city"); 
+		public final StringField avatarUrl= new StringField("avatarUrl"); 
 		public final StringField passwordSalt = new StringField("passwordSalt"); 
 		public final StringField encryptedPassword = new StringField("encryptedPassword"); 
 		public final BooleanField isAdmin = new BooleanField("isAdmin"); 

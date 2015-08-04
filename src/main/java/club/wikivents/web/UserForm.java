@@ -11,9 +11,10 @@ public class UserForm extends WikiventsThing {
 	
 	public class Form extends HttpFormData {
 		public Form(WikiventsCall call, Struct data) { super(call, data, call.getTheme().userEdit); }
-		public final InputField username = new InputField("username");
-		public final InputField email    = new InputField("email", this::validateEmail);
-		public final InputField city     = new InputField("city");
+		public final InputField username = new InputField(User.schema.username);
+		public final InputField email    = new InputField(User.schema.email, this::validateEmail);
+		public final InputField city     = new InputField(User.schema.city);
+		public final InputField avatarUrl= new InputField(User.schema.avatarUrl);
 		
 		@Override public String successUrl() {
 			WikiventsCall wcall = WikiventsCall.of(call, model);
