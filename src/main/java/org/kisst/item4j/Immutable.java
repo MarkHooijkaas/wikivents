@@ -67,7 +67,7 @@ public interface Immutable {
 
 		public final ItemSequence join(ItemSequence ... sequences) {
 			if (sequences.length==0) return this;
-			ItemSequence[] result= (ItemSequence[]) new ItemSequence[sequences.length+1];
+			ItemSequence[] result= new ItemSequence[sequences.length+1];
 			result[0]=this;
 			int i=1;
 			for (ItemSequence seq  : sequences) result[i++]=seq;
@@ -260,7 +260,7 @@ public interface Immutable {
 				if (col instanceof Sequence)
 					result[i++]=(Sequence<T>) col;
 				else if (!elementClass.isAssignableFrom(col.getClass()))
-					result[i++]=(Sequence<T>) smartCopy(factory, elementClass, col);
+					result[i++]=smartCopy(factory, elementClass, col);
 			}
 			return new MultiSequence(elementClass, result);
 		}

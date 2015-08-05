@@ -20,7 +20,7 @@ public class LoginPage extends WikiventsThing {
 		public String validatePassword(InputField f) { 
 			if (user==null)
 				return null;
-			if (user.checkPassword((String) f.value))
+			if (user.checkPassword(f.value))
 				return null;
 			return "Incorrect password";
 		} 

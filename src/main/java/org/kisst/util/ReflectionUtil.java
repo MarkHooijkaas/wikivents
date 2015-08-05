@@ -202,7 +202,7 @@ public class ReflectionUtil {
 	}
 
 	private static Class<?>[] getSignature(Object[] args) {
-		Class<?>[] signature=new Class[args.length];
+		Class<?>[] signature=new Class<?>[args.length];
 		for (int i=0; i<args.length; i++)
 			signature[i]=args[i].getClass();
 		return signature;
