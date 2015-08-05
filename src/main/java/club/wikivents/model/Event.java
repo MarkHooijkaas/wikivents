@@ -21,15 +21,12 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 	public final LocalDate date;
 	public final int min;
 	public final int max;
-	//public final CrudRef<User> organizer;
 	public final Immutable.Sequence<User.Ref> organizers;
 	public final Immutable.Sequence<Guest> guests;
 	public final Immutable.Sequence<Comment> comments;
-	//private final WikiventsModel model;
 	
 	public Event(WikiventsModel model, Struct data) {
 		super(model.events, data);
-		//System.out.println("Creating Event with "+props);
 		this.title=schema.title.getString(data);
 		this.description=schema.description.getString(data);
 		this.location=schema.location.getString(data);
@@ -41,8 +38,8 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 			this.organizers=data.getTypedSequenceOrEmpty(model, User.Ref.class,"organizers");
 		else
 			this.organizers=Item.cast( Sequence.of(User.Ref.class, new User.Ref(model,organizer)));
-		this.guests=schema.guests.getSequence(model, data);//data.getTypedSequenceOrEmpty(model, Guest.class,"guests");
-		this.comments=schema.comments.getSequence(model, data);//data.getTypedSequenceOrEmpty(model, Comment.class,"comments");
+		this.guests=schema.guests.getSequence(model, data);
+		this.comments=schema.comments.getSequence(model, data);
 		
 	}
 	@Override public String getUniqueSortingKey() { return ""+date+"|"+_id; }
@@ -62,8 +59,8 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 	}
 	
 	public static final Schema schema=new Schema();
-	public static class Schema extends CrudObjectSchema<Event> {
-		public Schema() { super(Event.class); addAllFields(); }
+	public static final class Schema extends CrudObjectSchema<Event> {
+		private Schema() { super(Event.class); addAllFields(); }
 		public IdField getKeyField() { return _id; }
 		public final IdField _id = new IdField();
 		public final StringField title = new StringField("title"); 

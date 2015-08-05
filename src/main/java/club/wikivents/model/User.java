@@ -59,8 +59,8 @@ public class User extends CrudObject implements AccessChecker<User>{
 	}
 	
 	public static final Schema schema=new Schema();
-	public static class Schema extends CrudObjectSchema<User> {
-		public Schema() { super(User.class); addAllFields();}
+	public static final class Schema extends CrudObjectSchema<User> {
+		private Schema() { super(User.class); addAllFields();}
 		public final StringField username = new StringField("username"); 
 		public final StringField email    = new StringField("email"); 
 		public final StringField city = new StringField("city"); 
@@ -83,6 +83,7 @@ public class User extends CrudObject implements AccessChecker<User>{
 			return true;
 		return u.isAdmin;
 	}
+	public boolean isFriendOf(User u) { return u.hasFriend(this); }
 	public boolean hasFriend(User user) {
 		for (Friend f: friends) 
 			if (f.user._id.equals(user._id)) 
