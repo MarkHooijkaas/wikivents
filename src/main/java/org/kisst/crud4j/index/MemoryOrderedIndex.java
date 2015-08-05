@@ -21,6 +21,6 @@ public class MemoryOrderedIndex<T extends CrudObject> extends AbstractKeyedIndex
 	@Override public Iterator<T> iterator() { return map.values().iterator(); }
 
 	@Override public Collection<T> tailList(String fromKey) { return map.tailMap(fromKey).values(); } 
-	@Override public Collection<T> headList(String toKey) { return map.tailMap(toKey).values(); } 
+	@Override public Collection<T> headList(String toKey) { return map.headMap(toKey).values(); } 
 	@Override public Collection<T> subList(String fromKey,String toKey) { return map.subMap(fromKey, toKey).values(); } 
 }
