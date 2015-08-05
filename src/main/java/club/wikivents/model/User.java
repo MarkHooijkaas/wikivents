@@ -1,5 +1,7 @@
 package club.wikivents.model;
 
+import java.util.ArrayList;
+
 import org.kisst.crud4j.CrudModelObject;
 import org.kisst.crud4j.CrudObject;
 import org.kisst.crud4j.CrudObjectSchema;
@@ -34,6 +36,24 @@ public class User extends CrudObject implements AccessChecker<User>{
 		this.friends=schema.friends.getSequence(model, data);
 		this.isAdmin=schema.isAdmin.getBoolean(data,false);
 	}
+	public ArrayList<Event> futureEvents() {
+		ArrayList<Event> result=new ArrayList<Event>();
+		for (Event e: model.futureEvents()) {
+			if (e.hasGuest(this) || e.hasOrganizer(this))
+				result.add(e);
+		}
+		return result;
+	}
+	public ArrayList<Event> pastEvents() {
+		ArrayList<Event> result=new ArrayList<Event>();
+		for (Event e: model.pastEvents()) {
+			if (e.hasGuest(this) || e.hasOrganizer(this))
+				result.add(e);
+		}
+		return result;
+	}
+	
+	
 	public String link() {
 		String img="";
 		if (avatarUrl!=null)

@@ -76,13 +76,13 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 
 
 	
-	@Override public boolean mayBeChangedBy(User user) { return user!=null && (user.isAdmin || isOrganizer(user)); }
+	@Override public boolean mayBeChangedBy(User user) { return user!=null && (user.isAdmin || hasOrganizer(user)); }
 	@Override public boolean mayBeViewedBy(User user) { return true; }
 	
 	public void addComment(WikiventsModel model, User user, String text) {
 		model.events.addSequenceItem(this, schema.comments, new Comment(user,text));
 	}
-	public boolean isGuest(User user) {
+	public boolean hasGuest(User user) {
 		for (Guest g : guests)
 			if (g.user._id.equals(user._id)) // already member
 				return true;
@@ -95,7 +95,7 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 		return null;
 	}
 	public void addGuest(WikiventsModel model, User user) {
-		if (isGuest(user))
+		if (hasGuest(user))
 			return;
 		model.events.addSequenceItem(this, schema.guests, new Guest(model, user));
 	}
@@ -104,7 +104,7 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 		if (g!=null)
 			model.events.removeSequenceItem(this, schema.guests, g);
 	}
-	public boolean isOrganizer(User user) {
+	public boolean hasOrganizer(User user) {
 		for (User.Ref r: organizers) {
 			if (r._id.equals(user._id)) 
 				return true;
@@ -113,7 +113,7 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 	}
 
 	public void addOrganizer(WikiventsModel model, User user) {
-		if (isOrganizer(user))
+		if (hasOrganizer(user))
 			return;
 		model.events.addSequenceItem(this, schema.organizers, new User.Ref(model, user._id));
 	}

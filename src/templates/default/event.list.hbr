@@ -12,28 +12,6 @@
 <a href="past">oude activiteiten</a>
 <a href="all">alle activiteiten</a>
 
-  <table id="events" class="display compact" cellspacing="0" width="100%">
-    <thead>
-      <tr>
-        <th>Datum</th>
-        <th>Organisator</th>
-        <th>activiteit</th>
-        <th>plaats</th>
-        <th>aantal</th>
-      </tr>
-    </thead>
-    <tbody>
-		
-{{#each list}} 
-	  <tr>
-        <td>{{date}}</td>
-        <td>{{&priv organizerLinks}}</td>
-        <td><a href="/event/show/{{_id}}">{{title}}</a></td>
-        <td>{{location}}</td>
-        <td>{{guestCount}}/{{max}}</td>
-      </tr>
-{{/each}}
-    </tbody>
-  </table>
+{{> include/embedded.event.list}}
   
 {{>default/include/page.footer}}
