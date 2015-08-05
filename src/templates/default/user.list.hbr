@@ -1,6 +1,14 @@
-{{>include/page.header}}
+{{>default/include/page.header.begin}}
+	<script src="http://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+{{>default/include/page.header.end}}
 
-  <table class="table table-hover">
+<script>
+	$(document).ready(function() {
+	    $('#users').dataTable();
+	} );
+</script>
+
+  <table id="users" class="table table-hover">
     <thead>
       <tr>
         <th>Naam</th>
@@ -13,7 +21,7 @@
       <tr>
         <td>{{&link}}</td>
         <td>{{city}}</td>
-        <td>{{email}}</td>
+        <td>{{maySee this email}}</td>
       </tr>
 {{/each}}
     </tbody>
