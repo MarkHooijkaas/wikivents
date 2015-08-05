@@ -70,12 +70,15 @@ public class UserHelpers<T> {
 
 	public class SimpleHelpers {
 		public CharSequence priv(Object obj, Options options) {
-			//System.out.println("Context:"+options.context);
-			//System.out.println("Parent:"+options.context.parent());
-			//System.out.println("Object:"+obj);
 			T user=getUserOrNull(options);
 			if (user!=null)
 				return obj==null?null:""+obj;
+			return "***";
+		}
+		public CharSequence maySee(AccessChecker<T> obj1, Object value, Options options) {
+			T user=getUserOrNull(options);
+			if (user!=null && obj1.mayBeViewedBy(user))
+				return value==null?null:value.toString();
 			return "***";
 		}
 		public CharSequence debug(Object obj) {
