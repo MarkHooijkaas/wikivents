@@ -1,5 +1,8 @@
   <div class="form-group">
     <label for="{{name}}">{{label}}</label>
     <textarea type="{{type}}" class="form-control" id="{{name}}" name="{{name}}" rows="{{rows}}"> {{value}}</textarea>
+                <script>
+                CKEDITOR.replace( '{{name}}' );
+            </script>
   </div>
   

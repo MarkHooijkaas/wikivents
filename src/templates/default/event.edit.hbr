@@ -1,6 +1,12 @@
-{{> include/page.header}}
+{{> include/page.header.begin}}
+<script src="//cdn.ckeditor.com/4.5.2/standard/ckeditor.js"></script>
+{{> include/page.header.end}}
 
-<script > $(document).ready(function(){ $('#mydatepicker').datepicker() }); </script>
+<script > 
+	$(document).ready(function(){ 
+		$('#mydatepicker').datepicker();
+	 }); 
+</script>
 
 <form role="form" method="POST">
 	{{> include/form.text     form.title    label="Titel"}}
