@@ -47,17 +47,33 @@ public class JsonOutputter {
 		}
 		out.write(']');
 	}
+	public void write(PrintWriter out, Iterable<?> seq) {
+		out.write('[');
+		boolean firstElement=true;
+		for (Object obj: seq) {
+			if (! firstElement)
+				out.write(", ");
+			firstElement=false;
+			write(out,obj);
+		}
+		out.write(']');
+	}
 
 	
 	public void write(PrintWriter out, Object value) {
+		//System.out.println(value.getClass());
 		if (value==null)
 			return;
 		if (value instanceof Item)
 			value=((Item) value).asObject();
 		if (value instanceof Struct)
 			write(out,(Struct) value);
-		else if (value instanceof ItemSequence)
+		else if (value instanceof ItemSequence) {
 			write(out,(ItemSequence) value);
+		}
+		else if (value instanceof Iterable) {
+			write(out,(Iterable<?>) value);
+		}
 		else {
 			if (value instanceof Number)
 				out.write(value.toString());

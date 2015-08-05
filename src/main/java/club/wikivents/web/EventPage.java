@@ -1,5 +1,6 @@
 package club.wikivents.web;
 
+import org.kisst.http4j.GetDataHandler;
 import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.HttpCallDispatcher;
 import org.kisst.http4j.HttpCallHandler;
@@ -20,6 +21,9 @@ public class EventPage extends WikiventsPage {
 	public final HttpCallHandler addGuest=this::handleAddGuest;
 	public final HttpCallHandler removeGuest=this::handleRemoveGuest;
 	public final HttpCallHandler addOrganizer=this::handleAddOrganizer;
+	public final HttpCallHandler pastEvents=new GetDataHandler(this::pastEvents);
+	public final HttpCallHandler futureEvents=new GetDataHandler(this::futureEvents);
+	public final HttpCallHandler allEvents=new GetDataHandler(this::allEvents);
 	
 	public final HttpCallDispatcher handler=new HttpCallDispatcher(this); 	
 	@Override public void handle(HttpCall httpcall, String subPath) {
@@ -31,6 +35,12 @@ public class EventPage extends WikiventsPage {
 	public void listAllEvents(TemplateData data, HttpCall httpcall, String subPath) { data.add("list", model.events.findAll()); }
 	public void eventRecord(TemplateData data, HttpCall httpcall, String subPath) { data.add("record", model.events.read(subPath)); }
 
+	public Object pastEvents(HttpCall call) { return model.pastEvents(); }
+	public Object futureEvents(HttpCall call) { return model.futureEvents(); }
+	public Object allEvents(HttpCall call) { return model.allEvents; }
+	
+
+	
 	public void handleAddComment(HttpCall httpcall, String subPath) {
 		WikiventsCall call=WikiventsCall.of(httpcall, model);
 		if (! call.isPost()) {
