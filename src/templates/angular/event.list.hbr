@@ -1,0 +1,71 @@
+{{>default/include/page.begin}}
+
+
+<button class="btn btn-success" ng-click="loadEvent('futureEvents')">
+<span class="glyphicon glyphicon-user"></span>
+Komende activiteiten
+</button>
+<button class="btn btn-success" ng-click="loadEvent('pastEvents')">
+<span class="glyphicon glyphicon-user"></span>
+Oude activiteiten
+</button>
+<button class="btn btn-success" ng-click="loadEvent('allEvents')">
+<span class="glyphicon glyphicon-user"></span>
+Alle activiteiten
+</button>
+
+
+
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Datum</th>
+        <th>Organisator</th>
+        <th>activiteit</th>
+        <th>plaats</th>
+        <th>aantal</th>
+      </tr>
+    </thead>
+    <tbody>
+		
+  <tr ng-repeat="x in events">
+{{=<% %>=}}
+        <td>{{x.date}}</td>
+        <td>{{x.organizers}}</td>
+        <td><a href="/event/show/{{x._id}}">{{x.title}}</a></td>
+        <td>{{x.location}}</td>
+        <td>{{x.guestCount}}/{{x.max}}</td>
+<%={{ }}=%>
+  </tr>
+</table>
+  
+<script>
+var app = angular.module('wikivents', []);
+app.controller('WikiventsController', function($scope, $http) {
+    $http.get("/event/allEvents")
+    .success(function (response) {$scope.events = response;});
+});
+
+
+
+app.controller('userCtrl', function($scope) {
+$scope.editUser = function(id) {
+  if (id == 'new') {
+    $scope.edit = true;
+    $scope.incomplete = true;
+    $scope.fName = '';
+    $scope.lName = '';
+    } else {
+    $scope.edit = false;
+    $scope.fName = $scope.users[id-1].fName;
+    $scope.lName = $scope.users[id-1].lName; 
+  }
+};
+
+
+
+function loadEvent
+</script>
+  
+{{>default/include/page.end}}
