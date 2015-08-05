@@ -1,9 +1,16 @@
-{{>default/include/page.begin}}
+{{>default/include/page.header.begin}}
+	<script src="http://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+{{>default/include/page.header.end}}
+
 <script>
 	$(document).ready(function() {
 	    $('#events').dataTable();
 	} );
 </script>
+
+<a href="list">komende activiteiten</a>
+<a href="past">oude activiteiten</a>
+<a href="all">alle activiteiten</a>
 
   <table id="events" class="display compact" cellspacing="0" width="100%">
     <thead>
@@ -17,7 +24,7 @@
     </thead>
     <tbody>
 		
-{{#each model.futureEvents}} 
+{{#each list}} 
 	  <tr>
         <td>{{date}}</td>
         <td>{{&priv organizerLinks}}</td>
@@ -29,4 +36,4 @@
     </tbody>
   </table>
   
-{{>default/include/page.end}}
+{{>default/include/page.footer}}

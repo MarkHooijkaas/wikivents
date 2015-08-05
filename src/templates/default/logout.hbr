@@ -1,4 +1,4 @@
-{{> include/page.begin}}
+{{> include/page.header}}
 
 {{#if userid}}
 
@@ -16,4 +16,4 @@ Je bent niet ingelogd
 
 {{/if}}
 
-{{> include/page.end}}
+{{> include/page.footer}}

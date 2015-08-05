@@ -13,7 +13,9 @@ public class EventPage extends WikiventsPage {
 	public EventPage(WikiventsSite site) { super(site);	}
 	public final EventForm crud=new EventForm(site);
 
-	public final HttpCallHandler list=new TemplatePage(site,"event.list", this::listAllEvents);
+	public final HttpCallHandler list=new TemplatePage(site,"event.list", this::listFutureEvents);
+	public final HttpCallHandler past=new TemplatePage(site,"event.list", this::listPastEvents);
+	public final HttpCallHandler all=new TemplatePage(site,"event.list", this::listAllEvents);
 	public final HttpCallHandler show=new TemplatePage(site,"event.show", this::eventRecord);
 	public final HttpCallHandler edit=crud::handleEdit;
 	public final HttpCallHandler create=crud::handleCreate;
@@ -32,7 +34,9 @@ public class EventPage extends WikiventsPage {
 		handler.handle(call, subPath);
 	}
 	
-	public void listAllEvents(TemplateData data, HttpCall httpcall, String subPath) { data.add("list", model.events.findAll()); }
+	public void listFutureEvents(TemplateData data, HttpCall httpcall, String subPath) { data.add("list", model.futureEvents()); }
+	public void listPastEvents(TemplateData data, HttpCall httpcall, String subPath) { data.add("list", model.pastEvents()); }
+	public void listAllEvents(TemplateData data, HttpCall httpcall, String subPath) { data.add("list", model.allEvents); }
 	public void eventRecord(TemplateData data, HttpCall httpcall, String subPath) { data.add("record", model.events.read(subPath)); }
 
 	public Object pastEvents(HttpCall call) { return model.pastEvents(); }

@@ -1,4 +1,4 @@
-{{> include/page.begin}}
+{{> include/page.header}}
 
 <script > $(document).ready(function(){ $('#mydatepicker').datepicker() }); </script>
 
@@ -13,4 +13,4 @@
 	{{> include/form.submitButton}}
 </form>
 
-{{> include/page.end}}
+{{> include/page.footer}}

@@ -1,4 +1,4 @@
-{{> include/page.begin}}
+{{> include/page.header}}
 
 <form role="form" method="post">
   {{> include/form.text form.username label="Gebruikersnaam"}}
@@ -13,4 +13,4 @@
   {{> include/form.submitButton}}
 </form>
 
-{{> include/page.end}}
+{{> include/page.footer}}

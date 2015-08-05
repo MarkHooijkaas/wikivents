@@ -1,0 +1,32 @@
+</head>
+<body>
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Wikivents</a>
+    </div>
+    <div>
+      <ul class="nav navbar-nav">
+		<li class="active"><a href="/">Home</a></li>
+		<li><a href="/event/list">Alle activiteiten</a></li>
+{{#if authenticated}}		
+		<li><a href="/user/list">Alle gebruikers</a></li>
+		<li><a href="/event/create">Maak een activiteit</a></li>
+		<li class="dropdown">
+			<a class="dropdown-toggle" data-toggle="dropdown"> {{user.username}} <span class="caret"> </span></a>
+			<ul class="dropdown-menu">
+				<li><a href="/user/show/{{user.username}}">Mijn profiel</a></li>
+				<li><a href="/login">Uitloggen</a></li> <!-- make a dialog to confirm that you want to logout -->
+			</ul>
+		</li>		
+{{else}}
+        <li><a href="/login">Login</a></li>
+        <li><a href="/user/create">Registreer</a></li>
+{{/if}}
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="container-fluid">
+

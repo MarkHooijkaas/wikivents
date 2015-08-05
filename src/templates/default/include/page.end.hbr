@@ -1,5 +1,1 @@
-
-</div>
-
-</body>
-</html>
+{{> include/page.footer}}

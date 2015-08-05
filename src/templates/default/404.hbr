@@ -1,5 +1,5 @@
-{{> include/page.begin}}
+{{> include/page.header}}
 
 Deze pagina bestaat niet
 
-{{> include/page.end}}
+{{> include/page.footer}}

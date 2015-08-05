@@ -1,4 +1,4 @@
-{{> include/page.begin}}
+{{> include/page.header}}
 
 <h1>{{record.title}}</h1>
 <row>
@@ -79,4 +79,4 @@
 {{/ifMayView}}
 
   
-{{> include/page.end}}
+{{> include/page.footer}}

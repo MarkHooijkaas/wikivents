@@ -1,4 +1,4 @@
-{{> include/page.begin }}
+{{> include/page.header }}
 
 <h1>Wikivents : {{user.username}}</h1>
 
@@ -19,4 +19,4 @@
 {{/each}}
 </table>
 
-{{> include/page.end }}
+{{> include/page.footer }}
