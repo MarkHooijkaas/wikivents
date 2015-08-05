@@ -1,5 +1,5 @@
 
-
+{{#if list}}
   <table id="{{tableid}}" class="display compact" cellspacing="0" width="100%">
     <thead>
       <tr>
@@ -23,4 +23,7 @@
 {{/each}}
     </tbody>
   </table>
-  
+ 
+{{else}}
+Nog geen activiteiten
+{{/if}}
