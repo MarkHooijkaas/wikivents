@@ -1,6 +1,11 @@
 {{>default/include/page.begin}}
+<script>
+	$(document).ready(function() {
+	    $('#events').dataTable();
+	} );
+</script>
 
-  <table class="table table-hover">
+  <table id="events" class="display compact" cellspacing="0" width="100%">
     <thead>
       <tr>
         <th>Datum</th>
