@@ -1,6 +1,6 @@
-{{>default/include/page.header.begin}}
+{{> include/page.header.begin}}
 	<script src="http://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
-{{>default/include/page.header.end}}
+{{> include/page.header.end}}
 
 <script>
 	$(document).ready(function() {

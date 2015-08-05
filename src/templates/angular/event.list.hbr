@@ -1,4 +1,4 @@
-{{>default/include/page.begin}}
+{{> include/page.begin}}
 
 
 <button class="btn btn-success" ng-click="loadEvent('futureEvents')">
@@ -68,4 +68,4 @@ $scope.editUser = function(id) {
 function loadEvent
 </script>
   
-{{>default/include/page.end}}
+{{> include/page.end}}
