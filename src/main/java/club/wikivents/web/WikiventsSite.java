@@ -38,9 +38,14 @@ public class WikiventsSite implements HttpCallHandler {
 	}
 	public WikiventsSite(Struct props) {
 		this.model=WikiventsModels.createModel(this, props);
-		Struct themeProps = props.getStruct("theme");
-		for (String name: themeProps.fieldNames())
-			themes.put(name, new WikiventsTheme(themeProps.getStruct(name)));
+		Struct themeProps = props.getStruct("theme",null);
+		if (themeProps==null) {
+			themes.put("default", new WikiventsTheme(Struct.EMPTY));
+		}
+		else {
+			for (String name: themeProps.fieldNames())
+				themes.put(name, new WikiventsTheme(themeProps.getStruct(name)));
+		}
 		this.defaultTheme=themes.get("default");
 		this.loginPage=new LoginPage(this);
 		this.pages=new Pages();

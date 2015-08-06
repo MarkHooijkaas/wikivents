@@ -28,7 +28,7 @@ public class HttpServer extends AbstractHandler {
 	}
 	
 	public void startListening() {
-		int port=props.getInteger("admin.port",8080);
+		int port=props.getInteger("port",8080);
 		logger.info("admin site running on port {}",port);
 		server = new Server(port);
         server.setHandler(this);

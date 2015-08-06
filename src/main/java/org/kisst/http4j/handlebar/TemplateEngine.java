@@ -38,7 +38,7 @@ public class TemplateEngine {
 		String filedir = props.getString("file.dir", null);
 		this.dirnames=filedir;
 		this.postfix = props.getString("postfix", ".hbr");
-		TemplateLoader cp = new ClassPathTemplateLoader("/templates/",postfix);
+		TemplateLoader cp = new ClassPathTemplateLoader("/templates/default",postfix);
 		if (filedir!=null) {
 			String[] dirs = filedir.split(",");
 			TemplateLoader[] loaders=new TemplateLoader[dirs.length+1];
