@@ -2,3 +2,4 @@ img.link-avatar {
    max-width: 30px;
    height: auto;
 }
+.overflow-hidden { overflow:hidden; }
