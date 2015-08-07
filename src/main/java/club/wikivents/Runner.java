@@ -3,7 +3,6 @@ package club.wikivents;
 import java.io.File;
 import java.util.Properties;
 
-import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.PropertyConfigurator;
 import org.kisst.http4j.HttpServer;
 import org.kisst.item4j.struct.Struct;
