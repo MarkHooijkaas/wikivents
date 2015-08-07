@@ -2,7 +2,7 @@ package org.kisst.crud4j.impl;
 
 import java.util.ArrayList;
 
-import org.kisst.crud4j.CrudObjectSchema;
+import org.kisst.crud4j.CrudSchema;
 import org.kisst.crud4j.StructStorage;
 import org.kisst.item4j.seq.ArraySequence;
 import org.kisst.item4j.seq.TypedSequence;
@@ -16,12 +16,12 @@ import com.mongodb.DBObject;
 public class MongoStorage implements StructStorage {
 
 	private final DBCollection collection;
-	private final CrudObjectSchema<?>.IdField keyField;
-	private final CrudObjectSchema<?> schema;
+	private final CrudSchema<?>.IdField keyField;
+	private final CrudSchema<?> schema;
 	private final boolean useCache;
 	private final MongoDb db;
 	
-	public MongoStorage(CrudObjectSchema<?> schema, Struct props, MongoDb db) {
+	public MongoStorage(CrudSchema<?> schema, Struct props, MongoDb db) {
 		this.schema=schema;
 		this.db=db;
 		this.collection=db.getCollection(schema.getJavaClass().getSimpleName());

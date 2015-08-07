@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 	public final Logger logger = LoggerFactory.getLogger(CrudTable.class);
 	
-	protected final CrudObjectSchema<T> schema;
+	protected final CrudSchema<T> schema;
 	protected final CrudModel model;
 	private final String name;
 	private final StructStorage storage;
@@ -27,7 +27,7 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 
 	private boolean alwaysCheckId=true;
 	@SuppressWarnings("unchecked")
-	public CrudTable(CrudModel model, CrudObjectSchema<T> schema) { 
+	public CrudTable(CrudModel model, CrudSchema<T> schema) { 
 		this.model=model;
 		this.schema=schema;
 		this.name=schema.getJavaClass().getSimpleName();

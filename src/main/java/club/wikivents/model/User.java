@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.kisst.crud4j.CrudModelObject;
 import org.kisst.crud4j.CrudObject;
-import org.kisst.crud4j.CrudObjectSchema;
+import org.kisst.crud4j.CrudSchema;
 import org.kisst.crud4j.CrudTable.CrudRef;
 import org.kisst.http4j.handlebar.AccessChecker;
 import org.kisst.item4j.Immutable;
@@ -88,7 +88,7 @@ public class User extends CrudObject implements AccessChecker<User>{
 	}
 	
 	public static final Schema schema=new Schema();
-	public static final class Schema extends CrudObjectSchema<User> {
+	public static final class Schema extends CrudSchema<User> {
 		private Schema() { super(User.class); }
 		public final StringField username = new StringField("username"); 
 		public final StringField email    = new StringField("email"); 

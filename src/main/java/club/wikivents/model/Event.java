@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.StringJoiner;
 
 import org.kisst.crud4j.CrudObject;
-import org.kisst.crud4j.CrudObjectSchema;
+import org.kisst.crud4j.CrudSchema;
 import org.kisst.crud4j.CrudTable.CrudRef;
 import org.kisst.http4j.handlebar.AccessChecker;
 import org.kisst.item4j.Immutable;
@@ -59,7 +59,7 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 	}
 	
 	public static final Schema schema=new Schema();
-	public static final class Schema extends CrudObjectSchema<Event> {
+	public static final class Schema extends CrudSchema<Event> {
 		private Schema() { super(Event.class); }
 		public IdField getKeyField() { return _id; }
 		public final IdField _id = new IdField();
