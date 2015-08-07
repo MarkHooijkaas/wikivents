@@ -8,7 +8,7 @@ import java.time.LocalTime;
 public interface Type<T> {
 	@SuppressWarnings("unchecked") public static <T> T cast(Object obj){ return (T) obj; } 
 
-	public Class<T> getJavaClass();
+	public Class<? extends T> getJavaClass();
 	public T parseString(String str);
 
 	default public String getStringRepresentation(Object obj) { return ""+obj; }

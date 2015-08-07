@@ -14,7 +14,7 @@ public class MemoryUniqueIndex<T extends CrudObject> extends AbstractKeyedIndex<
 	private final ConcurrentHashMap<String, T> map = new ConcurrentHashMap<String, T>();
 	
 	@SafeVarargs
-	public MemoryUniqueIndex(CrudSchema<T> schema, ObjectSchema<T>.Field ... fields) { 
+	public MemoryUniqueIndex(CrudSchema<T> schema, ObjectSchema<T>.Field<?> ... fields) { 
 		super(schema);
 		this.fields=new FieldList<T>(fields);
 	}
@@ -30,6 +30,6 @@ public class MemoryUniqueIndex<T extends CrudObject> extends AbstractKeyedIndex<
 
 	@Override public T get(String ... values) { return map.get(fields.getKey(values)); }
 
-	@Override public ObjectSchema<T>.Field[] fields() { return fields.fields(); }
+	@Override public ObjectSchema<T>.Field<?>[] fields() { return fields.fields(); }
 
 }

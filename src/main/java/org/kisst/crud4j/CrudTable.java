@@ -94,7 +94,7 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 	public synchronized void updateFields(T oldValue, Struct newFields) { 
 		update(oldValue, createObject(new MultiStruct(newFields, oldValue))); 
 	}
-	public synchronized void updateField(T oldValue, Field field, Object newValue) { 
+	public synchronized <FT> void updateField(T oldValue, Field<FT> field, Object newValue) { 
 		updateFields(oldValue, new SingleItemStruct(field.getName(),newValue)); 
 	}
 	public synchronized <ST> void addSequenceItem(T oldValue, ObjectSchema<T>.SequenceField<ST> field, ST value) {

@@ -64,14 +64,14 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 		public IdField getKeyField() { return _id; }
 		public final IdField _id = new IdField();
 		public final StringField title = new StringField("title"); 
-		public final SequenceField<User.Ref> organizers = new SequenceField<User.Ref>(CrudRef.class,"organizers");
+		public final SequenceField<User.Ref> organizers = new SequenceField<User.Ref>(User.Ref.type,"organizers");
 		public final IntField min = new IntField("min"); 
 		public final IntField max = new IntField("max"); 
 		public final LocalDateField date = new LocalDateField("date"); 
 		public final StringField location = new StringField("location"); 
 		public final StringField description = new StringField("description"); 
-		public final SequenceField<Guest> guests= new SequenceField<Guest>(Guest.class,"guests"); 
-		public final SequenceField<Comment> comments= new SequenceField<Comment>(Comment.class,"comments"); 
+		public final SequenceField<Guest> guests= new SequenceField<Guest>(Guest.schema,"guests"); 
+		public final SequenceField<Comment> comments= new SequenceField<Comment>(Comment.schema,"comments"); 
 	}
 
 

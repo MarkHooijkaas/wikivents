@@ -8,6 +8,7 @@ import org.kisst.crud4j.CrudObjectSchema;
 import org.kisst.crud4j.CrudTable.CrudRef;
 import org.kisst.http4j.handlebar.AccessChecker;
 import org.kisst.item4j.Immutable;
+import org.kisst.item4j.Type;
 import org.kisst.item4j.struct.HashStruct;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.util.PasswordEncryption;
@@ -62,6 +63,7 @@ public class User extends CrudObject implements AccessChecker<User>{
 	} 
 	
 	public static class Ref extends CrudRef<User> implements CrudModelObject {
+		public static final Type<User.Ref> type = new Type.Java<User.Ref>(User.Ref.class, null); // XXX TODO: parser is null 
 		public Ref(WikiventsModel model, String _id) { super(model.users, _id); }
 		public String link() { 
 			User u=get0();
@@ -88,7 +90,7 @@ public class User extends CrudObject implements AccessChecker<User>{
 		public final StringField passwordSalt = new StringField("passwordSalt"); 
 		public final StringField encryptedPassword = new StringField("encryptedPassword"); 
 		public final BooleanField isAdmin = new BooleanField("isAdmin"); 
-		public final SequenceField<Friend> friends  = new SequenceField<Friend>(Friend.class,"friends");  
+		public final SequenceField<Friend> friends  = new SequenceField<Friend>(Friend.schema,"friends");  
 	}
 	
 	public boolean mayBeViewedBy(User user) {

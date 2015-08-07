@@ -8,11 +8,11 @@ import org.kisst.item4j.ObjectSchema;
 import org.kisst.item4j.struct.Struct;
 
 public class FieldList<T extends CrudObject> { 
-	private final CrudSchema<T>.Field[] fields;
+	private final CrudSchema<T>.Field<?>[] fields;
 	@SafeVarargs
-	protected FieldList (CrudSchema<T>.Field ... fields) { this.fields=fields;	}
+	protected FieldList (CrudSchema<T>.Field<?> ... fields) { this.fields=fields;	}
 
-	public ObjectSchema<T>.Field[] fields() { return Arrays.copyOf(fields,fields.length); }
+	public ObjectSchema<T>.Field<?>[] fields() { return Arrays.copyOf(fields,fields.length); }
 	
 	@Override public String toString() { return this.getClass().getSimpleName()+"("+fieldnames()+")"; }
 	public String fieldnames() {
@@ -23,7 +23,7 @@ public class FieldList<T extends CrudObject> {
 	}
 	public String getKey(Struct obj) {
 		String result="";
-		for (ObjectSchema<?>.Field field : fields)
+		for (ObjectSchema<?>.Field<?> field : fields)
 			result+="|"+field.getString(obj); // should be unique when fields don't have | in it
 		return result;
 	}

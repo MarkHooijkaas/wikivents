@@ -49,7 +49,7 @@ public abstract class CrudModel implements Item.Factory {
 		return arr;
 	}
 	
-	public <T extends CrudObject> UniqueIndex<T> getUniqueIndex(Class<?> cls, ObjectSchema<?>.Field ... fields) {
+	public <T extends CrudObject> UniqueIndex<T> getUniqueIndex(Class<?> cls, ObjectSchema<?>.Field<?> ... fields) {
 		for (StorageOption opt: options) {
 			if (opt instanceof UniqueIndex && opt.getRecordClass()==cls) {
 				@SuppressWarnings("unchecked")
@@ -96,7 +96,7 @@ public abstract class CrudModel implements Item.Factory {
 		public Class<T> getRecordClass(); 
 	}
 	public interface UniqueIndex<T extends CrudObject> extends Index<T >{
-		public CrudSchema<T>.Field[] fields();
+		public CrudSchema<T>.Field<?>[] fields();
 		public T get(String ... field); 
 	}
 	public interface OrderedIndex<T extends CrudObject> extends Index<T >, Iterable<T>{

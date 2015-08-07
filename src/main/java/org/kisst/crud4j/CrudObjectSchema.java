@@ -10,7 +10,7 @@ public class CrudObjectSchema<T> extends CrudSchema<T> {
 	
 	public IdField getKeyField() { return _id;}
 
-	public class IdField extends Field {
+	public class IdField extends Field<String> {
 		public IdField() { super(Type.javaString, "_id"); }
 		public IdField(String name) { super(Type.javaString, name); }
 	}

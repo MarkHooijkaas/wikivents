@@ -23,7 +23,7 @@ public abstract class SchemaObject implements Struct, CrudModelObject {
 		//return (T) schema.createObject(model, new MultiStruct(newObject, this));
 	}
 	
-	public <T extends SchemaObject> T modified(CrudModel model, CrudSchema<T>.Field field, Object value) {
+	public <T extends SchemaObject> T modified(CrudModel model, CrudSchema<T>.Field<?> field, Object value) {
 		return modified(model, new SingleItemStruct(field.getName(), value));
 	}
 }
