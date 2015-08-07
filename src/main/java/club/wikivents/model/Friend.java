@@ -3,7 +3,7 @@ package club.wikivents.model;
 import java.time.Instant;
 
 import org.kisst.crud4j.CrudModelObject;
-import org.kisst.item4j.ObjectSchema;
+import org.kisst.item4j.ReflectSchema;
 import org.kisst.item4j.struct.ReflectStruct;
 import org.kisst.item4j.struct.Struct;
 
@@ -12,9 +12,9 @@ public class Friend extends ReflectStruct implements CrudModelObject {
 	public final Instant since;
 	
 	public static final Schema schema=new Schema();
-	public static final class Schema extends ObjectSchema<Friend> {
-		private Schema() { super(Friend.class); addAllFields();}
-		public final Field<User.Ref> user = new Field<User.Ref>(User.Ref.type, "user");  
+	public static final class Schema extends ReflectSchema<Friend> {
+		private Schema() { super(Friend.class); }
+		public final Field<User.Ref> user = new BasicField<User.Ref>(User.Ref.type, "user");  
 		public final InstantField since = new InstantField("since"); 
 	}
 

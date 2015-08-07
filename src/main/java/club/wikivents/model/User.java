@@ -61,9 +61,16 @@ public class User extends CrudObject implements AccessChecker<User>{
 			img="<img class=\"link-avatar\" src=\""+avatarUrl+"\"> ";
 		return "<a href=\"/user/show/"+username+"\">"+img+username+"</a>"; 
 	} 
+
+	
 	
 	public static class Ref extends CrudRef<User> implements CrudModelObject {
 		public static final Type<User.Ref> type = new Type.Java<User.Ref>(User.Ref.class, null); // XXX TODO: parser is null 
+		public static class Field extends Schema.BasicField<User.Ref> {
+			public Field(String name) { super(User.Ref.type, name); }
+			public Ref getRef(WikiventsModel model, Struct data) { return new User.Ref(model, data.getString(name));}
+		}
+
 		public Ref(WikiventsModel model, String _id) { super(model.users, _id); }
 		public String link() { 
 			User u=get0();
@@ -82,7 +89,7 @@ public class User extends CrudObject implements AccessChecker<User>{
 	
 	public static final Schema schema=new Schema();
 	public static final class Schema extends CrudObjectSchema<User> {
-		private Schema() { super(User.class); addAllFields();}
+		private Schema() { super(User.class); }
 		public final StringField username = new StringField("username"); 
 		public final StringField email    = new StringField("email"); 
 		public final StringField city = new StringField("city"); 

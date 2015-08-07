@@ -1,18 +1,10 @@
 package org.kisst.item4j;
 
 import java.lang.reflect.Constructor;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.LinkedHashMap;
 
-import org.kisst.crud4j.CrudModel;
-import org.kisst.item4j.Immutable.Sequence;
 import org.kisst.item4j.json.JsonParser;
-import org.kisst.item4j.struct.HashStruct;
 import org.kisst.item4j.struct.Struct;
-import org.kisst.util.AssertUtil;
 import org.kisst.util.ReflectionUtil;
 
 public class ObjectSchema<T> implements Schema, Type<T> {
@@ -36,7 +28,6 @@ public class ObjectSchema<T> implements Schema, Type<T> {
 	public T createObject(Struct doc) { return (T) ReflectionUtil.createObject(cons, new Object[]{doc} );}
 	
 	protected void addAllFields() { addAllFields(this.getClass());	}
-	@SuppressWarnings("unchecked")
 	private void addAllFields(Class<?> cls) {
 		if (cls==null || cls==Object.class)
 			return;
@@ -53,94 +44,4 @@ public class ObjectSchema<T> implements Schema, Type<T> {
 		catch (IllegalAccessException e) { throw new RuntimeException(e); }
 	}
 
-	public class Field<FT> implements Schema.Field<FT> {
-		public final Type<FT> type;
-		public final String name;
-		private final boolean optional;
-		private final boolean allowsNull;
-		private final Object defaultValue;
-		private java.lang.reflect.Field field;
-
-		public Field(Type<FT> type, String name) {
-			this.type=type;
-			this.name=name; 
-			this.optional=false; 
-			this.allowsNull=false;
-			this.field=ReflectionUtil.getField(ObjectSchema.this.getJavaClass(), name);
-			this.defaultValue=null;
-			AssertUtil.assertNotNull(field, "field "+getJavaClass()+"::"+name);
-		}
-		public Object getObject(Struct s) { 
-			Object result = s.getObject(getName(),null);
-			if (result==null)
-				return defaultValue;
-			return result;
-		}
-		public String getString(Struct s) { 
-			Object result = getObject(s);
-			if (result==null)
-				return null;
-			return result.toString();
-		}
-		public Object getObjectValue(Object obj) { 
-			try {
-				System.out.println(this+" "+this.getName()+this.field);
-				return field.get(obj);
-			}
-			catch (IllegalArgumentException e) { throw new RuntimeException(e); }
-			catch (IllegalAccessException e) { throw new RuntimeException(e); }
-		}
-		public void setValue(HashStruct doc, Object value) { doc.put(getName(), value); } 
-
-		@SuppressWarnings("unchecked")
-		public Class<FT> getJavaClass() { return (Class<FT>) this.type.getJavaClass(); }
-		public Type<?> getType() { return this.type; }
-		public String getName() { return this.name; }
-		public boolean isOptional() { return optional; }
-		public boolean allowsNull() { return allowsNull; }
-	}
-	public class StringField extends Field<String>{ //implements Schema.StringField{
-		public StringField(String name) {	super(Type.javaString, name); }
-		@Override public String getString(Struct s) { return s.getString(getName(),null); }
-	}
-	public class BooleanField extends Field<Boolean> {//implements Schema.BooleanField {
-		public BooleanField(String name) { super(Type.javaBoolean, name); }
-		public boolean getBoolean(Struct s, boolean defaultValue) { return s.getBoolean(getName(),defaultValue); }
-	}
-	public class IntField extends Field<Integer> {//implements Schema.IntegerField {
-		public IntField(String name) { super(Type.javaInteger, name); }
-		public int getInt(Struct s) { return s.getInteger(getName(),0); }
-	}
-	public class LongField extends Field<Long> { //implements Schema.LongField{
-		public LongField(String name) { super(Type.javaLong, name); }
-		public long getLong(Struct s) { return s.getLong(getName(),0); }
-	}
-	public class LocalDateField extends Field<LocalDate> { // implements Schema.DateField {
-		public LocalDateField(String name) { super(Type.javaLocalDate, name); }
-		public LocalDate getLocalDate(Struct s) { return s.getLocalDate(getName(),null); }
-	}
-	public class LocalTimeField extends Field<LocalTime> { // implements Schema.DateField {
-		public LocalTimeField(String name) { super(Type.javaLocalTime, name); }
-		public LocalTime getLocalTime(Struct s) { return s.getLocalTime(getName(),null); }
-	}
-	public class LocalDateTimeField extends Field<LocalDateTime> { // implements Schema.DateField {
-		public LocalDateTimeField(String name) { super(Type.javaLocalDateTime, name); }
-		public LocalDateTime getLocalDateTime(Struct s) { return s.getLocalDateTime(getName(),null); }
-	}
-	public class InstantField extends Field<Instant> { // implements Schema.DateField {
-		public InstantField(String name) { super(Type.javaInstant, name); }
-		public Instant getInstant(Struct s) { return s.getInstant(getName(),null); }
-		public Instant getInstantOrNow(Struct s) { return s.getInstant(getName(),Instant.now()); }
-	}
-	@SuppressWarnings("rawtypes")
-	public class SequenceField<RT> extends Field<Sequence> {
-		private final Type<RT> elementType;
-		public SequenceField(Type<RT> type, String name) { 
-			super(new SequenceType<RT>(type) , name); // TODO: parser is null
-			this.elementType=type;
-		} 
-		public Sequence<RT> getSequence(CrudModel model, Struct data) {
-			return data.getTypedSequenceOrEmpty(model, elementType.getJavaClass(), name);
-		}
-	}
 }

@@ -60,7 +60,7 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 	
 	public static final Schema schema=new Schema();
 	public static final class Schema extends CrudObjectSchema<Event> {
-		private Schema() { super(Event.class); addAllFields(); }
+		private Schema() { super(Event.class); }
 		public IdField getKeyField() { return _id; }
 		public final IdField _id = new IdField();
 		public final StringField title = new StringField("title"); 

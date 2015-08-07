@@ -4,7 +4,7 @@ import org.kisst.item4j.HasName;
 import org.kisst.item4j.Type;
 
 public interface SmartStruct {
-	public Iterable<Member<?>> getMembers();
+	//public Iterable<Member<?>> getMembers();
 	public<T> T get(Member<T> member);
 	
 	

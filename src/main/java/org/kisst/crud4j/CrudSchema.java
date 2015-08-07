@@ -2,16 +2,16 @@ package org.kisst.crud4j;
 
 import java.lang.reflect.Constructor;
 
-import org.kisst.item4j.ObjectSchema;
+import org.kisst.item4j.ReflectSchema;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.util.ReflectionUtil;
 
-public class CrudSchema<T> extends ObjectSchema<T> {
+public class CrudSchema<T> extends ReflectSchema<T> {
 	public CrudSchema(Class<T> cls) {  super(cls); }
 	
 	@SuppressWarnings("unchecked")
 	public T createObject(CrudModel model, Struct doc) { 
-		Constructor<?> cons=ReflectionUtil.getConstructor(cls, new Class<?>[]{ model.getClass(), Struct.class} );
+		Constructor<?> cons=ReflectionUtil.getConstructor(getJavaClass(), new Class<?>[]{ model.getClass(), Struct.class} );
 		return (T) ReflectionUtil.createObject(cons, new Object[]{model, doc} );
 	}
 	

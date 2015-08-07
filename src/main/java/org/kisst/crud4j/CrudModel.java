@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 import org.kisst.crud4j.CrudTable.ChangeHandler;
 import org.kisst.item4j.Item;
-import org.kisst.item4j.ObjectSchema;
+import org.kisst.item4j.Schema;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.util.ReflectionUtil;
 
@@ -49,7 +49,7 @@ public abstract class CrudModel implements Item.Factory {
 		return arr;
 	}
 	
-	public <T extends CrudObject> UniqueIndex<T> getUniqueIndex(Class<?> cls, ObjectSchema<?>.Field<?> ... fields) {
+	public <T extends CrudObject> UniqueIndex<T> getUniqueIndex(Class<?> cls, Schema.Field<?> ... fields) {
 		for (StorageOption opt: options) {
 			if (opt instanceof UniqueIndex && opt.getRecordClass()==cls) {
 				@SuppressWarnings("unchecked")
@@ -96,7 +96,7 @@ public abstract class CrudModel implements Item.Factory {
 		public Class<T> getRecordClass(); 
 	}
 	public interface UniqueIndex<T extends CrudObject> extends Index<T >{
-		public CrudSchema<T>.Field<?>[] fields();
+		public Schema.Field<?>[] fields();
 		public T get(String ... field); 
 	}
 	public interface OrderedIndex<T extends CrudObject> extends Index<T >, Iterable<T>{

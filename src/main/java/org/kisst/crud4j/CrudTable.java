@@ -5,8 +5,8 @@ import java.util.Iterator;
 import org.kisst.crud4j.index.MemoryUniqueIndex;
 import org.kisst.item4j.Immutable;
 import org.kisst.item4j.Immutable.Sequence;
-import org.kisst.item4j.ObjectSchema;
 import org.kisst.item4j.Schema.Field;
+import org.kisst.item4j.SchemaBase;
 import org.kisst.item4j.seq.TypedSequence;
 import org.kisst.item4j.struct.MultiStruct;
 import org.kisst.item4j.struct.SingleItemStruct;
@@ -30,15 +30,15 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 	public CrudTable(CrudModel model, CrudObjectSchema<T> schema) { 
 		this.model=model;
 		this.schema=schema;
-		this.name=schema.cls.getSimpleName();
-		this.storage=model.getStorage(schema.cls);
+		this.name=schema.getJavaClass().getSimpleName();
+		this.storage=model.getStorage(schema.getJavaClass());
 		if (storage.useCache()) {
 			cache=new MemoryUniqueIndex<T>(schema, schema.getKeyField());
-			this.indices=(ChangeHandler<T>[]) ArrayUtil.join(cache,model.getIndices(schema.cls));
+			this.indices=(ChangeHandler<T>[]) ArrayUtil.join(cache,model.getIndices(schema.getJavaClass()));
 		}
 		else {
 			cache=null;
-			this.indices=model.getIndices(schema.cls);
+			this.indices=model.getIndices(schema.getJavaClass());
 
 		}
 	}
@@ -97,12 +97,12 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 	public synchronized <FT> void updateField(T oldValue, Field<FT> field, Object newValue) { 
 		updateFields(oldValue, new SingleItemStruct(field.getName(),newValue)); 
 	}
-	public synchronized <ST> void addSequenceItem(T oldValue, ObjectSchema<T>.SequenceField<ST> field, ST value) {
+	public synchronized <ST> void addSequenceItem(T oldValue, SchemaBase.SequenceField<ST> field, ST value) {
 		Sequence<ST> oldSequence = field.getSequence(model, oldValue);
 		Sequence<ST> newSequence = oldSequence.growTail(value);
 		updateField(oldValue, field, newSequence);
 	}
-	public synchronized <ST> int removeSequenceItem(T oldValue, ObjectSchema<T>.SequenceField<ST> field, ST value) {
+	public synchronized <ST> int removeSequenceItem(T oldValue, SchemaBase.SequenceField<ST> field, ST value) {
 		Sequence<ST> oldSequence = field.getSequence(model, oldValue);
 		int index=0;
 		for (ST it: oldSequence) {
@@ -159,7 +159,7 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 	@Override public int size() { return findAll().size();}
 	@Override public Object getObject(int index) { return findAll().get(index); }
 	@Override public Iterator<T> iterator() { return findAll().iterator(); }
-	@Override public Class<?> getElementClass() { return schema.cls; }
+	@Override public Class<?> getElementClass() { return schema.getJavaClass(); }
 	
 	public class Change {
 		public final T oldRecord;

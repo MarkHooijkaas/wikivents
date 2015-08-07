@@ -1,15 +1,15 @@
 package org.kisst.crud4j.index;
 
 import org.kisst.crud4j.CrudObject;
-import org.kisst.crud4j.CrudSchema;
 import org.kisst.crud4j.CrudTable;
+import org.kisst.item4j.Schema;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public abstract class AbstractKeyedIndex<T extends CrudObject> extends Index<T> {
 	public final static Logger logger = LoggerFactory.getLogger(AbstractKeyedIndex.class);
 
-	public AbstractKeyedIndex(CrudSchema<T> schema) { 
+	public AbstractKeyedIndex(Schema schema) { 
 		super(schema);
 	}
 	abstract protected String calcUniqueKey(T record);

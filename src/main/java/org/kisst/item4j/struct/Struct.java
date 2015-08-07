@@ -11,10 +11,14 @@ import org.kisst.item4j.Item;
 import org.kisst.item4j.seq.ItemSequence;
 import org.kisst.util.ReflectionUtil;
 
-public interface Struct {
+public interface Struct { //extends SmartStruct {
 	public Iterable<String> fieldNames();
 	public Object getDirectFieldValue(String name);
 
+	//default public<T> T get(Member<T> member) { return member.getType().convert(getDirectFieldValue(member.getName())); }
+
+	
+	
 	public final static Struct EMPTY=new Struct() {
 		public final Iterable<String> fieldNames() { return new Iterable<String>() {
 			public Iterator<String> iterator() { return new Iterator<String>(){

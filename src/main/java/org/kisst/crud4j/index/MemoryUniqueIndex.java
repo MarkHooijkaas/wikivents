@@ -4,19 +4,18 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.kisst.crud4j.CrudModel.UniqueIndex;
 import org.kisst.crud4j.CrudObject;
-import org.kisst.crud4j.CrudSchema;
 import org.kisst.item4j.Immutable;
 import org.kisst.item4j.Immutable.Sequence;
-import org.kisst.item4j.ObjectSchema;
+import org.kisst.item4j.Schema;
 
 public class MemoryUniqueIndex<T extends CrudObject> extends AbstractKeyedIndex<T>  implements UniqueIndex<T> {
-	private final FieldList<T> fields;
+	private final FieldList fields;
 	private final ConcurrentHashMap<String, T> map = new ConcurrentHashMap<String, T>();
 	
 	@SafeVarargs
-	public MemoryUniqueIndex(CrudSchema<T> schema, ObjectSchema<T>.Field<?> ... fields) { 
+	public MemoryUniqueIndex(Schema schema, Schema.Field<?> ... fields) { 
 		super(schema);
-		this.fields=new FieldList<T>(fields);
+		this.fields=new FieldList(fields);
 	}
 	@Override protected void add(String key, T record) { map.put(key, record); }
 	@Override protected void remove(String key) { map.remove(key); }
@@ -30,6 +29,6 @@ public class MemoryUniqueIndex<T extends CrudObject> extends AbstractKeyedIndex<
 
 	@Override public T get(String ... values) { return map.get(fields.getKey(values)); }
 
-	@Override public ObjectSchema<T>.Field<?>[] fields() { return fields.fields(); }
+	@Override public Schema.Field<?>[] fields() { return fields.fields(); }
 
 }

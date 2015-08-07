@@ -24,14 +24,14 @@ public class MongoStorage implements StructStorage {
 	public MongoStorage(CrudObjectSchema<?> schema, Struct props, MongoDb db) {
 		this.schema=schema;
 		this.db=db;
-		this.collection=db.getCollection(schema.cls.getSimpleName());
+		this.collection=db.getCollection(schema.getJavaClass().getSimpleName());
 		this.keyField=schema.getKeyField();
 		this.useCache=props.getBoolean("useCache",false);
 	}
 	@Override public boolean useCache() { return this.useCache; }
 
 	@Override public void close() { db.closeMongoDB(); }
-	@Override public Class<?> getRecordClass() { return schema.cls; }
+	@Override public Class<?> getRecordClass() { return schema.getJavaClass(); }
 	@Override public String create(Struct value) {
 		//db.printEncoder();
 		MongoStruct doc = new MongoStruct(value);

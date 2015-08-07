@@ -5,7 +5,6 @@ import java.io.File;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.kisst.item4j.struct.HashStruct;
 import org.kisst.props4j.SimpleProps;
 
 import club.wikivents.WikiventsModels;
@@ -32,16 +31,16 @@ public class Main {
 			System.out.println("\t"+u);
 		debug("fetched users");
 		
-		HashStruct doc=new HashStruct();
-		User.schema.username.setValue(doc, "Mark1967");
-		User.schema.email.setValue(doc, "mark@wikivents.nl");
+		//HashStruct doc=new HashStruct();
+		//User.schema.username.setValue(doc, "Mark1967");
+		//User.schema.email.setValue(doc, "mark@wikivents.nl");
 		//User.schema.password.setValue(doc, "secret");
 		//model.users().create(new User(doc));
 		//model.users.create(new User(doc));
 		//debug("Added user");
 
-		User.schema.username.setValue(doc, "PKO");
-		User.schema.email.setValue(doc, "pko@wikivents.nl");
+		//User.schema.username.setValue(doc, "PKO");
+		//User.schema.email.setValue(doc, "pko@wikivents.nl");
 		//User.schema.password.setValue(doc, "secret");
 		//model.users.create(new User(doc));
 		//debug("Added user");

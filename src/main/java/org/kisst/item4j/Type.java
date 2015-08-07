@@ -10,6 +10,8 @@ public interface Type<T> {
 
 	public Class<? extends T> getJavaClass();
 	public T parseString(String str);
+	//public T convertFrom(Object obj); 
+
 
 	default public String getStringRepresentation(Object obj) { return ""+obj; }
 	default public String getName() { return getJavaClass().getSimpleName(); }
@@ -19,6 +21,7 @@ public interface Type<T> {
 		return getJavaClass().isAssignableFrom(obj.getClass());
 	}
 
+	public static final Java<Object> javaObject =new Java<Object>(Object.class, obj->obj);
 	public static final Java<String> javaString=new Java<String>(String.class, str -> str);
 	public static final Java<Boolean> javaBoolean=new Java<Boolean>(Boolean.class, Boolean::parseBoolean);
 	public static final Java<Integer> javaInteger=new Java<Integer>(Integer.class, Integer::parseInt);
