@@ -7,15 +7,17 @@ import java.time.LocalTime;
 import java.util.Iterator;
 
 import org.kisst.item4j.Immutable;
+import org.kisst.item4j.ImmutableSequence;
 import org.kisst.item4j.Item;
 import org.kisst.item4j.seq.ItemSequence;
+import org.kisst.item4j.struct.SmartStruct.Member;
 import org.kisst.util.ReflectionUtil;
 
 public interface Struct { //extends SmartStruct {
 	public Iterable<String> fieldNames();
 	public Object getDirectFieldValue(String name);
 
-	//default public<T> T get(Member<T> member) { return member.getType().convert(getDirectFieldValue(member.getName())); }
+	default public<T> T get(Item.Factory factory, Member<T> member) { return member.getType().convertFrom(factory, getDirectFieldValue(member.getName())); }
 
 	
 	
@@ -104,13 +106,13 @@ public interface Struct { //extends SmartStruct {
 		if (obj==null) return defaultValue;
 		return Item.asItemSequence(obj);
 	}
-	default public<T> Immutable.Sequence<T> getTypedSequence(Item.Factory factory, Class<?> type, String path, Immutable.Sequence<T> defaultValue) { 
+	default public<T> ImmutableSequence<T> getTypedSequence(Item.Factory factory, Class<?> type, String path, ImmutableSequence<T> defaultValue) { 
 		Object obj= getObject(path,null); 
 		if (obj==null) return defaultValue;
 		return Item.asTypedSequence(factory, type,getObject(path));  
 	} 
-	default public<T> Immutable.Sequence<T> getTypedSequenceOrEmpty(Item.Factory factory, Class<?> type, String path) {
-		return Item.cast(getTypedSequence(factory, type, path, Immutable.Sequence.EMPTY));
+	default public<T> ImmutableSequence<T> getTypedSequenceOrEmpty(Item.Factory factory, Class<T> type, String path) {
+		return Item.cast(getTypedSequence(factory, type, path, ImmutableSequence.EMPTY));
 	}
 
 
@@ -156,7 +158,7 @@ public interface Struct { //extends SmartStruct {
 	default public<T> T getType(Item.Factory factory, Class<?> cls, String path) { return Item.asType(factory, cls,getObject(path)); }
 	default public Struct getStruct(String path) { return Item.asStruct(getObject(path)); } 
 	default public Immutable.ItemSequence getItemSequence(String path) { return Item.asItemSequence(getObject(path)); } 
-	default public<T> Immutable.Sequence<T> getTypedSequence(Item.Factory factory, Class<?> type, String path) { return Item.asTypedSequence(factory, type,getObject(path)); } 
+	default public<T> ImmutableSequence<T> getTypedSequence(Item.Factory factory, Class<?> type, String path) { return Item.asTypedSequence(factory, type,getObject(path)); } 
 
 	public static final Object UNKNOWN_FIELD=ReflectionUtil.UNKNOWN_FIELD;
 	public class UnknownFieldException extends RuntimeException {

@@ -115,10 +115,10 @@ public interface Item {
 		throw new ClassCastException("Can not make a ItemSequence of type "+obj.getClass()+", "+obj);
 	}
 	@SuppressWarnings("unchecked")
-	public static <T> Immutable.Sequence<T> asTypedSequence(Item.Factory factory, Class<?> type, Object obj) {
+	public static <T> ImmutableSequence<T> asTypedSequence(Item.Factory factory, Class<?> type, Object obj) {
 		if (obj==null) return null; 
-		if (obj instanceof TypedSequence) return Immutable.Sequence.smartCopy(factory, type,(TypedSequence<T>) obj);
-		if (obj instanceof Collection)   return Immutable.Sequence.smartCopy(factory, type, (Collection<T>) obj);
+		if (obj instanceof TypedSequence) return ImmutableSequence.smartCopy(factory, type,(TypedSequence<T>) obj);
+		if (obj instanceof Collection)   return ImmutableSequence.smartCopy(factory, type, (Collection<T>) obj);
 		throw new ClassCastException("Can not make a ItemSequence of type "+obj.getClass()+", "+obj);
 	}
 	

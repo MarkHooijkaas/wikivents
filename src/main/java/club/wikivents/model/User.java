@@ -7,7 +7,7 @@ import org.kisst.crud4j.CrudObject;
 import org.kisst.crud4j.CrudSchema;
 import org.kisst.crud4j.CrudTable.CrudRef;
 import org.kisst.http4j.handlebar.AccessChecker;
-import org.kisst.item4j.Immutable;
+import org.kisst.item4j.ImmutableSequence;
 import org.kisst.item4j.Type;
 import org.kisst.item4j.struct.HashStruct;
 import org.kisst.item4j.struct.Struct;
@@ -23,7 +23,7 @@ public class User extends CrudObject implements AccessChecker<User>{
 	public final String passwordSalt;
 	public final String encryptedPassword;
 	public final boolean isAdmin;
-	public final Immutable.Sequence<Friend> friends;
+	public final ImmutableSequence<Friend> friends;
 
 	public User(WikiventsModel model, Struct data) {
 		super(model.users, data);
@@ -90,6 +90,7 @@ public class User extends CrudObject implements AccessChecker<User>{
 	public static final Schema schema=new Schema();
 	public static final class Schema extends CrudSchema<User> {
 		private Schema() { super(User.class); }
+		public final IdField _id = new IdField();
 		public final StringField username = new StringField("username"); 
 		public final StringField email    = new StringField("email"); 
 		public final StringField city = new StringField("city"); 

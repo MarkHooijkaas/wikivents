@@ -7,8 +7,7 @@ import org.kisst.crud4j.CrudObject;
 import org.kisst.crud4j.CrudSchema;
 import org.kisst.crud4j.CrudTable.CrudRef;
 import org.kisst.http4j.handlebar.AccessChecker;
-import org.kisst.item4j.Immutable;
-import org.kisst.item4j.Immutable.Sequence;
+import org.kisst.item4j.ImmutableSequence;
 import org.kisst.item4j.Item;
 import org.kisst.item4j.struct.Struct;
 
@@ -21,9 +20,9 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 	public final LocalDate date;
 	public final int min;
 	public final int max;
-	public final Immutable.Sequence<User.Ref> organizers;
-	public final Immutable.Sequence<Guest> guests;
-	public final Immutable.Sequence<Comment> comments;
+	public final ImmutableSequence<User.Ref> organizers;
+	public final ImmutableSequence<Guest> guests;
+	public final ImmutableSequence<Comment> comments;
 	
 	public Event(WikiventsModel model, Struct data) {
 		super(model.events, data);
@@ -37,7 +36,7 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 		if (organizer==null)
 			this.organizers=data.getTypedSequenceOrEmpty(model, User.Ref.class,"organizers");
 		else
-			this.organizers=Item.cast( Sequence.of(User.Ref.class, new User.Ref(model,organizer)));
+			this.organizers=Item.cast( ImmutableSequence.of(User.Ref.class, new User.Ref(model,organizer)));
 		this.guests=schema.guests.getSequence(model, data);
 		this.comments=schema.comments.getSequence(model, data);
 		

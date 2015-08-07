@@ -18,11 +18,11 @@ public class CrudSchema<T extends CrudObject> extends ReflectSchema<T> {
 		return (T) ReflectionUtil.createObject(cons, new Object[]{model, doc} );
 	}
 
-	public final IdField _id = new IdField();
+	//public final IdField _id = new IdField();
 	
-	public IdField getKeyField() { return _id;}
+	//public IdField getKeyField() { return _id;}
 
-	public class IdField extends BasicField<String> {
+	public static class IdField extends BasicField<String> {
 		public IdField() { super(Type.javaString, "_id"); }
 		public IdField(String name) { super(Type.javaString, name); }
 		public String getString(Struct data) { return data.getString(name); }

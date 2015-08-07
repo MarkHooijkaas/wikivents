@@ -4,8 +4,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.kisst.crud4j.CrudModel.UniqueIndex;
 import org.kisst.crud4j.CrudObject;
-import org.kisst.item4j.Immutable;
-import org.kisst.item4j.Immutable.Sequence;
+import org.kisst.item4j.ImmutableSequence;
 import org.kisst.item4j.Schema;
 
 public class MemoryUniqueIndex<T extends CrudObject> extends AbstractKeyedIndex<T>  implements UniqueIndex<T> {
@@ -22,8 +21,8 @@ public class MemoryUniqueIndex<T extends CrudObject> extends AbstractKeyedIndex<
 	@Override public String calcUniqueKey(T record) { return fields.getKey(record); }
 	@Override public boolean keyExists(String key) { return map.containsKey(key); }
 
-	public Sequence<T> getAll() { 
-		return Immutable.Sequence.smartCopy(null/*schema.model*/, schema.getJavaClass(), map.values());
+	public ImmutableSequence<T> getAll() { 
+		return ImmutableSequence.smartCopy(null/*schema.model*/, schema.getJavaClass(), map.values());
 	}
 
 

@@ -3,8 +3,7 @@ package org.kisst.crud4j;
 import java.util.Iterator;
 
 import org.kisst.crud4j.index.MemoryUniqueIndex;
-import org.kisst.item4j.Immutable;
-import org.kisst.item4j.Immutable.Sequence;
+import org.kisst.item4j.ImmutableSequence;
 import org.kisst.item4j.Schema.Field;
 import org.kisst.item4j.SchemaBase;
 import org.kisst.item4j.seq.TypedSequence;
@@ -33,7 +32,7 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 		this.name=schema.getJavaClass().getSimpleName();
 		this.storage=model.getStorage(schema.getJavaClass());
 		if (storage.useCache()) {
-			cache=new MemoryUniqueIndex<T>(schema, schema.getKeyField());
+			cache=new MemoryUniqueIndex<T>(schema, new CrudSchema.IdField());
 			this.indices=(ChangeHandler<T>[]) ArrayUtil.join(cache,model.getIndices(schema.getJavaClass()));
 		}
 		else {
@@ -42,7 +41,7 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 
 		}
 	}
-	// This can not be done in the constructor, because then the CrudObjects will hae a null table
+	// This can not be done in the constructor, because then the CrudObjects will have a null table
 	public void initcache() { 
 		if (cache==null) 
 			return;
@@ -59,7 +58,7 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 	public void close() { storage.close(); }
 	public CrudSchema<T> getSchema() { return schema; }
 	public String getName() { return name; }
-	public String getKey(T obj) { return schema.getKeyField().getString(obj); }
+	public String getKey(T obj) { return obj._id; }
 
 	public T createObject(Struct doc) { return schema.createObject(model, doc); }
 
@@ -98,16 +97,16 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 		updateFields(oldValue, new SingleItemStruct(field.getName(),newValue)); 
 	}
 	public synchronized <ST> void addSequenceItem(T oldValue, SchemaBase.SequenceField<ST> field, ST value) {
-		Sequence<ST> oldSequence = field.getSequence(model, oldValue);
-		Sequence<ST> newSequence = oldSequence.growTail(value);
+		ImmutableSequence<ST> oldSequence = field.getSequence(model, oldValue);
+		ImmutableSequence<ST> newSequence = oldSequence.growTail(value);
 		updateField(oldValue, field, newSequence);
 	}
 	public synchronized <ST> int removeSequenceItem(T oldValue, SchemaBase.SequenceField<ST> field, ST value) {
-		Sequence<ST> oldSequence = field.getSequence(model, oldValue);
+		ImmutableSequence<ST> oldSequence = field.getSequence(model, oldValue);
 		int index=0;
 		for (ST it: oldSequence) {
 			if (it.equals(value)) { // TODO: will equals work?
-				Sequence<ST> newSequence = oldSequence.remove(index);
+				ImmutableSequence<ST> newSequence = oldSequence.remove(index);
 				updateField(oldValue, field, newSequence);
 				return 1;
 			}
@@ -142,17 +141,17 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 	private void checkSameId(T oldValue, T newValue) {
 		if (! alwaysCheckId)
 			return;
-		String newId = schema.getKeyField().getString(newValue);
+		String newId = newValue._id;
 		if (newId!=null) {
-			String oldId = schema.getKeyField().getString(oldValue);
+			String oldId = oldValue._id;
 			if (!newId.equals(oldId))
 				throw new IllegalArgumentException("Trying to update object with id "+oldId+" with object with id "+newId+": "+oldValue+"->"+newValue);
 		}
 	}
 	public TypedSequence<T> findAll() {
 		if (cache!=null)  
-			return Immutable.Sequence.smartCopy(model, schema.getJavaClass(),cache.getAll());
-		return Immutable.Sequence.realCopy(model, schema.getJavaClass(),storage.findAll());
+			return ImmutableSequence.smartCopy(model, schema.getJavaClass(),cache.getAll());
+		return ImmutableSequence.realCopy(model, schema.getJavaClass(),storage.findAll());
 	}
 
 

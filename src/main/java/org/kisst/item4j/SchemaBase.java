@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-import org.kisst.item4j.Immutable.Sequence;
+import org.kisst.item4j.ImmutableSequence;
 import org.kisst.item4j.struct.Struct;
 
 public abstract class SchemaBase implements Schema {
@@ -44,14 +44,15 @@ public abstract class SchemaBase implements Schema {
 		public Instant getInstantOrNow(Struct s) { return s.getInstant(getName(),Instant.now()); }
 	}
 	@SuppressWarnings("rawtypes")
-	public class SequenceField<RT> extends BasicField<Sequence> {
+	public class SequenceField<RT> extends BasicField<ImmutableSequence> {
 		private final Type<RT> elementType;
 		public SequenceField(Type<RT> type, String name) { 
 			super(new SequenceType<RT>(type) , name); // TODO: parser is null
 			this.elementType=type;
 		} 
-		public Sequence<RT> getSequence(Item.Factory factory, Struct data) {
-			return data.getTypedSequenceOrEmpty(factory, elementType.getJavaClass(), name);
+		@SuppressWarnings("unchecked")
+		public ImmutableSequence<RT> getSequence(Item.Factory factory, Struct data) {
+			return (ImmutableSequence<RT>) data.getTypedSequenceOrEmpty(factory, elementType.getJavaClass(), name);
 		}
 	}
 }

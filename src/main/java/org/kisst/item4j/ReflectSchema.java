@@ -32,5 +32,13 @@ public class ReflectSchema<T> extends SchemaBase implements Type<T> {
 	}
 
 	@Override public Class<? extends T> getJavaClass() { return this.javaClass;}
-	@Override public T parseString(String str) { return null; } // TODO:
+
+	@SuppressWarnings("unchecked")
+	@Override public T convertFrom(Item.Factory factory, Object obj) {
+		if (obj==null)
+			return null;
+		if (javaClass.isAssignableFrom(obj.getClass()))
+			return (T) obj;
+		throw new IllegalArgumentException("can not convert "+obj.getClass()+" to "+javaClass+" for "+obj);
+	}
 }

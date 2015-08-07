@@ -16,7 +16,6 @@ import com.mongodb.DBObject;
 public class MongoStorage implements StructStorage {
 
 	private final DBCollection collection;
-	private final CrudSchema<?>.IdField keyField;
 	private final CrudSchema<?> schema;
 	private final boolean useCache;
 	private final MongoDb db;
@@ -25,7 +24,6 @@ public class MongoStorage implements StructStorage {
 		this.schema=schema;
 		this.db=db;
 		this.collection=db.getCollection(schema.getJavaClass().getSimpleName());
-		this.keyField=schema.getKeyField();
 		this.useCache=props.getBoolean("useCache",false);
 	}
 	@Override public boolean useCache() { return this.useCache; }
@@ -36,10 +34,10 @@ public class MongoStorage implements StructStorage {
 		//db.printEncoder();
 		MongoStruct doc = new MongoStruct(value);
         collection.insert(doc.data);
-        return keyField.getString(doc);
+        return doc.getString("_id");
 	}
 	@Override public Struct read(String key) {
-		BasicDBObject query = new BasicDBObject(keyField.getName(), key);
+		BasicDBObject query = new BasicDBObject("_id", key);
 		DBCursor cursor = collection.find(query);
 		try {
 			return new MongoStruct(cursor.next());

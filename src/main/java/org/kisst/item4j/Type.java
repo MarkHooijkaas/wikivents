@@ -9,8 +9,8 @@ public interface Type<T> {
 	@SuppressWarnings("unchecked") public static <T> T cast(Object obj){ return (T) obj; } 
 
 	public Class<? extends T> getJavaClass();
-	public T parseString(String str);
-	//public T convertFrom(Object obj); 
+	//public T parseString(String str);
+	public T convertFrom(Item.Factory factory, Object obj); 
 
 
 	default public String getStringRepresentation(Object obj) { return ""+obj; }
@@ -40,8 +40,18 @@ public interface Type<T> {
 		private final Parser<T> parser;
 		public Java(Class<T> cls, Parser<T> parser) {	this.cls=cls; this.parser=parser;}
 		@Override public Class<T> getJavaClass() { return this.cls; };  
-		@Override public T parseString(String str) { return parser.parseString(str); }
+		public T parseString(String str) { return parser.parseString(str); }
+		@SuppressWarnings("unchecked")
+		@Override
+		public T convertFrom(Item.Factory factory, Object obj) {
+			if (obj==null)
+				return null;
+			if (cls.isAssignableFrom(obj.getClass()))
+				return (T) obj;
+			return parseString(obj.toString());
+		}
 	}
+
 
 	
 	/*
