@@ -4,7 +4,11 @@
 
 <script>
 	$(document).ready(function() {
-	    $('#events').dataTable();
+		$('#events').dataTable( {
+			"language": { "url": "//cdn.datatables.net/plug-ins/1.10.7/i18n/Dutch.json" },
+			 "lengthMenu": [[20, 50, 100, -1], [20, 50, 100, "Allemaal"]]
+			
+		} );
 	} );
 </script>
 
