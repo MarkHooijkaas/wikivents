@@ -23,13 +23,14 @@
 <div class="col-xs-2">
 	<img src="{{record.avatarUrl}}"/>
 
-	{{> include/modal.begin title="Voeg toe als vriend"}}
-Door {{record.username}} aan je vrienden toe te voegen, geef je {{record.username}} recht om jouw gegevens te zien. 
-Dit geeft je echter nog niet het recht om zijn/haar gegevens te zien.
-Daarvoor moet {{record.username}} je aan zijn/haar vriendenlijst toevoegen.
- <form role="form" method="POST" action="../addFriend/{{record._id}}">
-   <button type="submit" class="btn btn-default">Voeg toe als vriend</button>
- </form>
+	<button type="button" class="btn btn-default" data-toggle="modal" data-target="#addFriendModal">Voeg toe als vriend</button>
+	{{> include/modal.begin id="addFriendModal"}}
+		Door {{record.username}} aan je vrienden toe te voegen, geef je {{record.username}} recht om jouw gegevens te zien. 
+		Dit geeft je echter nog niet het recht om zijn/haar gegevens te zien.
+		Daarvoor moet {{record.username}} jou toevoegen aan zijn/haar vriendenlijst.
+ 		<form role="form" method="POST" action="../addFriend/{{record._id}}">
+   			<button type="submit" class="btn btn-default">Voeg toe als vriend</button>
+ 		</form>
 	{{> include/modal.end}}
 
 
@@ -49,14 +50,16 @@ Daarvoor moet {{record.username}} je aan zijn/haar vriendenlijst toevoegen.
 
 <div class="col-xs-10">
 	{{#ifMayChange record}}
-	{{> include/show.changeButton}}
-	{{> include/modal.begin title="Wijzig wachtwoord"}}
-	 <form role="form" method="POST" action="/user/changePassword">
-	 	<label for="">Wachtwoord</label><input type="password" name="newPassword">
-	 	<label for="">Wachtwoord Controle</label><input type="password" name="checkNewPassword">
-	 	<button type="submit" class="btn btn-default">Verander wachtwoord</button>
-	 </form>
-	{{> include/modal.end}}
+		{{> include/show.changeButton}}
+		
+		<button type="button" class="btn btn-default" data-toggle="modal" data-target="#changePasswordModal">Wijzig wachtwoord</button>
+		{{> include/modal.begin  id="changePasswordModal"}}
+			<form role="form" method="POST" action="/user/changePassword">
+				<label for="">Wachtwoord</label><input type="password" name="newPassword">
+				<label for="">Wachtwoord Controle</label><input type="password" name="checkNewPassword">
+				<button type="submit" class="btn btn-default">Verander wachtwoord</button>
+			</form>
+		{{> include/modal.end}}
 	{{/ifMayChange}}
 
 

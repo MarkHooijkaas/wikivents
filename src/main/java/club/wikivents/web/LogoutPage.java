@@ -11,9 +11,9 @@ public class LogoutPage extends WikiventsPage {
 		if (call.isGet()) {
 			call.output(call.getTheme().logout);
 		}
-		else if (call.isPost() && "true".equals(call.request.getParameter("logout"))) {
+		else if (call.isPost()) {
 			call.clearCookie();
-			call.redirect("/home");
+			call.redirect("/");
 		}
 	}
 
