@@ -32,7 +32,7 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 		this.name=schema.getJavaClass().getSimpleName();
 		this.storage=model.getStorage(schema.getJavaClass());
 		if (storage.useCache()) {
-			cache=new MemoryUniqueIndex<T>(schema, new CrudSchema.IdField());
+			cache=new MemoryUniqueIndex<T>(schema, false, new CrudSchema.IdField());
 			this.indices=(ChangeHandler<T>[]) ArrayUtil.join(cache,model.getIndices(schema.getJavaClass()));
 		}
 		else {

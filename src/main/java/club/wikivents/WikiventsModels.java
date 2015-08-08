@@ -21,8 +21,8 @@ public class WikiventsModels {
 		return new WikiventsModel(site,
 			new FileStorage(User.class, props),
 			new FileStorage(Event.class, props),
-			new MemoryUniqueIndex<User>(User.schema, User.schema.username),
-			new MemoryUniqueIndex<User>(User.schema, User.schema.email),
+			new MemoryUniqueIndex<User>(User.schema, true, User.schema.username),
+			new MemoryUniqueIndex<User>(User.schema, true, User.schema.email),
 			new MemoryOrderedIndex<>(Event.schema)
 		);
 	}
@@ -34,8 +34,8 @@ public class WikiventsModels {
 		WikiventsModel model = new WikiventsModel(site, 
 			new MongoStorage(User.schema, props, db),
 			new MongoStorage(Event.schema, props, db),
-			new MemoryUniqueIndex<User>(User.schema, User.schema.username),
-			new MemoryUniqueIndex<User>(User.schema, User.schema.email),
+			new MemoryUniqueIndex<User>(User.schema, true, User.schema.username),
+			new MemoryUniqueIndex<User>(User.schema, true, User.schema.email),
 			new MemoryOrderedIndex<>(Event.schema)
 		);
 		MongoCodecs.setModel(model);
