@@ -8,6 +8,7 @@ import org.kisst.crud4j.CrudSchema;
 import org.kisst.crud4j.CrudTable.CrudRef;
 import org.kisst.http4j.handlebar.AccessChecker;
 import org.kisst.item4j.ImmutableSequence;
+import org.kisst.item4j.Item;
 import org.kisst.item4j.Type;
 import org.kisst.item4j.struct.HashStruct;
 import org.kisst.item4j.struct.Struct;
@@ -35,7 +36,7 @@ public class User extends CrudObject implements AccessChecker<User>{
 		this.passwordSalt=schema.passwordSalt.getString(data);
 		this.encryptedPassword=schema.encryptedPassword.getString(data);
 		this.friends=schema.friends.getSequence(model, data);
-		this.isAdmin=schema.isAdmin.getBoolean(data,false);
+		this.isAdmin=false; // TODO schema.isAdmin.getBoolean(data,false);
 	}
 	public ArrayList<Event> futureEvents() {
 		ArrayList<Event> result=new ArrayList<Event>();
@@ -68,7 +69,7 @@ public class User extends CrudObject implements AccessChecker<User>{
 		public static final Type<User.Ref> type = new Type.Java<User.Ref>(User.Ref.class, null); // XXX TODO: parser is null 
 		public static class Field extends Schema.BasicField<User.Ref> {
 			public Field(String name) { super(User.Ref.type, name); }
-			public Ref getRef(WikiventsModel model, Struct data) { return new User.Ref(model, data.getString(name));}
+			public Ref getRef(WikiventsModel model, Struct data) { return new User.Ref(model, Item.asString(data.getDirectFieldValue(name)));}
 		}
 
 		public Ref(WikiventsModel model, String _id) { super(model.users, _id); }

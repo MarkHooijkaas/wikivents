@@ -49,13 +49,22 @@ public class SimpleProps implements Props {
 			this.name=name;
 	}
 	
+	
+	public Object getObject(String path) {
+		Object value=getObject(path,UNKNOWN_FIELD);
+		if (value==UNKNOWN_FIELD)
+			throw new UnknownFieldException(this,path);
+		if (value==null)
+			throw new FieldHasNullValueException(this,path);
+		return value;
+	}
 	@Override public Object getDirectFieldValue(String name) {
 		if (values.containsKey(name))
 			return values.get(name);
 		return UNKNOWN_FIELD;
 	}
-	@Override public Props getProps(String name, Props defaultValue) { return (Props) getObject(name,defaultValue); }
-	@Override public Props getProps(String name) { return (Props) getObject(name); }
+	//@Override public Props getProps(String name, Props defaultValue) { return (Props) getObject(name,defaultValue); }
+	//@Override public Props getProps(String name) { return (Props) getObject(name); }
 
 	@Override public Props getParent() { return parent; }
 	@Override public String getLocalName() { return name; }
@@ -74,11 +83,11 @@ public class SimpleProps implements Props {
 	public SimpleProps shallowClone() {
 		SimpleProps result=new SimpleProps(parent,name);
 		for (String key: fieldNames())
-			result.put(key, this.getObject(key));
+			result.put(key, this.getDirectFieldValue(key));
 		return result;
 	}
 
-	@Override public String getString(String key, String defaultValue) {
+	public String getString(String key, String defaultValue) {
 		Object result = getObject(key,null);
 		if (result==null)
 			return defaultValue;

@@ -6,13 +6,14 @@ import org.kisst.item4j.Schema;
 import org.kisst.item4j.struct.MultiStruct;
 import org.kisst.item4j.struct.SingleItemStruct;
 import org.kisst.item4j.struct.Struct;
+import org.kisst.item4j.struct.StructHelper;
 import org.kisst.util.ReflectionUtil;
 
 public abstract class SchemaObject implements Struct, CrudModelObject {
 	public final Schema schema;
 	public <T extends SchemaObject> SchemaObject(Schema schema) { this.schema=schema; }
 
-	@Override public String toString() { return toShortString(); }
+	@Override public String toString() { return StructHelper.toShortString(this); }
 	@Override public Iterable<String> fieldNames() { return schema.fieldNames(); }
 	@Override public Object getDirectFieldValue(String name) { return ReflectionUtil.getFieldValueOrUnknownField(this, name); }
 	

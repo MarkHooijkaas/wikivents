@@ -1,17 +1,16 @@
 package club.wikivents.web;
 
+import org.kisst.http4j.handlebar.TemplateEngine;
 import org.kisst.http4j.handlebar.TemplateEngine.CompiledTemplate;
+import org.kisst.http4j.handlebar.TemplateTheme;
+import org.kisst.props4j.Props;
 
 import club.wikivents.model.User;
 
-import org.kisst.http4j.handlebar.TemplateEngine;
-import org.kisst.http4j.handlebar.TemplateTheme;
-import org.kisst.item4j.struct.Struct;
-
 public class WikiventsTheme extends TemplateTheme {
-	public WikiventsTheme(Struct props) { super(createEngine(props)); 
+	public WikiventsTheme(Props props) { super(createEngine(props)); 
 	}
-	private static TemplateEngine createEngine(Struct props) {
+	private static TemplateEngine createEngine(Props props) {
 		TemplateEngine engine=new TemplateEngine(props);
 		engine.registerUserHelpers(User.class, "authenticatedUser");
 		return engine;

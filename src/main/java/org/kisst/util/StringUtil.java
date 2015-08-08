@@ -1,6 +1,7 @@
 package org.kisst.util;
 
 import org.kisst.item4j.struct.Struct;
+import org.kisst.item4j.struct.StructHelper;
 
 public class StringUtil {
 
@@ -21,7 +22,7 @@ public class StringUtil {
 				throw new RuntimeException("Unbounded ${ starting with "+str.substring(pos,pos+10));
 			String key=str.substring(pos+2,pos2);
 			result.append(str.substring(prevpos,pos));
-			Object value=vars.getObject(key,null);
+			Object value=StructHelper.getObject(vars,key,null);
 			if (value==null && key.equals("dollar"))
 				value="$";
 			if (value==null)

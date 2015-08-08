@@ -2,7 +2,7 @@ package org.kisst.crud4j.impl;
 
 import org.bson.codecs.configuration.CodecRegistry;
 import org.kisst.crud4j.CrudTable.CrudRef;
-import org.kisst.item4j.struct.Struct;
+import org.kisst.item4j.struct.StructProps;
 
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -12,7 +12,7 @@ import com.mongodb.MongoClientOptions;
 public class MongoDb {
 	private final MongoClient mongoClient;
 	private final DB db;
-	public MongoDb(Struct props, MongoClientOptions options) {
+	public MongoDb(StructProps props, MongoClientOptions options) {
 		this.mongoClient = new MongoClient(props.getString("mongohost","localhost"), options);
 		this.db = new DB(mongoClient,props.getString("mongodb"));
 	}

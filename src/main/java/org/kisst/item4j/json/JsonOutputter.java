@@ -23,7 +23,7 @@ public class JsonOutputter {
 		boolean firstElement=true;
 		out.write('{');
 		for (String name: struct.fieldNames()) {
-			Object value=struct.getObject(name,null);
+			Object value=struct.getDirectFieldValue(name);
 			if (value==null)
 				continue;
 			if (! firstElement)

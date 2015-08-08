@@ -7,6 +7,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
+import org.kisst.item4j.struct.StructHelper;
+
 public class Parser {
 	//private static final Logger logger = LoggerFactory.getLogger(SimpleProps.class);
 	private final File file;
@@ -205,7 +207,7 @@ public class Parser {
 			Props p=props;
 			String value=null;
 			while (p!=null) {
-				value=p.getString(var, null); // TODO: should also work if not a String
+				value=StructHelper.getString(p,var, null); // TODO: should also work if not a String
 				if (value!=null)
 					break;
 				p=p.getParent();

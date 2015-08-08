@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.io.Writer;
 
-import org.kisst.item4j.struct.Struct;
+import org.kisst.props4j.Props;
 
 import com.github.jknack.handlebars.Context;
 import com.github.jknack.handlebars.Context.Builder;
@@ -25,14 +25,14 @@ import com.github.jknack.handlebars.io.FileTemplateLoader;
 import com.github.jknack.handlebars.io.TemplateLoader;
 
 public class TemplateEngine {
-	public final Struct props;
+	public final Props props;
 	public final boolean loadDynamic;
 	private final Handlebars handlebar;
 	//private final File dir;
 	private final String postfix;
 	private final String dirnames;
 	
-	public TemplateEngine(Struct props) {
+	public TemplateEngine(Props props) {
 		this.props=props;
 		this.loadDynamic=props.getBoolean("loadDynamic",false); // TODO: handlebars seems to load dynamically always
 		String filedir = props.getString("file.dir", null);

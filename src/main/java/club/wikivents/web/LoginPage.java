@@ -2,6 +2,7 @@ package club.wikivents.web;
 
 import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.form.HttpFormData;
+import org.kisst.item4j.struct.StructHelper;
 
 import club.wikivents.model.User;
 
@@ -11,7 +12,7 @@ public class LoginPage extends WikiventsThing {
 	public class Fields extends HttpFormData {
 		public Fields(WikiventsCall call) { super(call,call.getTheme().login); }
 
-		public final User user=model.usernameIndex.get(record.getString("username",null));
+		public final User user=model.usernameIndex.get(StructHelper.getString(record, "username",null));
 		public final InputField username = new InputField("username", this::validateUsername);
 		public final InputField password = new InputField("password", this::validatePassword);
 		

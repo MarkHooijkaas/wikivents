@@ -26,7 +26,7 @@ public class StructValueResolver implements ValueResolver {
 			Struct obj=(Struct) context;
 			Set<Entry<String, Object>> result = new HashSet<Entry<String, Object>>();
 			for (String key: obj.fieldNames())
-				result.add(new MyEntry<String, Object>(key,obj.getObject(key,null)));
+				result.add(new MyEntry<String, Object>(key,obj.getDirectFieldValue(key)));
 			return result;
 		}
 		return Collections.emptySet();
@@ -42,7 +42,7 @@ public class StructValueResolver implements ValueResolver {
 	@Override public Object resolve(final Object context, final String name) {
 		Object value = null;
 		if (context instanceof Struct)
-			value = ((Struct) context).getObject(name,null);
-		return value == null ? UNRESOLVED : value;
+			value = ((Struct) context).getDirectFieldValue(name);
+		return (value == null | value== Struct.UNKNOWN_FIELD) ? UNRESOLVED : value;
 	}
 }

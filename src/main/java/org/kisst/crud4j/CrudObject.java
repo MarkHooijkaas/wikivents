@@ -2,6 +2,7 @@ package org.kisst.crud4j;
 
 import org.bson.types.ObjectId;
 import org.kisst.crud4j.CrudTable.CrudRef;
+import org.kisst.item4j.Item;
 import org.kisst.item4j.struct.Struct;
 
 public abstract class CrudObject extends SchemaObject {
@@ -14,7 +15,7 @@ public abstract class CrudObject extends SchemaObject {
 	}
 	public String getKey() { return _id;} 
 	protected String createUniqueKey(Struct data) {
-		String key= data.getString("_id",null);
+		String key= Item.asString(data.getDirectFieldValue("_id")); 
 		if (key==null)
 			return uniqueKey();
 		return key;

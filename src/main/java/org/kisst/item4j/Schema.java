@@ -1,6 +1,5 @@
 package org.kisst.item4j;
 
-import org.kisst.item4j.struct.SmartStruct;
 import org.kisst.item4j.struct.Struct;
 
 public interface Schema {
@@ -9,10 +8,12 @@ public interface Schema {
 	public Iterable<String> fieldNames();
 	public Class<?> getJavaClass();
 	
-	public interface Field<FT> extends HasName, SmartStruct.Member<FT> {
+	public interface Field<FT> extends HasName, Struct.Member<FT> {
 		@Override public String getName();
 		public Type<FT> getType();
-		public Object getObject(Struct data); 
+		default public Object getObject(Struct data) {
+			return data.getDirectFieldValue(getName());
+		}
 	}
 	
 	public class BasicField<FT> implements Schema.Field<FT> {

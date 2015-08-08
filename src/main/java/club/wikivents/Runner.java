@@ -5,7 +5,6 @@ import java.util.Properties;
 
 import org.apache.log4j.PropertyConfigurator;
 import org.kisst.http4j.HttpServer;
-import org.kisst.item4j.struct.Struct;
 import org.kisst.props4j.SimpleProps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +21,7 @@ public class Runner {
 		File f=new File(configfile);
 		if (f.exists())
 			props.load(f);
-		this.site=new WikiventsSite(props.getStruct("wikivents",Struct.EMPTY));
+		this.site=new WikiventsSite(props.getPropsOrEmpty("wikivents"));
 
 		this.server = new HttpServer(props,site);
 

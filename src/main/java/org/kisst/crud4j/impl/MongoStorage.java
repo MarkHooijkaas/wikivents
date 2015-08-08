@@ -7,6 +7,7 @@ import org.kisst.crud4j.StructStorage;
 import org.kisst.item4j.seq.ArraySequence;
 import org.kisst.item4j.seq.TypedSequence;
 import org.kisst.item4j.struct.Struct;
+import org.kisst.props4j.Props;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -20,7 +21,7 @@ public class MongoStorage implements StructStorage {
 	private final boolean useCache;
 	private final MongoDb db;
 	
-	public MongoStorage(CrudSchema<?> schema, Struct props, MongoDb db) {
+	public MongoStorage(CrudSchema<?> schema, Props props, MongoDb db) {
 		this.schema=schema;
 		this.db=db;
 		this.collection=db.getCollection(schema.getJavaClass().getSimpleName());
@@ -34,7 +35,7 @@ public class MongoStorage implements StructStorage {
 		//db.printEncoder();
 		MongoStruct doc = new MongoStruct(value);
         collection.insert(doc.data);
-        return doc.getString("_id");
+        return (String) doc.getDirectFieldValue("_id");
 	}
 	@Override public Struct read(String key) {
 		BasicDBObject query = new BasicDBObject("_id", key);

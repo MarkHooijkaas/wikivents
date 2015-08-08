@@ -8,7 +8,6 @@ import org.kisst.crud4j.CrudSchema;
 import org.kisst.crud4j.CrudTable.CrudRef;
 import org.kisst.http4j.handlebar.AccessChecker;
 import org.kisst.item4j.ImmutableSequence;
-import org.kisst.item4j.Item;
 import org.kisst.item4j.struct.Struct;
 
 import com.github.jknack.handlebars.Handlebars.SafeString;
@@ -32,11 +31,14 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 		this.date=schema.date.getLocalDate(data);
 		this.min=schema.min.getInt(data);
 		this.max=schema.max.getInt(data);
+		/*
 		String organizer = data.getString("organizer",null); 
 		if (organizer==null)
 			this.organizers=data.getTypedSequenceOrEmpty(model, User.Ref.class,"organizers");
 		else
 			this.organizers=Item.cast( ImmutableSequence.of(User.Ref.class, new User.Ref(model,organizer)));
+			*/
+		this.organizers=schema.organizers.getSequence(model, data);
 		this.guests=schema.guests.getSequence(model, data);
 		this.comments=schema.comments.getSequence(model, data);
 		

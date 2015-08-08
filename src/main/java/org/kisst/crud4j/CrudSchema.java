@@ -2,6 +2,7 @@ package org.kisst.crud4j;
 
 import java.lang.reflect.Constructor;
 
+import org.kisst.item4j.Item;
 import org.kisst.item4j.ReflectSchema;
 import org.kisst.item4j.Type;
 import org.kisst.item4j.struct.Struct;
@@ -25,6 +26,6 @@ public class CrudSchema<T extends CrudObject> extends ReflectSchema<T> {
 	public static class IdField extends BasicField<String> {
 		public IdField() { super(Type.javaString, "_id"); }
 		public IdField(String name) { super(Type.javaString, name); }
-		public String getString(Struct data) { return data.getString(name); }
+		public String getString(Struct data) { return Item.asString(data.getDirectFieldValue(name)); }; 
 	}
 }

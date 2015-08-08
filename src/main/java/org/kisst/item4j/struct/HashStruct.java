@@ -12,9 +12,9 @@ public class HashStruct extends LinkedHashMap<String,Object> implements Struct {
 	public HashStruct() {}
 	public HashStruct(Struct rec) {
 		for (String key:rec.fieldNames())
-			put(key, rec.getObject(key));
+			put(key, rec.getDirectFieldValue(key));
 	}
-	@Override public String toString() { return toShortString(); }
+	@Override public String toString() { return StructHelper.toShortString(this); }
 	//public void put(String key, Object value) { map.put(key, value); }
 	
 	public HashStruct add(String name, Object value) { put(name,value); return this; }

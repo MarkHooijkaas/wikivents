@@ -11,7 +11,7 @@ public class MongoStruct implements Struct {
 	public MongoStruct(Struct strc) { 
 		this.data=new BasicDBObject(); 
 		for(String key : strc.fieldNames()) {
-			Object value = strc.getObject(key,null);
+			Object value = strc.getDirectFieldValue(key);
 			// Mongo codecs do not seem to work, so most types should just be made toString
 			if (value==null)  
 				data.put(key, value);

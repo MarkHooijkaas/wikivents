@@ -11,7 +11,7 @@ import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.kisst.http4j.HttpCall.UnauthorizedException;
-import org.kisst.item4j.struct.Struct;
+import org.kisst.props4j.Props;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,10 +19,10 @@ public class HttpServer extends AbstractHandler {
 	private final static Logger logger=LoggerFactory.getLogger(HttpServer.class);
 
 	private Server server=null;
-	protected final Struct props;
+	protected final Props props;
 	private final HttpCallHandler handler;
 
-	public HttpServer(Struct props, HttpCallHandler handler) {
+	public HttpServer(Props props, HttpCallHandler handler) {
 		this.props=props;
 		this.handler=handler;
 	}

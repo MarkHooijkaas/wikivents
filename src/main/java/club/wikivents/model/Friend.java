@@ -6,6 +6,7 @@ import org.kisst.crud4j.CrudModelObject;
 import org.kisst.item4j.ReflectSchema;
 import org.kisst.item4j.struct.ReflectStruct;
 import org.kisst.item4j.struct.Struct;
+import org.kisst.item4j.struct.StructHelper;
 
 public class Friend extends ReflectStruct implements CrudModelObject {
 	public final User.Ref user;
@@ -20,8 +21,8 @@ public class Friend extends ReflectStruct implements CrudModelObject {
 
 	
 	public Friend(WikiventsModel model, Struct data) {
-		this.user=new User.Ref(model, data.getString("user"));
-		this.since = data.getInstant("since", Instant.now());
+		this.user=new User.Ref(model, StructHelper.getString(data,"user"));
+		this.since = StructHelper.getInstant(data, "since", Instant.now());
 	}
 	public Friend(WikiventsModel model, User u) {
 		this.user=new User.Ref(model, u._id);

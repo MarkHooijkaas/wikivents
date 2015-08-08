@@ -26,7 +26,8 @@ public class MultiStruct implements Struct {
 		result.append(')');
 		return result.toString();
 	}
-	
+
+	/*
 	@Override public boolean hasField(String path) {
 		for (Struct struct: structs) {
 			if (struct.hasField(path))
@@ -34,6 +35,7 @@ public class MultiStruct implements Struct {
 		}
 		return false;
 	}
+	*/
 
 	@Override public Iterable<String> fieldNames() {
 		HashSet<String> result= new HashSet<String>();
@@ -46,8 +48,8 @@ public class MultiStruct implements Struct {
 	
 	@Override public Object getDirectFieldValue(String name) {
 		for (Struct struct: structs) {
-			Object result=struct.getObject(name, UNKNOWN_FIELD);
-			if (result!=UNKNOWN_FIELD)
+			Object result=struct.getDirectFieldValue(name);
+			if (result!=UNKNOWN_FIELD && result!=null)
 				return result;
 		}
 		return UNKNOWN_FIELD;

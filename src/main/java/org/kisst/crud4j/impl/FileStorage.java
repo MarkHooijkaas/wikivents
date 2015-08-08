@@ -5,12 +5,15 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.kisst.crud4j.CrudObject;
 import org.kisst.crud4j.StructStorage;
+import org.kisst.item4j.Item;
 import org.kisst.item4j.json.JsonOutputter;
 import org.kisst.item4j.json.JsonParser;
 import org.kisst.item4j.seq.ArraySequence;
 import org.kisst.item4j.seq.TypedSequence;
 import org.kisst.item4j.struct.Struct;
+import org.kisst.props4j.Props;
 import org.kisst.util.FileUtil;
 
 public class FileStorage implements StructStorage {
@@ -23,7 +26,7 @@ public class FileStorage implements StructStorage {
 	private final Class<?> cls;
 	
 	
-	public FileStorage(Class<?> cls, File maindir, boolean useCache) {
+	public FileStorage(Class<? extends CrudObject> cls, File maindir, boolean useCache) {
 		this.cls=cls;
 		this.useCache=useCache;
 		this.name=cls.getSimpleName();
@@ -33,11 +36,11 @@ public class FileStorage implements StructStorage {
 		//loadAllRecords();
 		
 	}
-	public FileStorage(Class<?> cls, Struct props) {
+	public FileStorage(Class<? extends CrudObject> cls, Props props) {
 		this(cls,new File(props.getString("datadir", "data")),props.getBoolean("useCache",true)); 
 	}
 	@Override public Class<?> getRecordClass() { return cls; }
-	private String getKey(Struct record) { return record.getString("_id"); }
+	private String getKey(Struct record) { return Item.asString(record.getDirectFieldValue("_id")); }
 
 	@Override public boolean useCache() { return useCache;}
 	

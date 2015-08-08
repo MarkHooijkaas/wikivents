@@ -7,7 +7,7 @@ import org.kisst.http4j.HttpCallDispatcher;
 import org.kisst.http4j.HttpCallDispatcher.Path;
 import org.kisst.http4j.HttpCallHandler;
 import org.kisst.http4j.ResourceHandler;
-import org.kisst.item4j.struct.Struct;
+import org.kisst.props4j.Props;
 
 import club.wikivents.WikiventsModels;
 import club.wikivents.model.WikiventsModel;
@@ -36,15 +36,15 @@ public class WikiventsSite implements HttpCallHandler {
 		@Path(dispatchPath="favicon.ico")
 		public final HttpCallHandler favicon =new ResourceHandler("resources/favicon.ico", "src/resources/favicon.ico");
 	}
-	public WikiventsSite(Struct props) {
+	public WikiventsSite(Props props) {
 		this.model=WikiventsModels.createModel(this, props);
-		Struct themeProps = props.getStruct("theme",null);
+		Props themeProps = props.getProps("theme",null);
 		if (themeProps==null) {
-			themes.put("default", new WikiventsTheme(Struct.EMPTY));
+			themes.put("default", new WikiventsTheme(Props.EMPTY_PROPS));
 		}
 		else {
 			for (String name: themeProps.fieldNames())
-				themes.put(name, new WikiventsTheme(themeProps.getStruct(name)));
+				themes.put(name, new WikiventsTheme(themeProps.getProps(name)));
 		}
 		this.defaultTheme=themes.get("default");
 		this.loginPage=new LoginPage(this);

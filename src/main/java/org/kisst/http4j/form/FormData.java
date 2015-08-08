@@ -38,7 +38,7 @@ public class FormData  {
 	private static String staticCalcValue(Struct rec, String name) {
 		if (rec==null)
 			return null;
-		return rec.getString(name, null);
+		return Item.asString(rec.getDirectFieldValue(name));
 	}
 	
 	@FunctionalInterface public interface Validator { public String validate(InputField field); } 
@@ -65,7 +65,7 @@ public class FormData  {
 		protected Object calcValue() {
 			if (record==null)
 				return null;
-			return record.getObject(name, null);
+			return record.getDirectFieldValue(name);
 		}
 	}
 
