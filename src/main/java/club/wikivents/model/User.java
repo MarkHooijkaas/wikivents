@@ -7,6 +7,7 @@ import org.kisst.crud4j.CrudObject;
 import org.kisst.crud4j.CrudSchema;
 import org.kisst.crud4j.CrudTable.CrudRef;
 import org.kisst.http4j.handlebar.AccessChecker;
+import org.kisst.http4j.handlebar.Htmlable;
 import org.kisst.item4j.ImmutableSequence;
 import org.kisst.item4j.Item;
 import org.kisst.item4j.Type;
@@ -15,7 +16,7 @@ import org.kisst.item4j.struct.Struct;
 import org.kisst.util.PasswordEncryption;
 
 
-public class User extends CrudObject implements AccessChecker<User>{
+public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 	public final WikiventsModel model;
 	public final String username;
 	public final String email;
@@ -55,7 +56,7 @@ public class User extends CrudObject implements AccessChecker<User>{
 		return result;
 	}
 	
-	
+	@Override public String getHtmlString() { return link(); }
 	public String link() {
 		String img=avatarUrl;
 		
@@ -68,7 +69,7 @@ public class User extends CrudObject implements AccessChecker<User>{
 
 	
 	
-	public static class Ref extends CrudRef<User> implements CrudModelObject {
+	public static class Ref extends CrudRef<User> implements CrudModelObject, Htmlable {
 		public static final Type<User.Ref> type = new Type.Java<User.Ref>(User.Ref.class, null); // XXX TODO: parser is null 
 		public static class Field extends Schema.BasicField<User.Ref> {
 			public Field(String name) { super(User.Ref.type, name); }
@@ -76,6 +77,7 @@ public class User extends CrudObject implements AccessChecker<User>{
 		}
 
 		public Ref(WikiventsModel model, String _id) { super(model.users, _id); }
+		@Override public String getHtmlString() { return link(); }
 		public String link() { 
 			User u=get0();
 			if (u==null)

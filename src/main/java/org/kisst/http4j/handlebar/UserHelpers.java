@@ -37,6 +37,18 @@ public class UserHelpers<T> {
 		}
 		return ctx;	
 	}
+
+	/*
+	public class IfLoggedInHelper implements Helper<Object> {
+		@Override public CharSequence apply(Object obj, final Options options) throws IOException {
+			T user =getUserOrNull(options);
+			if (user!=null) 
+				return options.fn();
+			else
+				return options.inverse();
+		}
+	}
+*/
 	
 	public class IfMayChangeHelper implements Helper<Object> {
 		@SuppressWarnings({ "unchecked" })
@@ -53,6 +65,7 @@ public class UserHelpers<T> {
 		}
 	}
 
+	
 	public class IfMayViewHelper implements Helper<Object> {
 		@SuppressWarnings({ "unchecked" })
 		@Override public CharSequence apply(final Object obj, final Options options) throws IOException {
@@ -86,5 +99,31 @@ public class UserHelpers<T> {
 				return "NULL";
 			return (obj.getClass()+"("+obj+")");
 		}
+		public CharSequence join(Object obj, String join, Options options) {
+			if (obj==null)
+				return null;
+			if (obj instanceof Iterable) {
+				String result="";
+				String sep="";
+				for (Object it: (Iterable<?>) obj) {
+					if (it instanceof Htmlable)
+						result += sep+((Htmlable)it).getHtmlString();
+					else
+						result += sep+it;
+					sep=join;
+				}
+				return result;
+			}
+			throw new IllegalArgumentException("Can not iterate over Object "+obj+" for joining");
+		}
+		
+		public CharSequence ifLoggedIn(Object obj, final Options options) throws IOException {
+			T user =getUserOrNull(options);
+			if (user!=null) 
+				return options.fn();
+			else
+				return options.inverse();
+		}
+
 	}
 }
