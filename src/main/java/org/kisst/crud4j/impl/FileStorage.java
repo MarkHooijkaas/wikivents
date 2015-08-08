@@ -1,10 +1,12 @@
 package org.kisst.crud4j.impl;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.eclipse.jgit.api.Git;
 import org.kisst.crud4j.CrudObject;
 import org.kisst.crud4j.StructStorage;
 import org.kisst.item4j.Item;
@@ -24,8 +26,10 @@ public class FileStorage implements StructStorage {
 	private final JsonOutputter outputter = new JsonOutputter(null);
 	//private final CrudSchema<?>.IdField keyField;
 	private final Class<?> cls;
-	
-	
+	private final Git git;
+	//private final Repository gitrepo;
+
+
 	public FileStorage(Class<? extends CrudObject> cls, File maindir, boolean useCache) {
 		this.cls=cls;
 		this.useCache=useCache;
@@ -34,7 +38,21 @@ public class FileStorage implements StructStorage {
 		if (! dir.exists())
 			dir.mkdirs();
 		//loadAllRecords();
-		
+		try {
+			//this.git=Git.init().setDirectory(maindir).call();
+//			FileRepositoryBuilder repositoryBuilder = new FileRepositoryBuilder();
+//			repositoryBuilder.setMustExist( true );
+//			repositoryBuilder.setWorkTree(maindir);
+//			Repository repository = repositoryBuilder.build();
+//			System.out.println("Having repository: " + repository.getDirectory()+" with HEAD "+repository.getRef("HEAD"));
+//
+//			//FileRepository repo= new FileRepository(maindir);
+//			this.git = new Git(repository); //Git.init().setDirectory(maindir).call();
+			this.git=Git.open(maindir);
+		}
+		//catch (GitAPIException e) { throw new RuntimeException(e); } 
+		catch (IOException e) {  throw new RuntimeException(e); } 
+		catch (IllegalStateException e) {throw new RuntimeException(e); }
 	}
 	public FileStorage(Class<? extends CrudObject> cls, Props props) {
 		this(cls,new File(props.getString("datadir", "data")),props.getBoolean("useCache",true)); 
@@ -43,7 +61,7 @@ public class FileStorage implements StructStorage {
 	private String getKey(Struct record) { return Item.asString(record.getDirectFieldValue("_id")); }
 
 	@Override public boolean useCache() { return useCache;}
-	
+
 	@Override public String create(Struct value) {
 		String key = getKey(value);
 		if (key==null)
@@ -52,6 +70,7 @@ public class FileStorage implements StructStorage {
 		if (f.exists())
 			throw new RuntimeException("File "+f.getAbsolutePath()+" already exists");
 		FileUtil.saveString(f, outputter.createString(value));
+		gitCommit("created "+name+" "+key);
 		return key;
 	}
 	private static AtomicInteger number=new AtomicInteger(new Random().nextInt(13));
@@ -68,18 +87,21 @@ public class FileStorage implements StructStorage {
 		String oldId = getKey(oldValue);
 		File f = getFile(oldId);
 		FileUtil.saveString(f, outputter.createString(newValue));
+		//git.add().addFilepattern(name+"/"+f.getName()).call();
+		gitCommit("updated "+name+" "+oldId);
 	}
 	@Override public void delete(Struct oldValue)  {
 		checkForConcurrentModification(oldValue);
 		getFile(oldValue).delete();
+		gitCommit("deleted "+name+" "+getKey(oldValue));
 	}
 	private void checkForConcurrentModification(Struct obj) {
 		// TODO Auto-generated method stub
-		
+
 	}
 	private File getFile(String key) { return new File(dir, key+".rec"); }
 	private File getFile(Struct obj) { return getFile(getKey(obj));}
-	
+
 	@Override public TypedSequence<Struct> findAll() {
 		ArrayList<Struct> list=new ArrayList<Struct>();
 		long start= System.currentTimeMillis();
@@ -101,4 +123,14 @@ public class FileStorage implements StructStorage {
 		System.out.println("DONE loading "+count+" records from "+name+" in "+(System.currentTimeMillis()-start)+" milliseconds");
 		return new ArraySequence<Struct>(Struct.class,list);
 	}
+
+
+	private void gitCommit(String comment) {
+		try {
+			git.add().addFilepattern(".").call();
+			git.commit().setMessage(comment).call();
+		}
+		catch (Exception e) { throw new RuntimeException(e); }
+	}
+
 }
