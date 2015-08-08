@@ -57,9 +57,12 @@ public class User extends CrudObject implements AccessChecker<User>{
 	
 	
 	public String link() {
-		String img="";
-		if (avatarUrl!=null)
-			img="<img class=\"link-avatar\" src=\""+avatarUrl+"\"> ";
+		String img=avatarUrl;
+		
+		if (img==null || img.trim().length()==0)
+			img="/favicon.ico";
+		
+		img="<img class=\"link-avatar\" src=\""+img+"\"> ";
 		return "<a href=\"/user/show/"+username+"\">"+img+username+"</a>"; 
 	} 
 

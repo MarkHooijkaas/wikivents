@@ -53,7 +53,7 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 		return sj.toString();
 	}
 	public SafeString organizerLinks() {
-		StringJoiner sj = new StringJoiner(", ");
+		StringJoiner sj = new StringJoiner("<br/>");
 		for (User.Ref r : organizers)
 			sj.add(r.link());
 		return new SafeString(sj.toString());

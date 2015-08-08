@@ -43,6 +43,7 @@ Daarvoor moet {{record.username}} je aan zijn/haar vriendenlijst toevoegen.
 	{{/each}}
 		</tbody>
 	</table>
+	
 	{{/ifMayView}}
 </div>	 
 
@@ -60,8 +61,15 @@ Daarvoor moet {{record.username}} je aan zijn/haar vriendenlijst toevoegen.
 
 
 	{{> include/show.field value=record.username label="Gebruikersnaam"}}
-	{{> include/show.field value=record.email    label="email"}}
 	{{> include/show.field value=record.city     label="Woonplaats"}}
+
+	{{#ifMayView record}}
+		{{> include/show.field value=record.email    label="email"}}
+	{{else}}
+		 Alleen gebruikers die door {{record.username}} als vriend zijn aangemerkt mogen verdere gegevens zien</div>
+	{{/ifMayView}}
+	
+
 
 	<h2>Activiteiten</h2>
 	{{> include/embedded.event.list list=record.futureEvents tableid="events"}}
@@ -72,6 +80,5 @@ Daarvoor moet {{record.username}} je aan zijn/haar vriendenlijst toevoegen.
 
 
 
-<div class="col-xs-12"> Alleen vrienden mogen details zien</div>
 
 {{> include/page.footer}}
