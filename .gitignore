@@ -8,3 +8,4 @@ test/data
 data/
 src/resources/images/
 /data/
+config/local.properties
