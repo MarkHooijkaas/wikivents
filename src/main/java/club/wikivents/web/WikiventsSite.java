@@ -8,6 +8,7 @@ import org.kisst.http4j.HttpCallDispatcher.Path;
 import org.kisst.http4j.HttpCallHandler;
 import org.kisst.http4j.ResourceHandler;
 import org.kisst.props4j.Props;
+import org.kisst.util.MailSender;
 
 import club.wikivents.WikiventsModels;
 import club.wikivents.model.WikiventsModel;
@@ -19,6 +20,7 @@ public class WikiventsSite implements HttpCallHandler {
 	public final Pages pages;
 	public final LoginPage loginPage;
 	public final  WikiventsTheme defaultTheme;  
+	public MailSender emailer;
 
 	private final HashMap<String, WikiventsTheme> themes= new HashMap<String, WikiventsTheme>();
 	
@@ -28,6 +30,7 @@ public class WikiventsSite implements HttpCallHandler {
 		public final HttpCallHandler event=new EventPage(WikiventsSite.this);
 		public final HttpCallHandler login  = loginPage::handleLogin;
 		public final HttpCallHandler logout = new LogoutPage(WikiventsSite.this);
+		public final HttpCallHandler sendMessage = new SendMessagePage(WikiventsSite.this);
 		public final HttpCallHandler resources=new ResourceHandler("resources/", "src/resources");
 		public final HttpCallHandler css=new ResourceHandler("resources/css/", "src/resources/css");
 		public final HttpCallHandler scripts=new ResourceHandler("resources/scripts/", "src/resources/scripts");
@@ -38,6 +41,7 @@ public class WikiventsSite implements HttpCallHandler {
 	}
 	public WikiventsSite(Props props) {
 		this.model=WikiventsModels.createModel(this, props);
+		this.emailer=new MailSender(props.getProps("email"));
 		Props themeProps = props.getProps("theme",null);
 		if (themeProps==null) {
 			themes.put("default", new WikiventsTheme(Props.EMPTY_PROPS));
@@ -55,7 +59,6 @@ public class WikiventsSite implements HttpCallHandler {
 		WikiventsCall call = WikiventsCall.of(httpcall, model);
 		this.handler.handle(call, subPath);
 	}
-
 
 	public void close() { model.close(); }
 	public WikiventsTheme getTheme(String themeName) { return themes.get(themeName); }

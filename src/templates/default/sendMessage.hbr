@@ -1,0 +1,19 @@
+{{> include/page.header}}
+
+{{#ifLoggedIn}}
+
+<form role="form" method="POST">
+	{{> include/form.text     form.to    label="Aan"}}
+	{{> include/form.date     form.subject label="Onderwerp"}}
+	{{> include/form.textarea form.message label="Bericht" rows=20}}
+
+	{{> include/form.submitButton}}
+</form>
+
+{{else}}
+
+Je bent niet ingelogd 
+
+{{/ifLoggedIn}}
+
+{{> include/page.footer}}

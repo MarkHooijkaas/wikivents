@@ -17,7 +17,8 @@ public class HttpFormData extends FormData implements HttpPostResult{
 	}
 	public HttpFormData(HttpCall call, Struct originalData, CompiledTemplate template) { 
 		super(originalData==null? new HttpRequestStruct(call.request) : originalData);  
-		this.call=call; this.template=template; 
+		this.call=call;
+		this.template=template;
 	}
 
 	@Override public boolean isSuccess() { return isValid();}

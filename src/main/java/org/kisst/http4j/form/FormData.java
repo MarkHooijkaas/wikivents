@@ -69,6 +69,12 @@ public class FormData  {
 		}
 	}
 
+	public String notEmpty(InputField field) {
+		if (field.value==null || field.value.trim().length()==0)
+			return "should not be empty";
+		return null;
+	}
+
 	public String validateEmail(InputField field) {
 		if (field.value==null)
 			return null;

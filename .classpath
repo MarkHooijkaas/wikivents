@@ -20,5 +20,6 @@
 	<classpathentry kind="lib" path="lib/junit4-ant-2.1.15.jar"/>
 	<classpathentry kind="lib" path="lib/mongodb-driver-core-3.0.3.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.jgit-4.0.1.201506240215-r.jar"/>
+	<classpathentry kind="lib" path="lib/javax.mail.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
