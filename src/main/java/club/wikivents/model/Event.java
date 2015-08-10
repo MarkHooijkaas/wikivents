@@ -32,32 +32,10 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 		this.date=schema.date.getLocalDate(data);
 		this.min=schema.min.getInt(data);
 		this.max=schema.max.getInt(data);
-		/*
-		String organizer = data.getString("organizer",null); 
-		if (organizer==null)
-			this.organizers=data.getTypedSequenceOrEmpty(model, User.Ref.class,"organizers");
-		else
-			this.organizers=Item.cast( ImmutableSequence.of(User.Ref.class, new User.Ref(model,organizer)));
-			*/
 		this.organizers=schema.organizers.getSequence(model, data);
 		this.guests=schema.guests.getSequence(model, data);
 		this.comments=schema.comments.getSequence(model, data);
 		
-	}
-
-	public LocalDate creationDate() { return LocalDate.ofEpochDay(new ObjectId(_id).getTimestamp()/(24*3600)); }
-	public String guestCount() { return guests.size()<=max ? guests.size()+"" : max+"+"+(guests.size()-max); }   
-	public String organizerNames() {
-		StringJoiner sj = new StringJoiner(", ");
-		for (CrudRef<User> r : organizers)
-			sj.add(r.get().username);
-		return sj.toString();
-	}
-	public SafeString organizerLinks() {
-		StringJoiner sj = new StringJoiner("<br/>");
-		for (User.Ref r : organizers)
-			sj.add(r.link());
-		return new SafeString(sj.toString());
 	}
 	
 	public static final Schema schema=new Schema();
@@ -76,7 +54,31 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 		public final SequenceField<Comment> comments= new SequenceField<Comment>(Comment.schema,"comments"); 
 	}
 
-
+	public LocalDate creationDate() { return LocalDate.ofEpochDay(new ObjectId(_id).getTimestamp()/(24*3600)); }
+	public String guestCount() { return guests.size()<=max ? guests.size()+"" : max+"+"+(guests.size()-max); }   
+	public String organizerNames() {
+		StringJoiner sj = new StringJoiner(", ");
+		for (CrudRef<User> r : organizers)
+			sj.add(r.get().username);
+		return sj.toString();
+	}
+	public SafeString organizerLinks() {
+		StringJoiner sj = new StringJoiner("<br/>");
+		for (User.Ref r : organizers)
+			sj.add(r.link());
+		return new SafeString(sj.toString());
+	}
+	public ImmutableSequence<Guest> backupGuests() {
+		if (guests.size()<=max)
+			return null;
+		return guests.subsequence(max);
+	}
+	public ImmutableSequence<Guest> allowedGuests() {
+		if (guests.size()<=max)
+			return guests;
+		return guests.subsequence(0,max);
+	}
+	
 	
 	@Override public boolean mayBeChangedBy(User user) { return user!=null && (user.isAdmin || hasOrganizer(user)); }
 	@Override public boolean mayBeViewedBy(User user) { return true; }

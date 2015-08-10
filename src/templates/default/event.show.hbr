@@ -13,42 +13,56 @@
 
 {{#ifMayView record}}
 	{{> include/show.field value=record.organizerLinks     label="Organisator"}}
-{{/ifMayView}}
-	{{> include/show.field value=record.date     label="Datum"}}
-	{{> include/show.field value=record.min      label="Min"}}
-	{{> include/show.field value=record.max      label="Max"}}
-	{{> include/show.field value=record.location label="Locatie"}}
-
-
-
-{{> include/show.changeButton}}
-
 {{#ifMayChange record}}
 <form role="form" method="POST" action="../addOrganizer/{{record._id}}">
 	<button type="submit" class="btn btn-default">Voeg organisator toe</button>
 	<input type="text" name="newOrganizer">
 </form>
 {{/ifMayChange}}
+{{/ifMayView}}
+	{{> include/show.field value=record.date     label="Datum"}}
+	{{> include/show.field value=record.min      label="Min"}}
+	{{> include/show.field value=record.max      label="Max"}}
+	{{> include/show.field value=record.location label="Locatie"}}
 
-  <h2>Deelnemers</h2>
+{{> include/show.changeButton}}
 
 
-{{#each record.guests}}
+<h2>Deelnemers</h2>
 
+{{#each record.allowedGuests}}
 <row>
-{{#ifMayChange this}}
-		<form role="form" method="POST" action="/event/removeGuest/{{record._id}}">
-			{{&priv user.link}}
-			<button type="submit" class="btn btn-default btn-xs" aria-label="Annuleer deelname">
-		 		<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-			</button>
-		</form>
-{{else}}
-		{{&priv user.link}}<br/>
-{{/ifMayChange}}
-</row>
-
+	{{#ifMayChange this}}
+			<form role="form" method="POST" action="/event/removeGuest/{{record._id}}">
+				{{&priv user.link}}
+				<button type="submit" class="btn btn-default btn-xs" aria-label="Annuleer deelname">
+			 		<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+				</button>
+			</form>
+	{{else}}
+			{{&priv user.link}}<br/>
+	{{/ifMayChange}}
+	</row>
 {{/each}}
+
+{{#if record.backupGuests}}
+<h2>Reservelijst</h2>
+
+{{#each record.backupGuests}}
+<row>
+	{{#ifMayChange this}}
+			<form role="form" method="POST" action="/event/removeGuest/{{record._id}}">
+				{{&priv user.link}}
+				<button type="submit" class="btn btn-default btn-xs" aria-label="Annuleer deelname">
+			 		<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+				</button>
+			</form>
+	{{else}}
+			{{&priv user.link}}<br/>
+	{{/ifMayChange}}
+	</row>
+{{/each}}
+{{/if}}
   
   
  <form role="form" method="POST" action="../addGuest/{{record._id}}">
