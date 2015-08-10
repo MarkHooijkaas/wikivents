@@ -18,7 +18,7 @@ import com.sun.mail.smtp.SMTPTransport;
 public class MailSender {
 	private final  Session session;
 	private final String username;
-	private final String password; 
+	private final String password;
 
 	public MailSender(Props p) {
 		Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
@@ -57,11 +57,30 @@ public class MailSender {
 		this.session = Session.getInstance(props, auth);
 	}
 
-	public void send(String replyTo, String to, String cc, String bcc, String title, String message) {
+	public static String format(String name, String email) {
+		if (name==null || name.trim().length()==0)
+			return email;
+		return "\""+name+"\" <"+email+">";
+	}
+
+	public MimeMessage createMessage() { return new MimeMessage(session); }
+	
+	public void send(String from, String to, String title, String message) {
+		final MimeMessage msg = createMessage();
+		try {
+			msg.setFrom(new InternetAddress(from));
+			msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to, false));
+			msg.setSubject(title);
+			msg.setText(message, "utf-8");
+			send(msg);
+		} 
+		catch (MessagingException e) { throw new RuntimeException(e); }
+	}
+	public void send(String from, String replyTo, String to, String cc, String bcc, String title, String message) {
 		final MimeMessage msg = new MimeMessage(session);
 
 		try {
-			//msg.setFrom(new InternetAddress(from));
+			msg.setFrom(new InternetAddress(from));
 			msg.setReplyTo(InternetAddress.parse(replyTo, false));
 			msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to, false));
 

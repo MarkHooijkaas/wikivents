@@ -25,12 +25,10 @@ public class SendMessagePage extends WikiventsPage {
 			formdata.showForm();
 		else {
 			if (formdata.isValid()) {
-				String replyTo='"'+call.user.username+"\" <"+call.user.email+">";
 				User toUser=model.usernameIndex.get(formdata.to.value);
-				String to=toUser.email;
 				String subject=formdata.subject.value;
 				String message=formdata.message.value;
-				site.emailer.send(replyTo, to, null, null, subject, message);
+				toUser.sendMailFrom(call.user, subject, message);
 			}
 			formdata.handle();
 		}

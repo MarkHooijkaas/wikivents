@@ -1,6 +1,12 @@
 package club.wikivents.model;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 import org.kisst.crud4j.CrudModelObject;
 import org.kisst.crud4j.CrudObject;
@@ -22,6 +28,7 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 	public final String email;
 	public final String city;
 	public final String avatarUrl;
+	public final String passwordResetToken;
 	public final String passwordSalt;
 	public final String encryptedPassword;
 	public final boolean isAdmin;
@@ -34,6 +41,7 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 		this.email=schema.email.getString(data);
 		this.city=schema.city.getString(data);
 		this.avatarUrl=schema.avatarUrl.getString(data);
+		this.passwordResetToken=schema.passwordResetToken.getString(data);
 		this.passwordSalt=schema.passwordSalt.getString(data);
 		this.encryptedPassword=schema.encryptedPassword.getString(data);
 		this.friends=schema.friends.getSequence(model, data);
@@ -101,6 +109,7 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 		public final StringField email    = new StringField("email"); 
 		public final StringField city = new StringField("city"); 
 		public final StringField avatarUrl= new StringField("avatarUrl"); 
+		public final StringField passwordResetToken = new StringField("passwordResetToken"); 
 		public final StringField passwordSalt = new StringField("passwordSalt"); 
 		public final StringField encryptedPassword = new StringField("encryptedPassword"); 
 		public final BooleanField isAdmin = new BooleanField("isAdmin"); 
@@ -133,6 +142,34 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 				return;
 		model.users.addSequenceItem(this, schema.friends, new Friend(model, user));
 	}
+	
+	public void sendSystemMail(String subject, String message) {
+		try {
+			final MimeMessage msg = model.site.emailer.createMessage();
+			msg.setFrom(new InternetAddress("info@wikivents.nl","Wikivents Beheer"));
+			msg.setRecipients(Message.RecipientType.TO, new InternetAddress[] {new InternetAddress(email, username)});
+			msg.setSubject(subject);
+			msg.setText(message, "utf-8");
+			model.site.emailer.send(msg);
+		} 
+		catch (MessagingException e) { throw new RuntimeException(e); } 
+		catch (UnsupportedEncodingException e) { throw new RuntimeException(e); }
+	}
+
+	public void sendMailFrom(User from, String subject, String message) {
+		try {
+			final MimeMessage msg = model.site.emailer.createMessage();
+			msg.setFrom(new InternetAddress(from.email,from.username));
+			msg.setReplyTo(new InternetAddress[] {new InternetAddress(from.email,from.username)});
+			msg.setRecipients(Message.RecipientType.TO, new InternetAddress[] {new InternetAddress(email, username)});
+			msg.setSubject(subject);
+			msg.setText(message, "utf-8");
+			model.site.emailer.send(msg);
+		} 
+		catch (MessagingException e) { throw new RuntimeException(e); } 
+		catch (UnsupportedEncodingException e) { throw new RuntimeException(e); }
+	}
+	
 	
 	public void changePassword(String newPassword) {
 		String salt = PasswordEncryption.createSaltString();

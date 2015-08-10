@@ -10,6 +10,9 @@
 	{{> include/form.submitButton}}
 </form>
 
+N.B. Deze gebruiker krijgt een e-mail met daarin jouw email adres zichtbaar voor replies.
+In de toekomst kan dit mogelijk uitgeschakeld worden, maar dat is nog niet gerealiseerd.
+
 {{else}}
 
 Je bent niet ingelogd 
