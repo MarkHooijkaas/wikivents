@@ -24,6 +24,12 @@ public interface Schema {
 		@Override public Type<FT> getType() { return this.type; }
 		@Override public String getName() { return this.name; }
 		@Override public Object getObject(Struct data) { return data.getDirectFieldValue(name); }
+		public Object getObject(Struct data, Object defaultValue) {
+			Object result = data.getDirectFieldValue(name);
+			if (result==null || result==Struct.UNKNOWN_FIELD)
+				return defaultValue;
+			return result;
+		}
 		//@Override public Class<FT> getJavaClass() { return type.getJavaClass(); }
 	}
 }

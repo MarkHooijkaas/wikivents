@@ -5,6 +5,9 @@ import com.github.jknack.handlebars.Context;
 import com.github.jknack.handlebars.Helper;
 import com.github.jknack.handlebars.Options;
 
+import club.wikivents.model.Event;
+import club.wikivents.model.User;
+
 public class UserHelpers<T> {
 	private final Class<T> cls;
 	private final String path;
@@ -121,8 +124,12 @@ public class UserHelpers<T> {
 			T user =getUserOrNull(options);
 			if (user!=null) 
 				return options.fn();
-			else
-				return options.inverse();
+			return options.inverse();
+		}
+		public CharSequence ifAmGuest(Event e, final Options options) throws IOException { // TODO: to wikivents
+			if (e.hasGuest((User) getUserOrNull(options))) 
+				return options.fn();
+			return options.inverse();
 		}
 
 	}

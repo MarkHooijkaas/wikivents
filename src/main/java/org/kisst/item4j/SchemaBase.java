@@ -18,6 +18,7 @@ public abstract class SchemaBase implements Schema {
 		public BooleanField(String name) { super(Type.javaBoolean, name); }
 		//public boolean getBoolean(Struct s, boolean defaultValue) { return Item.asBoolean(s.getDirectFieldValue(name)); }
 		public boolean getBoolean(Struct s) { return Item.asBoolean(s.getDirectFieldValue(name)); }
+		public boolean getBoolean(Struct s, boolean defaultValue) { return Item.asBoolean(getObject(s,defaultValue)); }
 	}
 	public class IntField extends BasicField<Integer> {
 		public IntField(String name) { super(Type.javaInteger, name); }

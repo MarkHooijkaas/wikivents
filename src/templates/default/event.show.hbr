@@ -14,16 +14,23 @@
 {{#ifMayView record}}
 	{{> include/show.field value=record.organizerLinks     label="Organisator"}}
 {{#ifMayChange record}}
-<form role="form" method="POST" action="../addOrganizer/{{record._id}}">
-	<button type="submit" class="btn btn-default">Voeg organisator toe</button>
-	<input type="text" name="newOrganizer">
-</form>
+<div class="row">
+	<form role="form" method="POST" action="../addOrganizer/{{record._id}}">
+		<div class="col-xs-4"><label></label></div>
+		<div class="col-xs-8"><span>
+			<button type="submit" class="btn btn-default">+</button>
+			<input type="text" name="newOrganizer">
+		</span></div>
+	</form>
+</div>
 {{/ifMayChange}}
 {{/ifMayView}}
 	{{> include/show.field value=record.date     label="Datum"}}
 	{{> include/show.field value=record.min      label="Min"}}
 	{{> include/show.field value=record.max      label="Max"}}
 	{{> include/show.field value=record.location label="Locatie"}}
+	{{> include/show.field value=record.guestsAllowed label="Open voor inschrijvingen"}}
+	{{> include/show.field value=record.backupGuestsAllowed label="Reservelijst"}}
 
 {{> include/show.changeButton}}
 
@@ -60,16 +67,29 @@
 	{{else}}
 			{{&priv user.link}}<br/>
 	{{/ifMayChange}}
-	</row>
+</row>
 {{/each}}
 {{/if}}
-  
-  
- <form role="form" method="POST" action="../addGuest/{{record._id}}">
-   <button type="submit" class="btn btn-default">Ik wil ook deelnemen</button>
- </form>
 
- </row>
+
+{{#ifAmGuest record}}
+{{else}}
+{{#if record.allowNewGuest}}
+  	<form role="form" method="POST" action="../addGuest/{{record._id}}">
+		<button type="submit" class="btn btn-default">Ik wil ook deelnemen</button>
+ 	</form>
+{{else}}
+	{{#if record.allowNewBackupGuest}}
+	  	<form role="form" method="POST" action="../addGuest/{{record._id}}">
+			<button type="submit" class="btn btn-default">Ik wil op de reservelijst</button>
+	 	</form>
+	{{else}}
+		Deelname is niet meer mogelijk.
+	{{/if}}
+{{/if}}
+{{/ifAmGuest}}
+
+
  
 {{#ifMayView record}}
   
