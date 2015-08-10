@@ -36,7 +36,8 @@ public class WikiventsModels {
 			new MemoryUniqueIndex<User>(User.schema, true, User.schema.username),
 			new MemoryUniqueIndex<User>(User.schema, true, User.schema.email),
 			new MemoryUniqueIndex<Page>(Page.schema, true, Page.schema.name),
-			new MemoryOrderedIndex<>(Event.schema)
+			new MemoryOrderedIndex<>(Event.schema, false, Event.schema.date, Event.schema._id),
+			new MemoryOrderedIndex<>(Event.schema, false, Event.schema._id)
 		);
 	}
 
@@ -49,7 +50,8 @@ public class WikiventsModels {
 			new MongoStorage(Event.schema, props, db),
 			new MemoryUniqueIndex<User>(User.schema, true, User.schema.username),
 			new MemoryUniqueIndex<User>(User.schema, true, User.schema.email),
-			new MemoryOrderedIndex<>(Event.schema)
+			new MemoryOrderedIndex<>(Event.schema, false, Event.schema.date, Event.schema._id),
+			new MemoryOrderedIndex<>(Event.schema, false, Event.schema._id)
 		);
 		MongoCodecs.setModel(model);
 		return model;

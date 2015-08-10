@@ -5,19 +5,30 @@ import java.util.Iterator;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 import org.kisst.crud4j.CrudModel.OrderedIndex;
+import org.kisst.item4j.Schema;
 import org.kisst.crud4j.CrudObject;
 import org.kisst.crud4j.CrudSchema;
 
 public class MemoryOrderedIndex<T extends CrudObject> extends AbstractKeyedIndex<T> implements OrderedIndex<T> {
 	private final ConcurrentSkipListMap<String, T> map=new ConcurrentSkipListMap<String,T>();
+	private final boolean ignoreCase;
+	private final FieldList fields;
 
-	public MemoryOrderedIndex(CrudSchema<T> schema) { super(schema); }
+	public MemoryOrderedIndex(CrudSchema<T> schema, boolean ignoreCase, Schema.Field<?> ... fields) { 
+		super(schema);
+		this.ignoreCase=ignoreCase;
+		this.fields=new FieldList(fields);
+	}
+
+	private String changeCase(String key) { return ignoreCase ? key.toLowerCase() :  key; }
+	@Override public String calcUniqueKey(T record) { return changeCase(fields.getKey(record)); }
 
 	@Override protected void add(String key, T record) { map.put(key, record); }
 	@Override protected void remove(String key) { map.remove(key); }
-	@Override protected String calcUniqueKey(T record) { return record.getUniqueSortingKey(); }
 	@Override public boolean keyExists(String key) { return map.containsKey(key); }
 
+	@Override public Schema.Field<?>[] fields() { return fields.fields(); }
+	
 	@Override public Iterator<T> iterator() { return map.values().iterator(); }
 
 	@Override public Collection<T> tailList(String fromKey) { return map.tailMap(fromKey).values(); } 

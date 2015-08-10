@@ -20,10 +20,10 @@ public class MemoryUniqueIndex<T extends CrudObject> extends AbstractKeyedIndex<
 	}
 	
 	private String changeCase(String key) { return ignoreCase ? key.toLowerCase() :  key; }
+	@Override public String calcUniqueKey(T record) { return changeCase(fields.getKey(record)); }
 	
 	@Override protected void add(String key, T record) { map.put(changeCase(key), record); }
 	@Override protected void remove(String key) { map.remove(changeCase(key)); }
-	@Override public String calcUniqueKey(T record) { return changeCase(fields.getKey(record)); }
 	@Override public boolean keyExists(String key) { return map.containsKey(changeCase(key)); }
 
 	public ImmutableSequence<T> getAll() { 

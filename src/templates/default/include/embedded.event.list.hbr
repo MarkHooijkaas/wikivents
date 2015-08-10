@@ -8,6 +8,7 @@
         <th>activiteit</th>
         <th>plaats</th>
         <th>aantal</th>
+        <th>aanmaakdatum</th>
       </tr>
     </thead>
     <tbody>
@@ -19,6 +20,7 @@
         <td><a href="/event/show/{{_id}}">{{title}}</a></td>
         <td>{{location}}</td>
         <td>{{guestCount}}/{{max}}</td>
+        <td>{{creationDate}}</td>
       </tr>
 {{/each}}
     </tbody>

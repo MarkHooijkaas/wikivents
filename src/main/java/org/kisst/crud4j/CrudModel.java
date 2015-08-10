@@ -64,12 +64,13 @@ public abstract class CrudModel implements Item.Factory {
 		throw new RuntimeException("Unknown UniqueIndex for type "+cls.getSimpleName()+" and field(s) "+fieldnames);
 	}
 
-	@SuppressWarnings("unchecked")
-	public <T extends CrudObject> OrderedIndex<T> getOrderedIndex(Class<T> cls) {
+	public <T extends CrudObject> OrderedIndex<T> getOrderedIndex(Class<T> cls, Schema.Field<?> ... fields) {
 		for (StorageOption opt: options) {
 			if (opt instanceof OrderedIndex && opt.getRecordClass()==cls) {
-				System.out.println("Using OrderedIndex "+opt);
-				return (OrderedIndex<T>) opt;
+				@SuppressWarnings("unchecked")
+				OrderedIndex<T> idx=(OrderedIndex<T>) opt;
+				if (Arrays.equals(fields, idx.fields()))
+					return idx;
 			}
 		}
 		throw new RuntimeException("Unknown OrderedIndex for type "+cls.getSimpleName());
@@ -100,6 +101,7 @@ public abstract class CrudModel implements Item.Factory {
 		public T get(String ... field); 
 	}
 	public interface OrderedIndex<T extends CrudObject> extends Index<T >, Iterable<T>{
+		public Schema.Field<?>[] fields();
 		public Iterable<T> tailList(String fromKey); 
 		public Iterable<T> headList(String toKey);  
 		public Iterable<T> subList(String fromKey,String toKey); 

@@ -26,7 +26,8 @@ public class WikiventsModel extends CrudModel {
 	public final UniqueIndex<User> usernameIndex = getUniqueIndex(User.class, User.schema.username);
 	public final UniqueIndex<User> emailIndex    = getUniqueIndex(User.class, User.schema.email);
 
-	public final OrderedIndex<Event> allEvents    = getOrderedIndex(Event.class);
+	public final OrderedIndex<Event> allEvents    = getOrderedIndex(Event.class, Event.schema.date, Event.schema._id);
+	public final OrderedIndex<Event> newestEvents = getOrderedIndex(Event.class, Event.schema._id);
 
 	public final UniqueIndex<Page> pageIndex = getUniqueIndex(Page.class, Page.schema.name);
 

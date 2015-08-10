@@ -42,6 +42,9 @@ public class WikiventsSite implements HttpCallHandler {
 	}
 	public WikiventsSite(Props props) {
 		this.model=WikiventsModels.createModel(this, props);
+		//for (Event e:model.newestEvents)
+		//	System.out.println(e._id+"\t"+e.creationDate());
+		
 		this.emailer=new MailSender(props.getProps("email"));
 		Props themeProps = props.getProps("theme",null);
 		if (themeProps==null) {

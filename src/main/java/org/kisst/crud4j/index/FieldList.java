@@ -22,13 +22,13 @@ public class FieldList {
 	public String getKey(Struct obj) {
 		String result="";
 		for (Schema.Field<?> field : fields)
-			result+="|"+field.getObject(obj); // should be unique when fields don't have | in it
+			result+=field.getObject(obj)+"|"; 
 		return result;
 	}
 	public String getKey(String[] values) {
 		String result="";
 		for (String str: values)
-			result+="|"+str;
+			result+=str+"|";
 		return result;
 	}
 	

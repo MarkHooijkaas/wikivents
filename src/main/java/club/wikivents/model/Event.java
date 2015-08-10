@@ -3,6 +3,7 @@ package club.wikivents.model;
 import java.time.LocalDate;
 import java.util.StringJoiner;
 
+import org.bson.types.ObjectId;
 import org.kisst.crud4j.CrudObject;
 import org.kisst.crud4j.CrudSchema;
 import org.kisst.crud4j.CrudTable.CrudRef;
@@ -43,8 +44,8 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 		this.comments=schema.comments.getSequence(model, data);
 		
 	}
-	@Override public String getUniqueSortingKey() { return ""+date+"|"+_id; }
 
+	public LocalDate creationDate() { return LocalDate.ofEpochDay(new ObjectId(_id).getTimestamp()/(24*3600)); }
 	public String guestCount() { return guests.size()<=max ? guests.size()+"" : max+"+"+(guests.size()-max); }   
 	public String organizerNames() {
 		StringJoiner sj = new StringJoiner(", ");

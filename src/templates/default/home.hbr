@@ -1,22 +1,26 @@
-{{> include/page.header }}
+{{> include/page.header.begin}}
+	<script src="http://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+{{> include/page.header.end}}
 
 <h1>Wikivents : {{user.username}}</h1>
 
-<a href="config">Configuration</a><br> 
+<script>
+	$(document).ready(function() {
+		$('#events').dataTable( {
+			"language": { "url": "//cdn.datatables.net/plug-ins/1.10.7/i18n/Dutch.json" },
+			 "lengthMenu": [[20, 50, 100, -1], [20, 50, 100, "Allemaal"]],
+			  "order": [[ 4, "asc" ]]
+		} );
+	} );
+</script>
 
-<h2>Users</h2>
-<table>
-{{#each model.users}}
-<tr><td>{{username}}</td><td>{{email}}</td></tr>
-{{/each}}
-</table>
+<a href="/event/list">komende activiteiten</a>
+<a href="/event/past">oude activiteiten</a>
+<a href="/event/all">alle activiteiten</a>
 
+<h2>Nieuwste activiteiten</h2>
 
-<h2>Events</h2>
-<table>
-{{#each model.events}}
-<tr><td>{{title}}</td><td>{{date}}</td></tr>
-{{/each}}
-</table>
+{{> include/embedded.event.list list=model.newestEvents tableid="events"}}
+
 
 {{> include/page.footer }}
