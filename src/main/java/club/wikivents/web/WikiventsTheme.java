@@ -16,17 +16,20 @@ public class WikiventsTheme extends TemplateTheme {
 		return engine;
 	}
 	
-	public CompiledTemplate home = template("home");
-	public CompiledTemplate login = template("login");
-	public CompiledTemplate logout = template("logout");
-	public CompiledTemplate sendMessage = template("sendMessage");
+	public final CompiledTemplate home = template("home");
+	public final CompiledTemplate login = template("login");
+	public final CompiledTemplate logout = template("logout");
+	public final CompiledTemplate sendMessage = template("sendMessage");
 
-	public CompiledTemplate userShow = template("user.show");
-	public CompiledTemplate userEdit = template("user.edit");
-	public CompiledTemplate userList = template("user.list");
+	public final CompiledTemplate userShow = template("user.show");
+	public final CompiledTemplate userEdit = template("user.edit");
+	public final CompiledTemplate userList = template("user.list");
 
-	public CompiledTemplate eventShow = template("event.show");
-	public CompiledTemplate eventEdit = template("event.edit");
-	public CompiledTemplate eventList = template("event.list");
+	public final CompiledTemplate eventShow = template("event.show");
+	public final CompiledTemplate eventEdit = template("event.edit");
+	public final CompiledTemplate eventList = template("event.list");
+
+	public final CompiledTemplate pageEdit = template("page.edit");;
+	public final CompiledTemplate pageShow = template("page.show");;
 
 }

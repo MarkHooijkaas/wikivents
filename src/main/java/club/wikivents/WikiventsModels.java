@@ -15,6 +15,7 @@ import org.kisst.item4j.struct.StructProps;
 import org.kisst.props4j.Props;
 
 import club.wikivents.model.Event;
+import club.wikivents.model.Page;
 import club.wikivents.model.User;
 import club.wikivents.model.WikiventsModel;
 import club.wikivents.web.WikiventsSite;
@@ -31,8 +32,10 @@ public class WikiventsModels {
 		return new WikiventsModel(site,
 			new FileStorage(User.class, props, git),
 			new FileStorage(Event.class, props, git),
+			new FileStorage(Page.class, props, git),
 			new MemoryUniqueIndex<User>(User.schema, true, User.schema.username),
 			new MemoryUniqueIndex<User>(User.schema, true, User.schema.email),
+			new MemoryUniqueIndex<Page>(Page.schema, true, Page.schema.name),
 			new MemoryOrderedIndex<>(Event.schema)
 		);
 	}

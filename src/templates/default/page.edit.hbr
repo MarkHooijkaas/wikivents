@@ -1,0 +1,18 @@
+{{> include/page.header.begin}}
+<script src="//cdn.ckeditor.com/4.5.2/standard/ckeditor.js"></script>
+{{> include/page.header.end}}
+
+<script > 
+	$(document).ready(function(){ 
+		$('#mydatepicker').datepicker();
+	 }); 
+</script>
+
+<form role="form" method="post">
+  {{> include/form.text form.name    label="Paginanaam"}}
+  {{> include/form.textarea form.content label="Tekst"}}
+  
+  {{> include/form.submitButton}}
+</form>
+
+{{> include/page.footer}}
