@@ -1,5 +1,9 @@
 package club.wikivents;
 
+import java.io.File;
+import java.io.IOException;
+
+import org.eclipse.jgit.api.Git;
 import org.kisst.crud4j.impl.FileStorage;
 import org.kisst.crud4j.impl.MongoDb;
 import org.kisst.crud4j.impl.MongoStorage;
@@ -18,9 +22,15 @@ import club.wikivents.web.WikiventsSite;
 public class WikiventsModels {
 
 	private static WikiventsModel createFileModel(WikiventsSite site, Props props) {
+		Git git=null;
+		try {
+			if (props.getBoolean("useGit",false))
+				git = Git.open(new File(props.getString("datadir", "data")));
+		}
+		catch (IOException e) { throw new RuntimeException(e);}
 		return new WikiventsModel(site,
-			new FileStorage(User.class, props),
-			new FileStorage(Event.class, props),
+			new FileStorage(User.class, props, git),
+			new FileStorage(Event.class, props, git),
 			new MemoryUniqueIndex<User>(User.schema, true, User.schema.username),
 			new MemoryUniqueIndex<User>(User.schema, true, User.schema.email),
 			new MemoryOrderedIndex<>(Event.schema)

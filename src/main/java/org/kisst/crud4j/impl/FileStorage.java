@@ -1,7 +1,6 @@
 package org.kisst.crud4j.impl;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -30,7 +29,7 @@ public class FileStorage implements StructStorage {
 	//private final Repository gitrepo;
 
 
-	public FileStorage(Class<? extends CrudObject> cls, File maindir, boolean useCache) {
+	public FileStorage(Class<? extends CrudObject> cls, Git git, File maindir, boolean useCache) {
 		this.cls=cls;
 		this.useCache=useCache;
 		this.name=cls.getSimpleName();
@@ -38,24 +37,10 @@ public class FileStorage implements StructStorage {
 		if (! dir.exists())
 			dir.mkdirs();
 		//loadAllRecords();
-		try {
-			//this.git=Git.init().setDirectory(maindir).call();
-//			FileRepositoryBuilder repositoryBuilder = new FileRepositoryBuilder();
-//			repositoryBuilder.setMustExist( true );
-//			repositoryBuilder.setWorkTree(maindir);
-//			Repository repository = repositoryBuilder.build();
-//			System.out.println("Having repository: " + repository.getDirectory()+" with HEAD "+repository.getRef("HEAD"));
-//
-//			//FileRepository repo= new FileRepository(maindir);
-//			this.git = new Git(repository); //Git.init().setDirectory(maindir).call();
-			this.git=Git.open(maindir);
-		}
-		//catch (GitAPIException e) { throw new RuntimeException(e); } 
-		catch (IOException e) {  throw new RuntimeException(e); } 
-		catch (IllegalStateException e) {throw new RuntimeException(e); }
+		this.git=git;
 	}
-	public FileStorage(Class<? extends CrudObject> cls, Props props) {
-		this(cls,new File(props.getString("datadir", "data")),props.getBoolean("useCache",true)); 
+	public FileStorage(Class<? extends CrudObject> cls, Props props, Git git) {
+		this(cls, git, new File(props.getString("datadir", "data")),props.getBoolean("useCache",true)); 
 	}
 	@Override public Class<?> getRecordClass() { return cls; }
 	private String getKey(Struct record) { return Item.asString(record.getDirectFieldValue("_id")); }
@@ -127,8 +112,10 @@ public class FileStorage implements StructStorage {
 
 	private void gitCommit(String comment) {
 		try {
-			git.add().addFilepattern(".").call();
-			git.commit().setMessage(comment).call();
+			synchronized(git) {
+				git.add().addFilepattern(".").call();
+				git.commit().setMessage(comment).call();
+			}
 		}
 		catch (Exception e) { throw new RuntimeException(e); }
 	}
