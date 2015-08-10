@@ -14,6 +14,8 @@ public abstract class ImmutableSequence<T> implements TypedSequence<T>, RandomAc
 	private ImmutableSequence(Class<?> elementClass) { this.elementClass=elementClass;}
 	public Class<?> getElementClass() { return elementClass; }
 
+	@Override public Iterator<T> iterator() { return new MyIterator<T>(this);}
+
 
 	@Override public String toString() { 
 		StringBuilder result=new StringBuilder("[");
@@ -27,6 +29,7 @@ public abstract class ImmutableSequence<T> implements TypedSequence<T>, RandomAc
 	}
 	public ImmutableSequence<T> subsequence(int start, int end) { return new SubSequence<T>(this, start, end); }
 	public ImmutableSequence<T> subsequence(int start) { return subsequence(start, size()); }
+	public ImmutableSequence<T> reverse() { return new ReverseSequence<T>(this); }
 
 	@SafeVarargs
 	public static <E> ImmutableSequence<E> of(Class<E> type, E ... elements) {
@@ -112,8 +115,8 @@ public abstract class ImmutableSequence<T> implements TypedSequence<T>, RandomAc
 		private final ImmutableSequence<E> seq;
 		private int index;
 		private final int end;
-		private MyIterator(ImmutableSequence<E> seq, int begin, int end) {
-			this.seq=seq; this.index=begin;	this.end=end;
+		private MyIterator(ImmutableSequence<E> seq) {
+			this.seq=seq; this.index=0;	this.end=seq.size();
 		}
 		@Override public boolean hasNext() { return index<end; }
 		@Override public E next() { return seq.get(index++); }
@@ -128,9 +131,21 @@ public abstract class ImmutableSequence<T> implements TypedSequence<T>, RandomAc
 		}
 		@Override public int size() { return array.length; }
 		@Override public Object getObject(int index) { return array[index]; }
-		@Override public Iterator<T> iterator() { return new MyIterator<T>(this, 0, array.length);}
 	}
 
+	private final static class ReverseSequence<T> extends ImmutableSequence<T> {
+		private final ImmutableSequence<T> seq; 
+		private final int lastIndex;
+		private ReverseSequence(ImmutableSequence<T> seq) { 
+			super(seq.elementClass); 
+			this.seq=seq;
+			this.lastIndex=seq.size()-1;
+		}
+		@Override public int size() { return seq.size(); }
+		@Override public Object getObject(int index) { return seq.getObject(lastIndex-index); }
+	}
+
+	
 	private final static class SubSequence<T> extends ImmutableSequence<T> {
 		private final ImmutableSequence<T> seq;
 		private final int start;
@@ -153,7 +168,6 @@ public abstract class ImmutableSequence<T> implements TypedSequence<T>, RandomAc
 			if (this.start>this.end)
 				throw new IndexOutOfBoundsException("subsequence start "+start+" should be less or equal to end "+end);
 		}
-		@Override public Iterator<T> iterator() { return new MyIterator<T>(seq, start, end);}
 		@Override public int size() { return end-start; }
 		@Override public Object getObject(int index) { return seq.getObject(start+index); }
 	}

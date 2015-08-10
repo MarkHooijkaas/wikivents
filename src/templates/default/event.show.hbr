@@ -67,7 +67,7 @@
 
   <table class="table table-hover">
     <tbody>
-{{#each record.comments}}
+{{#each record.comments.reverse}}
 <tr><td>{{&priv user.link}}<br><h6><small>@{{date}}</small></h6></td><td>{{comment}}</td></tr>
 {{/each}}
     </tbody>
