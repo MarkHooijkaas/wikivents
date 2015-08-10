@@ -159,7 +159,7 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 	public void sendMailFrom(User from, String subject, String message) {
 		try {
 			final MimeMessage msg = model.site.emailer.createMessage();
-			msg.setFrom(new InternetAddress(from.email,from.username));
+			msg.setFrom(new InternetAddress(from.email,"Wikivents gebruiker "+from.username));
 			msg.setReplyTo(new InternetAddress[] {new InternetAddress(from.email,from.username)});
 			msg.setRecipients(Message.RecipientType.TO, new InternetAddress[] {new InternetAddress(email, username)});
 			msg.setSubject(subject);

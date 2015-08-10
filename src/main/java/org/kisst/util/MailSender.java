@@ -19,6 +19,7 @@ public class MailSender {
 	private final  Session session;
 	private final String username;
 	private final String password;
+	private final String host;
 
 	public MailSender(Props p) {
 		Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
@@ -27,10 +28,11 @@ public class MailSender {
 
 		// Get a Properties object
 		Properties props = System.getProperties();
-		props.setProperty("mail.smtp.host", p.getString("host")); //"smtp.gmail.com");
+		this.host=p.getString("host");
+		props.setProperty("mail.smtp.host", host); //"smtp.gmail.com");
 		//props.setProperty("mail.smtp.quitwait", "false");
 
-		if (p.getBoolean("ssl")) {
+		if (p.getBoolean("ssl",false)) {
 			props.setProperty("mail.smtp.starttls.enable", "true");
 			props.setProperty("mail.smtp.ssl.enable", "true");
 
@@ -103,9 +105,9 @@ public class MailSender {
 
 	public void send(MimeMessage msg ) {
 		try {
-			SMTPTransport t = (SMTPTransport)session.getTransport("smtps");
+			SMTPTransport t = (SMTPTransport)session.getTransport("smtp");
 
-			t.connect("smtp.gmail.com", username, password);
+			t.connect(host, username, password);
 			t.sendMessage(msg, msg.getAllRecipients());      
 			t.close();
 		} 
