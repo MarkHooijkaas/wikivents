@@ -59,10 +59,10 @@
  
 {{#ifMayView record}}
   
-  <h2>Commentaar</h2>
+  <h2>Reacties</h2>
  <form role="form" method="POST" action="../addComment/{{record._id}}">
    <textarea  class="form-control" id="comment" name="comment" rows="5"></textarea>
-   <button type="submit" class="btn btn-default">Voeg Commentaar toe</button>
+   <button type="submit" class="btn btn-default">Plaats reactie</button>
  </form>
 
   <table class="table table-hover">

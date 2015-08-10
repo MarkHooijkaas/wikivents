@@ -8,7 +8,7 @@
         <th>activiteit</th>
         <th>plaats</th>
         <th>aantal</th>
-        <th>aanmaakdatum</th>
+        <th>geplaatst op</th>
       </tr>
     </thead>
     <tbody>

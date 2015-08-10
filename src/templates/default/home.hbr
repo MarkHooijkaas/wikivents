@@ -2,25 +2,24 @@
 	<script src="http://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
 {{> include/page.header.end}}
 
-<h1>Wikivents : {{user.username}}</h1>
-
 <script>
 	$(document).ready(function() {
 		$('#events').dataTable( {
 			"language": { "url": "//cdn.datatables.net/plug-ins/1.10.7/i18n/Dutch.json" },
-			 "lengthMenu": [[20, 50, 100, -1], [20, 50, 100, "Allemaal"]],
-			  "order": [[ 4, "asc" ]]
+			 "lengthMenu": [[-1, 20, 50, 100], ["Alle", 20, 50, 100]],
+			  "order": [[ 4, "asc" ]],
+			  "dom": '<"top"f>rt<"bottom"><"clear">'
 		} );
 	} );
 </script>
 
-<a href="/event/list">komende activiteiten</a>
-<a href="/event/past">oude activiteiten</a>
-<a href="/event/all">alle activiteiten</a>
+<h1>Welkom op Wikivents: de <a href="https://nl.wikipedia.org/wiki/Wiki">Wiki</a> van Events</h1>
+Wikivents is een site met activiteiten (events) voor leden georganiseerd door leden.
+
 
 <h2>Nieuwste activiteiten</h2>
 
-{{> include/embedded.event.list list=model.newestEvents tableid="events"}}
+{{> include/embedded.event.list list=model.futureEvents tableid="events"}}
 
 
 {{> include/page.footer }}

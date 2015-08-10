@@ -4,15 +4,15 @@
 
 <script>
 	$(document).ready(function() {
-		$('#events4').dataTable( {
+		$('#events').dataTable( {
 			"language": { "url": "//cdn.datatables.net/plug-ins/1.10.7/i18n/Dutch.json" },
-			 "lengthMenu": [[20, 50, 100, -1], [20, 50, 100, "Allemaal"]]
-			
+			 "lengthMenu": [[-1, 20, 50, 100], ["Alle", 20, 50, 100]],
+			  "dom": '<"top"f>rt<"bottom"><"clear">'			
 		} );
-		$('#pastEvents4').dataTable( {
+		$('#pastEvents').dataTable( {
 			"language": { "url": "//cdn.datatables.net/plug-ins/1.10.7/i18n/Dutch.json" },
-			 "lengthMenu": [[20, 50, 100, -1], [20, 50, 100, "Allemaal"]]
-			
+			 "lengthMenu": [[-1, 20, 50, 100], ["Alle", 20, 50, 100]],
+			  "dom": '<"top"f>rt<"bottom"><"clear">'			
 		} );
 	} );
 </script>
@@ -79,10 +79,10 @@
 	
 
 
-	<h2>Activiteiten</h2>
+	<h3>Activiteiten waar {{record.username}} naar toe gaat</h3>
 	{{> include/embedded.event.list list=record.futureEvents tableid="events"}}
 
-	<h2>Activiteiten uit het verleden</h2>
+	<h3>Activiteiten waar {{record.username}} naar toe is geweest</h3>
 	{{> include/embedded.event.list list=record.pastEvents tableid="pastEvents"}}
 </div>	 
 
