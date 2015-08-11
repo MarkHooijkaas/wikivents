@@ -72,7 +72,7 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 			img="/favicon.ico";
 		
 		img="<img class=\"link-avatar\" src=\""+img+"\"> ";
-		return "<a href=\"/user/show/"+username+"\">"+img+username+"</a>"; 
+		return "<a href=\"/user/"+username+"\">"+img+username+"</a>"; 
 	} 
 
 	

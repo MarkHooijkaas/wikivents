@@ -10,7 +10,7 @@ public class SendMessagePage extends WikiventsPage {
 	public SendMessagePage(WikiventsSite site) { super(site); }
 
 	public class Form extends HttpFormData {
-		public Form(WikiventsCall call, Struct data) { super(call, data, call.getTheme().sendMessage); }
+		public Form(WikiventsCall call, Struct data) { super(call, call.getTheme().sendMessage, data); }
 		public Form(WikiventsCall call) { super(call, call.getTheme().sendMessage); }
 
 		public final InputField to = new InputField("to",this::notEmpty);

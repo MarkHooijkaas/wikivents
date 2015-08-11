@@ -10,7 +10,7 @@ public class EventForm extends WikiventsThing {
 	public EventForm(WikiventsSite site) { super(site);	}
 
 	public class Form extends HttpFormData {
-		public Form(WikiventsCall call, Struct data) { super(call, data, call.getTheme().eventEdit); }
+		public Form(WikiventsCall call, Struct data) { super(call, call.getTheme().eventEdit, data); }
 
 		public Form(WikiventsCall call) { super(call, call.getTheme().eventEdit); }
 		public final InputField organizer=new InputField("organizer", call.userid);

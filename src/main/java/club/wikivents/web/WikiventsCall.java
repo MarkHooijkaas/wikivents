@@ -1,8 +1,12 @@
 package club.wikivents.web;
 
+import java.util.List;
+
 import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.handlebar.TemplateEngine.CompiledTemplate;
 import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
+import org.kisst.item4j.seq.TypedSequence;
+import org.kisst.item4j.struct.Struct;
 
 import club.wikivents.model.User;
 import club.wikivents.model.WikiventsModel;
@@ -38,12 +42,23 @@ public class WikiventsCall extends HttpCall {
 		return new WikiventsCall(httpcall,model);
 	}
 
+	@Override public boolean isAuthenticated() { return user!=null; }
+	@Override public void ensureUser() { if (user==null) throwUnauthorized("Not Authenticated"); }
+	public void ensureSameUser(User u) { 
+		if (user==null) 
+			throwUnauthorized("Not Authenticated user");
+		if (! user._id.equals(u._id))
+			throwUnauthorized("Not Authorized user");
+	}
+
 	
 	public TemplateData createTemplateData() { return new TemplateData(this); }
 	public void output(CompiledTemplate template) { template.output(new TemplateData(this), getWriter());}
 	public void output(CompiledTemplate template, TemplateData data) { template.output(data, getWriter());}
+	public void output(CompiledTemplate template, List<?> list) { template.output(new TemplateData(this).add("list", list), getWriter());}
+	public void output(CompiledTemplate template, TypedSequence<?> list) { template.output(new TemplateData(this).add("list", list), getWriter());}
+	public void output(CompiledTemplate template, Struct record) { template.output(new TemplateData(this).add("record", record), getWriter());}
 
-	@Override public void ensureUser() { if (user==null) throwUnauthorized("Not Authenticated"); }
 
 	public WikiventsTheme getTheme() {
 		String theme=request.getParameter("wikiventsTheme");

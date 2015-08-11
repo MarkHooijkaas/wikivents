@@ -8,7 +8,7 @@ import org.kisst.item4j.Item;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.util.ReflectionUtil;
 
-public class FormData  {
+public class FormData  implements Struct{
 	public final Struct record;
 
 	public FormData(Struct record) { this.record=record; }

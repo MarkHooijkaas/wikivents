@@ -78,7 +78,7 @@ public class PageHandler extends WikiventsPage {
 
 	
 	public class Form extends HttpFormData {
-		public Form(WikiventsCall call, Struct data) { super(call, data, call.getTheme().pageEdit); }
+		public Form(WikiventsCall call, Struct data) { super(call, call.getTheme().pageEdit, data); }
 		public final InputField name    = new InputField(Page.schema.name);
 		public final InputField content = new InputField(Page.schema.content);
 	}

@@ -13,9 +13,9 @@ public class HttpFormData extends FormData implements HttpPostResult{
 	public final HttpCall call;
 	//public HttpFormData(HttpCall call) { this(call,null); }
 	public HttpFormData(HttpCall call, CompiledTemplate template) { 
-		this(call, new HttpRequestStruct(call.request), template);  
+		this(call, template, new HttpRequestStruct(call.request));  
 	}
-	public HttpFormData(HttpCall call, Struct originalData, CompiledTemplate template) { 
+	public HttpFormData(HttpCall call, CompiledTemplate template, Struct originalData) { 
 		super(originalData==null? new HttpRequestStruct(call.request) : originalData);  
 		this.call=call;
 		this.template=template;

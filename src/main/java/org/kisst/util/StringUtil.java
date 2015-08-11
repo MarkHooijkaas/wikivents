@@ -5,6 +5,14 @@ import org.kisst.item4j.struct.StructHelper;
 
 public class StringUtil {
 
+	public static String capitalize(String name) {
+		if (name==null || name.length()==0 || Character.isUpperCase(name.charAt(0)))
+			return name;
+		if (name.length()==1)
+			return name.substring(0,1).toUpperCase();
+		return name.substring(0,1).toUpperCase()+name.substring(1); 
+	}
+
 	public static String quotedName(String name) {
 		if (name.indexOf(' ')>=0 || name.indexOf('.')>=0)
 			return '"'+name+'"';

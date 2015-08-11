@@ -14,7 +14,7 @@ public interface Struct {
 
 /*
  * should return UNKNOWN_FIELD if the field does not exist
- * otherwise returns the value of the field. 	
+ * otherwise returns the value of the field, which may be null 	
  */
 	public Object getDirectFieldValue(String name);
 	//public Object getObjectOrUnknownField(String name);

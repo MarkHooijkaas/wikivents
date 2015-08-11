@@ -1,0 +1,61 @@
+package club.wikivents.web;
+
+import org.kisst.http4j.form.HttpFormData;
+import org.kisst.item4j.struct.Struct;
+
+import club.wikivents.model.User;
+
+public class UserHandler extends WikiventsActionHandler<User> {
+	public UserHandler(WikiventsSite site) { super(site, User.class);	}
+
+	@Override protected User findRecord(String id) {
+		if (id.startsWith(":"))
+			return model.users.read(id.substring(1));
+		return model.usernameIndex.get(id);
+	}
+
+	@NeedsNoAuthorization
+	public void listAll(WikiventsCall call, User user) {
+		call.output(call.getTheme().userList, model.users);
+	}
+
+	@NeedsNoAuthorization
+	public void view(WikiventsCall call, User user) {
+		call.output(call.getTheme().userShow, user);
+	}
+	public void viewEdit(WikiventsCall call, User u) {
+		new Form(call,u).showForm();
+	}
+	public void handleEdit(WikiventsCall call, User oldRecord) {
+		Form formdata = new Form(call,null);
+		if (formdata.isValid()) 
+			model.users.updateFields(oldRecord, formdata.record);
+		formdata.handle();
+	}
+
+	
+	
+	public void handleAddAsFriend(WikiventsCall call, User friend) {
+		call.user.addFriend(model, friend);
+		call.redirect("/user/show/"+call.user.username);
+	}
+
+	public void handleChangePassword(WikiventsCall call, User u) {
+		call.ensureSameUser(u); // basically this doesn't need to check this, since it ignores the user anyway
+		String newPassword= call.request.getParameter("newPassword");
+		String checkNewPassword= call.request.getParameter("checkNewPassword");
+		if (! newPassword.equals(checkNewPassword))
+			return; // TODO: show message
+		call.user.changePassword(newPassword);
+		call.redirect("/user/show/"+call.user.username);
+	}
+	
+	public static class Form extends HttpFormData {
+		public Form(WikiventsCall call, Struct data) { super(call, call.getTheme().userEdit, data); }
+		public final InputField username = new InputField(User.schema.username);
+		public final InputField email    = new InputField(User.schema.email, this::validateEmail);
+		public final InputField city     = new InputField(User.schema.city);
+		public final InputField avatarUrl= new InputField(User.schema.avatarUrl);
+	}
+}
+

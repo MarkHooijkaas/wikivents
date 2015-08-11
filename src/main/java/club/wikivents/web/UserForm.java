@@ -10,7 +10,7 @@ public class UserForm extends WikiventsThing {
 	public UserForm(WikiventsSite site) { super(site); }
 	
 	public class Form extends HttpFormData {
-		public Form(WikiventsCall call, Struct data) { super(call, data, call.getTheme().userEdit); }
+		public Form(WikiventsCall call, Struct data) { super(call, call.getTheme().userEdit, data); }
 		public final InputField username = new InputField(User.schema.username);
 		public final InputField email    = new InputField(User.schema.email, this::validateEmail);
 		public final InputField city     = new InputField(User.schema.city);

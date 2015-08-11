@@ -11,14 +11,15 @@
 		<li class="active"><a href="/">Home</a></li>
 		<li><a href="/event/list">Alle activiteiten</a></li>
 {{#if authenticated}}		
-		<li><a href="/user/list">Alle gebruikers</a></li>
+		<li><a href="/user/">Alle gebruikers</a></li>
 		<li><a href="/event/create">Maak een activiteit</a></li>
-		<li><a href="/user/show/{{user.username}}">Mijn profiel</a></li>
+		<li><a href="/user/{{user.username}}">Mijn profiel</a></li>
 		<li>
 			<a href="" data-toggle="modal" data-target="#logoutModal">Uitloggen</a>
 			{{> include/modal.begin id="logoutModal"}}
 				Weet je zeker dat je wilt uitloggen?
  				<form role="form" method="POST" action="/logout">
+ 					<input type="hidden" name="action" value="logout"/>
    					<button type="submit" class="btn btn-default">Loguit</button>
  				</form>
 			{{> include/modal.end}}
