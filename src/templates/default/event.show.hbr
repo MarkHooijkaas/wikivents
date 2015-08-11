@@ -32,6 +32,7 @@
 {{/ifMayChange}}
 {{/ifMayView}}
 	{{> include/show.field value=record.date     label="Datum"}}
+	{{> include/show.field value=record.time     label="Tijd"}}
 	{{> include/show.field value=record.min      label="Min"}}
 	{{> include/show.field value=record.max      label="Max"}}
 	{{> include/show.field value=record.location label="Locatie"}}

@@ -93,9 +93,12 @@ public interface Item {
 		return LocalDate.parse(asString(obj));
 	}
 	public static LocalTime asLocalTime(Object obj) { 
-		if (obj==null) return null; 
+		if (obj==null) return null;
 		if (obj instanceof LocalTime) return (LocalTime) obj;
-		return LocalTime.parse(asString(obj));
+		String str = asString(obj);
+		if (str==null || str.trim().length()==0)
+			return null;
+		return LocalTime.parse(str);
 	}
 	public static LocalDateTime asLocalDateTime(Object obj) { 
 		if (obj==null) return null; 

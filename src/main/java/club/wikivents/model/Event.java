@@ -1,6 +1,7 @@
 package club.wikivents.model;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.StringJoiner;
 
 import org.bson.types.ObjectId;
@@ -18,7 +19,9 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 	public final String location;
 	public final String description;
 	public final String guestInfo;
+	public final String imageUrl;
 	public final LocalDate date;
+	public final LocalTime time;
 	public final int min;
 	public final int max;
 	public final boolean guestsAllowed;
@@ -32,8 +35,10 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 		this.title=schema.title.getString(data);
 		this.description=schema.description.getString(data);
 		this.guestInfo=schema.guestInfo.getString(data);
+		this.imageUrl=schema.imageUrl.getString(data);
 		this.location=schema.location.getString(data);
 		this.date=schema.date.getLocalDate(data);
+		this.time=schema.time.getLocalTime(data);
 		this.min=schema.min.getInt(data);
 		this.max=schema.max.getInt(data);
 		this.guestsAllowed=schema.guestsAllowed.getBoolean(data,true);
@@ -50,12 +55,14 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 		public IdField getKeyField() { return _id; }
 		public final IdField _id = new IdField();
 		public final StringField title = new StringField("title"); 
+		public final StringField imageUrl = new StringField("imageUrl"); 
 		public final SequenceField<User.Ref> organizers = new SequenceField<User.Ref>(User.Ref.type,"organizers");
 		public final IntField min = new IntField("min"); 
 		public final IntField max = new IntField("max"); 
 		public final BooleanField guestsAllowed = new BooleanField("guestsAllowed");
 		public final BooleanField backupGuestsAllowed = new BooleanField("backupGuestsAllowed");
 		public final LocalDateField date = new LocalDateField("date"); 
+		public final LocalTimeField time = new LocalTimeField("time"); 
 		public final StringField location = new StringField("location"); 
 		public final StringField description = new StringField("description"); 
 		public final StringField guestInfo = new StringField("guestInfo"); 

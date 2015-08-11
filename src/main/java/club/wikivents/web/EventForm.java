@@ -15,7 +15,9 @@ public class EventForm extends WikiventsThing {
 		public Form(WikiventsCall call) { super(call, call.getTheme().eventEdit); }
 		public final InputField organizer=new InputField("organizer", call.userid);
 		public final InputField title = new InputField(Event.schema.title);
+		public final InputField imageUrl = new InputField(Event.schema.imageUrl);
 		public final InputField date= new InputField(Event.schema.date);
+		public final InputField time = new InputField(Event.schema.time);
 		public final InputField min = new InputField(Event.schema.min);
 		public final InputField max = new InputField(Event.schema.max);
 		public final InputField guestsAllowed = new InputField(Event.schema.guestsAllowed);
