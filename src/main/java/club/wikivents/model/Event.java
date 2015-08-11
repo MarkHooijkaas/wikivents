@@ -17,6 +17,7 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 	public final String title;
 	public final String location;
 	public final String description;
+	public final String guestInfo;
 	public final LocalDate date;
 	public final int min;
 	public final int max;
@@ -30,6 +31,7 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 		super(model.events, data);
 		this.title=schema.title.getString(data);
 		this.description=schema.description.getString(data);
+		this.guestInfo=schema.guestInfo.getString(data);
 		this.location=schema.location.getString(data);
 		this.date=schema.date.getLocalDate(data);
 		this.min=schema.min.getInt(data);
@@ -56,6 +58,7 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 		public final LocalDateField date = new LocalDateField("date"); 
 		public final StringField location = new StringField("location"); 
 		public final StringField description = new StringField("description"); 
+		public final StringField guestInfo = new StringField("guestInfo"); 
 		public final SequenceField<Guest> guests= new SequenceField<Guest>(Guest.schema,"guests"); 
 		public final SequenceField<Comment> comments= new SequenceField<Comment>(Comment.schema,"comments"); 
 	}

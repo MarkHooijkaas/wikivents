@@ -5,6 +5,12 @@
 
 <div class="col-xs-8 panel panel-default overflow-hidden">
   <div class="panel-body">
+{{#ifAmGuest record}}
+	<h2>Informatie voor deelnemers</h2>
+		{{&record.guestInfo}}
+	<h2>Informatie voor iedereen</h2>
+{{/ifAmGuest}}
+
   	{{&record.description}}
     </div>
 </div>

@@ -14,12 +14,15 @@ public class EventForm extends WikiventsThing {
 
 		public Form(WikiventsCall call) { super(call, call.getTheme().eventEdit); }
 		public final InputField organizer=new InputField("organizer", call.userid);
-		public final InputField title = new InputField("title");
-		public final InputField date= new InputField("date");
-		public final InputField min = new InputField("min");
-		public final InputField max = new InputField("max");
-		public final InputField location = new InputField("location");
-		public final InputField description= new InputField("description");
+		public final InputField title = new InputField(Event.schema.title);
+		public final InputField date= new InputField(Event.schema.date);
+		public final InputField min = new InputField(Event.schema.min);
+		public final InputField max = new InputField(Event.schema.max);
+		public final InputField guestsAllowed = new InputField(Event.schema.guestsAllowed);
+		public final InputField backupGuestsAllowed= new InputField(Event.schema.backupGuestsAllowed);
+		public final InputField location = new InputField(Event.schema.location);
+		public final InputField guestInfo = new InputField(Event.schema.guestInfo);
+		public final InputField description= new InputField(Event.schema.description);
 	}
 
 	public void handleCreate(HttpCall httpcall, String subPath) {

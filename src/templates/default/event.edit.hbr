@@ -14,6 +14,9 @@
 	{{> include/form.text     form.min      label="Minimum aantal deelnemers"}}
 	{{> include/form.text     form.max      label="Maximum aantal deelnemers"}}
 	{{> include/form.text     form.location label="Locatie"}}
+	{{> include/form.text     form.guestsAllowed label="Open voor nieuwe deelnemers"}}
+	{{> include/form.text     form.backupGuestsAllowed label="Reservelijst"}}
+	{{> include/form.textarea form.guestInfo label="Deelnemer informatie" rows=10}}
 	{{> include/form.textarea form.description label="Omschrijving" rows=10}}
 
 	{{> include/form.submitButton}}
