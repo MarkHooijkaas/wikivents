@@ -30,8 +30,20 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 	public ActionHandler(Class<C> callClass, Class<T> recordClass) {
 		this.signature= new Class<?>[] { callClass, recordClass };
 	}
-	
+
 	public void handleCall(C call, String subPath) {
+		if (call.isAjax()) {
+			try {
+				handleCall2(call, subPath);
+			}
+			catch (RuntimeException e) { call.sendError(500, e.getMessage()); }
+		}
+		else
+			handleCall2(call, subPath);
+	}
+
+
+	public void handleCall2(C call, String subPath) {
 		String id=subPath; 
 		T record=null;
 		if (id!=null && id.trim().length()>0) {
@@ -74,7 +86,7 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 		}
 		ReflectionUtil.invoke(this, method, new Object[]{ call, record}); 
 	}
-	
+
 	abstract protected T findRecord(String id);
 
 	@Target(ElementType.METHOD) @Retention(RetentionPolicy.RUNTIME) 

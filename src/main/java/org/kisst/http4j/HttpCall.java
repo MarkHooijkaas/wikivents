@@ -29,6 +29,8 @@ public class HttpCall {
 	
 	public boolean isGet() { return "GET".equals(request.getMethod()); }
 	public boolean isPost() { return "POST".equals(request.getMethod()); }
+	public boolean isAjax() { return "true".equals(request.getParameter("ajax")); }
+	
 	public void handle(String subPath) {
 		String method = request.getMethod();
 		if (isGet())
