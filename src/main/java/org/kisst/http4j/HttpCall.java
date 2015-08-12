@@ -42,6 +42,13 @@ public class HttpCall {
 	public void handleGet(String subPath) { invalidPage(); }
 	public void handlePost(String subPath) { invalidPage(); }
 	
+	public void sendError(int code, String message) {
+		try {
+			response.sendError(code, message);
+		} 
+		catch (IOException e) { throw new RuntimeException(e);}
+	}
+
 	
 	public PrintWriter getWriter() {
 		try { 

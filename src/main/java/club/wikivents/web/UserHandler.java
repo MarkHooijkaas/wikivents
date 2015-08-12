@@ -37,17 +37,22 @@ public class UserHandler extends WikiventsActionHandler<User> {
 	
 	public void handleAddAsFriend(WikiventsCall call, User friend) {
 		call.user.addFriend(model, friend);
-		call.redirect("/user/show/"+call.user.username);
+		call.redirect("/user/"+call.user.username);
 	}
 
 	public void handleChangePassword(WikiventsCall call, User u) {
-		call.ensureSameUser(u); // basically this doesn't need to check this, since it ignores the user anyway
+		call.ensureSameUser(u);
 		String newPassword= call.request.getParameter("newPassword");
 		String checkNewPassword= call.request.getParameter("checkNewPassword");
-		if (! newPassword.equals(checkNewPassword))
-			return; // TODO: show message
-		call.user.changePassword(newPassword);
-		call.redirect("/user/show/"+call.user.username);
+		System.out.println(newPassword+", "+checkNewPassword);
+		if (! newPassword.equals(checkNewPassword)) {
+			call.sendError(500, "supplied passwords do not match");
+		}
+		else {
+			u.changePassword(newPassword);
+			call.output("OK");
+		}
+		//call.redirect("/user/"+u.username);
 	}
 	
 	public static class Form extends HttpFormData {

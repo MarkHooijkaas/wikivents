@@ -59,11 +59,27 @@
 		
 		<button type="button" class="btn btn-default" data-toggle="modal" data-target="#changePasswordModal">Wijzig wachtwoord</button>
 		{{> include/modal.begin  id="changePasswordModal"}}
-			<form role="form" method="POST" action="/user/changePassword">
-				<label for="">Wachtwoord</label><input type="password" name="newPassword">
-				<label for="">Wachtwoord Controle</label><input type="password" name="checkNewPassword">
-				<button type="submit" class="btn btn-default">Verander wachtwoord</button>
+			<form role="form" method="POST" id="changePasswordForm">
+				<input type="hidden" name="action" value="changePassword"/>
+				<label for="">Wachtwoord</label><input type="password" name="newPassword"><br/>
+				<label for="">Wachtwoord Controle</label><input type="password" name="checkNewPassword"><br/>
+				<span id="changePasswordMessage"></span><br/>
+				<button type="button" id="changePasswordButton" class="btn btn-default">Verander wachtwoord</button>
 			</form>
+
+<script>
+$(document).ready(function(){
+	$("#changePasswordButton").click(function(){
+		$.ajax({
+			type: "POST",
+			url: "/user/Mark1967",
+			data: $(this).closest('form').serialize(),
+			success: function(data, status, xhr){ $("#changePasswordModal").modal('hide'); },
+			error: function(xhr,status,error){ $("#changePasswordMessage").html(error); }
+		});
+    });
+});
+</script>
 		{{> include/modal.end}}
 	{{/ifMayChange}}
 

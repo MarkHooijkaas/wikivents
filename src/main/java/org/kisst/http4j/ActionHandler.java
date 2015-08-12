@@ -56,7 +56,7 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 				methodName="updateAll";
 			else
 				methodName="handle";
-			if (action!=null)
+			if (action==null)
 				call.throwUnauthorized("No action specified");
 			else
 				methodName+=StringUtil.capitalize(action);
