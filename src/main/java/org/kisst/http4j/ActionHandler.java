@@ -84,7 +84,8 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 			if (ann2==null)
 				checkChangeAccess(call, methodName, record);
 		}
-		ReflectionUtil.invoke(this, method, new Object[]{ call, record}); 
+		ReflectionUtil.invoke(this, method, new Object[]{ call, record});
+		//if (! call.isAjax()) call.redirect("");
 	}
 
 	abstract protected T findRecord(String id);

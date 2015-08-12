@@ -1,5 +1,6 @@
 {{#ifMayChange record}}
-<form role="form" method="GET" action="../edit/{{record._id}}" class="btn">
-  <button type="submit" class="btn btn-default">Wijzig gegevens</button>
+<form role="form" method="GET" action="" class="btn">
+  <input type="hidden" name="view" value="edit"/>
+  <button type="submit" class="btn btn-default">Wijzig alle gegevens</button>
 </form>
 {{/ifMayChange}}

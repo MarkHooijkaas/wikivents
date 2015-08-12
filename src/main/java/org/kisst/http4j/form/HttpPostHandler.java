@@ -56,7 +56,7 @@ public class HttpPostHandler implements HttpCallHandler {
 			if (url==null)
 				url=result.successUrl();
 			if (url==null)
-				url="/";
+				url=call.request.getRequestURI();
 			call.redirect(url);
 		}
 		else 

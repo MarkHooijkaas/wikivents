@@ -14,12 +14,12 @@ public class UserHandler extends WikiventsActionHandler<User> {
 		return model.usernameIndex.get(id);
 	}
 
-	@NeedsNoAuthorization
+	//@NeedsNoAuthorization
 	public void listAll(WikiventsCall call, User user) {
 		call.output(call.getTheme().userList, model.users);
 	}
 
-	@NeedsNoAuthorization
+	//@NeedsNoAuthorization
 	public void view(WikiventsCall call, User user) {
 		call.output(call.getTheme().userShow, user);
 	}
@@ -37,28 +37,21 @@ public class UserHandler extends WikiventsActionHandler<User> {
 		String field=call.request.getParameter("field");
 		String value=call.request.getParameter("value");
 		model.users.updateField(user, User.schema.getField(field), value);
-		//call.redirect("/user/"+call.user.username);
 	}
 	
 	
 	public void handleAddAsFriend(WikiventsCall call, User friend) {
 		call.user.addFriend(model, friend);
-		call.redirect("/user/"+call.user.username);
 	}
 
 	public void handleChangePassword(WikiventsCall call, User u) {
-		call.ensureSameUser(u);
 		String newPassword= call.request.getParameter("newPassword");
 		String checkNewPassword= call.request.getParameter("checkNewPassword");
 		System.out.println(newPassword+", "+checkNewPassword);
-		if (! newPassword.equals(checkNewPassword)) {
+		if (! newPassword.equals(checkNewPassword))
 			call.sendError(500, "supplied passwords do not match");
-		}
-		else {
+		else
 			u.changePassword(newPassword);
-			call.output("OK");
-		}
-		//call.redirect("/user/"+u.username);
 	}
 	
 	public static class Form extends HttpFormData {

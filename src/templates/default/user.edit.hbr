@@ -1,6 +1,7 @@
 {{> include/page.header}}
 
 <form role="form" method="post">
+  <input type="hidden" name="action" value="edit"/>
   {{> include/form.text form.username label="Gebruikersnaam"}}
   {{> include/form.text form.email    label="email"}}
   {{> include/form.text form.city    label="Woonplaats"}}

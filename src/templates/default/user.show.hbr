@@ -61,6 +61,7 @@
 		{{> include/show.ajaxField value=record.email name="email"  label="email"}}
 		{{#ifMayChange record}}
 			{{> dialog/changePassword}}
+			{{> include/show.changeButton}}
 		{{/ifMayChange}}
 	{{else}}
 		 Alleen gebruikers die door {{record.username}} als vriend zijn aangemerkt mogen verdere gegevens zien</div>
