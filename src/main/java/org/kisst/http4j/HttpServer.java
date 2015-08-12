@@ -2,6 +2,7 @@ package org.kisst.http4j;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -81,11 +82,13 @@ public class HttpServer extends AbstractHandler {
         		}
         		else {
         			logger.error("Error when handling "+path,e);
-        			PrintWriter out = response.getWriter();
+        			StringWriter result = new StringWriter();
+        			PrintWriter out = new PrintWriter(result);
         			out.println(e.getMessage());
         			out.println("<pre>");
         			e.printStackTrace(out);
         			out.println("</pre>");
+        			response.sendError(500, result.toString());
         		}
 			} catch (IOException e1) {
 				// ignore the new error, and now write to the logfile anyway
