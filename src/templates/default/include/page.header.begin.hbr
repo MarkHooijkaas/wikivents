@@ -12,5 +12,4 @@
 	
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
 	<script src="/resources/datepicker/js/bootstrap-datepicker.js" charset="UTF-8"></script>
