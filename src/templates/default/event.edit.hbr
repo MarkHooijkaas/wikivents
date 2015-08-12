@@ -9,6 +9,7 @@
 </script>
 
 <form role="form" method="POST">
+	<input type="hidden" name="action" value="edit"/>
 	{{> include/form.text     form.title    label="Titel"}}
 	{{> include/form.date     form.date     label="Datum"}}
 	{{> include/form.text     form.time     label="Tijd" type="time"}}

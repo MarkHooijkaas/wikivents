@@ -18,12 +18,31 @@
 <div class="col-xs-4">
 
 {{#ifMayView record}}
-	{{> include/show.field value=record.organizerLinks     label="Organisator"}}
+	<div class="row">
+		<div class="col-xs-4"><label><label>Organisator</label>: </label></div>
+		<div class="col-xs-8"><span>
+			{{#each record.organizers}}
+				{{#ifMayChange record}}
+					<form role="form" method="POST">
+						{{&priv link}}
+						<input type="hidden" name="action" value="removeOrganizer"/>				
+						<input type="hidden" name="userId" value="{{_id}}"/>				
+						<button type="submit" class="btn btn-default btn-xs" aria-label="Verwijder als organisator">
+					 		<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+						</button>
+					</form>
+				{{else}}
+					{{&priv link}}<br/>
+				{{/ifMayChange}}
+			{{/each}}
+		</span></div>
+	</div>
 {{#ifMayChange record}}
 <div class="row">
-	<form role="form" method="POST" action="../addOrganizer/{{record._id}}">
+	<form role="form" method="POST">
 		<div class="col-xs-4"><label></label></div>
 		<div class="col-xs-8"><span>
+			<input type="hidden" name="action" value="addOrganizer"/>				
 			<button type="submit" class="btn btn-default">+</button>
 			<input type="text" name="newOrganizer">
 		</span></div>
@@ -47,8 +66,10 @@
 {{#each record.allowedGuests}}
 <row>
 	{{#ifMayChange this}}
-			<form role="form" method="POST" action="/event/removeGuest/{{record._id}}">
+			<form role="form" method="POST">
 				{{&priv user.link}}
+				<input type="hidden" name="action" value="removeGuest"/>				
+		  		<input type="hidden" name="userId" value="{{record._id}}"/>				
 				<button type="submit" class="btn btn-default btn-xs" aria-label="Annuleer deelname">
 			 		<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
 				</button>
@@ -65,8 +86,9 @@
 {{#each record.backupGuests}}
 <row>
 	{{#ifMayChange this}}
-			<form role="form" method="POST" action="/event/removeGuest/{{record._id}}">
+			<form role="form" method="POST">
 				{{&priv user.link}}
+				<input type="hidden" name="action" value="removeGuest"/>				
 				<button type="submit" class="btn btn-default btn-xs" aria-label="Annuleer deelname">
 			 		<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
 				</button>
@@ -82,12 +104,16 @@
 {{#ifAmGuest record}}
 {{else}}
 {{#if record.allowNewGuest}}
-  	<form role="form" method="POST" action="../addGuest/{{record._id}}">
+  	<form role="form" method="POST" >
+  		<input type="hidden" name="action" value="addGuest"/>				
+  		<input type="hidden" name="userId" value="{{record._id}}"/>				
 		<button type="submit" class="btn btn-default">Ik wil ook deelnemen</button>
  	</form>
 {{else}}
 	{{#if record.allowNewBackupGuest}}
-	  	<form role="form" method="POST" action="../addGuest/{{record._id}}">
+	  	<form role="form" method="POST">
+	  		<input type="hidden" name="action" value="addGuest"/>				
+	  		<input type="hidden" name="userId" value="{{record._id}}"/>				
 			<button type="submit" class="btn btn-default">Ik wil op de reservelijst</button>
 	 	</form>
 	{{else}}
@@ -101,9 +127,10 @@
 {{#ifMayView record}}
   
   <h2>Reacties</h2>
- <form role="form" method="POST" action="../addComment/{{record._id}}">
-   <textarea  class="form-control" id="comment" name="comment" rows="5"></textarea>
-   <button type="submit" class="btn btn-default">Plaats reactie</button>
+ <form role="form" method="POST">
+	<input type="hidden" name="action" value="addComment"/>				
+	<textarea  class="form-control" id="comment" name="comment" rows="5"></textarea>
+	<button type="submit" class="btn btn-default">Plaats reactie</button>
  </form>
 
   <table class="table table-hover">

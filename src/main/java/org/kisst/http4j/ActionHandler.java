@@ -45,34 +45,53 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 
 	public void handleCall2(C call, String subPath) {
 		String id=subPath; 
+		String listName=null;
 		T record=null;
-		if (id!=null && id.trim().length()>0) {
-			record=findRecord(id);
-			if (record==null)
-				throw new IllegalArgumentException("Could not find record "+id);
+		if (id!=null && id.trim().length()>0 ) {
+			if (id.equals("*"))
+				listName="All";
+			else if (id.startsWith("*."))
+				listName=id.substring(2);
+			else if (id.startsWith("*"))
+				listName=id.substring(1);
+			else
+				record=findRecord(id);
 		}
+		if (record==null && listName==null)
+			throw new IllegalArgumentException("Could not find "+id);
+		if ("GET".equals(call.request.getMethod().toUpperCase()))
+			handleGet(call, record, listName);
+		else 
+			handlePost(call, record);
 
+	}
+	
+	private void handleGet(C call, T record, String listName) {
 		String methodName="view";
-		if ("GET".equals(call.request.getMethod().toUpperCase())) {
-			String view = call.request.getParameter("view");
-			if (record==null)
-				methodName="listAll";
-			else
-				methodName="view";
-			if (view!=null)
-				methodName += StringUtil.capitalize(view);
-		}
-		else {
-			String action = call.request.getParameter("action");
-			if (record==null)
-				methodName="updateAll";
-			else
-				methodName="handle";
-			if (action==null)
-				call.throwUnauthorized("No action specified");
-			else
-				methodName+=StringUtil.capitalize(action);
-		}
+		String view = call.request.getParameter("view");
+		if (listName!=null)
+			methodName="list"+StringUtil.capitalize(listName);
+		else if (view!=null)
+			methodName += StringUtil.capitalize(view);
+		invoke(methodName, call, record);
+
+	}
+	private void handlePost(C call, T record) {
+		String methodName="handle";
+		String action = call.request.getParameter("action");
+		if (record==null)
+			methodName="updateAll";
+		if (action==null)
+			call.throwUnauthorized("No action specified");
+		else
+			methodName+=StringUtil.capitalize(action);
+		invoke(methodName, call, record);	
+		//System.out.println(call.response.getStatus());
+		if (!call.isAjax()) 
+			call.redirect(call.request.getRequestURI());
+	}
+
+	private void invoke(String methodName, C call, T record) {
 		//System.out.println("id="+id+", method="+methodName+", rec="+record);
 		Method method = ReflectionUtil.getMethod(this.getClass(), methodName, signature);
 		if (method==null)
@@ -85,9 +104,9 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 				checkChangeAccess(call, methodName, record);
 		}
 		ReflectionUtil.invoke(this, method, new Object[]{ call, record});
-		//if (! call.isAjax()) call.redirect("");
 	}
 
+	
 	abstract protected T findRecord(String id);
 
 	@Target(ElementType.METHOD) @Retention(RetentionPolicy.RUNTIME) 

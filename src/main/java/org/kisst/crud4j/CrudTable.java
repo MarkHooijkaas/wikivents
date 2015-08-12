@@ -133,6 +133,19 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 		public TT get() { return table.read(_id); }
 		public TT get0() { return table.readOrNull(_id); }
 		@Override public String toString() { return _id; } //return "Ref("+table.getName()+":"+_id+")";}
+		@Override public boolean equals(Object obj) {
+			if (obj==null)
+				return false;
+			if (obj==this)
+				return true;
+			if (! (obj instanceof CrudRef))
+				return false;
+			CrudRef<?> ref=(CrudRef<?>) obj;
+			if (this.table!=ref.table)
+				return false;
+			return this._id.equals(ref._id);
+		}
+		@Override public int hashCode() { return (_id+table).hashCode(); }
 	}
 
 	
@@ -158,7 +171,8 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 	@Override public int size() { return findAll().size();}
 	@Override public Object getObject(int index) { return findAll().get(index); }
 	@Override public Iterator<T> iterator() { return findAll().iterator(); }
-	@Override public Class<?> getElementClass() { return schema.getJavaClass(); }
+	@SuppressWarnings("unchecked")
+	@Override public Class<T> getElementClass() { return (Class<T>) schema.getJavaClass(); }
 	
 	public class Change {
 		public final T oldRecord;

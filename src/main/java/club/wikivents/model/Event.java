@@ -126,6 +126,7 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 		if (g!=null)
 			model.events.removeSequenceItem(this, schema.guests, g);
 	}
+
 	public boolean hasOrganizer(User user) {
 		for (User.Ref r: organizers) {
 			if (r._id.equals(user._id)) 
@@ -138,6 +139,10 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 		if (hasOrganizer(user))
 			return;
 		model.events.addSequenceItem(this, schema.organizers, new User.Ref(model, user._id));
+	}
+	public void removeOrganizer(WikiventsModel model, User user) {
+		User.Ref ref = new User.Ref(model, user._id);
+		model.events.removeSequenceItem(this, schema.organizers, ref);
 	}
 
 	@Override public int compareTo(Event other) { return this.date.compareTo(other.date);}

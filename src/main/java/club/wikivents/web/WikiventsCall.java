@@ -1,11 +1,8 @@
 package club.wikivents.web;
 
-import java.util.List;
-
 import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.handlebar.TemplateEngine.CompiledTemplate;
 import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
-import org.kisst.item4j.seq.TypedSequence;
 import org.kisst.item4j.struct.Struct;
 
 import club.wikivents.model.User;
@@ -55,8 +52,8 @@ public class WikiventsCall extends HttpCall {
 	public TemplateData createTemplateData() { return new TemplateData(this); }
 	public void output(CompiledTemplate template) { template.output(new TemplateData(this), getWriter());}
 	public void output(CompiledTemplate template, TemplateData data) { template.output(data, getWriter());}
-	public void output(CompiledTemplate template, List<?> list) { template.output(new TemplateData(this).add("list", list), getWriter());}
-	public void output(CompiledTemplate template, TypedSequence<?> list) { template.output(new TemplateData(this).add("list", list), getWriter());}
+	public void output(CompiledTemplate template, Iterable<?> list) { template.output(new TemplateData(this).add("list", list), getWriter());}
+	//public void output(CompiledTemplate template, TypedSequence<?> list) { template.output(new TemplateData(this).add("list", list), getWriter());}
 	public void output(CompiledTemplate template, Struct record) { template.output(new TemplateData(this).add("record", record), getWriter());}
 
 

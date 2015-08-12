@@ -27,7 +27,7 @@ public class WikiventsSite implements HttpCallHandler {
 	public class Pages {
 		public final HttpCallHandler home=new TemplatePage(WikiventsSite.this, "home");
 		public final HttpCallHandler user=new UserHandler(WikiventsSite.this);
-		public final HttpCallHandler event=new EventPage(WikiventsSite.this);
+		public final HttpCallHandler event=new EventHandler(WikiventsSite.this);
 		public final HttpCallHandler page =new PageHandler(WikiventsSite.this);
 		public final HttpCallHandler login  = loginPage::handleLogin;
 		public final HttpCallHandler logout = new LogoutPage(WikiventsSite.this);

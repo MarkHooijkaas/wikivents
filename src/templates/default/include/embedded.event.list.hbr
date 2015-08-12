@@ -4,6 +4,7 @@
     <thead>
       <tr>
         <th>Datum</th>
+        <th>Tijd</th>
         <th>Organisator</th>
         <th>activiteit</th>
         <th>plaats</th>
@@ -15,9 +16,10 @@
 		
 {{#each list}} 
 	  <tr>
-        <td>{{date}} @{{time}}</td>
+        <td>{{date}}</td>
+        <td>{{time}}</td>
         <td>{{#ifLoggedIn}} {{&join organizers "<br/>"}} {{else}} *** {{/ifLoggedIn}}</td>
-        <td><a href="/event/show/{{_id}}">{{title}}</a></td>
+        <td><a href="/event/:{{_id}}">{{title}}</a></td>
         <td>{{location}}</td>
         <td>{{guestCount}}/{{max}}</td>
         <td>{{creationDate}}</td>

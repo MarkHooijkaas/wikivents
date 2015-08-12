@@ -1,12 +1,15 @@
 package club.wikivents.web;
 
+import java.util.ArrayList;
+
 import org.kisst.http4j.form.HttpFormData;
 import org.kisst.item4j.struct.Struct;
 
+import club.wikivents.model.Friend;
 import club.wikivents.model.User;
 
 public class UserHandler extends WikiventsActionHandler<User> {
-	public UserHandler(WikiventsSite site) { super(site, User.class);	}
+	public UserHandler(WikiventsSite site) { super(site, site.model.users);	}
 
 	@Override protected User findRecord(String id) {
 		if (id.startsWith(":"))
@@ -14,9 +17,14 @@ public class UserHandler extends WikiventsActionHandler<User> {
 		return model.usernameIndex.get(id);
 	}
 
-	//@NeedsNoAuthorization
 	public void listAll(WikiventsCall call, User user) {
 		call.output(call.getTheme().userList, model.users);
+	}
+	public void listFriend(WikiventsCall call, User user) {
+		ArrayList<User> list=new ArrayList<>();
+		for (Friend f: call.user.friends)
+			list.add(f.user.get());
+		call.output(call.getTheme().userList, list); 
 	}
 
 	//@NeedsNoAuthorization
@@ -33,13 +41,6 @@ public class UserHandler extends WikiventsActionHandler<User> {
 		formdata.handle();
 	}
 
-	public void handleChangeField(WikiventsCall call, User user) {
-		String field=call.request.getParameter("field");
-		String value=call.request.getParameter("value");
-		model.users.updateField(user, User.schema.getField(field), value);
-	}
-	
-	
 	public void handleAddAsFriend(WikiventsCall call, User friend) {
 		call.user.addFriend(model, friend);
 	}
