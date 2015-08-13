@@ -24,9 +24,11 @@ import org.kisst.util.StringUtil;
  * 		/<path>/<id>[action=addGuest]  handleAddGuest
  */
 public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHandler {
-	private final Class<?>[] signature;
+	private final Class<?>[] fullsignature;
+	private final Class<?>[] shortsignature;
 	public ActionHandler(Class<C> callClass, Class<T> recordClass) {
-		this.signature= new Class<?>[] { callClass, recordClass };
+		this.fullsignature= new Class<?>[] { callClass, recordClass };
+		this.shortsignature= new Class<?>[] { callClass };
 	}
 
 	public void handleCall(C call, String subPath) {
@@ -42,56 +44,63 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 
 
 	public void handleCall2(C call, String subPath) {
-		String id=subPath; 
-		String listName=null;
-		T record=null;
-		if (id!=null && id.trim().length()>0 ) {
-			if (id.equals("*"))
-				listName="All";
-			else if (id.startsWith("*."))
-				listName=id.substring(2);
-			else if (id.startsWith("*"))
-				listName=id.substring(1);
-			else
-				record=findRecord(id);
-		}
-		if (record==null && listName==null)
-			throw new IllegalArgumentException("Could not find "+id);
 		if (call.isGet())
-			handleGet(call, record, listName);
+			handleGet(call, subPath);
 		else 
-			handlePost(call, record);
+			handlePost(call, subPath);
 
 	}
 	
-	private void handleGet(C call, T record, String listName) {
-		String methodName="view";
-		String view = call.request.getParameter("view");
-		if (listName!=null)
-			methodName="list"+StringUtil.capitalize(listName);
-		else if (view!=null)
-			methodName += StringUtil.capitalize(view);
+	private void handleGet(C call, String id) {
+		String methodName=null;
+		T record=null;
+		if (id!=null && id.trim().length()>0 ) {
+			if (id.equals("*"))
+				methodName="listAll";
+			else if (id.startsWith("*."))
+				methodName="list"+StringUtil.capitalize(id.substring(2));
+			else if (id.startsWith("*"))
+				methodName="list"+StringUtil.capitalize(id.substring(1));
+			else if (id.startsWith("!"))
+				methodName="view"+StringUtil.capitalize(id.substring(1));
+			else {
+				String view = call.request.getParameter("view");
+				if (view==null)
+					methodName = "view";
+				else
+					methodName = "view"+StringUtil.capitalize(view);
+				record=findRecord(id);
+				if (record==null)
+					throw new IllegalArgumentException("Could not find "+id);
+			}
+		}
 		invoke(methodName, call, record);
-
 	}
-	private void handlePost(C call, T record) {
-		String methodName="handle";
+	private void handlePost(C call, String id) {
+		T record=null;
+		if (id!=null && id.trim().length()>0 ) {
+			record=findRecord(id);
+			if (record==null )
+				throw new IllegalArgumentException("Could not find "+id);
+		}
 		String action = call.request.getParameter("action");
-		if (record==null)
-			methodName="updateAll";
 		if (action==null)
 			call.throwUnauthorized("No action specified");
-		else
-			methodName+=StringUtil.capitalize(action);
+		String methodName="handle"+StringUtil.capitalize(action);
 		invoke(methodName, call, record);	
 		//System.out.println(call.response.getStatus());
-		if (!call.isAjax()) 
+		if (!call.isAjax() && ! call.response.isCommitted()) 
 			call.redirect(call.request.getRequestURI());
 	}
 
 	private void invoke(String methodName, C call, T record) {
 		//System.out.println("id="+id+", method="+methodName+", rec="+record);
-		Method method = ReflectionUtil.getMethod(this.getClass(), methodName, signature);
+		Method method;
+		if (record==null) 
+			method = ReflectionUtil.getMethod(this.getClass(), methodName, shortsignature);
+		else
+			method = ReflectionUtil.getMethod(this.getClass(), methodName, fullsignature);
+
 		if (method==null)
 			throw new RuntimeException("Unknown method "+methodName);
 		NeedsNoAuthentication ann = method.getAnnotation(NeedsNoAuthentication.class);
@@ -105,7 +114,10 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 					checkChangeAccess(call, methodName, record);
 			}
 		}
-		ReflectionUtil.invoke(this, method, new Object[]{ call, record});
+		if (record==null)
+			ReflectionUtil.invoke(this, method, new Object[]{ call});
+		else
+			ReflectionUtil.invoke(this, method, new Object[]{ call, record});
 	}
 
 	

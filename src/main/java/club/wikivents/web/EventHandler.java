@@ -10,12 +10,12 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 	public EventHandler(WikiventsSite site) { super(site, site.model.events);	}
 
 
-	@NeedsNoAuthorization
-	public void listAll(WikiventsCall call, Event event) { call.output(call.getTheme().eventList, call.model.events); }
-	@NeedsNoAuthorization
-	public void listFuture(WikiventsCall call, Event event) { call.output(call.getTheme().eventList, call.model.futureEvents()); }
-	@NeedsNoAuthorization
-	public void listPast(WikiventsCall call, Event event) { call.output(call.getTheme().eventList, call.model.pastEvents()); }
+	@NeedsNoAuthentication
+	public void listAll(WikiventsCall call) { call.output(call.getTheme().eventList, call.model.events); }
+	@NeedsNoAuthentication
+	public void listFuture(WikiventsCall call) { call.output(call.getTheme().eventList, call.model.futureEvents()); }
+	@NeedsNoAuthentication
+	public void listPast(WikiventsCall call) { call.output(call.getTheme().eventList, call.model.pastEvents()); }
 
 	//@NeedsNoAuthorization
 	public void view(WikiventsCall call, Event event) {

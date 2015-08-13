@@ -17,10 +17,10 @@ public class UserHandler extends WikiventsActionHandler<User> {
 		return model.usernameIndex.get(id);
 	}
 
-	public void listAll(WikiventsCall call, User user) {
+	public void listAll(WikiventsCall call) {
 		call.output(call.getTheme().userList, model.users);
 	}
-	public void listFriend(WikiventsCall call, User user) {
+	public void listFriend(WikiventsCall call) {
 		ArrayList<User> list=new ArrayList<>();
 		for (Friend f: call.user.friends)
 			list.add(f.user.get());
