@@ -15,7 +15,7 @@ public abstract class CrudObject extends SchemaObject {
 	}
 	public String getKey() { return _id;} 
 	protected String createUniqueKey(Struct data) {
-		String key= Item.asString(data.getDirectFieldValue("_id")); 
+		String key= Item.asString(data.getDirectFieldValue("_id",null)); 
 		if (key==null)
 			return uniqueKey();
 		return key;

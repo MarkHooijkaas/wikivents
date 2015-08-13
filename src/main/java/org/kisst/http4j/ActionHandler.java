@@ -81,10 +81,10 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 		T record=null;
 		if (id!=null && id.trim().length()>0 ) {
 			if (id.startsWith("!")) {
-				String oldAction = action;
+//				String oldAction = action;
 				action=id.substring(1);
-				if (oldAction!=null && oldAction.trim().length()>0 && !oldAction.equals(action)) 
-					throw new IllegalArgumentException("Conflicting actions "+oldAction+" and "+action);
+//				if (oldAction!=null && oldAction.trim().length()>0 && !oldAction.equals(action)) 
+//					throw new IllegalArgumentException("Conflicting actions "+oldAction+" and "+action);
 			}
 			else {
 				record=findRecord(id);

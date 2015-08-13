@@ -64,7 +64,7 @@ public abstract class SchemaBase implements Schema {
 		}
 		@SuppressWarnings("unchecked")
 		public ImmutableSequence<RT> getSequenceOrEmpty(Item.Factory factory, Struct data) {
-			ImmutableSequence<RT> result = (ImmutableSequence<RT>) Item.asTypedSequence(factory, elementType.getJavaClass(), data.getDirectFieldValue(name));
+			ImmutableSequence<RT> result = (ImmutableSequence<RT>) Item.asTypedSequence(factory, elementType.getJavaClass(), data.getDirectFieldValue(name,null));
 			if (result==null)
 				return Item.cast(ImmutableSequence.EMPTY);
 			return result;
