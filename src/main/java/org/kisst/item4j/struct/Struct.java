@@ -17,6 +17,12 @@ public interface Struct {
  * otherwise returns the value of the field, which may be null 	
  */
 	public Object getDirectFieldValue(String name);
+	default public Object getDirectFieldValue(String name, Object defaultValue) {
+		Object result = getDirectFieldValue(name);
+		if (result==UNKNOWN_FIELD)
+			return defaultValue;
+		return result;
+	}
 	//public Object getObjectOrUnknownField(String name);
 	//public boolean hasField(String name);
 	

@@ -30,19 +30,19 @@ public abstract class SchemaBase implements Schema {
 	}
 	public class LocalDateField extends BasicField<LocalDate> { 
 		public LocalDateField(String name) { super(Type.javaLocalDate, name); }
-		public LocalDate getLocalDate(Struct s) { return  Item.asLocalDate(s.getDirectFieldValue(name)); }
+		public LocalDate getLocalDate(Struct s) { return  Item.asLocalDate(s.getDirectFieldValue(name,null)); }
 	}
 	public class LocalTimeField extends BasicField<LocalTime> { 
 		public LocalTimeField(String name) { super(Type.javaLocalTime, name); }
-		public LocalTime getLocalTime(Struct s) { return  Item.asLocalTime(s.getDirectFieldValue(name)); }
+		public LocalTime getLocalTime(Struct s) { return  Item.asLocalTime(s.getDirectFieldValue(name,null)); }
 	}
 	public class LocalDateTimeField extends BasicField<LocalDateTime> { 
 		public LocalDateTimeField(String name) { super(Type.javaLocalDateTime, name); }
-		public LocalDateTime getLocalDateTime(Struct s) { return  Item.asLocalDateTime(s.getDirectFieldValue(name)); }
+		public LocalDateTime getLocalDateTime(Struct s) { return  Item.asLocalDateTime(s.getDirectFieldValue(name,null)); }
 	}
 	public class InstantField extends BasicField<Instant> { 
 		public InstantField(String name) { super(Type.javaInstant, name); }
-		public Instant getInstant(Struct s) { return  Item.asInstant(s.getDirectFieldValue(name)); }
+		public Instant getInstant(Struct s) { return  Item.asInstant(s.getDirectFieldValue(name,null)); }
 		public Instant getInstantOrNow(Struct s) { 
 			Object obj = s.getDirectFieldValue(name);
 			if (obj==null || obj==Struct.UNKNOWN_FIELD)
