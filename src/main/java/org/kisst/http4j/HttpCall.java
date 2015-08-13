@@ -101,12 +101,14 @@ public class HttpCall {
 	public void clearCookie() {
 		Cookie cookie = new Cookie(COOKIE_NAME, null);
 		cookie.setMaxAge(0);
+		cookie.setPath("/");
 		response.addCookie(cookie);		
 	}
 
 	public void setCookie(String userid) {
 		Cookie cookie = new Cookie(COOKIE_NAME, createCookieString(userid, System.currentTimeMillis()));
 		cookie.setMaxAge(LOGIN_DURATION);
+		cookie.setPath("/");
 		response.addCookie(cookie);		
 	}
 

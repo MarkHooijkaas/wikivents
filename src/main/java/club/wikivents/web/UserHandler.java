@@ -27,7 +27,7 @@ public class UserHandler extends WikiventsActionHandler<User> {
 		call.output(call.getTheme().userList, list); 
 	}
 
-	//@NeedsNoAuthorization
+	@NeedsNoAuthorization
 	public void view(WikiventsCall call, User user) {
 		call.output(call.getTheme().userShow, user);
 	}
@@ -41,15 +41,44 @@ public class UserHandler extends WikiventsActionHandler<User> {
 		formdata.handle();
 	}
 	
-	public void viewRegister(WikiventsCall call) {
-		new Form(call).showForm();
+	public void viewLogout(WikiventsCall call) {
+		call.output(call.getTheme().logout);
+	}
+	public void handleLogout(WikiventsCall call) {
+		call.clearCookie();
+		call.redirect("/");
 	}
 	
+	@NeedsNoAuthentication
+	public void viewRegister(WikiventsCall call) {
+		System.out.println("view");
+		RegisterForm formdata = new RegisterForm(call);
+		formdata.showForm();
+	}
+	
+	@NeedsNoAuthentication
 	public void handleRegister(WikiventsCall call) {
-		Form formdata = new Form(call);
-		if (formdata.isValid()) 
-			model.users.create(new User(call.model,formdata.record));
-		formdata.handle();
+		System.out.println("post");
+		RegisterForm formdata = new RegisterForm(call);
+		System.out.println(formdata.username.value);
+
+		if (formdata.isValid()) {
+			String pw = formdata.password.value;
+			String pw2 = formdata.passwordCheck.value;
+			System.out.println(pw+"=="+pw2);
+			if (pw==null || ! pw.equals(pw2))
+				formdata.showForm();
+			else {
+				System.out.println("new user");
+				User u = new User(call.model,formdata.record);
+				model.users.create(u);
+				u.changePassword(pw);
+				call.setCookie(u._id);
+				call.redirect("/user/"+u.username);
+			}
+		}
+		else
+			formdata.handle();
 	}
 	
 
@@ -80,6 +109,13 @@ public class UserHandler extends WikiventsActionHandler<User> {
 		public final InputField email    = new InputField(User.schema.email, this::validateEmail);
 		public final InputField city     = new InputField(User.schema.city);
 		public final InputField avatarUrl= new InputField(User.schema.avatarUrl);
+	}
+	public static class RegisterForm extends HttpFormData {
+		public RegisterForm(WikiventsCall call) { super(call, call.getTheme().userRegister); }
+		public final InputField username = new InputField(User.schema.username);
+		public final InputField email    = new InputField(User.schema.email, this::validateEmail);
+		public final InputField password = new InputField("password");
+		public final InputField passwordCheck = new InputField("passwordCheck");
 	}
 }
 

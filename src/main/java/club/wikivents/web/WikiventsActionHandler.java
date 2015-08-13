@@ -22,10 +22,7 @@ public abstract class WikiventsActionHandler<T extends CrudObject & AccessChecke
 	
 	@Override public void handle(HttpCall httpcall, String subPath) {
 		WikiventsCall call=WikiventsCall.of(httpcall, model);
-		if (call.authenticated || subPath.equals("create"))
-			handleCall(call, subPath);
-		else
-			call.throwUnauthorized("You must be logged in to access the user pages");
+		handleCall(call, subPath);
 	}
 
 

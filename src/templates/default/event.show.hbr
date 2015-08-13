@@ -60,6 +60,7 @@
 
 {{> include/show.changeButton}}
 
+{{#ifLoggedIn}}
 
 <h2>Deelnemers</h2>
 
@@ -124,7 +125,6 @@
 
 
  
-{{#ifMayView record}}
   
   <h2>Reacties</h2>
  <form role="form" method="POST">
@@ -141,7 +141,7 @@
     </tbody>
   </table>
 
-{{/ifMayView}}
+{{/ifLoggedIn}}
 
 </div>
   

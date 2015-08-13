@@ -22,7 +22,7 @@ public class WikiventsCall extends HttpCall {
 			this.user=null;
 		else {
 			User u=model.users.readOrNull(userid); // TODO cache info in cookie, so table does not to be read with every call
-			if (u.isAdmin) {
+			if (u!=null && u.isAdmin) {
 				String uname = request.getParameter("viewAs");
 				if (uname!=null)
 					u=model.usernameIndex.get(uname); 

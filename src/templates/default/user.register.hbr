@@ -1,0 +1,13 @@
+{{> include/page.header}}
+
+<form role="form" method="POST" action="/user/!register">
+	<input type="hidden" name="action" value="register"/>
+	{{> include/form.text form.username label="Gebruikersnaam"}}
+	{{> include/form.text form.email    label="email"}}
+	{{> include/form.text form.password label="Kies een wachtwoord"}}
+  	{{> include/form.text form.passwordCheck label="Herhaal het wachtwoord"}}
+  
+  {{> include/form.submitButton}}
+</form>
+
+{{> include/page.footer}}

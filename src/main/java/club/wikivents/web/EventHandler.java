@@ -17,7 +17,7 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 	@NeedsNoAuthentication
 	public void listPast(WikiventsCall call) { call.output(call.getTheme().eventList, call.model.pastEvents()); }
 
-	//@NeedsNoAuthorization
+	@NeedsNoAuthentication
 	public void view(WikiventsCall call, Event event) {
 		call.output(call.getTheme().eventShow, event);
 	}

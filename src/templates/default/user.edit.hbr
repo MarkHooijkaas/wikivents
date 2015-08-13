@@ -7,10 +7,6 @@
   {{> include/form.text form.city    label="Woonplaats"}}
   {{> include/form.text form.avatarUrl label=" profielfoto"}}
   
-  {{#unless authenticated}}
-  {{> include/form.text form.password label="Kies een wachtwoord"}}
-  {{/unless}}
-  
   {{> include/form.submitButton}}
 </form>
 

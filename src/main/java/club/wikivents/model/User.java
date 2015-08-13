@@ -44,7 +44,7 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 		this.passwordResetToken=schema.passwordResetToken.getString(data);
 		this.passwordSalt=schema.passwordSalt.getString(data);
 		this.encryptedPassword=schema.encryptedPassword.getString(data);
-		this.friends=schema.friends.getSequence(model, data);
+		this.friends=schema.friends.getSequenceOrEmpty(model, data);
 		this.isAdmin=false; // TODO schema.isAdmin.getBoolean(data,false);
 	}
 	public ArrayList<Event> futureEvents() {
@@ -182,7 +182,7 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 	
 	
 	public boolean checkPassword(String password) {
-		if (password==null)
+		if (password==null || encryptedPassword==null || passwordSalt==null)
 			return false;
 		if (PasswordEncryption.authenticate(password, encryptedPassword, passwordSalt))
 			return true;

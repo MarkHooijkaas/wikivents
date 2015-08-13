@@ -118,7 +118,7 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 		model.events.addSequenceItem(this, schema.comments, new Comment(user,text));
 	}
 	public boolean hasGuest(User user) {
-		if (guests==null)
+		if (guests==null || user==null)
 			return false;
 		for (Guest g : guests)
 			if (g.user._id.equals(user._id)) // already member
@@ -126,7 +126,7 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 		return false;
 	}
 	public Guest findGuest(User user) {
-		if (guests==null)
+		if (guests==null || user==null)
 			return null;
 		for (Guest g : guests)
 			if (g.user._id.equals(user._id)) // already member
@@ -145,7 +145,7 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 	}
 
 	public boolean hasOrganizer(User user) {
-		if (organizers==null)
+		if (organizers==null || user==null)
 			return false;
 		for (User.Ref r: organizers) {
 			if (r._id.equals(user._id)) 

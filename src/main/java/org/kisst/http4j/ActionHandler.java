@@ -112,10 +112,10 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 		if (method==null)
 			throw new RuntimeException("Unknown method "+methodName);
 		NeedsNoAuthentication ann = method.getAnnotation(NeedsNoAuthentication.class);
-		if (ann==null && record!=null) { 
+		if (ann==null) { 
 			call.ensureUser();
 			NeedsNoAuthorization ann2 = method.getAnnotation(NeedsNoAuthorization.class);
-			if (ann2==null) {
+			if (ann2==null && record!=null) {
 				if (call.isGet())
 					checkViewAccess(call, methodName, record);
 				else
