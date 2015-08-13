@@ -10,7 +10,6 @@
       <ul class="nav navbar-nav">
 		<li><a href="/event/*.future">Activiteiten</a></li>
 {{#ifLoggedIn}}		
-		<li><a href="/event/create">Maak een activiteit</a></li>
 		<li><a href="/user/*">Gebruikers</a></li>
 		<li><a href="/user/*.friend">Vrienden</a></li>
 		<li><a href="/user/{{user.username}}">Ikzelf</a></li>

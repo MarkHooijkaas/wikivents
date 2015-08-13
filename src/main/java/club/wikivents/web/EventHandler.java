@@ -24,20 +24,34 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 	public void viewEdit(WikiventsCall call, Event event) {
 		new Form(call,event).showForm();
 	}
+
 	public void handleEdit(WikiventsCall call, Event oldRecord) {
 		Form formdata = new Form(call,null);
 		if (formdata.isValid()) 
 			model.events.updateFields(oldRecord, formdata.record);
 		formdata.handle();
 	}
+	public void viewCreate(WikiventsCall call) {
+		new Form(call).showForm();
+	}
+	
+	public void handleCreate(WikiventsCall call) {
+		Form formdata = new Form(call);
+		if (formdata.isValid()) 
+			model.events.create(new Event(call.model,call.user,formdata.record));
+		formdata.handle();
+	}
 
+	@NeedsNoAuthorization
 	public void handleAddComment(WikiventsCall call, Event event) {
 		String text=call.request.getParameter("comment");
 		event.addComment(model, call.user, text);
 	}
+	@NeedsNoAuthorization
 	public void handleAddGuest(WikiventsCall call, Event event) {
 		event.addGuest(model, call.user);
 	}
+	@NeedsNoAuthorization
 	public void handleRemoveGuest(WikiventsCall call, Event event) {
 		event.removeGuest(model,call.user);
 	}

@@ -77,13 +77,21 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 		invoke(methodName, call, record);
 	}
 	private void handlePost(C call, String id) {
+		String action = call.request.getParameter("action");
 		T record=null;
 		if (id!=null && id.trim().length()>0 ) {
-			record=findRecord(id);
-			if (record==null )
-				throw new IllegalArgumentException("Could not find "+id);
+			if (id.startsWith("!")) {
+				String oldAction = action;
+				action=id.substring(1);
+				if (oldAction!=null && oldAction.trim().length()>0 && !oldAction.equals(action)) 
+					throw new IllegalArgumentException("Conflicting actions "+oldAction+" and "+action);
+			}
+			else {
+				record=findRecord(id);
+				if (record==null )
+					throw new IllegalArgumentException("Could not find "+id);
+			}
 		}
-		String action = call.request.getParameter("action");
 		if (action==null)
 			call.throwUnauthorized("No action specified");
 		String methodName="handle"+StringUtil.capitalize(action);

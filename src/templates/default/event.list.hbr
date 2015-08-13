@@ -12,9 +12,10 @@
 	} );
 </script>
 
-<a href="*.future">komende activiteiten</a>
-<a href="*.past">oude activiteiten</a>
-<a href="*">alle activiteiten</a>
+<a href="!create"  class="btn btn-default">Start een activiteit</a>
+<a href="*.future" class="btn btn-default">komende activiteiten</a>
+<a href="*.past"   class="btn btn-default">oude activiteiten</a>
+<a href="*"        class="btn btn-default">alle activiteiten</a>
 
 {{> include/embedded.event.list tableid="events"}}
   

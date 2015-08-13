@@ -31,11 +31,11 @@ public abstract class WikiventsActionHandler<T extends CrudObject & AccessChecke
 
 	@Override protected void checkChangeAccess(WikiventsCall call, String methodName, T record) {
 		if (! record.mayBeChangedBy(call.user))
-			call.throwUnauthorized("User "+call.user.username+" is not authorized to change this item");
+			call.throwUnauthorized("User "+call.user.username+" is not authorized to call changing method "+methodName);
 	}
 	@Override protected void checkViewAccess(WikiventsCall call, String methodName, T record) {
 		if (! record.mayBeViewedBy(call.user))
-			call.throwUnauthorized("User "+call.user.username+" is not authorized to view this item");
+			call.throwUnauthorized("User "+call.user.username+" is not authorized to call viewing method "+methodName);
 	}
 	
 

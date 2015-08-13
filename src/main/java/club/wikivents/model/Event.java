@@ -10,6 +10,8 @@ import org.kisst.crud4j.CrudSchema;
 import org.kisst.crud4j.CrudTable.CrudRef;
 import org.kisst.http4j.handlebar.AccessChecker;
 import org.kisst.item4j.ImmutableSequence;
+import org.kisst.item4j.struct.MultiStruct;
+import org.kisst.item4j.struct.SingleItemStruct;
 import org.kisst.item4j.struct.Struct;
 
 import com.github.jknack.handlebars.Handlebars.SafeString;
@@ -30,6 +32,13 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 	public final ImmutableSequence<Guest> guests;
 	public final ImmutableSequence<Comment> comments;
 	
+	public Event(WikiventsModel model, User org, Struct data) {
+		this(model, new MultiStruct(
+			new SingleItemStruct(schema.organizers.name, ImmutableSequence.of(User.Ref.class, new User.Ref(model, org._id))),
+			new SingleItemStruct(schema.guests.name, ImmutableSequence.of(Guest.class, new Guest(model, org))),
+			data
+		));
+	}
 	public Event(WikiventsModel model, Struct data) {
 		super(model.events, data);
 		this.title=schema.title.getString(data);
@@ -43,9 +52,9 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 		this.max=schema.max.getInt(data);
 		this.guestsAllowed=schema.guestsAllowed.getBoolean(data,true);
 		this.backupGuestsAllowed=schema.backupGuestsAllowed.getBoolean(data,true);
-		this.organizers=schema.organizers.getSequence(model, data);
-		this.guests=schema.guests.getSequence(model, data);
-		this.comments=schema.comments.getSequence(model, data);
+		this.organizers=schema.organizers.getSequenceOrEmpty(model, data);
+		this.guests=schema.guests.getSequenceOrEmpty(model, data);
+		this.comments=schema.comments.getSequenceOrEmpty(model, data);
 		
 	}
 	
@@ -71,7 +80,11 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 	}
 
 	public LocalDate creationDate() { return LocalDate.ofEpochDay(new ObjectId(_id).getTimestamp()/(24*3600)); }
-	public String guestCount() { return guests.size()<=max ? guests.size()+"" : max+"+"+(guests.size()-max); }   
+	public String guestCount() {
+		if (guests==null)
+			return "0";
+		return guests.size()<=max ? guests.size()+"" : max+"+"+(guests.size()-max); 
+	}   
 	public String organizerNames() {
 		StringJoiner sj = new StringJoiner(", ");
 		for (CrudRef<User> r : organizers)
@@ -105,12 +118,16 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 		model.events.addSequenceItem(this, schema.comments, new Comment(user,text));
 	}
 	public boolean hasGuest(User user) {
+		if (guests==null)
+			return false;
 		for (Guest g : guests)
 			if (g.user._id.equals(user._id)) // already member
 				return true;
 		return false;
 	}
 	public Guest findGuest(User user) {
+		if (guests==null)
+			return null;
 		for (Guest g : guests)
 			if (g.user._id.equals(user._id)) // already member
 				return g;
@@ -128,6 +145,8 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 	}
 
 	public boolean hasOrganizer(User user) {
+		if (organizers==null)
+			return false;
 		for (User.Ref r: organizers) {
 			if (r._id.equals(user._id)) 
 				return true;
