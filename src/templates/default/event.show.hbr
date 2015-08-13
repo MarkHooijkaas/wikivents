@@ -50,13 +50,13 @@
 </div>
 {{/ifMayChange}}
 {{/ifMayView}}
-	{{> include/show.field value=record.date     label="Datum"}}
-	{{> include/show.field value=record.time     label="Tijd"}}
-	{{> include/show.field value=record.min      label="Min"}}
-	{{> include/show.field value=record.max      label="Max"}}
-	{{> include/show.field value=record.location label="Locatie"}}
-	{{> include/show.field value=record.guestsAllowed label="Open voor inschrijvingen"}}
-	{{> include/show.field value=record.backupGuestsAllowed label="Reservelijst"}}
+	{{> include/show.ajaxField value=record.date     name="date"  label="Datum"}}
+	{{> include/show.ajaxField value=record.time     name="time"  label="Tijd"}}
+	{{> include/show.ajaxField value=record.min      name="min"   label="Min"}}
+	{{> include/show.ajaxField value=record.max      name="max"   label="Max"}}
+	{{> include/show.ajaxField value=record.location name="location" label="Plaats"}}
+	{{> include/show.ajaxField value=record.guestsAllowed       name="guestsAllowed" label="Open voor inschrijvingen"}}
+	{{> include/show.ajaxField value=record.backupGuestsAllowed name="backupGuestsAllowed" label="Reservelijst"}}
 
 {{> include/show.changeButton}}
 

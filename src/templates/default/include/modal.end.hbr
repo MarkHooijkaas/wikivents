@@ -1,6 +1,6 @@
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default btn-danger" data-dismiss="modal">Annuleer</button>
+        <a class="btn btn-default btn-danger" data-dismiss="modal">Annuleer</a>
       </div>
     </div>
 

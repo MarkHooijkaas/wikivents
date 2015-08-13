@@ -41,7 +41,13 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 			model.events.create(new Event(call.model,call.user,formdata.record));
 		formdata.handle();
 	}
+	public void handleChangeField(WikiventsCall call, Event oldRecord) {
+		String field=call.request.getParameter("field");
+		String value=call.request.getParameter("value");
+		table.updateField(oldRecord, table.getSchema().getField(field), value);
+	}
 
+	
 	@NeedsNoAuthorization
 	public void handleAddComment(WikiventsCall call, Event event) {
 		String text=call.request.getParameter("comment");

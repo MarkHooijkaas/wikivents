@@ -41,6 +41,12 @@ public class UserHandler extends WikiventsActionHandler<User> {
 		formdata.handle();
 	}
 
+	public void handleChangeField(WikiventsCall call, User oldRecord) {
+		String field=call.request.getParameter("field");
+		String value=call.request.getParameter("value");
+		table.updateField(oldRecord, table.getSchema().getField(field), value);
+	}
+
 	public void handleAddAsFriend(WikiventsCall call, User friend) {
 		call.user.addFriend(model, friend);
 	}
