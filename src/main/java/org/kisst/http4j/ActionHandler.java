@@ -9,8 +9,6 @@ import java.lang.reflect.Method;
 import org.kisst.util.ReflectionUtil;
 import org.kisst.util.StringUtil;
 
-import club.wikivents.web.WikiventsCall;
-
 /*
  * will call the following methods:
  * GET
@@ -59,7 +57,7 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 		}
 		if (record==null && listName==null)
 			throw new IllegalArgumentException("Could not find "+id);
-		if ("GET".equals(call.request.getMethod().toUpperCase()))
+		if (call.isGet())
 			handleGet(call, record, listName);
 		else 
 			handlePost(call, record);
@@ -100,8 +98,12 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 		if (ann==null && record!=null) { 
 			call.ensureUser();
 			NeedsNoAuthorization ann2 = method.getAnnotation(NeedsNoAuthorization.class);
-			if (ann2==null)
-				checkChangeAccess(call, methodName, record);
+			if (ann2==null) {
+				if (call.isGet())
+					checkViewAccess(call, methodName, record);
+				else
+					checkChangeAccess(call, methodName, record);
+			}
 		}
 		ReflectionUtil.invoke(this, method, new Object[]{ call, record});
 	}
@@ -116,7 +118,7 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 	public @interface NeedsNoAuthorization{ }
 
 	abstract protected void checkChangeAccess(C call, String methodName, T oldRecord);
-	abstract protected void checkViewAccess(WikiventsCall call, String methodName, T record);
+	abstract protected void checkViewAccess(C call, String methodName, T record);
 }
 
 

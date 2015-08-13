@@ -4,16 +4,16 @@
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">Wikivents</a>
+      <a class="navbar-brand" href="/">Wikivents</a>
     </div>
     <div>
       <ul class="nav navbar-nav">
-		<li class="active"><a href="/">Home</a></li>
-		<li><a href="/event/*.future">Alle activiteiten</a></li>
-{{#if authenticated}}		
-		<li><a href="/user/*">Alle gebruikers</a></li>
+		<li><a href="/event/*.future">Activiteiten</a></li>
+{{#ifLoggedIn}}		
 		<li><a href="/event/create">Maak een activiteit</a></li>
-		<li><a href="/user/{{user.username}}">Mijn profiel</a></li>
+		<li><a href="/user/*">Gebruikers</a></li>
+		<li><a href="/user/*.friend">Vrienden</a></li>
+		<li><a href="/user/{{user.username}}">Ikzelf</a></li>
 		<li>
 			<a href="" data-toggle="modal" data-target="#logoutModal">Uitloggen</a>
 			{{> include/modal.begin id="logoutModal"}}
@@ -28,7 +28,7 @@
 {{else}}
         <li><a href="/login">Login</a></li>
         <li><a href="/user/create">Registreer</a></li>
-{{/if}}
+{{/ifLoggedIn}}
       </ul>
     </div>
   </div>
