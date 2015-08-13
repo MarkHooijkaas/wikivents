@@ -23,7 +23,7 @@ public class Runner {
 			props.load(f);
 		this.site=new WikiventsSite(props.getPropsOrEmpty("wikivents"));
 
-		this.server = new HttpServer(props,site);
+		this.server = new HttpServer(props.getPropsOrEmpty("http"),site);
 
 	}
 	public void run() {

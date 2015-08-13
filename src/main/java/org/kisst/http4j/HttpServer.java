@@ -22,10 +22,16 @@ public class HttpServer extends AbstractHandler {
 	private Server server=null;
 	protected final Props props;
 	private final HttpCallHandler handler;
+	private final String[] restrictedToHost;
 
 	public HttpServer(Props props, HttpCallHandler handler) {
 		this.props=props;
 		this.handler=handler;
+		String hostList=props.getString("restrictedToHost", null);
+		if (hostList!=null)
+			this.restrictedToHost=hostList.split(",");
+		else
+			this.restrictedToHost=null;
 	}
 	
 	public void startListening() {
@@ -64,6 +70,16 @@ public class HttpServer extends AbstractHandler {
 
 	public void handle(String path, Request baseRequest , HttpServletRequest request, HttpServletResponse response) {
 		try {
+			if (restrictedToHost!=null) {
+				String host=request.getServerName();
+				boolean allowed = false;
+				for (String h: restrictedToHost) 
+					allowed=allowed || h.equals(host);
+				if (! allowed) {
+					response.sendError(403, "Server "+host+" is closed");
+					return;
+				}
+			}
 			HttpCall call=new HttpCall(request,response);
 			handler.handle(call,request.getRequestURI());
 		}
