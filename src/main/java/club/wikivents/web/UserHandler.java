@@ -40,6 +40,18 @@ public class UserHandler extends WikiventsActionHandler<User> {
 			model.users.updateFields(oldRecord, formdata.record);
 		formdata.handle();
 	}
+	
+	public void viewRegister(WikiventsCall call) {
+		new Form(call).showForm();
+	}
+	
+	public void handleRegister(WikiventsCall call) {
+		Form formdata = new Form(call);
+		if (formdata.isValid()) 
+			model.users.create(new User(call.model,formdata.record));
+		formdata.handle();
+	}
+	
 
 	public void handleChangeField(WikiventsCall call, User oldRecord) {
 		String field=call.request.getParameter("field");
@@ -63,6 +75,7 @@ public class UserHandler extends WikiventsActionHandler<User> {
 	
 	public static class Form extends HttpFormData {
 		public Form(WikiventsCall call, Struct data) { super(call, call.getTheme().userEdit, data); }
+		public Form(WikiventsCall call) 			 { super(call, call.getTheme().userEdit); }
 		public final InputField username = new InputField(User.schema.username);
 		public final InputField email    = new InputField(User.schema.email, this::validateEmail);
 		public final InputField city     = new InputField(User.schema.city);

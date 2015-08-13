@@ -52,6 +52,8 @@ public class HttpPostHandler implements HttpCallHandler {
 
 	public static void handleHtmlResult(HttpCall call, HttpPostResult result) {
 		if (result.isSuccess()) {
+			if (call.response.isCommitted())
+				return;
 			String url = call.request.getParameter("successUrl");
 			if (url==null)
 				url=result.successUrl();
