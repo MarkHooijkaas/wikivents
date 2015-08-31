@@ -2,6 +2,7 @@ package org.kisst.http4j;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Enumeration;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -51,6 +52,13 @@ public class HttpCall {
 		catch (IOException e) { throw new RuntimeException(e);}
 	}
 
+	public void printParams() {
+		Enumeration<String> names = request.getParameterNames();
+		while(names.hasMoreElements()) {
+			String s=names.nextElement();
+			System.out.println(s+" => "+request.getParameter(s));
+		}
+	}
 	
 	public PrintWriter getWriter() {
 		try { 
