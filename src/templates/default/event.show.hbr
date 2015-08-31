@@ -1,4 +1,6 @@
-{{> include/page.header}}
+{{> include/page.header.begin}}
+<script src="//cdn.ckeditor.com/4.5.2/standard/ckeditor.js"></script>
+{{> include/page.header.end}}
 
 <h1>{{record.title}}</h1>
 <row>
@@ -6,12 +8,9 @@
 <div class="col-xs-8 panel panel-default overflow-hidden">
   <div class="panel-body">
 {{#ifAmGuest record}}
-	<h2>Informatie voor deelnemers</h2>
-		{{&record.guestInfo}}
-	<h2>Informatie voor iedereen</h2>
+	{{> include/show.textAreaField label="Informatie voor deelnemers" name="guestInfo" value=record.guestInfo}}
 {{/ifAmGuest}}
-
-  	{{&record.description}}
+	{{> include/show.textAreaField label="Informatie voor iedereen" name="description" value=record.description}}
     </div>
 </div>
 
