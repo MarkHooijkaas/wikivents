@@ -112,6 +112,8 @@ public class FileStorage implements StructStorage {
 
 	private void gitCommit(String comment) {
 		try {
+			if (git==null)
+				return;
 			synchronized(git) {
 				git.add().addFilepattern(".").call();
 				git.commit().setMessage(comment).call();
