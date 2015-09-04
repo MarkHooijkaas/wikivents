@@ -1,0 +1,50 @@
+ <row>
+ <div class="form-group col-xs-12">
+    <label for="{{name}}"  class="col-xs-2">{{label}}: <i>{{message}}</i></label>
+    <div class="col-xs-4">
+	    <input class="form-control ui-timepicker-input" type="text" id="{{name}}TimePicker" name="{{name}}" value="{{value}}" data-date-format="yyyy-mm-dd" >
+    </div>
+<div class="ui-timepicker-wrapper ui-timepicker-positioned-top optional-custom-classname" tabindex="-1">
+    <ul class="ui-timepicker-list">
+        <li>12:00</li>
+        <li>12:30</li>
+        <li>16:30</li>
+        <li class="ui-timepicker-selected">19:00</li>
+        <li>23:30</li>
+    </ul>
+</div>
+
+
+
+            <div class="demo">
+                <p><input id="basicExample" type="text" class="time" data-scroll-default="6:00am" /></p>
+            </div>
+
+            <script>
+                $(function() {
+                    $('#basicExample').timepicker();
+                });
+            </script>
+
+
+           <div class="demo">
+                <h2>Scroll Default Example</h2>
+                <p>Set the scroll position to local time if no value selected.</p>
+                <p><input id="scrollDefaultExample" type="text" class="time" /></p>
+            </div>
+
+            <script>
+                $(function() {
+                    $('#scrollDefaultExample').timepicker({ 'scrollDefault': 'now' });
+                });
+            </script>
+
+
+
+    <div class="col-xs-6"></div>
+ </div>
+</row>
+<script>
+ 	$('{{name}}TimePicker').timepicker({ 'timeFormat': 'H:i' });
+</script>
+  
