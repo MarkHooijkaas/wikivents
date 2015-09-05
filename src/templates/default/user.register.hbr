@@ -7,7 +7,7 @@
 	{{> include/form.text form.password label="Kies een wachtwoord" type="password"}}
   	{{> include/form.text form.passwordCheck label="Herhaal het wachtwoord" type="password"}}
   
-  {{> include/form.submitButton}}
+  {{> include/form.submitButton submitTitle="Registreer"}}
 </form>
 
 {{> include/page.footer}}

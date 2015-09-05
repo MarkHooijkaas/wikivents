@@ -1,14 +1,22 @@
 MUSTHAVE
+show
+edit
+	datum/tijd
+registreer gebruiker
+	werkt nog niet op echte site
+	woonplaats + profielfoto => unknown field
+foto in profiel kan te groot zijn
+logging
+	
 encryption of cookie
 reset password mechanism
-layout 
+layout
 
 foto's users
 email
 
 
 NICE
-wysiwyg editor for description, comments
 better in-page forms, conciser java code, message if not ok
 multiple skins
 logging
