@@ -43,10 +43,12 @@ public class LoginPage extends WikiventsThing {
 		if (call.isGet())
 			data.showForm();
 		else {
-			if (data.isValid())
+			if (data.isValid()) {
 				call.setCookie(data.user._id);
-			call.redirect("/user/"+data.user.username);
-			data.handle();
+				call.redirect("/user/"+data.user.username);
+			}
+			else
+				data.handle();
 		}
 	}
 }
