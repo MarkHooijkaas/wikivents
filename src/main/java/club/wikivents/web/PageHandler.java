@@ -17,7 +17,7 @@ import club.wikivents.model.User;
 
 public class PageHandler extends WikiventsPage {
 	public PageHandler(WikiventsSite site) { super(site);	}
-	public final UserForm crud=new UserForm(site);
+	//public final UserForm crud=new UserForm(site);
 
 
 	private static final Class<?>[] signature = new Class<?>[] { HttpCall.class, String.class, Page.class };
