@@ -19,8 +19,8 @@
 	{{> include/form.text     form.min      label="Minimum aantal deelnemers" type="text"}}
 	{{> include/form.text     form.max      label="Maximum aantal deelnemers"}}
 	{{> include/form.text     form.location label="Plaats"}}
-	{{> include/form.text     form.imageUrl label="Afbeelding"}}
 	{{#if form.originalData}}
+		{{> include/form.text     form.imageUrl label="Afbeelding"}}
 		{{> include/form.text     form.guestsAllowed label="Open voor nieuwe deelnemers"}}
 		{{> include/form.text     form.backupGuestsAllowed label="Reservelijst"}}
 	{{/if}}

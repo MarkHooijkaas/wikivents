@@ -51,25 +51,20 @@ public class UserHandler extends WikiventsActionHandler<User> {
 	
 	@NeedsNoAuthentication
 	public void viewRegister(WikiventsCall call) {
-		System.out.println("view");
 		RegisterForm formdata = new RegisterForm(call);
 		formdata.showForm();
 	}
 	
 	@NeedsNoAuthentication
 	public void handleRegister(WikiventsCall call) {
-		System.out.println("post");
 		RegisterForm formdata = new RegisterForm(call);
-		System.out.println(formdata.username.value);
 
 		if (formdata.isValid()) {
 			String pw = formdata.password.value;
 			String pw2 = formdata.passwordCheck.value;
-			System.out.println(pw+"=="+pw2);
 			if (pw==null || ! pw.equals(pw2))
 				formdata.showForm();
 			else {
-				System.out.println("new user");
 				User u = new User(call.model,formdata.record);
 				model.users.create(u);
 				u.changePassword(pw);
