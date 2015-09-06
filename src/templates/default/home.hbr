@@ -16,7 +16,20 @@
 </script>
 
 <h1>Welkom op Wikivents: de <a href="https://nl.wikipedia.org/wiki/Wiki">Wiki</a> van Events</h1>
-Wikivents is een site met activiteiten (events) voor leden georganiseerd door leden.
+<p>Wikivents is een site met activiteiten (events) voor leden georganiseerd door leden.
+</p>
+<p>
+Deze site is nog in ontwikkeling, en is momenteel bedoeld om te testen en feedback te krijgen. 
+Je kan al wel echte activiteiten plannen. Dit kan je duidelijk maken door ECHT in de titel te zetten. 
+De meeste activiteiten zijn nu slechts voor testdoeleinden. 
+Ik zal proberen de echte activiteiten te bewaren als de site publiek gaat.
+Geef AUB deze site nog niet door aan veel mensen, want dat kan averechts werken, aangezien er nog best veel verbeteringen nodig zijn.
+</p>
+
+<p>Een lijst van bekende issues staat op <a href="https://github.com/MarkHooijkaas/wikivents/issues">Github</a>, maar deze lijst moet worden bijgewerkt.
+Ook de toekomstplannen zijn op github te vinden op <a href="https://github.com/MarkHooijkaas/wikivents/wiki/toekomst">toekomst</a>
+</p>
+
 
 <div class="fotorama" data-nav="thumbs" data-navposition="top">
 {{#each model.futureEvents}}
