@@ -18,14 +18,20 @@
 	{{> include/form.text     form.time     label="Tijd" type="time"}}
 	{{> include/form.text     form.min      label="Minimum aantal deelnemers" type="text"}}
 	{{> include/form.text     form.max      label="Maximum aantal deelnemers"}}
-	{{> include/form.text     form.location label="Locatie"}}
+	{{> include/form.text     form.location label="Plaats"}}
 	{{> include/form.text     form.imageUrl label="Afbeelding"}}
-	{{> include/form.text     form.guestsAllowed label="Open voor nieuwe deelnemers"}}
-	{{> include/form.text     form.backupGuestsAllowed label="Reservelijst"}}
-	{{> include/form.textarea form.guestInfo label="Deelnemer informatie" rows=5}}
+	{{#if form.originalData}}
+		{{> include/form.text     form.guestsAllowed label="Open voor nieuwe deelnemers"}}
+		{{> include/form.text     form.backupGuestsAllowed label="Reservelijst"}}
+	{{/if}}
+	{{> include/form.textarea form.guestInfo label="Deelnemer informatie (alleen zichtbaar voor deelnemers)" rows=5}}
 	{{> include/form.textarea form.description label="Omschrijving" rows=10}}
 
-	{{> include/form.submitButton}}
+	{{#if form.originalData}}
+		{{> include/form.submitButton}}
+	{{else}}
+		{{> include/form.submitButton submitTitle="Maak activiteit"}}
+	{{/if}}
 </form>
 
 {{> include/page.footer}}

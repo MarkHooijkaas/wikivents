@@ -7,6 +7,9 @@ registreer gebruiker
 	woonplaats + profielfoto => unknown field
 foto in profiel kan te groot zijn
 logging
+create event
+	true velden niet laten zien, maar standaard op trues
+	WIJZIG?
 	
 encryption of cookie
 reset password mechanism

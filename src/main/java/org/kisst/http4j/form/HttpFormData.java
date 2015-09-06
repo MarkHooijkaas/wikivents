@@ -11,14 +11,16 @@ import org.kisst.item4j.struct.Struct;
 public class HttpFormData extends FormData implements HttpPostResult{
 	private final CompiledTemplate template;
 	public final HttpCall call;
+	public final Struct originalData;
 	//public HttpFormData(HttpCall call) { this(call,null); }
 	public HttpFormData(HttpCall call, CompiledTemplate template) { 
-		this(call, template, new HttpRequestStruct(call.request));  
+		this(call, template, null);  
 	}
 	public HttpFormData(HttpCall call, CompiledTemplate template, Struct originalData) { 
 		super(originalData==null? new HttpRequestStruct(call.request) : originalData);  
 		this.call=call;
 		this.template=template;
+		this.originalData=originalData;
 	}
 
 	@Override public boolean isSuccess() { return isValid();}
