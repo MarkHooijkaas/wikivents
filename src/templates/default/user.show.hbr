@@ -29,12 +29,14 @@
  	</form>
 
 	<button type="button" class="btn btn-default" data-toggle="modal" data-target="#addFriendModal">Voeg toe als vriend</button>
-	{{> include/modal.begin id="addFriendModal"}}
+	{{> include/modal.begin id="addFriend"}}
 		Door {{record.username}} aan je vrienden toe te voegen, geef je {{record.username}} recht om jouw gegevens te zien. 
 		Dit geeft je echter nog niet het recht om zijn/haar gegevens te zien.
 		Daarvoor moet {{record.username}} jou toevoegen aan zijn/haar vriendenlijst.
- 		<form role="form" method="POST" action="../addFriend/{{record._id}}">
+ 		<form role="form" method="POST" action="{{call.user.username}}">
    			<button type="submit" class="btn btn-default">Voeg toe als vriend</button>
+   			<input type="hidden" name="action" value="addAsFriend"/>
+   			<input type="hidden" name="friendId" value="{{record._id}}"/>
  		</form>
 	{{> include/modal.end}}
 
