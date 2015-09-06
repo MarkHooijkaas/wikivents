@@ -109,6 +109,7 @@ public class UserHandler extends WikiventsActionHandler<User> {
 		public RegisterForm(WikiventsCall call) { super(call, call.getTheme().userRegister); }
 		public final InputField username = new InputField(User.schema.username);
 		public final InputField email    = new InputField(User.schema.email, this::validateEmail);
+		public final InputField city     = new InputField(User.schema.city);
 		public final InputField password = new InputField("password");
 		public final InputField passwordCheck = new InputField("passwordCheck");
 	}

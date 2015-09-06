@@ -4,7 +4,7 @@
 	<input type="hidden" name="action" value="register"/>
 	{{> include/form.text form.username label="Gebruikersnaam"}}
 	{{> include/form.text form.email    label="email"}}
-	{{> include/form.text form.location label="Woonplaats"}}
+	{{> include/form.text form.city label="Woonplaats"}}
 	{{> include/form.text form.password label="Kies een wachtwoord" type="password"}}
   	{{> include/form.text form.passwordCheck label="Herhaal het wachtwoord" type="password"}}
   

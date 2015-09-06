@@ -37,9 +37,13 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 	
 	public void handleCreate(WikiventsCall call) {
 		Form formdata = new Form(call);
-		if (formdata.isValid()) 
-			model.events.create(new Event(call.model,call.user,formdata.record));
-		formdata.handle();
+		if (formdata.isValid()) {
+			Event e=new Event(call.model,call.user,formdata.record);
+			model.events.create(e);
+			call.redirect("/event/:"+e._id);
+		}
+		else
+			formdata.handle();
 	}
 	public void handleChangeField(WikiventsCall call, Event oldRecord) {
 		String field=call.request.getParameter("field");

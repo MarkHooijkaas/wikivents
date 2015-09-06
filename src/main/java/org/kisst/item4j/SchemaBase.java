@@ -13,6 +13,7 @@ public abstract class SchemaBase implements Schema {
 	public class StringField extends BasicField<String>{ 
 		public StringField(String name) {	super(Type.javaString, name); }
 		public String getString(Struct s) { return Item.asString(s.getDirectFieldValue(name)); }
+		public String getString(Struct s, String defaultValue) { return Item.asString(getObject(s,defaultValue)); }
 	}
 	public class BooleanField extends BasicField<Boolean> {
 		public BooleanField(String name) { super(Type.javaBoolean, name); }
