@@ -3,11 +3,12 @@
 {{#ifLoggedIn}}
 
 <form role="form" method="POST">
-	{{> include/form.text     form.to    label="Aan"}}
+	{{> include/form.fixtext  value=call.user.email  label="Van"}}
+	{{> include/form.text     form.to      label="Aan"}}
 	{{> include/form.date     form.subject label="Onderwerp"}}
 	{{> include/form.textarea form.message label="Bericht" rows=20}}
 
-	{{> include/form.submitButton}}
+	{{> include/form.submitButton submitTitle="Verzend email"}}
 </form>
 
 N.B. Deze gebruiker krijgt een e-mail met daarin jouw email adres zichtbaar voor replies.

@@ -3,16 +3,12 @@ show
 edit
 	datum/tijd
 registreer gebruiker
-	woonplaats + profielfoto => unknown field
 	email adres niet uniek... wordt niet getoond dat dat de fout is
 foto in profiel kan te groot zijn
 	
 encryption of cookie
 reset password mechanism
 layout
-
-foto's users
-email
 
 
 NICE

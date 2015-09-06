@@ -26,9 +26,14 @@ public class SendMessagePage extends WikiventsPage {
 		else {
 			if (formdata.isValid()) {
 				User toUser=model.usernameIndex.get(formdata.to.value);
-				String subject=formdata.subject.value;
-				String message=formdata.message.value;
-				toUser.sendMailFrom(call.user, subject, message);
+				if (toUser==null)
+					formdata.handle();
+				else {
+					String subject=formdata.subject.value;
+					String message=formdata.message.value;
+					toUser.sendMailFrom(call.user, subject, message);
+					call.redirect("/user/"+toUser.username);
+				}
 			}
 			formdata.handle();
 		}
