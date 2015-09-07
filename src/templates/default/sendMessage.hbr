@@ -8,7 +8,7 @@
 	{{> include/form.date     form.subject label="Onderwerp"}}
 	{{> include/form.textarea form.message label="Bericht" rows=20}}
 
-	{{> include/form.submitButton submitTitle="Verzend email"}}
+	{{> include/form.submitButton submitTitle="Verzend email" cancelUrl="/user/*"}}
 </form>
 
 N.B. Deze gebruiker krijgt een e-mail met daarin jouw email adres zichtbaar voor replies.

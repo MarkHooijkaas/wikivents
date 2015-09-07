@@ -1,2 +1,2 @@
 <button type="submit" class="btn btn-default btn-success">{{#if submitTitle}}{{submitTitle}}{{else}}Wijzig{{/if}}</button>
-<a class="btn btn-default btn-danger" href="{{request.getRequestURI}}">Annuleer</a>
+<a class="btn btn-default btn-danger" href="{{#if cancelUrl}}{{cancelUrl}}{{else}}{{request.getRequestURI}}{{/if}}">Annuleer</a>
