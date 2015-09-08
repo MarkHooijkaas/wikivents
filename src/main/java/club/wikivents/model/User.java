@@ -14,7 +14,6 @@ import org.kisst.crud4j.CrudSchema;
 import org.kisst.crud4j.CrudTable.CrudRef;
 import org.kisst.http4j.handlebar.AccessChecker;
 import org.kisst.http4j.handlebar.Htmlable;
-import org.kisst.item4j.ImmutableSequence;
 import org.kisst.item4j.Item;
 import org.kisst.item4j.Type;
 import org.kisst.item4j.struct.HashStruct;
@@ -32,7 +31,6 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 	public final String passwordSalt;
 	public final String encryptedPassword;
 	public final boolean isAdmin;
-	public final ImmutableSequence<Friend> friends;
 
 	public User(WikiventsModel model, Struct data) {
 		super(model.users, data);
@@ -44,7 +42,6 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 		this.passwordResetToken=schema.passwordResetToken.getString(data,null);
 		this.passwordSalt=schema.passwordSalt.getString(data);
 		this.encryptedPassword=schema.encryptedPassword.getString(data);
-		this.friends=schema.friends.getSequenceOrEmpty(model, data);
 		this.isAdmin=false; // TODO schema.isAdmin.getBoolean(data,false);
 	}
 	public ArrayList<Event> futureEvents() {
@@ -120,27 +117,13 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 		if (user==null) return false;
 		if (_id.equals(user._id))	return true;
 		if (user.isAdmin) return true;
-		return hasFriend(user);		
+		return false;		
 	}
 	public boolean mayBeChangedBy(User u) {
 		if (u==null) return false;
 		if (_id.equals(u._id))
 			return true;
 		return u.isAdmin;
-	}
-	public boolean isFriendOf(User u) { return u.hasFriend(this); }
-	public boolean hasFriend(User user) {
-		for (Friend f: friends) 
-			if (f.user._id.equals(user._id)) 
-				return true;
-		return false;
-	}
-	
-	public void addFriend(WikiventsModel model, User user) {
-		for (Friend f: friends) // check if already in my friends
-			if (f.user._id.equals(user._id)) // TODO: when Friend with no user, this will throw NPE
-				return;
-		model.users.addSequenceItem(this, schema.friends, new Friend(model, user));
 	}
 	
 	public void sendSystemMail(String subject, String message) {

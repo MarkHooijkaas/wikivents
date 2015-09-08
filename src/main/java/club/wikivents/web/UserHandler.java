@@ -1,11 +1,8 @@
 package club.wikivents.web;
 
-import java.util.ArrayList;
-
 import org.kisst.http4j.form.HttpFormData;
 import org.kisst.item4j.struct.Struct;
 
-import club.wikivents.model.Friend;
 import club.wikivents.model.User;
 
 public class UserHandler extends WikiventsActionHandler<User> {
@@ -19,12 +16,6 @@ public class UserHandler extends WikiventsActionHandler<User> {
 
 	public void listAll(WikiventsCall call) {
 		call.output(call.getTheme().userList, model.users);
-	}
-	public void listFriend(WikiventsCall call) {
-		ArrayList<User> list=new ArrayList<>();
-		for (Friend f: call.user.friends)
-			list.add(f.user.get());
-		call.output(call.getTheme().userList, list); 
 	}
 
 	@NeedsNoAuthorization
@@ -81,12 +72,6 @@ public class UserHandler extends WikiventsActionHandler<User> {
 		String field=call.request.getParameter("field");
 		String value=call.request.getParameter("value");
 		table.updateField(oldRecord, table.getSchema().getField(field), value);
-	}
-
-	public void handleAddAsFriend(WikiventsCall call, User user) {
-		String friendId=call.request.getParameter("friendId");
-		User friend=model.users.read(friendId);
-		call.user.addFriend(model, friend);
 	}
 
 	public void handleChangePassword(WikiventsCall call, User u) {

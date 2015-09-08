@@ -11,7 +11,6 @@
 		<li><a href="/event/*.future">Activiteiten</a></li>
 {{#ifLoggedIn}}		
 		<li><a href="/user/*">Gebruikers</a></li>
-		<li><a href="/user/*.friend">Vrienden</a></li>
 		<li><a href="/user/{{user.username}}">Ikzelf</a></li>
 		<li>
 			<a href="" data-toggle="modal" data-target="#logoutModal">Uitloggen</a>

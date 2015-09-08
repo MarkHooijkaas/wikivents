@@ -25,49 +25,19 @@
 
  	<form role="form" method="POST" action="/sendMessage">
  		<input type="hidden" name="to" value="{{record.username}}"/>
-   		<button type="submit" class="btn btn-default">Stuur een bericht</button>
+   		<button type="submit" class="btn btn-default">Stuur een e-mail</button>
  	</form>
-
-	<button type="button" class="btn btn-default" data-toggle="modal" data-target="#addFriendModal">Voeg toe als vriend</button>
-	{{> include/modal.begin id="addFriend"}}
-		Door {{record.username}} aan je vrienden toe te voegen, geef je {{record.username}} recht om jouw gegevens te zien. 
-		Dit geeft je echter nog niet het recht om zijn/haar gegevens te zien.
-		Daarvoor moet {{record.username}} jou toevoegen aan zijn/haar vriendenlijst.
- 		<form role="form" method="POST" action="{{call.user.username}}">
-   			<button type="submit" class="btn btn-default">Voeg toe als vriend</button>
-   			<input type="hidden" name="action" value="addAsFriend"/>
-   			<input type="hidden" name="friendId" value="{{record._id}}"/>
- 		</form>
-	{{> include/modal.end}}
-
-
-
-	{{#ifMayView record}}
-	<h2>Vrienden</h2>
-	<table class="table table-hover">
-		<tbody>
-	{{#each record.friends}}
-			<tr><td>{{&priv user.link}}</td></tr>
-	{{/each}}
-		</tbody>
-	</table>
-	
-	{{/ifMayView}}
 </div>	 
 
 <div class="col-xs-10">
 	{{> include/show.ajaxField value=record.username name="username" label="Gebruikersnaam"}}
 	{{> include/show.ajaxField value=record.city     name="city"    label="Woonplaats"}}  
 
-	{{#ifMayView record}}
-		{{> include/show.ajaxField value=record.email name="email"  label="email"}}
-		{{#ifMayChange record}}
-			{{> dialog/changePassword}}
-			{{> include/show.changeButton}}
-		{{/ifMayChange}}
-	{{else}}
-		 Alleen gebruikers die door {{record.username}} als vriend zijn aangemerkt mogen verdere gegevens zien</div>
-	{{/ifMayView}}
+	{{> include/show.ajaxField value=record.email name="email"  label="email"}}
+	{{#ifMayChange record}}
+		{{> dialog/changePassword}}
+		{{> include/show.changeButton}}
+	{{/ifMayChange}}
 	
 
 
