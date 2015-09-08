@@ -1,7 +1,7 @@
 <div class="row">
 	<div class="col-xs-3"><label>{{label}}</label></div>
 	<div class="col-xs-9">
-		<span>{{value}}</span>
+		<span>{{value}} {{postfix}}</span>
 	{{#ifMayChange record}}
 		{{> include/modal.textField}}
 	{{/ifMayChange}}

@@ -51,17 +51,17 @@
 {{/ifMayView}}
 	{{> include/show.ajaxField value=record.date name="date"  label="Datum" }}
 	{{> include/show.ajaxTimeField value=record.time     name="time"  label="Tijd"}}
-	{{> include/show.ajaxField value=record.min      name="min"   label="Min"}}
-	{{> include/show.ajaxField value=record.max      name="max"   label="Max"}}
-	{{> include/show.ajaxField value=record.location name="location" label="Plaats"}}
-	{{> include/show.ajaxBoolField value=record.guestsAllowed       name="guestsAllowed" label="Open voor inschrijvingen"}}
-	{{> include/show.ajaxBoolField value=record.backupGuestsAllowed name="backupGuestsAllowed" label="Reservelijst"}}
+	{{> include/show.ajaxField value=record.min      name="min"   label="Minimum" postfix="deelnemers"}}
+	{{> include/show.ajaxField value=record.max      name="max"   label="Maximum" postfix="deelnemers"}}
+	{{> include/show.ajaxField value=record.location name="location" label="Plaats" postfix=""}}
 
 {{> include/show.changeButton}}
 
 {{#ifLoggedIn}}
 
-<h2>Deelnemers</h2>
+<h2>Deelnemers
+	{{> include/modal.lockField value=record.guestsAllowed name="guestsAllowed" label="Deelname"}}
+</h2> 
 
 {{#each record.allowedGuests}}
 <row>
@@ -80,9 +80,22 @@
 	</row>
 {{/each}}
 
-{{#if record.backupGuests}}
-<h2>Reservelijst</h2>
+{{#ifAmGuest record}}
+{{else}}
+{{#if record.allowNewGuest}}
+  	<form role="form" method="POST" >
+  		<input type="hidden" name="action" value="addGuest"/>				
+  		<input type="hidden" name="userId" value="{{record._id}}"/>				
+		<button type="submit" class="btn btn-default">Ik wil ook deelnemen</button>
+ 	</form>
+{{/if}}
+{{/ifAmGuest}}
 
+
+<h2>Reservelijst
+	{{> include/modal.lockField value=record.backupGuestsAllowed name="backupGuestsAllowed" label="Reservelijst"}}
+</h2>
+{{#if record.backupGuests}}
 {{#each record.backupGuests}}
 <row>
 	{{#ifMayChange this}}
@@ -104,11 +117,6 @@
 {{#ifAmGuest record}}
 {{else}}
 {{#if record.allowNewGuest}}
-  	<form role="form" method="POST" >
-  		<input type="hidden" name="action" value="addGuest"/>				
-  		<input type="hidden" name="userId" value="{{record._id}}"/>				
-		<button type="submit" class="btn btn-default">Ik wil ook deelnemen</button>
- 	</form>
 {{else}}
 	{{#if record.allowNewBackupGuest}}
 	  	<form role="form" method="POST">

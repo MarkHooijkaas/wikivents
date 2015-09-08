@@ -1,0 +1,35 @@
+{{#if value}}
+{{else}}
+	<span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
+{{/if}}
+{{#ifMayChange record}}
+	<a data-toggle="modal" data-target="#{{name}}Modal"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span></a>
+	{{> include/modal.begin  id=name}}
+		<form role="form" method="POST" id="{{name}}Form" action="">
+			<input type="hidden" name="action" value="changeField"/>
+			<input type="hidden" name="field" value="{{name}}"/>
+			<label for="">{{label}} is momenteel {{#if value}} OPEN {{else}} GESLOTEN {{/if}}
+			<a id="{{name}}Button" class="btn btn-default btn-success">{{label}} {{#if value}} DICHT {{else}} OPEN {{/if}} Zetten </a>
+			{{#if value}}
+				<input type="hidden" name="value" value="false">
+			{{else}}
+				<input type="hidden" name="value" value="true">
+			{{/if}}
+			<br/>
+			<span id="{{name}}Message"></span>
+		</form>
+		<script>
+		$(document).ready(function(){
+			$("#{{name}}Button").click(function(){
+				$.ajax({
+					type: "POST",
+					url: "#",
+					data: $(this).closest('form').serialize(),
+					success: function(data, status, xhr){ location.reload(true); },
+					error: function(xhr,status,error){ $("#{{name}}Message").html(error); }
+				});
+		    });
+		});
+		</script>
+	{{> include/modal.end}}
+{{/ifMayChange}}
