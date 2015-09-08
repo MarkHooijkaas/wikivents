@@ -5,10 +5,10 @@
       <tr>
         <th>Datum</th>
         <th>Tijd</th>
-        <th>Organisator</th>
         <th>activiteit</th>
         <th>plaats</th>
         <th>aantal</th>
+        <th>Organisator</th>
         <th>geplaatst op</th>
       </tr>
     </thead>
@@ -18,10 +18,10 @@
 	  <tr>
         <td>{{date}}</td>
         <td>{{time}}</td>
-        <td>{{#ifLoggedIn}} {{&join organizers "<br/>"}} {{else}} *** {{/ifLoggedIn}}</td>
         <td><a href="/event/:{{_id}}">{{title}}</a></td>
         <td>{{location}}</td>
         <td>{{guestCount}}/{{max}}</td>
+        <td>{{#ifLoggedIn}} {{&join organizers "<br/>"}} {{else}} *** {{/ifLoggedIn}}</td>
         <td>{{creationDate}}</td>
       </tr>
 {{/each}}
