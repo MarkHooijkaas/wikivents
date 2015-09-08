@@ -160,6 +160,8 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 		model.events.addSequenceItem(this, schema.organizers, new User.Ref(model, user._id));
 	}
 	public void removeOrganizer(WikiventsModel model, User user) {
+		if (organizers.size()==1) // never remove the last organizer
+			return;
 		User.Ref ref = new User.Ref(model, user._id);
 		model.events.removeSequenceItem(this, schema.organizers, ref);
 	}
