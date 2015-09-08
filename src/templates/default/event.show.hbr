@@ -18,8 +18,8 @@
 
 {{#ifMayView record}}
 	<div class="row">
-		<div class="col-xs-4"><label><label>Organisator</label>: </label></div>
-		<div class="col-xs-8"><span>
+		<div class="col-xs-3"><label>Organisator</label></div>
+		<div class="col-xs-9"><span>
 			{{#each record.organizers}}
 				{{#ifMayChange record}}
 					<form role="form" method="POST">
@@ -39,8 +39,8 @@
 {{#ifMayChange record}}
 <div class="row">
 	<form role="form" method="POST">
-		<div class="col-xs-4"><label></label></div>
-		<div class="col-xs-8"><span>
+		<div class="col-xs-3"><label></label></div>
+		<div class="col-xs-9"><span>
 			<input type="hidden" name="action" value="addOrganizer"/>				
 			<button type="submit" class="btn btn-default">+</button>
 			<input type="text" name="newOrganizer">
