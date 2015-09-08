@@ -21,25 +21,28 @@
 
 
 <div class="col-xs-2">
-	<img src="{{record.avatarUrl}}"/>
+	{{#if record.avatarUrl}}
+		<img src="{{record.avatarUrl}}"/>
+	{{else}}
+		Gebruiker heeft nog geen profielfoto toegevoegd.
+		<img src="/favicon.ico"/>
+	{{/if}}
+	{{#ifMayChange record}}
+		{{> include/modal.textField value=record.avatarUrl  name="avatarUrl"  label="Profielfoto URL"}}<br>
+		{{record.city}}  {{> include/modal.textField value=record.city  name="city"  label="Woonplaats"}}<br>  
+		{{record.email}} {{> include/modal.textField value=record.email name="email" label="E-mail"}}<br>  
+		Wachtwoord {{> dialog/changePassword}}
+	{{else}}
+		<br><br>{{record.city}}
+	{{/ifMayChange}}
 
  	<form role="form" method="POST" action="/sendMessage">
  		<input type="hidden" name="to" value="{{record.username}}"/>
-   		<button type="submit" class="btn btn-default">Stuur een e-mail</button>
+   		<button type="submit" class="btn btn-default">Stuur {{record.username}} een e-mail</button>
  	</form>
 </div>	 
 
 <div class="col-xs-10">
-	{{> include/show.ajaxField value=record.username name="username" label="Gebruikersnaam"}}
-	{{> include/show.ajaxField value=record.city     name="city"    label="Woonplaats"}}  
-
-	{{> include/show.ajaxField value=record.email name="email"  label="email"}}
-	{{#ifMayChange record}}
-		{{> dialog/changePassword}}
-		{{> include/show.changeButton}}
-	{{/ifMayChange}}
-	
-
 
 	<h3>Activiteiten waar {{record.username}} naar toe gaat</h3>
 	{{> include/embedded.event.list list=record.futureEvents tableid="events"}}
