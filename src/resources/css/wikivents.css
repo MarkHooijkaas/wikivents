@@ -3,3 +3,4 @@ a img.link-avatar {
    height: auto;
 }
 .overflow-hidden { overflow:hidden; }
+span.glyphicon-pencil { font-size: 0.8em; color:grey }
