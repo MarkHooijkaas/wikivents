@@ -110,7 +110,6 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 		public final StringField passwordSalt = new StringField("passwordSalt"); 
 		public final StringField encryptedPassword = new StringField("encryptedPassword"); 
 		public final BooleanField isAdmin = new BooleanField("isAdmin"); 
-		public final SequenceField<Friend> friends  = new SequenceField<Friend>(Friend.schema,"friends");  
 	}
 	
 	public boolean mayBeViewedBy(User user) {
