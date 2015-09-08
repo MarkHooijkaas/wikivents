@@ -24,6 +24,7 @@ import org.kisst.util.PasswordEncryption;
 public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 	public final WikiventsModel model;
 	public final String username;
+	public final String description;
 	public final String email;
 	public final String city;
 	public final String avatarUrl;
@@ -36,6 +37,7 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 		super(model.users, data);
 		this.model=model;
 		this.username=schema.username.getString(data);
+		this.description=schema.description.getString(data,null);
 		this.email=schema.email.getString(data);
 		this.city=schema.city.getString(data);
 		this.avatarUrl=schema.avatarUrl.getString(data,null);
@@ -103,6 +105,7 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 		private Schema() { super(User.class); }
 		public final IdField _id = new IdField();
 		public final StringField username = new StringField("username"); 
+		public final StringField description= new StringField("description"); 
 		public final StringField email    = new StringField("email"); 
 		public final StringField city = new StringField("city"); 
 		public final StringField avatarUrl= new StringField("avatarUrl"); 

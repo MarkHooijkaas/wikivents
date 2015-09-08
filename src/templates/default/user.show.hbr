@@ -1,5 +1,6 @@
 {{> include/page.header.begin}}
 	<script src="http://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+	<script src="//cdn.ckeditor.com/4.5.2/standard/ckeditor.js"></script>
 {{> include/page.header.end}}
 
 <script>
@@ -16,9 +17,6 @@
 		} );
 	} );
 </script>
-
-<h1>Profiel van {{record.username}}</h1>
-
 
 <div class="col-xs-2">
 	{{#if record.avatarUrl}}
@@ -43,7 +41,11 @@
 </div>	 
 
 <div class="col-xs-10">
-
+	<h1>Profiel van {{record.username}}
+	{{> include/modal.textAreaField label="Profielinformatie" name="description" value=record.description}}
+	</h1>
+	{{&record.description}}
+	
 	<h3>Activiteiten waar {{record.username}} naar toe gaat</h3>
 	{{> include/embedded.event.list list=record.futureEvents tableid="events"}}
 
