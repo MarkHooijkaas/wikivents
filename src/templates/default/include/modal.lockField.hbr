@@ -2,7 +2,7 @@
 {{else}}
 	<span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
 {{/if}}
-{{#ifMayChange record}}
+{{#ifInlineEdit record}}
 	<a data-toggle="modal" data-target="#{{name}}Modal"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span></a>
 	{{> include/modal.begin  id=name}}
 		<form role="form" method="POST" id="{{name}}Form" action="">
@@ -32,4 +32,4 @@
 		});
 		</script>
 	{{> include/modal.end}}
-{{/ifMayChange}}
+{{/ifInlineEdit}}

@@ -7,11 +7,19 @@
 <div class="col-xs-3">
 
 {{#ifMayView record}}
+	{{#ifMayChange record}}
+    	{{#ifParam "inline-edit" "true"}}
+			<a class="btn btn-default" href="/event/:{{record._id}}">Klaar met wijzigen</a>
+		{{else}}
+			<a class="btn btn-default" href="/event/:{{record._id}}?inline-edit=true">Wijzig deze activiteit</a>
+		{{/ifParam}}
+		<br><br>
+	{{/ifMayChange}}
 	<div class="row">
 		<div class="col-xs-3"><label>Organisator</label></div>
 		<div class="col-xs-9"><span>
 			{{#each record.organizers}}
-				{{#ifMayChange record}}
+				{{#ifInlineEdit record}}
 					<form role="form" method="POST">
 						{{&priv link}}
 						<input type="hidden" name="action" value="removeOrganizer"/>				
@@ -22,11 +30,11 @@
 					</form>
 				{{else}}
 					{{&priv link}}<br/>
-				{{/ifMayChange}}
+				{{/ifInlineEdit}}
 			{{/each}}
 		</span></div>
 	</div>
-{{#ifMayChange record}}
+{{#ifInlineEdit record}}
 <div class="row">
 	<form role="form" method="POST">
 		<div class="col-xs-3"><label></label></div>
@@ -37,7 +45,7 @@
 		</span></div>
 	</form>
 </div>
-{{/ifMayChange}}
+{{/ifInlineEdit}}
 {{/ifMayView}}
 	{{> include/show.ajaxField value=record.date name="date"  label="Datum" }}
 	{{> include/show.ajaxTimeField value=record.time     name="time"  label="Tijd"}}
@@ -53,7 +61,7 @@
 
 {{#each record.allowedGuests}}
 <row>
-	{{#ifMayChange this}}
+	{{#ifInlineEdit this}}
 			<form role="form" method="POST">
 				{{&priv user.link}}
 				<input type="hidden" name="action" value="removeGuest"/>				
@@ -64,7 +72,7 @@
 			</form>
 	{{else}}
 			{{&priv user.link}}<br/>
-	{{/ifMayChange}}
+	{{/ifInlineEdit}}
 	</row>
 {{/each}}
 
@@ -86,7 +94,7 @@
 {{#if record.backupGuests}}
 {{#each record.backupGuests}}
 <row>
-	{{#ifMayChange this}}
+	{{#ifInlineEdit this}}
 			<form role="form" method="POST">
 				{{&priv user.link}}
 				<input type="hidden" name="action" value="removeGuest"/>				
@@ -96,7 +104,7 @@
 			</form>
 	{{else}}
 			{{&priv user.link}}<br/>
-	{{/ifMayChange}}
+	{{/ifInlineEdit}}
 </row>
 {{/each}}
 {{/if}}

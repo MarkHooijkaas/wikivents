@@ -58,6 +58,7 @@ public class TemplateEngine {
 		UserHelpers<T> h = new UserHelpers<T>(cls, path);
 		handlebar.registerHelper("ifMayChange", h.new IfMayChangeHelper()); 
 		handlebar.registerHelper("ifMayView",   h.new IfMayViewHelper());
+		handlebar.registerHelper("ifInlineEdit",   h.new IfInlineEditHelper());
 		handlebar.registerHelpers(h.new SimpleHelpers());
 	}
 

@@ -44,7 +44,7 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 		this.passwordResetToken=schema.passwordResetToken.getString(data,null);
 		this.passwordSalt=schema.passwordSalt.getString(data);
 		this.encryptedPassword=schema.encryptedPassword.getString(data);
-		this.isAdmin=false; // TODO schema.isAdmin.getBoolean(data,false);
+		this.isAdmin=schema.isAdmin.getBoolean(data,false);
 	}
 	public ArrayList<Event> futureEvents() {
 		ArrayList<Event> result=new ArrayList<Event>();

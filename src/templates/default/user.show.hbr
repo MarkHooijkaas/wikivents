@@ -19,21 +19,29 @@
 </script>
 
 <div class="col-xs-2">
+	{{#ifMayChange record}}
+    	{{#ifParam "inline-edit" "true"}}
+			<a class="btn btn-default" href="/user/{{record.username}}">Klaar met wijzigen</a>
+		{{else}}
+			<a class="btn btn-default" href="/user/{{record.username}}?inline-edit=true">Wijzig je gegevens</a>
+		{{/ifParam}}
+		<br><br>
+	{{/ifMayChange}}
 	{{#if record.avatarUrl}}
 		<img src="{{record.avatarUrl}}"/>
 	{{else}}
 		Gebruiker heeft nog geen profielfoto toegevoegd.
 		<img src="/favicon.ico"/>
 	{{/if}}
-	{{#ifMayChange record}}
+	{{#ifInlineEdit record}}
 		{{> include/modal.textField value=record.avatarUrl  name="avatarUrl"  label="Profielfoto URL"}}<br>
 		{{record.city}}  {{> include/modal.textField value=record.city  name="city"  label="Woonplaats"}}<br>  
 		{{record.email}} {{> include/modal.textField value=record.email name="email" label="E-mail"}}<br>  
 		Wachtwoord {{> dialog/changePassword}}
 	{{else}}
 		<br><br>{{record.city}}
-	{{/ifMayChange}}
-
+	{{/ifInlineEdit}}
+	<br><br>
  	<form role="form" method="POST" action="/sendMessage">
  		<input type="hidden" name="to" value="{{record.username}}"/>
    		<button type="submit" class="btn btn-default">Stuur {{record.username}} een e-mail</button>
