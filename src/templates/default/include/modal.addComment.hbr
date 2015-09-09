@@ -1,0 +1,23 @@
+{{> include/modal.begin  id=name}}
+	<form role="form" method="POST" id="{{name}}Form" action="">
+		<input type="hidden" name="action" value="addComment"/>
+		<label for="">Reactie: </label><br/>
+		<textarea rows="5" cols="60" name="comment" ></textarea><br/>
+		<a id="{{name}}Button" class="btn btn-default btn-success">Voeg reactie toe</a>
+		<br/>
+		<span id="{{name}}Message"></span>
+	</form>
+	<script>
+	$(document).ready(function(){
+		$("#{{name}}Button").click(function(){
+			$.ajax({
+				type: "POST",
+				url: "#",
+				data: $(this).closest('form').serialize(),
+				success: function(data, status, xhr){ location.reload(true); },
+				error: function(xhr,status,error){ $("#{{name}}Message").html(error); }
+			});
+	    });
+	});
+	</script>
+{{> include/modal.end}}

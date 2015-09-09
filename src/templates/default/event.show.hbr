@@ -2,19 +2,9 @@
 <script src="//cdn.ckeditor.com/4.5.2/standard/ckeditor.js"></script>
 {{> include/page.header.end}}
 
-<h1>{{record.title}}</h1>
-<row>
 
-<div class="col-xs-8 panel panel-default overflow-hidden">
-  <div class="panel-body">
-{{#ifAmGuest record}}
-	{{> include/show.textAreaField label="Informatie voor deelnemers" name="guestInfo" value=record.guestInfo}}
-{{/ifAmGuest}}
-	{{> include/show.textAreaField label="Informatie voor iedereen" name="description" value=record.description}}
-    </div>
-</div>
 
-<div class="col-xs-4">
+<div class="col-xs-3">
 
 {{#ifMayView record}}
 	<div class="row">
@@ -54,8 +44,6 @@
 	{{> include/show.ajaxField value=record.min      name="min"   label="Minimum" postfix="deelnemers"}}
 	{{> include/show.ajaxField value=record.max      name="max"   label="Maximum" postfix="deelnemers"}}
 	{{> include/show.ajaxField value=record.location name="location" label="Plaats" postfix=""}}
-
-{{> include/show.changeButton}}
 
 {{#ifLoggedIn}}
 
@@ -130,26 +118,32 @@
 {{/if}}
 {{/ifAmGuest}}
 
-
- 
-  
-  <h2>Reacties</h2>
- <form role="form" method="POST">
-	<input type="hidden" name="action" value="addComment"/>				
-	<textarea  class="form-control" id="comment" name="comment" rows="5"></textarea>
-	<button type="submit" class="btn btn-default">Plaats reactie</button>
- </form>
-
-  <table class="table table-hover">
-    <tbody>
-{{#each record.comments.reverse}}
-<tr><td>{{&priv user.link}}<br><h6><small>@{{date}}</small></h6></td><td>{{comment}}</td></tr>
-{{/each}}
-    </tbody>
-  </table>
-
-{{/ifLoggedIn}}
+{{#if record.showLeft}}
+	{{> include/show.comments size=3 name="addCommentLeft" arrow="right"}}
+{{/if}}
 
 </div>
+{{/ifLoggedIn}}
+
+
+
+<div class="col-xs-9 panel panel-default overflow-hidden">
+<h1>{{record.title}}</h1>
+<row>
+  <div class="panel-body">
+{{#ifAmGuest record}}
+	{{> include/show.textAreaField label="Informatie voor deelnemers" name="guestInfo" value=record.guestInfo}}
+{{/ifAmGuest}}
+	{{> include/show.textAreaField label="Informatie voor iedereen" name="description" value=record.description}}
+    </div>
+
+{{#if record.showLeft}}
+{{else}}
+	{{> include/show.comments size=3 name="addCommentRight" arrow="left"}}
+{{/if}}
+
+</div>
+
+ 
   
 {{> include/page.footer}}

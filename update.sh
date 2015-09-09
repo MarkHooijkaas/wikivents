@@ -1,0 +1,1 @@
+ant jar ; scp wikivents-0.0.1.jar  wikivents:site ; ssh wikivents sudo service wikivents restart
