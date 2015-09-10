@@ -53,7 +53,7 @@
 </div>
 {{/ifInlineEdit}}
 {{/ifMayView}}
-	{{> include/show.ajaxField value=record.date name="date"  label="Datum" }}
+	{{> include/show.ajaxDateField value=record.date name="date"  label="Datum" }}
 	{{> include/show.ajaxTimeField value=record.time     name="time"  label="Tijd"}}
 	{{> include/show.ajaxField value=record.min      name="min"   label="Minimum" postfix="deelnemers"}}
 	{{> include/show.ajaxField value=record.max      name="max"   label="Maximum" postfix="deelnemers"}}
