@@ -136,7 +136,7 @@
 
 
 <div class="col-xs-9 panel panel-default overflow-hidden">
-<h1>{{record.title}}</h1>
+<h1>{{> include/like.button}} {{record.title}} </h1>
 <row>
   <div class="panel-body">
 {{#ifAmGuest record}}

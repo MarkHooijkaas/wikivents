@@ -153,8 +153,13 @@ public class UserHelpers<T> {
 				return options.fn();
 			return options.inverse();
 		}
-		public CharSequence ifAmGuest(Event e, final Options options) throws IOException { // TODO: to wikivents
+		public CharSequence ifAmGuest(Event e, final Options options) throws IOException { 
 			if (e.hasGuest((User) getUserOrNull(options))) 
+				return options.fn();
+			return options.inverse();
+		}
+		public CharSequence ifLikedByMe(Event e, final Options options) throws IOException { 
+			if (e.isLikedBy((User) getUserOrNull(options))) 
 				return options.fn();
 			return options.inverse();
 		}

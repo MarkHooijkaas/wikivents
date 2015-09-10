@@ -77,6 +77,9 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 		invoke(methodName, call, record);
 	}
 	private void handlePost(C call, String id) {
+		String  id2 = call.request.getParameter("ActionHandlerId");
+		if (id2!=null)
+			id=id2;
 		String action = call.request.getParameter("action");
 		T record=null;
 		if (id!=null && id.trim().length()>0 ) {

@@ -79,7 +79,12 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 			call.sendError(500, "no organizer");
 		event.removeOrganizer(model,user);
 	}
-
+	public void handleAddLike(WikiventsCall call, Event event) {
+		event.addLike(model, call.user);
+	}
+	public void handleRemoveLike(WikiventsCall call, Event event) {
+		event.removeLike(model,call.user);
+	}
 	
 	
 	public class Form extends HttpFormData {

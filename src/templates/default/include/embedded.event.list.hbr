@@ -5,6 +5,7 @@
       <tr>
         <th>Datum</th>
         <th>Tijd</th>
+        <th>Leuk</th>
         <th>activiteit</th>
         <th>plaats</th>
         <th>aantal</th>
@@ -18,6 +19,7 @@
 	  <tr>
         <td>{{date}}</td>
         <td>{{time}}</td>
+        <td>{{> include/like.button record=this}}</td>
         <td><a href="/event/:{{_id}}">{{title}}</a></td>
         <td>{{location}}</td>
         <td>{{guestCount}}/{{max}}</td>

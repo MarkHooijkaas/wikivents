@@ -29,6 +29,7 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 	public final boolean guestsAllowed;
 	public final boolean backupGuestsAllowed;
 	public final ImmutableSequence<User.Ref> organizers;
+	public final ImmutableSequence<User.Ref> likes;
 	public final ImmutableSequence<Guest> guests;
 	public final ImmutableSequence<Comment> comments;
 	
@@ -53,6 +54,7 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 		this.guestsAllowed=schema.guestsAllowed.getBoolean(data,true);
 		this.backupGuestsAllowed=schema.backupGuestsAllowed.getBoolean(data,true);
 		this.organizers=schema.organizers.getSequenceOrEmpty(model, data);
+		this.likes=schema.likes.getSequenceOrEmpty(model, data);
 		this.guests=schema.guests.getSequenceOrEmpty(model, data);
 		this.comments=schema.comments.getSequenceOrEmpty(model, data);
 		
@@ -66,6 +68,7 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 		public final StringField title = new StringField("title"); 
 		public final StringField imageUrl = new StringField("imageUrl"); 
 		public final SequenceField<User.Ref> organizers = new SequenceField<User.Ref>(User.Ref.type,"organizers");
+		public final SequenceField<User.Ref> likes = new SequenceField<User.Ref>(User.Ref.type,"likes");
 		public final IntField min = new IntField("min"); 
 		public final IntField max = new IntField("max"); 
 		public final BooleanField guestsAllowed = new BooleanField("guestsAllowed");
@@ -144,6 +147,27 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 			model.events.removeSequenceItem(this, schema.guests, g);
 	}
 
+	public boolean isLikedBy(User user) {
+		if (likes==null || user==null)
+			return false;
+		for (User.Ref r: likes) {
+			if (r._id.equals(user._id)) 
+				return true;
+		}
+		return false;
+	}
+	public void addLike(WikiventsModel model, User user) {
+		if (isLikedBy(user))
+			return;
+		model.events.addSequenceItem(this, schema.likes, new User.Ref(model, user._id));
+	}
+	public void removeLike(WikiventsModel model, User user) {
+		User.Ref ref = new User.Ref(model, user._id);
+		model.events.removeSequenceItem(this, schema.likes, ref);
+	}
+
+	
+	
 	public boolean hasOrganizer(User user) {
 		if (organizers==null || user==null)
 			return false;
