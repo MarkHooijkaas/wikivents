@@ -1,13 +1,13 @@
 {{#ifLikedByMe record}}
-  	<form role="form" method="POST">
+  	<form role="form" method="POST" style="display:inline;">
   		<input type="hidden" name="action" value="removeLike"/>				
   		<input type="hidden" name="ActionHandlerId" value="{{record._id}}"/>
-		<button type="submit" class=""><span title="Neutraal" style="color:blue;" class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></button>
+		<button type="submit" class="btn-link"><span title="Neutraal" style="color:blue;" class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></button>
  	</form>
 {{else}}
-  	<form role="form" method="POST">
+  	<form role="form" method="POST" style="display:inline;">
   		<input type="hidden" name="action" value="addLike"/>
   		<input type="hidden" name="ActionHandlerId" value="{{record._id}}"/>
-		<button type="submit" class=""><span title="Leuk" style="color:grey;" class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></button>
+		<button type="submit" class="btn-link"><span title="Leuk" style="color:grey;" class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></button>
  	</form>
 {{/ifLikedByMe}}

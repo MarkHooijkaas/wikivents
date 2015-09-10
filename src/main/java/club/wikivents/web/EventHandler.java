@@ -79,9 +79,11 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 			call.sendError(500, "no organizer");
 		event.removeOrganizer(model,user);
 	}
+	@NeedsNoAuthorization
 	public void handleAddLike(WikiventsCall call, Event event) {
 		event.addLike(model, call.user);
 	}
+	@NeedsNoAuthorization
 	public void handleRemoveLike(WikiventsCall call, Event event) {
 		event.removeLike(model,call.user);
 	}
