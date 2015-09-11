@@ -45,6 +45,11 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 		else
 			formdata.handle();
 	}
+	public void handleDelete(WikiventsCall call, Event event) {
+		if (call.user.isAdmin)
+			table.delete(event);
+	}
+
 	public void handleChangeField(WikiventsCall call, Event oldRecord) {
 		String field=call.request.getParameter("field");
 		String value=call.request.getParameter("value");

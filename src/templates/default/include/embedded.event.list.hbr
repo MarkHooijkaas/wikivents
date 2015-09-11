@@ -13,6 +13,9 @@
         <th>aantal</th>
         <th>Organisator</th>
         <th>geplaatst op</th>
+{{#ifIsAdmin}}
+        <th>Del</th>
+{{/ifIsAdmin}}
       </tr>
     </thead>
     <tbody>
@@ -29,6 +32,16 @@
         <td>{{guestCount}}/{{max}}</td>
         <td>{{#ifLoggedIn}} {{&join organizers "<br/>"}} {{else}} *** {{/ifLoggedIn}}</td>
         <td data-order="{{creationDate}}">{{dateFormat creationDate "eee d MMM yyyy"}}</td>
+{{#ifIsAdmin}}
+        <td>
+		  	<form role="form" method="POST" style="display:inline;">
+		  		<input type="hidden" name="action" value="delete"/>
+		  		<input type="hidden" name="ActionHandlerId" value="{{record._id}}"/>
+				<button type="submit" class="btn-link"><span class="glyphicon glyphicon-trash"></span></button>
+		 	</form>
+		</td>
+{{/ifIsAdmin}}
+      
       </tr>
 {{/each}}
     </tbody>
