@@ -3,7 +3,10 @@ package club.wikivents.web;
 import org.kisst.http4j.handlebar.TemplateEngine;
 import org.kisst.http4j.handlebar.TemplateEngine.CompiledTemplate;
 import org.kisst.http4j.handlebar.TemplateTheme;
+import org.kisst.http4j.handlebar.UserHelpers;
 import org.kisst.props4j.Props;
+
+import com.github.jknack.handlebars.Handlebars;
 
 import club.wikivents.model.User;
 
@@ -12,7 +15,18 @@ public class WikiventsTheme extends TemplateTheme {
 	}
 	private static TemplateEngine createEngine(Props props) {
 		TemplateEngine engine=new TemplateEngine(props);
-		engine.registerUserHelpers(User.class, "authenticatedUser");
+		Handlebars handlebar = engine.handlebar;
+		WikiventsHelpers h = new WikiventsHelpers();
+		handlebar.registerHelper("ifMayChange", h.new IfMayChangeHelper()); 
+		handlebar.registerHelper("ifMayView",   h.new IfMayViewHelper());
+		handlebar.registerHelper("ifInlineEdit",   h.new IfInlineEditHelper());
+		handlebar.registerHelpers(h);
+
+		// TODO: the methods in h2 should also be in h, but are not recognized
+		UserHelpers<User> h2 = new UserHelpers<User>(User.class, "authenticatedUser");
+		handlebar.registerHelpers(h2);
+		
+
 		return engine;
 	}
 	

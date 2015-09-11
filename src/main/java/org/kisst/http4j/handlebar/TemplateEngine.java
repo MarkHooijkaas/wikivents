@@ -27,7 +27,7 @@ import com.github.jknack.handlebars.io.TemplateLoader;
 public class TemplateEngine {
 	public final Props props;
 	public final boolean loadDynamic;
-	private final Handlebars handlebar;
+	public final Handlebars handlebar;
 	//private final File dir;
 	private final String postfix;
 	private final String dirnames;
@@ -54,13 +54,6 @@ public class TemplateEngine {
 	@Override public String toString() { return "TemplateEngine("+dirnames+")"; }
 	public <T> void registerHelper(String name, Helper<T> helper) { handlebar.registerHelper(name, helper); }
 	public void registerHelpers(Object helpers) { handlebar.registerHelpers(helpers); }
-	public <T> void registerUserHelpers(Class<T> cls, String path) {
-		UserHelpers<T> h = new UserHelpers<T>(cls, path);
-		handlebar.registerHelper("ifMayChange", h.new IfMayChangeHelper()); 
-		handlebar.registerHelper("ifMayView",   h.new IfMayViewHelper());
-		handlebar.registerHelper("ifInlineEdit",   h.new IfInlineEditHelper());
-		handlebar.registerHelpers(h.new SimpleHelpers());
-	}
 
 	//public boolean exists(String templateName) { return new File(dir,templateName+postfix).exists(); } // TODO: handle classpath
 
