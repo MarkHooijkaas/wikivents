@@ -19,7 +19,7 @@
 		
 {{#each list}} 
 	  <tr>
-        <td>{{dateFormat date "eee d MMM yyyy"}}</td>
+        <td data-order="{{date}}">{{dateFormat date "eee d MMM yyyy"}}</td>
         <td>{{time}}</td>
 {{#ifLoggedIn}}
         <td>{{> include/like.button record=this}}</td>
@@ -28,7 +28,7 @@
         <td>{{location}}</td>
         <td>{{guestCount}}/{{max}}</td>
         <td>{{#ifLoggedIn}} {{&join organizers "<br/>"}} {{else}} *** {{/ifLoggedIn}}</td>
-        <td>{{dateFormat creationDate "eee d MMM yyyy"}}</td>
+        <td data-order="{{creationDate}}">{{dateFormat creationDate "eee d MMM yyyy"}}</td>
       </tr>
 {{/each}}
     </tbody>
