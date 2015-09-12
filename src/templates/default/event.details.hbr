@@ -1,0 +1,49 @@
+{{#ifMayView record}}
+	{{#ifMayChange record}}
+    	{{#ifParam "inline-edit" "true"}}
+			<a class="btn btn-default" href="/event/:{{record._id}}">Klaar met wijzigen</a>
+		{{else}}
+			<a class="btn btn-default" href="/event/:{{record._id}}?inline-edit=true">Wijzig deze activiteit</a>
+		{{/ifParam}}
+		<br><br>
+	{{/ifMayChange}}
+	<div class="row">
+		<div class="col-xs-3"><label>Organisator</label></div>
+		<div class="col-xs-9"><span>
+			{{#each record.organizers}}
+				{{#ifInlineEdit record}}
+					<form role="form" method="POST">
+						{{&priv get0.username}}
+						<input type="hidden" name="action" value="removeOrganizer"/>				
+						<input type="hidden" name="userId" value="{{_id}}"/>				
+						<button type="submit" class="btn btn-default btn-xs" aria-label="Verwijder als organisator">
+					 		<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+						</button>
+					</form>
+				{{else}}
+					{{&priv link}}<br/>
+				{{/ifInlineEdit}}
+			{{/each}}
+		</span></div>
+	</div>
+
+{{#ifInlineEdit record}}
+<div class="row">
+	<form role="form" method="POST">
+		<div class="col-xs-3"><label></label></div>
+		<div class="col-xs-9"><span>
+			<input type="hidden" name="action" value="addOrganizer"/>				
+			<button type="submit" class="btn btn-default">+</button>
+			<input type="text" name="newOrganizer">
+		</span></div>
+	</form>
+</div>
+{{/ifInlineEdit}}
+
+{{/ifMayView}}
+	{{> include/show.ajaxDateField value=record.date name="date"  label="Datum" }}
+	{{> include/show.ajaxTimeField value=record.time     name="time"  label="Tijd"}}
+	{{> include/show.ajaxField value=record.min      name="min"   label="Minimum" postfix="deelnemers"}}
+	{{> include/show.ajaxField value=record.max      name="max"   label="Maximum" postfix="deelnemers"}}
+	{{> include/show.ajaxField value=record.location name="location" label="Plaats" postfix=""}}
+

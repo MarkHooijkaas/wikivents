@@ -2,162 +2,24 @@
 <script src="//cdn.ckeditor.com/4.5.2/standard/ckeditor.js"></script>
 {{> include/page.header.end}}
 
-
-
-<div class="col-xs-3">
-
-{{> include/like.button}} {{record.likes.size}} likes: 
-{{#each record.likes}} 
-	{{&priv avatar}}
-{{/each}}
-<br>
-<br>
-{{#ifMayView record}}
-	{{#ifMayChange record}}
-    	{{#ifParam "inline-edit" "true"}}
-			<a class="btn btn-default" href="/event/:{{record._id}}">Klaar met wijzigen</a>
-		{{else}}
-			<a class="btn btn-default" href="/event/:{{record._id}}?inline-edit=true">Wijzig deze activiteit</a>
-		{{/ifParam}}
-		<br><br>
-	{{/ifMayChange}}
-	<div class="row">
-		<div class="col-xs-3"><label>Organisator</label></div>
-		<div class="col-xs-9"><span>
-			{{#each record.organizers}}
-				{{#ifInlineEdit record}}
-					<form role="form" method="POST">
-						{{&priv get0.username}}
-						<input type="hidden" name="action" value="removeOrganizer"/>				
-						<input type="hidden" name="userId" value="{{_id}}"/>				
-						<button type="submit" class="btn btn-default btn-xs" aria-label="Verwijder als organisator">
-					 		<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-						</button>
-					</form>
-				{{else}}
-					{{&priv link}}<br/>
-				{{/ifInlineEdit}}
-			{{/each}}
-		</span></div>
-	</div>
-{{#ifInlineEdit record}}
-<div class="row">
-	<form role="form" method="POST">
-		<div class="col-xs-3"><label></label></div>
-		<div class="col-xs-9"><span>
-			<input type="hidden" name="action" value="addOrganizer"/>				
-			<button type="submit" class="btn btn-default">+</button>
-			<input type="text" name="newOrganizer">
-		</span></div>
-	</form>
-</div>
-{{/ifInlineEdit}}
-{{/ifMayView}}
-	{{> include/show.ajaxDateField value=record.date name="date"  label="Datum" }}
-	{{> include/show.ajaxTimeField value=record.time     name="time"  label="Tijd"}}
-	{{> include/show.ajaxField value=record.min      name="min"   label="Minimum" postfix="deelnemers"}}
-	{{> include/show.ajaxField value=record.max      name="max"   label="Maximum" postfix="deelnemers"}}
-	{{> include/show.ajaxField value=record.location name="location" label="Plaats" postfix=""}}
-
-{{#ifLoggedIn}}
-
-<h2>Deelnemers
-	{{> include/modal.lockField value=record.guestsAllowed name="guestsAllowed" label="Deelname"}}
-</h2> 
-
-{{#each record.allowedGuests}}
-<row>
-	{{#ifInlineEdit this}}
-			<form role="form" method="POST">
-				{{&priv user.link}}
-				<input type="hidden" name="action" value="removeGuest"/>				
-		  		<input type="hidden" name="userId" value="{{record._id}}"/>				
-				<button type="submit" class="btn btn-default btn-xs" aria-label="Annuleer deelname">
-			 		<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-				</button>
-			</form>
-	{{else}}
-			{{&priv user.link}}<br/>
-	{{/ifInlineEdit}}
-	</row>
-{{/each}}
-
-{{#ifAmGuest record}}
-{{else}}
-{{#if record.allowNewGuest}}
-  	<form role="form" method="POST" >
-  		<input type="hidden" name="action" value="addGuest"/>				
-  		<input type="hidden" name="userId" value="{{record._id}}"/>				
-		<button type="submit" class="btn btn-default">Ik wil ook deelnemen</button>
- 	</form>
-{{/if}}
-{{/ifAmGuest}}
-
-
-<h2>Reservelijst
-	{{> include/modal.lockField value=record.backupGuestsAllowed name="backupGuestsAllowed" label="Reservelijst"}}
-</h2>
-{{#if record.backupGuests}}
-{{#each record.backupGuests}}
-<row>
-	{{#ifInlineEdit this}}
-			<form role="form" method="POST">
-				{{&priv user.link}}
-				<input type="hidden" name="action" value="removeGuest"/>				
-				<button type="submit" class="btn btn-default btn-xs" aria-label="Annuleer deelname">
-			 		<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-				</button>
-			</form>
-	{{else}}
-			{{&priv user.link}}<br/>
-	{{/ifInlineEdit}}
-</row>
-{{/each}}
-{{/if}}
-
-
-{{#ifAmGuest record}}
-{{else}}
-{{#if record.allowNewGuest}}
-{{else}}
-	{{#if record.allowNewBackupGuest}}
-	  	<form role="form" method="POST">
-	  		<input type="hidden" name="action" value="addGuest"/>				
-	  		<input type="hidden" name="userId" value="{{record._id}}"/>				
-			<button type="submit" class="btn btn-default">Ik wil op de reservelijst</button>
-	 	</form>
-	{{else}}
-		Deelname is niet meer mogelijk.
-	{{/if}}
-{{/if}}
-{{/ifAmGuest}}
-
-{{#if record.showLeft}}
-	{{> include/show.comments size=3 name="addCommentLeft" arrow="right"}}
-{{/if}}
-
-</div>
-{{/ifLoggedIn}}
-
-
-
-<div class="col-xs-9 panel panel-default overflow-hidden">
-<h1>{{record.title}} </h1>
-<row>
-  <div class="panel-body">
-{{#ifAmGuest record}}
-	{{> include/show.textAreaField label="Informatie voor deelnemers" name="guestInfo" value=record.guestInfo}}
-{{/ifAmGuest}}
-	{{> include/show.textAreaField label="Informatie voor iedereen" name="description" value=record.description}}
-    </div>
-
-{{#if record.showLeft}}
-{{else}}
-	{{> include/show.comments size=3 name="addCommentRight" arrow="left"}}
-{{/if}}
-
+<div class="col-xs-12 col-md-6 col-lg-8 panel panel-default overflow-hidden">
+	{{>event.description}}
 </div>
 
- 
+
+<div class="col-xs-12 col-md-6 col-lg-4 overflow-hidden">
+	{{> include/like.button}} {{record.likes.size}} likes: 
+	{{#each record.likes}} 
+		{{&priv avatar}}
+	{{/each}}
+
+	<br>
+	<br>
+	
+	{{>event.details}}
+	{{>event.participants}}
+	{{> include/show.comments}}
+	
+</div>
   
 {{> include/page.footer}}

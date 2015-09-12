@@ -1,0 +1,9 @@
+<h1>{{record.title}} </h1>
+<div class="panel-body">
+{{#ifAmGuest record}}
+	{{> include/show.textAreaField label="Informatie voor deelnemers" name="guestInfo" value=record.guestInfo}}
+	{{> include/show.textAreaField label="Informatie voor iedereen" name="description" value=record.description}}
+{{else}}
+	{{> include/show.textAreaField label="" name="description" value=record.description}}
+{{/ifAmGuest}}
+</div>
