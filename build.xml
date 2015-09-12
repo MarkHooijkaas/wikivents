@@ -59,8 +59,7 @@
 				<attribute name="Class-Path" value="${manifest.classpath}"/>
 				<attribute name="Main-Class" value="club.wikivents.Runner"/>
 			</manifest>
-			<zipfileset dir="src/resources" prefix="resources"/>
-			<zipfileset dir="src/templates" prefix="templates"/>
+			<zipfileset dir="src/main/resources"/>
 			<zipfileset dir="." includes="version.properties"/>
 	    </jar>
 	</target>
