@@ -6,11 +6,12 @@
         <th>Datum</th>
         <th>Tijd</th>
 {{#ifLoggedIn}}
-        <th>Leuk</th>
+        <th>Vind ik Leuk</th>
 {{/ifLoggedIn}}
         <th>activiteit</th>
         <th>plaats</th>
-        <th>aantal</th>
+        <th>deelnemers</th>
+        <th>aantal likes</th>
         <th>Organisator</th>
         <th>geplaatst op</th>
 {{#ifIsAdmin}}
@@ -29,7 +30,8 @@
 {{/ifLoggedIn}}
         <td><a href="/event/:{{_id}}">{{title}}</a></td>
         <td>{{location}}</td>
-        <td>{{guestCount}}/{{max}}</td>
+        <td data-order="{{guests.size}}">{{guestCount}}/{{max}}</td>
+        <td data-order="{{likes.size}}">{{likes.size}} likes</td>
         <td>{{#ifLoggedIn}} {{&join organizers "<br/>"}} {{else}} *** {{/ifLoggedIn}}</td>
         <td data-order="{{creationDate}}">{{dateFormat creationDate "eee d MMM yyyy"}}</td>
 {{#ifIsAdmin}}
