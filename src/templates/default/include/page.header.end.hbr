@@ -4,25 +4,16 @@
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="/">Wikivents</a>
+      <a class="navbar-brand" href="/"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Wikivents</a>
     </div>
     <div>
       <ul class="nav navbar-nav">
-		<li><a href="/event/*.future">Activiteiten</a></li>
+		<li><a href="/event/*.future"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Activiteiten</a></li>
+     </ul>
+      <ul class="nav navbar-nav navbar-right">
 {{#ifLoggedIn}}		
-		<li><a href="/user/*">Gebruikers</a></li>
-		<li><a href="/user/{{user.username}}">Ikzelf</a></li>
-		<li>
-			<a href="" data-toggle="modal" data-target="#logoutModal">Uitloggen</a>
-			{{> include/modal.begin id="logout"}}
-				Weet je zeker dat je wilt uitloggen?
- 				<form role="form" method="POST" action="/user/!logout">
- 					<input type="hidden" name="action" value="logout"/>
-   					<button type="submit" class="btn btn-default btn-success">Loguit</button>
- 				</form>
-			{{> include/modal.end}}
-		</li>
-		
+		<li><a href="/user/{{user.username}}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{user.username}}</a></li>
+      	<li><a href="/help"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> Help</a></li>
 {{else}}
         <li><a href="/login">Login</a></li>
         <li><a href="/user/!register">Registreer</a></li>

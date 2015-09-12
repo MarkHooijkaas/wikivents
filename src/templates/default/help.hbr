@@ -1,0 +1,43 @@
+{{> include/page.header.begin}}
+{{> include/page.header.end}}
+
+<h1>Deze website is nog in ontwikkeling</h1>
+Deze site is nog in ontwikkeling, en is momenteel bedoeld om te testen en feedback te krijgen. 
+Het kan zijn dat de site er een paar seconden uit ligt omdat er een nieuwe versie wordt geplaatst.
+Duurt een storing langer, neem dan gerust contact op.
+</p>
+<p>
+Je kan al wel echte activiteiten plannen. Dit kan je duidelijk maken door ECHT in de titel te zetten. 
+De meeste activiteiten zijn nu slechts voor testdoeleinden. 
+Ik zal proberen de echte activiteiten te bewaren als de site publiek gaat.
+Geef AUB deze site nog niet door aan veel mensen, want dat kan averechts werken, aangezien er nog best veel verbeteringen nodig zijn.
+</p>
+
+<p>Een lijst van bekende issues staat op <a href="https://github.com/MarkHooijkaas/wikivents/issues">Github</a>, maar deze lijst moet worden bijgewerkt.
+Ook de toekomstplannen zijn op github te vinden op <a href="https://github.com/MarkHooijkaas/wikivents/wiki/toekomst">toekomst</a>
+</p>
+
+<h1>Kosten van Wikivents</h1>
+Er zijn geen kosten verbonden aan het gebruik van wikivents! 
+De makers van deze site doen dit omdat ze het leuk vinden om te maken, leuk vinden om activiteiten te organiseren en er aan deel te nemen, 
+en om er van te leren. 
+De operationele kosten (hosting, domein, ...) zijn relatief laag, dat het niet nodig is om toegangsgeld te vragen.
+Mochten de kosten in de toekomst dusdanig har groeien, dat het niet meer goed te dragen is, dan zullen we kijken hoe dit op te lossen. 
+De intentie is echter om geen advertenties op te nemen, en ook geen verplichte bijdrade te vragen van de leden. 
+
+<h1>Privacy bij Wikivents</h1>
+
+<h1>Misbruik van Wikivents</h1>
+
+<h1>Samenwerking met andere sites</h1>
+Wikivents is opgericht in de filosofie van het samenwerken zoals dat gebeurt bij open-source software en wiki's. 
+In die filosofie werk je in alle openheid samen en leg je je gebruikers geen beperkingen op.
+Het is dan ook expliciet toegestaan om events die op wikivents staan ook op andere activiteiten sites (zoals b.v. facebook, meetup en couchsurfing) te plaatsen, daar te adverteren, etc.
+Wel dien je hierbij natuurlijk rekening te houden met de wensen van de organisator van het event (meestal is het de organisator zelf die een activiteit op meerdere sites plaatst).
+Ook dien je rekening te houden met de voorschriften en regels van die andere sites.
+
+Omgekeerd mag je op wikivents natuurlijk ook events van andere sites plaatsen. 
+Dit kunnen grootschalige publieke events zijn, zoals bijvoorbeeld het Noorderzon festival in Groningen, 
+maar ook kleine prive events zoals een eetclub, zolang de organisator van dat event dat goed vindt. 
+
+{{> include/page.footer }}
