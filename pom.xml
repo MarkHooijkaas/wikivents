@@ -10,6 +10,10 @@
     <name>Wikivents</name>
     <url>http://wikivents.club</url>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
     <build>
         <plugins>
             <plugin>
@@ -51,6 +55,23 @@
                                     <mainClass>club.wikivents.Runner</mainClass>
                                 </transformer>
                             </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.4.0</version>
+                <executions>
+                    <execution>
+                        <id>default-cli</id>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                        <configuration>
+
+                            <mainClass>club.wikivents.Runner</mainClass>
                         </configuration>
                     </execution>
                 </executions>
