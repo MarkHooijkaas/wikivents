@@ -1,0 +1,20 @@
+<script>
+	$(document).ready(function() {
+		$('#events').dataTable( {
+			"language": { "url": "//cdn.datatables.net/plug-ins/1.10.7/i18n/Dutch.json" },
+			 "lengthMenu": [[-1, 20, 50, 100], ["Alle", 20, 50, 100]],
+			  "dom": '<"top"f>rt<"bottom"><"clear">'			
+		} );
+		$('#pastEvents').dataTable( {
+			"language": { "url": "//cdn.datatables.net/plug-ins/1.10.7/i18n/Dutch.json" },
+			 "lengthMenu": [[-1, 20, 50, 100], ["Alle", 20, 50, 100]],
+			  "dom": '<"top"f>rt<"bottom"><"clear">'			
+		} );
+	} );
+</script>
+	
+<h3>Activiteiten waar {{record.username}} naar toe gaat</h3>
+{{> include/embedded.event.list list=record.futureEvents tableid="events"}}
+
+<h3>Activiteiten waar {{record.username}} naar toe is geweest</h3>
+{{> include/embedded.event.list list=record.pastEvents tableid="pastEvents"}}

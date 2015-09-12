@@ -1,0 +1,4 @@
+<h1>Profiel van {{record.username}}
+{{> include/modal.textAreaField label="Profielinformatie" name="description" value=record.description}}
+</h1>
+{{&record.description}}
