@@ -73,6 +73,14 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 		img="<img class=\"link-avatar\" src=\""+img+"\"> ";
 		return "<a href=\"/user/"+username+"\">"+img+username+"</a>"; 
 	} 
+	public String usernameLink() { return "<a href=\"/user/"+username+"\">"+username+"</a>";	} 
+	public String avatarLink() {
+		String img=avatarUrl;
+		if (img==null || img.trim().length()==0)
+			img="/favicon.ico";
+		img="<img class=\"link-avatar\" src=\""+img+"\"> ";
+		return "<a href=\"/user/"+username+"\">"+img+"</a>"; 
+	} 
 
 	
 	
@@ -90,16 +98,6 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 			if (u==null)
 				return "unknown";
 			return u.link();
-		} 
-		public String avatar() { 
-			User u=get0();
-			if (u==null)
-				return "unknown";
-			String img=u.avatarUrl;
-			if (img==null || img.trim().length()==0)
-				img="/favicon.ico";
-			img = "<img class=\"link-avatar\" src=\""+img+"\"> ";
-			return "<a href=\"/user/"+u.username+"\">"+img+"</a>"; 
 		} 
 		public String name() {
 			 // TODO: this will be inefficient if database not in memory

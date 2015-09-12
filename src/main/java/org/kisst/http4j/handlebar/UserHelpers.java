@@ -1,8 +1,12 @@
 package org.kisst.http4j.handlebar;
 import java.io.IOException;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import org.kisst.http4j.HttpCall;
 
@@ -125,10 +129,15 @@ public class UserHelpers<T> {
 	}
 
 	private Locale localeNl=new Locale("nl");
+	private ZoneId zoneId=TimeZone.getDefault().toZoneId();
 	public CharSequence dateFormat(Object obj, String format) {
 		if (obj==null)
 			return "";
-		if (obj instanceof TemporalAccessor) {
+		if (obj instanceof Instant) {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format, localeNl);
+			return formatter.format(LocalDateTime.ofInstant((Instant) obj,zoneId));
+		}
+		else if (obj instanceof TemporalAccessor) {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format, localeNl);
 			return formatter.format((TemporalAccessor) obj);
 		}
