@@ -16,7 +16,6 @@
       <tr>
         <th>Naam</th>
         <th>Woonplaats</th>
-        <th>Email</th>
       </tr>
     </thead>
     <tbody>
@@ -24,7 +23,6 @@
       <tr>
         <td>{{&link}}</td>
         <td>{{city}}</td>
-        <td>{{maySee this email}}</td>
       </tr>
 {{/each}}
     </tbody>
