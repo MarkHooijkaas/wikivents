@@ -14,8 +14,8 @@
 {{#ifLoggedIn}}		
 		<li><a href="/user/{{user.username}}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{user.username}}</a></li>
 {{else}}
-        <li><a href="/login">Login</a></li>
-        <li><a href="/user/!register">Registreer</a></li>
+        <li><a href="/login"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span> Login</a></li>
+        <li><a href="/user/!register"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Registreer</a></li>
 {{/ifLoggedIn}}
       	<li><a href="/help"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> Help</a></li>
       </ul>
