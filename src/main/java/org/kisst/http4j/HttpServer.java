@@ -1,48 +1,90 @@
 package org.kisst.http4j;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.eclipse.jetty.server.Connector;
-import org.eclipse.jetty.server.Request;
-import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.http.HttpVersion;
+import org.eclipse.jetty.server.*;
 import org.eclipse.jetty.server.handler.AbstractHandler;
+import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.kisst.http4j.HttpCall.UnauthorizedException;
 import org.kisst.props4j.Props;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 public class HttpServer extends AbstractHandler {
 	private final static Logger logger=LoggerFactory.getLogger(HttpServer.class);
 
 	private Server server=null;
-	protected final Props props;
 	private final HttpCallHandler handler;
-	private final String[] restrictedToHost;
+
+	public final HttpServerConfiguration config;
 
 	public HttpServer(Props props, HttpCallHandler handler) {
-		this.props=props;
+		this.config=new HttpServerConfiguration(props);
 		this.handler=handler;
-		String hostList=props.getString("restrictedToHost", null);
-		if (hostList!=null)
-			this.restrictedToHost=hostList.split(",");
-		else
-			this.restrictedToHost=null;
 	}
-	
+
 	public void startListening() {
-		int port=props.getInteger("port",8080);
-		logger.info("admin site running on port {}",port);
-		server = new Server(port);
-        server.setHandler(this);
-        
+		server=createServer();
         try {
 			server.start();
 		} catch (Exception e) { throw new RuntimeException(e);}
+	}
+
+	private Server createServer() {
+		Server server = new Server();
+
+		// http
+		ServerConnector httpServerConnector = new ServerConnector(server);
+		httpServerConnector.setHost(this.config.host);
+		httpServerConnector.setPort(config.port);
+		httpServerConnector.setIdleTimeout(this.config.idleTimeout);
+		server.addConnector(httpServerConnector);
+		logger.info("HTTP enabled on port: " + config.port);
+
+		// https
+		if (this.config.sslEnabled) {
+			HttpConfiguration httpConfiguration = new HttpConfiguration();
+			HttpConnectionFactory httpConnectionFactory = new HttpConnectionFactory(httpConfiguration);
+			httpConfiguration.setSecurePort(this.config.sslPort);
+			SslContextFactory sslContextFactory = createSslContextFactory();
+			SslConnectionFactory sslConnectionFactory = new SslConnectionFactory(sslContextFactory, HttpVersion.HTTP_1_1.asString());
+
+			ServerConnector sslServerConnector = new ServerConnector(server, sslConnectionFactory, httpConnectionFactory);
+			sslServerConnector.setHost(this.config.host);
+			sslServerConnector.setPort(this.config.sslPort);
+			sslServerConnector.setIdleTimeout(this.config.idleTimeout);
+			server.addConnector(sslServerConnector);
+			logger.info("HTTPS enabled on port: " + config.sslPort);
+		} else {
+			logger.info("HTTPS disabled");
+		}
+
+		server.setHandler(this);
+		return server;
+	}
+
+	/**
+	 * These settings are advised at
+	 * <a href="http://www.eclipse.org/jetty/documentation/current/configuring-ssl.html">
+	 *     http://www.eclipse.org/jetty/documentation/current/configuring-ssl.html</a>
+	 */
+	private SslContextFactory createSslContextFactory() {
+
+		SslContextFactory factory = new SslContextFactory();
+		factory.setKeyStorePath(config.sslKeyStorePath);
+		factory.setKeyStorePassword(config.sslKeyStorePassword);
+		factory.setKeyManagerPassword(config.sslKeyManagerPassword);
+		factory.setTrustStorePath(config.sslTrustStorePath);
+		factory.setTrustStorePassword(config.sslTrustStorePassword);
+		factory.setIncludeCipherSuites("TLS_DHE_RSA.*", "TLS_ECDHE.*");
+		factory.setExcludeCipherSuites(".*NULL.*", ".*RC4.*", ".*MD5.*", ".*DES.*", ".*DSS.*");
+		factory.setRenegotiationAllowed(false);
+		return factory;
 	}
 
 
@@ -70,10 +112,10 @@ public class HttpServer extends AbstractHandler {
 
 	public void handle(String path, Request baseRequest , HttpServletRequest request, HttpServletResponse response) {
 		try {
-			if (restrictedToHost!=null) {
+			if (config.restrictedToHost!=null) {
 				String host=request.getServerName();
 				boolean allowed = false;
-				for (String h: restrictedToHost) 
+				for (String h: config.restrictedToHost)
 					allowed=allowed || h.equals(host);
 				if (! allowed) {
 					response.sendError(403, "Server "+host+" is closed");
