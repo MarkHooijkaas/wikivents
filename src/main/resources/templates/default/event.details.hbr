@@ -7,6 +7,9 @@
 		{{/ifParam}}
 	{{/ifMayChange}}
 	<h2>Details</h2>
+{{#ifInlineEdit record}}
+	{{> include/show.ajaxDateField value=record.title name="title"  label="Titel" }}
+{{/ifInlineEdit}}
 	<div class="row">
 		<div class="col-xs-3"><label>Organisator</label></div>
 		<div class="col-xs-9"><span>
@@ -26,6 +29,7 @@
 			{{/each}}
 		</span></div>
 	</div>
+
 
 {{#ifInlineEdit record}}
 <div class="row">
