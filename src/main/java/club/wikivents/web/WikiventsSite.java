@@ -42,7 +42,6 @@ public class WikiventsSite implements HttpCallHandler {
 		public final HttpCallHandler favicon =new ResourceHandler("resources/favicon.ico", "src/main/resources/resources/favicon.ico");
 	}
 	public WikiventsSite(Props props) {
-		this.model=WikiventsModels.createModel(this, props);
 		//for (Event e:model.newestEvents)
 		//	System.out.println(e._id+"\t"+e.creationDate());
 		
@@ -56,6 +55,7 @@ public class WikiventsSite implements HttpCallHandler {
 				themes.put(name, new WikiventsTheme(themeProps.getProps(name)));
 		}
 		this.defaultTheme=themes.get("default");
+		this.model=WikiventsModels.createModel(this, props);
 		this.loginPage=new LoginPage(this);
 		this.pages=new Pages();
 		this.handler = new HttpCallDispatcher(pages);

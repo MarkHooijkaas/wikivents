@@ -37,7 +37,7 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 		super(model.users, data);
 		this.model=model;
 		this.username=schema.username.getString(data);
-		this.description=schema.description.getString(data,null);
+		this.description=schema.description.getString(data,model.getUserProfileTemplate());
 		this.email=schema.email.getString(data);
 		this.city=schema.city.getString(data);
 		this.avatarUrl=schema.avatarUrl.getString(data,null);

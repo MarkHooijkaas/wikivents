@@ -5,17 +5,23 @@ import java.time.LocalDate;
 import org.kisst.crud4j.CrudModel;
 import org.kisst.crud4j.CrudTable;
 import org.kisst.crud4j.StorageOption;
+import org.kisst.http4j.handlebar.TemplateEngine.CompiledTemplate;
+import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
 
 import club.wikivents.web.WikiventsSite;
 
 
 public class WikiventsModel extends CrudModel {
 	public final WikiventsSite site;
+	private final String userProfileTemplate;
 
 	public WikiventsModel(WikiventsSite site, StorageOption ... storage){ 
 		super(storage);
 		this.site=site;
-		initModel(); 
+		initModel();
+		//TemplateEngine engine = new TemplateEngine(props);
+		CompiledTemplate templ = site.defaultTheme.userProfileTemplate;
+		this.userProfileTemplate=templ.toString(new TemplateData(this));
 	}
 
 	public final CrudTable<User>  users  = new CrudTable<>(this, User.schema);
@@ -34,4 +40,5 @@ public class WikiventsModel extends CrudModel {
 	
 	public Iterable<Event> futureEvents() { return allEvents.tailList(LocalDate.now().toString());}
 	public Iterable<Event> pastEvents() { return allEvents.headList(LocalDate.now().plusDays(1).toString());}
+	public String getUserProfileTemplate() { return this.userProfileTemplate; }
 }
