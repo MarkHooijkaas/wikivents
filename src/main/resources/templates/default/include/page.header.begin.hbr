@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/resources/datepicker/css/datepicker.css">
     <link rel="stylesheet" href="/resources/datepicker/less/datepicker.less">
     <link rel="stylesheet" href="/css/wikivents.css">
+    <link rel="stylesheet" href="/css/colors.css">
 	<link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.css">
 	
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
