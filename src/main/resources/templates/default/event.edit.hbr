@@ -1,8 +1,8 @@
 {{> include/page.header.begin}}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.8.1/jquery.timepicker.min.css">
+<link rel="stylesheet" href="/lib/jt.timepicker/jquery.timepicker.css">
 
-<script src="//cdn.ckeditor.com/4.5.2/standard/ckeditor.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.8.1/jquery.timepicker.min.js"></script>
+<script src="/lib/ckeditor/ckeditor.js"></script>
+<script src="/lib/jt.timepicker/jquery.timepicker.min.js"></script>
 {{> include/page.header.end}}
 
 <script > 

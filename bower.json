@@ -9,12 +9,17 @@
     "**/.*",
     "node_modules",
     "bower_components",
-    "src/main/resources/lib",
+    "src/main/resources/resources/lib",
     "test",
     "tests"
   ],
   "dependencies": {
-    "angular": "angularjs#~1.4.5",
-    "bootstrap": "~3.3.5"
+    "bootstrap": "~3.3.5",
+    "bootstrap-datepicker": "~1.4.1",
+    "ckeditor": "~4.5.3",
+    "datatables": "~1.10.9",
+    "datatables-i18n": "~1.0.4",
+    "fotorama": "~4.6.4",
+    "jt.timepicker": "~1.8.1"
   }
 }
