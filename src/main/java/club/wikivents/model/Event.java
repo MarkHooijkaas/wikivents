@@ -128,11 +128,11 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 				return true;
 		return false;
 	}
-	public Guest findGuest(User user) {
-		if (guests==null || user==null)
+	public Guest findGuest(String id) {
+		if (guests==null || id==null)
 			return null;
 		for (Guest g : guests)
-			if (g.user._id.equals(user._id)) // already member
+			if (g.user._id.equals(id)) // already member
 				return g;
 		return null;
 	}
@@ -141,8 +141,8 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 			return;
 		model.events.addSequenceItem(this, schema.guests, new Guest(model, user));
 	}
-	public void removeGuest(WikiventsModel model, User user) {
-		Guest g=findGuest(user);
+	public void removeGuest(WikiventsModel model, String id) {
+		Guest g=findGuest(id);
 		if (g!=null)
 			model.events.removeSequenceItem(this, schema.guests, g);
 	}

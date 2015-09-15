@@ -68,7 +68,9 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 	}
 	@NeedsNoAuthorization
 	public void handleRemoveGuest(WikiventsCall call, Event event) {
-		event.removeGuest(model,call.user);
+		String userId=call.request.getParameter("userId");
+		if (call.user._id.equals(userId) || call.user.isAdmin)
+			event.removeGuest(model,userId);
 	}
 	public void handleAddOrganizer(WikiventsCall call, Event event) {
 		String username=call.request.getParameter("newOrganizer");
