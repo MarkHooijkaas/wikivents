@@ -45,6 +45,22 @@ public class UserHandler extends WikiventsActionHandler<User> {
 		RegisterForm formdata = new RegisterForm(call);
 		formdata.showForm();
 	}
+	@NeedsNoAuthentication
+	public void viewUsernameAvaliable(WikiventsCall call) {
+		String username = call.request.getParameter("username");
+		if (call.model.usernameIndex.get(username)==null)
+			call.output("true");
+		else
+			call.output("false");
+	}
+	@NeedsNoAuthentication
+	public void viewEmailAvaliable(WikiventsCall call) {
+		String email = call.request.getParameter("email");
+		if (call.model.emailIndex.get(email)==null)
+			call.output("true");
+		else
+			call.output("false");
+	}
 	
 	@NeedsNoAuthentication
 	public void handleRegister(WikiventsCall call) {
@@ -93,9 +109,12 @@ public class UserHandler extends WikiventsActionHandler<User> {
 		public final InputField avatarUrl= new InputField(User.schema.avatarUrl);
 	}
 	public static class RegisterForm extends HttpFormData {
-		public RegisterForm(WikiventsCall call) { super(call, call.getTheme().userRegister); }
-		public final InputField username = new InputField(User.schema.username);
-		public final InputField email    = new InputField(User.schema.email, this::validateEmail);
+		public RegisterForm(WikiventsCall call) { super(call, call.getTheme().userRegister);
+			this.username = new InputField(User.schema.username, new UniqueKeyIndexValidator<User>(call.model.usernameIndex) );
+			this.email    = new InputField(User.schema.email, this::validateEmail, new UniqueKeyIndexValidator<User>(call.model.emailIndex) );
+		}
+		public final InputField username;
+		public final InputField email;
 		public final InputField city     = new InputField(User.schema.city);
 		public final InputField password = new InputField("password");
 		public final InputField passwordCheck = new InputField("passwordCheck");

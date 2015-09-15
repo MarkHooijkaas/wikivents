@@ -3,6 +3,8 @@ package org.kisst.http4j.form;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kisst.crud4j.CrudModel.UniqueIndex;
+import org.kisst.crud4j.CrudObject;
 import org.kisst.item4j.HasName;
 import org.kisst.item4j.Item;
 import org.kisst.item4j.struct.Struct;
@@ -75,6 +77,23 @@ public class FormData  implements Struct{
 		return null;
 	}
 
+	// TODO: this dependency on CrudTable should not be in this package
+	public class UniqueKeyIndexValidator<T extends CrudObject> implements Validator {
+		private final UniqueIndex<T> index;
+
+		public UniqueKeyIndexValidator(UniqueIndex<T> index) { this.index=index; }
+		@Override public String validate(InputField field) {
+			if (field.value==null)
+				return null;
+			String stringValue = Item.asString(field.value);
+			if (index.get(stringValue)!=null)
+				return stringValue+" is already in use";
+			return null;
+		}
+		
+	}
+
+	
 	public String validateEmail(InputField field) {
 		if (field.value==null)
 			return null;

@@ -12,11 +12,15 @@
 
 		$('#registerUser').validate({ 
 			rules: {
-				username: { username: true, minlength: 2 },
-				email: "email",
+				username: { username: true, minlength: 2, remote: '/user/!usernameAvaliable' },
+				email: { email: true, remote: '/user/!emailAvaliable' },
 				password: { minlength: 5 },
 				passwordCheck: { equalTo: "#password" }
 			},
+			messages: {
+				username: { remote: "Gebruikersnaam is al in gebruik" },
+				email: { remote: "Email adres is al in gebruik" }
+			}
 		});
 	 }); 
 </script>
