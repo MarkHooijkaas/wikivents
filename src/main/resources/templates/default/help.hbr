@@ -1,33 +1,60 @@
 {{> include/page.header.begin}}
 {{> include/page.header.end}}
 
-<h1>Deze website is nog in ontwikkeling</h1>
-Deze site is nog in ontwikkeling, en is momenteel bedoeld om te testen en feedback te krijgen. 
-Het kan zijn dat de site er een paar seconden uit ligt omdat er een nieuwe versie wordt geplaatst.
-Duurt een storing langer, neem dan gerust contact op.
+<h1>Wikivents in beweging</h1>
+Deze site is nog nieuw en volop in beweging.
+Er zijn vele idee&euml;n ter verbetering (zie ook de <a href="https://github.com/MarkHooijkaas/wikivents/wiki/toekomst">toekomstplannen</a>), 
+en ook fouten worden zo snel mogelijk verbeterd.
+Het kan daarom zijn dat de site er een paar seconden uit ligt omdat er een nieuwe versie wordt geplaatst.
+Het kan ook zijn dat de site er plotseling anders uit ziet, of net wat anders werkt, maar hopelijk is dit allemaal ten goede van de site 
 </p>
-<p>
-Je kan al wel echte activiteiten plannen. Dit kan je duidelijk maken door ECHT in de titel te zetten. 
-De meeste activiteiten zijn nu slechts voor testdoeleinden. 
-Ik zal proberen de echte activiteiten te bewaren als de site publiek gaat.
-Geef AUB deze site nog niet door aan veel mensen, want dat kan averechts werken, aangezien er nog best veel verbeteringen nodig zijn.
-</p>
+<p> 
+Er zullen mogelijk ook nog af en toe fouten optreden. 
 
-<p>Een lijst van bekende issues staat op <a href="https://github.com/MarkHooijkaas/wikivents/issues">Github</a>, maar deze lijst moet worden bijgewerkt.
-Ook de toekomstplannen zijn op github te vinden op <a href="https://github.com/MarkHooijkaas/wikivents/wiki/toekomst">toekomst</a>
+Een lijst van bekende issues staat op <a href="https://github.com/MarkHooijkaas/wikivents/issues">Github</a>, maar deze lijst moet worden bijgewerkt.
+Mocht je toch problemen ervaren in het gebruik van Wikivents, neem dan contact op door een mailtje te sturen naar <a href="info@wikivents.nl">info@wikivents.nl</a>
 </p>
 
 <h1>Kosten van Wikivents</h1>
 Er zijn geen kosten verbonden aan het gebruik van wikivents! 
-De makers van deze site doen dit omdat ze het leuk vinden om te maken, leuk vinden om activiteiten te organiseren en er aan deel te nemen, 
-en om er van te leren. 
+De makers van deze site doen dit omdat ze 
+<ul>
+	<li>het leuk vinden om activiteiten te organiseren</li>
+	<li>het leuk vinden om aan activiteiten van anderen deel te nemen</li> 
+	<li>het leuk vinden om zo'n site te maken</li>
+	<li>veel leren van het maken van zo'n site</li>
+</ul> 
 De operationele kosten (hosting, domein, ...) zijn relatief laag, dat het niet nodig is om toegangsgeld te vragen.
-Mochten de kosten in de toekomst dusdanig har groeien, dat het niet meer goed te dragen is, dan zullen we kijken hoe dit op te lossen. 
-De intentie is echter om geen advertenties op te nemen, en ook geen verplichte bijdrade te vragen van de leden. 
+Mochten de kosten in de toekomst dusdanig hard groeien, dat het niet meer goed te dragen is, dan zullen we kijken hoe dit op te lossen, bijvoorbeeld door vrijwillige donaties, subsidies of sponsoring. 
+De intentie is echter om de toegang tot Wikivents altijd gratis te laten en ook geen hinderlijke advertenties te tonen. 
 
 <h1>Privacy bij Wikivents</h1>
+Er wordt veel waarde gehecht aan de privacy van de gebruikers. 
+Je moet op Wikivents leuke en ook grappige rare activiteiten kunnen organiseren en deelnemen
+waarbij iedereen zich vrij moet voelen om plezier te hebben zonder zich af te vragen of dit in een zoekmachine plotseling opduikt.
+In de site wordt daar naar gestreefd door de volgende maatregelen:
+<ul>
+	<li>Iemand die niet ingelogd is kan wel de events zien, maar niet wie dit organiseert, of wie er aan deelneemt, of welke reacties er zijn achter gelaten.
+		Zelfs de profielnamen zijn niet zichtbaar voor derden. 
+		Een zoekmachine kan dus geen gebruikersnaam koppelen aan events (tenzij namen expliciet genoemd worden in de omschrijving van een activiteit).
+	</li>
+	<li>De verplichte informatie bij het registreren is minimaal. 
+		Behalve een profielnaam, wachtwoord, emailadres en woonplaats zijn er momenteel geen verplichte velden.
+		Het emailadres wordt nergens getoond, ook niet aan ingelogde gebruikers, maar wordt wel getoond als afzender als men een email naar een andere gebruiker stuurt. 
+	</li>
+</ul>
 
-<h1>Misbruik van Wikivents</h1>
+<h1>Gedragsregels van Wikivents</h1>
+Op dit moment zijn er nog geen huisregels opgesteld. 
+Uitgangspunt is dat iedereen voor zijn plezier aan Wikivents mee doet, en vooral elkander respecteert en in hun waarde laat.
+Helaas is dat wel een subjectief uitgangspunt, en de beheerders van de site willen niet dat hun persoonlijke voorkeuren leidend zijn.
+De plannen om dit los te kunnen laten zijn ruwweg als volgt:
+<ul>
+	<li>Organisatoren van een event kunnen zelf modereren binnen hun event, met name het verwijderen van ongewenste reacties (is nog niet mogelijk).</li>
+	<li>De beheerders van de site kunnen eventueel ingrijpen (zoals het verwijderen van kwaadwillenden, spam, illegale praktijken, etc), 
+		maar zullen dit alleen doen naar aanleiding van klachten van gebruikers. De precieze procedure hiervoor moet nog opgesteld worden, en hopelijk hebben we dat voorlopig niet nodig.
+	</li>
+</ul>
 
 <h1>Samenwerking met andere sites</h1>
 Wikivents is opgericht in de filosofie van het samenwerken zoals dat gebeurt bij open-source software en wiki's. 

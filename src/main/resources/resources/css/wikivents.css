@@ -6,3 +6,14 @@ a img.link-avatar {
 span.glyphicon-pencil { font-size: 0.8em; color:grey }
 span.glyphicon-wrench { font-size: 0.8em; color:grey }
 .commentTime { font-size: 0.7em; color:grey }
+
+.form-group div{
+    position:relative;
+    margin-right:15px;
+}
+.form-group-required div:after{
+    position:absolute;
+    content:'*';
+    right:-10px;
+    top:0;
+}

@@ -1,6 +1,6 @@
-  <div class="form-group">
+  <div class="form-group {{#if required}}form-group-required{{/if}}">
     <label for="{{name}}">{{label}}</label>
-    <textarea type="{{type}}" class="form-control" id="{{name}}" name="{{name}}" rows="{{rows}}"> {{value}}</textarea>
+    <textarea type="{{type}}" class="form-control" id="{{name}}" name="{{name}}" rows="{{rows}}" {{#if required}}required{{/if}}> {{value}}</textarea>
                 <script>
                 CKEDITOR.replace( '{{name}}' );
             </script>
