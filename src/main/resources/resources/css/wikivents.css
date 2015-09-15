@@ -14,7 +14,6 @@ span.glyphicon-wrench { font-size: 0.8em; color:grey }
 .form-group-required div:after{
     position:absolute;
     content:'*';
-    color:red;
     right:-10px;
     top:0;
 }
