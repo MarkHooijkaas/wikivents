@@ -46,7 +46,8 @@
 
 {{/ifMayView}}
 	{{> include/show.ajaxDateField value=record.date name="date"  label="Datum" }}
-	{{> include/show.ajaxTimeField value=record.time     name="time"  label="Tijd"}}
+	{{> include/show.ajaxTimeField value=record.time name="time"  label="Tijd"}}
+	{{> include/show.ajaxTimeField value=record.endTime name="endTime"  label="Eindtijd"}}
 	{{> include/show.ajaxField value=record.max      name="max"   label="Maximum" postfix="deelnemers"}}
 	{{> include/show.ajaxField value=record.location name="location" label="Plaats" postfix=""}}
 

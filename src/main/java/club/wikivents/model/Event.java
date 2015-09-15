@@ -24,6 +24,7 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 	public final String imageUrl;
 	public final LocalDate date;
 	public final LocalTime time;
+	public final LocalTime endTime;
 	public final int max;
 	public final boolean guestsAllowed;
 	public final boolean backupGuestsAllowed;
@@ -48,6 +49,7 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 		this.location=schema.location.getString(data);
 		this.date=schema.date.getLocalDate(data);
 		this.time=schema.time.getLocalTime(data);
+		this.endTime=schema.endTime.getLocalTime(data);
 		this.max=schema.max.getInt(data);
 		this.guestsAllowed=schema.guestsAllowed.getBoolean(data,true);
 		this.backupGuestsAllowed=schema.backupGuestsAllowed.getBoolean(data,true);
@@ -72,11 +74,12 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 		public final BooleanField backupGuestsAllowed = new BooleanField("backupGuestsAllowed");
 		public final LocalDateField date = new LocalDateField("date"); 
 		public final LocalTimeField time = new LocalTimeField("time"); 
+		public final LocalTimeField endTime = new LocalTimeField("endTime"); 
 		public final StringField location = new StringField("location"); 
 		public final StringField description = new StringField("description"); 
 		public final StringField guestInfo = new StringField("guestInfo"); 
 		public final SequenceField<Guest> guests= new SequenceField<Guest>(Guest.schema,"guests"); 
-		public final SequenceField<Comment> comments= new SequenceField<Comment>(Comment.schema,"comments"); 
+		public final SequenceField<Comment> comments= new SequenceField<Comment>(Comment.schema,"comments");
 	}
 
 	public LocalDate creationDate() { return LocalDate.ofEpochDay(new ObjectId(_id).getTimestamp()/(24*3600)); }
