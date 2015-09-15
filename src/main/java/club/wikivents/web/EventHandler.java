@@ -103,7 +103,6 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 		public final InputField imageUrl = new InputField(Event.schema.imageUrl);
 		public final InputField date= new InputField(Event.schema.date);
 		public final InputField time = new InputField(Event.schema.time);
-		public final InputField min = new InputField(Event.schema.min);
 		public final InputField max = new InputField(Event.schema.max);
 		public final InputField guestsAllowed = new InputField(Event.schema.guestsAllowed);
 		public final InputField backupGuestsAllowed= new InputField(Event.schema.backupGuestsAllowed);

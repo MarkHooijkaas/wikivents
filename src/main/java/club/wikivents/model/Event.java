@@ -24,7 +24,6 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 	public final String imageUrl;
 	public final LocalDate date;
 	public final LocalTime time;
-	public final int min;
 	public final int max;
 	public final boolean guestsAllowed;
 	public final boolean backupGuestsAllowed;
@@ -49,7 +48,6 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 		this.location=schema.location.getString(data);
 		this.date=schema.date.getLocalDate(data);
 		this.time=schema.time.getLocalTime(data);
-		this.min=schema.min.getInt(data);
 		this.max=schema.max.getInt(data);
 		this.guestsAllowed=schema.guestsAllowed.getBoolean(data,true);
 		this.backupGuestsAllowed=schema.backupGuestsAllowed.getBoolean(data,true);
@@ -69,7 +67,6 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 		public final StringField imageUrl = new StringField("imageUrl"); 
 		public final SequenceField<User.Ref> organizers = new SequenceField<User.Ref>(User.Ref.type,"organizers");
 		public final SequenceField<User.Ref> likes = new SequenceField<User.Ref>(User.Ref.type,"likes");
-		public final IntField min = new IntField("min"); 
 		public final IntField max = new IntField("max"); 
 		public final BooleanField guestsAllowed = new BooleanField("guestsAllowed");
 		public final BooleanField backupGuestsAllowed = new BooleanField("backupGuestsAllowed");
