@@ -12,7 +12,9 @@
         <th>plaats</th>
         <th>deelnemers</th>
         <th>aantal likes</th>
+{{#ifLoggedIn}}
         <th>Organisator</th>
+{{/ifLoggedIn}}
         <th>geplaatst op</th>
 {{#ifIsAdmin}}
         <th>Del</th>
@@ -32,7 +34,9 @@
         <td>{{location}}</td>
         <td data-order="{{guests.size}}">{{guestCount}}/{{max}}</td>
         <td data-order="{{likes.size}}">{{likes.size}} likes</td>
-        <td>{{#ifLoggedIn}} {{&join organizers "<br/>"}} {{else}} *** {{/ifLoggedIn}}</td>
+{{#ifLoggedIn}}
+        <td>{{&join organizers "<br/>"}}</td>
+{{/ifLoggedIn}}
         <td data-order="{{creationDate}}">{{dateFormat creationDate "eee d MMM yyyy"}}</td>
 {{#ifIsAdmin}}
         <td>
