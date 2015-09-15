@@ -7,7 +7,7 @@
 <script>
 	$(document).ready(function() {
 		$('#events').dataTable( {
-			"language": { "url": "//cdn.datatables.net/plug-ins/1.10.7/i18n/Dutch.json" },
+			"language": { "url": "/lib/datatables-i18n/i18n/nl.json" },
 			 "lengthMenu": [[-1, 20, 50, 100], ["Alle", 20, 50, 100]],
 			  "order": [[ 4, "asc" ]],
 			  "dom": '<"top"f>rt<"bottom"><"clear">'

@@ -9,6 +9,7 @@ Install dependencies to ```src/main/bower```:
     bower install datatables-i18n --save
     bower install ckeditor --save
     bower install jt.timepicker --save
+    bower install jquery-validation --save
     bower install fotorama --save
 
 And commit the changes in Git:
