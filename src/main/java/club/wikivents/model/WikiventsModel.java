@@ -13,7 +13,8 @@ import club.wikivents.web.WikiventsSite;
 
 public class WikiventsModel extends CrudModel {
 	public final WikiventsSite site;
-	private final String userProfileTemplate;
+	public final String userProfileTemplate;
+	public final String eventPrivateDetailsTemplate;
 
 	public WikiventsModel(WikiventsSite site, StorageOption ... storage){ 
 		super(storage);
@@ -22,6 +23,8 @@ public class WikiventsModel extends CrudModel {
 		//TemplateEngine engine = new TemplateEngine(props);
 		CompiledTemplate templ = site.defaultTheme.userProfileTemplate;
 		this.userProfileTemplate=templ.toString(new TemplateData(this));
+		templ = site.defaultTheme.eventPrivateDetailsTemplate;
+		this.eventPrivateDetailsTemplate=templ.toString(new TemplateData(this));
 	}
 
 	public final CrudTable<User>  users  = new CrudTable<>(this, User.schema);
