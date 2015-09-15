@@ -1,0 +1,20 @@
+{
+  "name": "wikivents",
+  "version": "0.0.0",
+  "moduleType": [
+    "node"
+  ],
+  "homepage": "http://wikivents.nl",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "src/main/resources/lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "angularjs#~1.4.5",
+    "bootstrap": "~3.3.5"
+  }
+}
