@@ -1,0 +1,7 @@
+wikivents.email.host=localhost
+http.sslEnabled=true
+http.sslKeyStorePath=config/dev.keystore
+http.sslKeyStorePassword=wikivents
+http.sslKeyManagerPassword=wikivents
+http.sslTrustStorePath=config/dev.keystore
+http.sslTrustStorePassword=wikivents
