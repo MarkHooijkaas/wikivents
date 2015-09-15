@@ -1,13 +1,13 @@
 package org.kisst.http4j;
 
+import org.kisst.util.ReflectionUtil;
+import org.kisst.util.StringUtil;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.Method;
-
-import org.kisst.util.ReflectionUtil;
-import org.kisst.util.StringUtil;
 
 /*
  * will call the following methods:
@@ -101,7 +101,7 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 		invoke(methodName, call, record);	
 		//System.out.println(call.response.getStatus());
 		if (!call.isAjax() && ! call.response.isCommitted()) 
-			call.redirect(call.request.getRequestURI());
+			call.redirect(call.request.getRequestURL().toString());
 	}
 
 	private void invoke(String methodName, C call, T record) {

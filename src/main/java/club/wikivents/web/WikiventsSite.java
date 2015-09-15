@@ -1,7 +1,7 @@
 package club.wikivents.web;
 
-import java.util.HashMap;
-
+import club.wikivents.WikiventsModels;
+import club.wikivents.model.WikiventsModel;
 import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.HttpCallDispatcher;
 import org.kisst.http4j.HttpCallDispatcher.Path;
@@ -10,8 +10,7 @@ import org.kisst.http4j.ResourceHandler;
 import org.kisst.props4j.Props;
 import org.kisst.util.MailSender;
 
-import club.wikivents.WikiventsModels;
-import club.wikivents.model.WikiventsModel;
+import java.util.HashMap;
 
 public class WikiventsSite implements HttpCallHandler {
 	public final WikiventsModel model;
@@ -33,6 +32,7 @@ public class WikiventsSite implements HttpCallHandler {
 		public final HttpCallHandler login  = loginPage::handleLogin;
 		public final HttpCallHandler logout = new LogoutPage(WikiventsSite.this);
 		public final HttpCallHandler sendMessage = new SendMessagePage(WikiventsSite.this);
+		public final HttpCallHandler lib=new ResourceHandler("lib/", "src/main/resources/lib");
 		public final HttpCallHandler resources=new ResourceHandler("resources/", "src/main/resources/resources");
 		public final HttpCallHandler css=new ResourceHandler("resources/css/", "src/main/resources/resources/css");
 		public final HttpCallHandler scripts=new ResourceHandler("resources/scripts/", "src/main/resources/resources/scripts");

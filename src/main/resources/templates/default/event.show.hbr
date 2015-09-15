@@ -1,5 +1,5 @@
 {{> include/page.header.begin}}
-<script src="//cdn.ckeditor.com/4.5.2/standard/ckeditor.js"></script>
+<script src="/lib/ckeditor/ckeditor.js"></script>
 {{> include/page.header.end}}
 
 <div class="col-xs-12 col-md-8 col-lg-8 panel panel-default overflow-hidden">
