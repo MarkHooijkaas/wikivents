@@ -10,7 +10,7 @@
 				{{&priv user.link}}
 				<input type="hidden" name="action" value="removeGuest"/>				
 		  		<input type="hidden" name="userId" value="{{user._id}}"/>				
-				<button type="submit" class="btn btn-default btn-xs" aria-label="Annuleer deelname">
+				<button type="submit" class="btn-link" aria-label="Annuleer deelname">
 			 		<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
 				</button>
 			</form>
@@ -41,7 +41,7 @@
 				{{&priv user.link}}
 				<input type="hidden" name="action" value="removeGuest"/>				
 		  		<input type="hidden" name="userId" value="{{user._id}}"/>				
-				<button type="submit" class="btn btn-default btn-xs" aria-label="Annuleer deelname">
+				<button type="submit" class="btn-link" aria-label="Annuleer deelname">
 			 		<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
 				</button>
 			</form>
