@@ -21,10 +21,20 @@ public abstract class AbstractKeyedIndex<T extends CrudObject> extends Index<T> 
 	@Override public boolean allow(CrudTable<T>.Change change) {
 		if (change.oldRecord==null) // create
 			return ! keyExists(calcUniqueKey(change.newRecord));
-		else if (change.newRecord==null) // delete
+		else if (change.newRecord==null) {// delete
+			String oldkey = calcUniqueKey(change.oldRecord);
+			if (! keyExists(oldkey)) {
+				logger.error("Trying to delete non-existing  record {}",change.oldRecord);
+				return false;
+			}
 			return true;
+		}
 		else { // update
 			String oldkey = calcUniqueKey(change.oldRecord);
+			if (! keyExists(oldkey)) {
+				logger.error("Trying to update non-existing  record {} with {}",change.oldRecord, change.newRecord);
+				return false;
+			}
 			String newkey = calcUniqueKey(change.newRecord);
 			if (oldkey.equals(newkey))
 				return true;
