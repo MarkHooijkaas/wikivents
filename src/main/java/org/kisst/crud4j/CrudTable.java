@@ -178,7 +178,11 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 		public final T oldRecord;
 		public final T newRecord;
 		public Change(T oldRecord, T newRecord) { this.oldRecord=oldRecord; this.newRecord=newRecord; }
-		@Override public String toString() { return "Change("+oldRecord+","+newRecord+")"; } 
+		@Override public String toString() {
+			String oldId=oldRecord==null? "null" : oldRecord._id;
+			String newId=newRecord==null? "null" : newRecord._id;
+			return "Change("+oldId+","+newId+")"; 
+		} 
 	}
 	public interface ChangeHandler<TT extends CrudObject> {
 		public boolean allow(CrudTable<TT>.Change change); 
