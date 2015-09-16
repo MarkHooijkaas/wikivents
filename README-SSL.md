@@ -44,3 +44,10 @@ Add these configuration options to config/local.properties: _(example values are
     -v                              verbose output
     -protected                      password through protected mechanism
 
+
+## Certificate request at xolphin
+
+See <https://www.xolphin.nl/CertificaatAanvragen/Comodo/PositiveSSL/Wildcard/1?>
+
+    root@wikivents:/etc/ssl/certs# openssl req -nodes -newkey rsa:2048 -keyout wikivents_nl.key -out wikivents.csr
+    
