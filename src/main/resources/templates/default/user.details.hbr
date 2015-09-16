@@ -22,6 +22,9 @@
 {{/if}}
 {{#ifInlineEdit record}}
 	{{> include/modal.textField value=record.avatarUrl  name="avatarUrl"  label="Profielfoto URL"}}<br>
+	{{#ifIsAdmin}}
+		{{record.username}}  {{> include/modal.textField value=record.username  name="username"  label="Gebruikersnaam"}}<br>
+	{{/ifIsAdmin}}  
 	{{record.city}}  {{> include/modal.textField value=record.city  name="city"  label="Woonplaats"}}<br>  
 	{{record.email}} {{> include/modal.textField value=record.email name="email" label="E-mail"}}<br>  
 	Wachtwoord {{> dialog/changePassword}}
