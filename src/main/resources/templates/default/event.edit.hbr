@@ -35,7 +35,7 @@
 	{{> include/form.date     form.date     label="Datum" required="true"}}
 	{{> include/form.text     form.time     label="Tijd" type="time" required="true"}}
 	{{> include/form.text     form.endTime  label="Eindtijd" type="time" required="true"}}
-	{{> include/form.text     form.max      label="Maximum aantal deelnemers" required="true"}}
+	{{> include/form.text     form.max      label="Maximum aantal deelnemers" type="" required="true"}}
 	{{> include/form.text     form.location label="Plaats" required="true"}}
 	{{> include/form.textarea form.description label="Omschrijving" rows=10 required=""}}
 
