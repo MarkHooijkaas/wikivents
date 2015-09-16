@@ -1,6 +1,7 @@
 {{> include/page.header.begin}}
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js"></script>
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/localization/messages_nl.js"></script>
+<script src='https://www.google.com/recaptcha/api.js'></script>
 {{> include/page.header.end}}
 
 <script > 
@@ -33,6 +34,12 @@
 	{{> include/form.text form.password label="Kies een wachtwoord" type="password" required="true"}}
   	{{> include/form.text form.passwordCheck label="Herhaal het wachtwoord" type="password" required="true"}}
   
+	<div class="form-group col-xs-12">
+		<label for="captcha"  class="col-xs-2">Anti-SPAM check: </label>
+		<div class="col-xs-4">
+			{{& call.model.site.captchaHtml}}
+		</div>
+	</div>
   {{> include/form.submitButton submitTitle="Registreer" cancelUrl="/"}}
 </form>
 

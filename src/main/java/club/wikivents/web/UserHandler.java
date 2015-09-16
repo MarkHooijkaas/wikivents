@@ -1,12 +1,17 @@
 package club.wikivents.web;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.kisst.http4j.form.HttpFormData;
 import org.kisst.item4j.struct.Struct;
 
 import club.wikivents.model.User;
+import net.tanesha.recaptcha.ReCaptchaImpl;
+import net.tanesha.recaptcha.ReCaptchaResponse;
 
 public class UserHandler extends WikiventsActionHandler<User> {
-	public UserHandler(WikiventsSite site) { super(site, site.model.users);	}
+	
+	public UserHandler(WikiventsSite site) { super(site, site.model.users); }
 
 	@Override protected User findRecord(String id) {
 		if (id.startsWith(":"))
@@ -62,9 +67,37 @@ public class UserHandler extends WikiventsActionHandler<User> {
 			call.output("false");
 	}
 	
+	private boolean checkCaptcha(HttpServletRequest request) {
+		String remoteAddr = request.getRemoteAddr();
+		ReCaptchaImpl reCaptcha = new ReCaptchaImpl();
+		reCaptcha.setPrivateKey(site.recaptchaPrivateKey);
+
+		String challenge = request.getParameter("recaptcha_challenge_field");
+		String uresponse = request.getParameter("recaptcha_response_field");
+		System.out.println("KEY:"+site.recaptchaPrivateKey);
+		System.out.println("challenge:"+challenge);
+		System.out.println("RESPONSE:"+uresponse);
+		System.out.println("ADDR:"+remoteAddr);
+
+		ReCaptchaResponse reCaptchaResponse = reCaptcha.checkAnswer(remoteAddr, challenge, uresponse);
+
+		if (reCaptchaResponse.isValid()) {
+			System.out.println("Answer was entered correctly!");
+			return true;
+		} 
+		else {
+			System.out.println("Answer is wrong");
+			return false;
+		}
+
+	}
+	
 	@NeedsNoAuthentication
 	public void handleRegister(WikiventsCall call) {
 		RegisterForm formdata = new RegisterForm(call);
+	
+		if (! checkCaptcha(call.request))
+			return;
 
 		if (formdata.isValid()) {
 			String pw = formdata.password.value;
@@ -81,6 +114,17 @@ public class UserHandler extends WikiventsActionHandler<User> {
 		}
 		else
 			formdata.handle();
+
+		/*
+		 *
+		 * 
+		 * When your users submit the form where you integrated reCAPTCHA, you'll get as part of the payload a string with the name "g-recaptcha-response". In order to check whether Google has verified that user, send a POST request with these parameters:
+URL: https://www.google.com/recaptcha/api/siteverify
+
+secret (required)	6LeC9gwTAAAAALBihIUuY2D5jdox0_Il-nIzGVbM
+response (required)	The value of 'g-recaptcha-response'.
+remoteip	The end user's ip address.
+		 */
 	}
 	
 

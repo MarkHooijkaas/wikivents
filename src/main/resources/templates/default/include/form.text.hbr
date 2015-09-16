@@ -1,9 +1,7 @@
- <row>
  <div class="form-group {{#if required}}form-group-required{{/if}} col-xs-12">
-    <label for="{{name}}"  class="col-xs-2">{{label}}: <i>{{message}}</i></label>
-    <div class="col-xs-4">
-    	<input type="{{#if type}}{{type}}{{else}}text{{/if}}" class="form-control" id="{{name}}" name="{{name}}" value="{{value}}" {{#if required}}required{{/if}}> 
-    </div>
-  </div>
-  </row>
+	<label for="{{name}}"  class="col-xs-2">{{label}}: <i>{{message}}</i></label>
+	<div class="col-xs-4">
+		<input type="{{#if type}}{{type}}{{else}}text{{/if}}" class="form-control" id="{{name}}" name="{{name}}" value="{{value}}" {{#if required}}required{{/if}}> 
+	</div>
+</div>
   
