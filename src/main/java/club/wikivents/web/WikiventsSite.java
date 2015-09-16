@@ -2,6 +2,9 @@ package club.wikivents.web;
 
 import club.wikivents.WikiventsModels;
 import club.wikivents.model.WikiventsModel;
+import net.tanesha.recaptcha.ReCaptcha;
+import net.tanesha.recaptcha.ReCaptchaFactory;
+
 import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.HttpCallDispatcher;
 import org.kisst.http4j.HttpCallDispatcher.Path;
@@ -18,8 +21,11 @@ public class WikiventsSite implements HttpCallHandler {
 	public final HttpCallHandler handler;
 	public final Pages pages;
 	public final LoginPage loginPage;
-	public final  WikiventsTheme defaultTheme;  
-	public MailSender emailer;
+	public final WikiventsTheme defaultTheme;  
+	public final Props props;
+	public final MailSender emailer;
+	public final String recaptchaPrivateKey;
+	public final String recaptchaPublicKey;
 
 	private final HashMap<String, WikiventsTheme> themes= new HashMap<String, WikiventsTheme>();
 	
@@ -38,6 +44,7 @@ public class WikiventsSite implements HttpCallHandler {
 		public final HttpCallHandler favicon =new ResourceHandler("resources/favicon.ico", "src/main/resources/resources/favicon.ico");
 	}
 	public WikiventsSite(Props props) {
+		this.props=props;
 		//for (Event e:model.newestEvents)
 		//	System.out.println(e._id+"\t"+e.creationDate());
 		
@@ -55,6 +62,9 @@ public class WikiventsSite implements HttpCallHandler {
 		this.loginPage=new LoginPage(this);
 		this.pages=new Pages();
 		this.handler = new HttpCallDispatcher(pages);
+		this.recaptchaPublicKey=props.getString("recaptchaPublicKey");
+		this.recaptchaPrivateKey=props.getString("recaptchaPrivateKey");
+
 	}
 	@Override public void handle(HttpCall httpcall, String subPath) {
 		WikiventsCall call = WikiventsCall.of(httpcall, model);
@@ -63,5 +73,10 @@ public class WikiventsSite implements HttpCallHandler {
 
 	public void close() { model.close(); }
 	public WikiventsTheme getTheme(String themeName) { return themes.get(themeName); }
+
+	public String captchaHtml() {
+		ReCaptcha c = ReCaptchaFactory.newReCaptcha(recaptchaPublicKey, recaptchaPrivateKey, false);
+		return c.createRecaptchaHtml(null, null);
+	}
 
 }
