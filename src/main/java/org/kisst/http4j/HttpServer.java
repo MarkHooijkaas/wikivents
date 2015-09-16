@@ -49,8 +49,9 @@ public class HttpServer extends AbstractHandler {
 		// https
 		if (this.config.sslEnabled) {
 			HttpConfiguration httpConfiguration = new HttpConfiguration();
-			HttpConnectionFactory httpConnectionFactory = new HttpConnectionFactory(httpConfiguration);
 			httpConfiguration.setSecurePort(this.config.sslPort);
+			httpConfiguration.addCustomizer(new SecureRequestCustomizer());
+			HttpConnectionFactory httpConnectionFactory = new HttpConnectionFactory(httpConfiguration);
 			SslContextFactory sslContextFactory = createSslContextFactory();
 			SslConnectionFactory sslConnectionFactory = new SslConnectionFactory(sslContextFactory, HttpVersion.HTTP_1_1.asString());
 
