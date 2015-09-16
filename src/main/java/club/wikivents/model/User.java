@@ -149,12 +149,14 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 		catch (UnsupportedEncodingException e) { throw new RuntimeException(e); }
 	}
 
-	public void sendMailFrom(User from, String subject, String message) {
+	public void sendMailFrom(User from, String subject, String message, boolean copyToSender) {
 		try {
 			final MimeMessage msg = model.site.emailer.createMessage();
-			msg.setFrom(new InternetAddress(from.email,"Wikivents gebruiker "+from.username));
+			msg.setFrom(new InternetAddress("info@wikivents.nl","Wikivents gebruiker "+from.username));
 			msg.setReplyTo(new InternetAddress[] {new InternetAddress(from.email,from.username)});
 			msg.setRecipients(Message.RecipientType.TO, new InternetAddress[] {new InternetAddress(email, username)});
+			if (copyToSender)
+				msg.setRecipients(Message.RecipientType.CC, new InternetAddress[] {new InternetAddress(from.email, from.username)});
 			msg.setSubject(subject);
 			msg.setText(message, "utf-8");
 			model.site.emailer.send(msg);

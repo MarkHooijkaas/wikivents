@@ -3,7 +3,18 @@
 {{#ifLoggedIn}}
 
 <form role="form" method="POST">
-	{{> include/form.fixtext  value=call.user.email  label="Van"}}
+	<div class="form-group col-xs-12">
+		<label for="copyToSender"  class="col-xs-2">Van: </label>
+		<div class="col-xs-4">
+			<span>{{call.user.email}}
+				<!--
+				&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox"  id="copyToSender" name="copyToSender" value="true" checked="true">
+				afschrift aan mijzelf
+				-->
+			</span> 
+		</div>
+	</div>
+	
 	{{> include/form.fixtext  form.to      label="Aan"}}
 	{{> include/form.text     form.subject label="Onderwerp"}}
 	{{> include/form.textarea form.message label="Bericht" rows=10}}
@@ -14,7 +25,7 @@
 
 N.B. Deze gebruiker krijgt een e-mail met daarin jouw email adres zichtbaar voor replies.
 Mocht je dat niet willen dan is het mogelijk om bij de beheerder van wikivents een eigen email adres aan te vragen, 
-wat er ongeveer uit zal zien als {{call.user.username}}@wikivents.nl.
+wat er (ongeveer) uit zal zien als {{call.user.username}}@wikivents.nl.
 Dit kan momenteel nog niet automatisch en moet met de hand aangemaakt worden.
 
 Als je dit wilt. Stuur dan een emailtje naar <a href="mailto:admin@wikivents.nl">admin@wikivents.nl</a> 

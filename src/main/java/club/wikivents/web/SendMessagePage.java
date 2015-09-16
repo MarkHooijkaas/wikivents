@@ -14,8 +14,9 @@ public class SendMessagePage extends WikiventsPage {
 		public Form(WikiventsCall call) { super(call, call.getTheme().sendMessage); }
 
 		public final InputField to = new InputField("to",this::notEmpty);
-		public final InputField subject = new InputField("subject",this::notEmpty);
+		public final InputField subject = new InputField("subject");
 		public final InputField message= new InputField("message",this::notEmpty);
+		public final InputField copyToSender= new InputField("copyToSender",this::notEmpty);;
 	}
 
 	@Override public void handle(HttpCall httpcall, String subPath) {
@@ -31,7 +32,9 @@ public class SendMessagePage extends WikiventsPage {
 				else {
 					String subject=formdata.subject.value;
 					String message=formdata.message.value;
-					toUser.sendMailFrom(call.user, subject, message);
+					System.out.println(formdata.copyToSender.value);
+					boolean copyToSender=true;//"true".equals(formdata.copyToSender.value);
+					toUser.sendMailFrom(call.user, subject, message, copyToSender);
 					call.redirect("/user/"+toUser.username);
 				}
 			}
