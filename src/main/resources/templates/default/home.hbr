@@ -1,6 +1,4 @@
 {{> include/page.header.begin}}
-	<link  href="/lib/fotorama/fotorama.css" rel="stylesheet"> <!-- 3 KB -->
-	<script src="/lib/fotorama/fotorama.js"></script> <!-- 16 KB -->
 	<script src="/lib/datatables/media/js/jquery.dataTables.min.js"></script>
 {{> include/page.header.end}}
 
@@ -15,24 +13,36 @@
 	} );
 </script>
 
+<img src="/resources/wikivents-logo.gif"/>
+
 <h1>Welkom op Wikivents: de <a href="https://nl.wikipedia.org/wiki/Wiki" target="_blank"	>Wiki</a> van <a href="/event/*.future">Events</a></h1>
 {{#ifLoggedIn}}
 	<p>Wikivents is een site met activiteiten (events) voor <a href="/user/*">de leden</a> maar ook georganiseerd door <a href="/user/*">de leden</a> zelf.</p>
 {{else}}
 	<p>Wikivents is een site met activiteiten (events) voor de leden maar ook georganiseerd door de leden zelf.</p>
 {{/ifLoggedIn}}
-<div class="fotorama" data-nav="thumbs" data-navposition="top">
-{{#each model.futureEvents}}
-{{#if imageUrl}}
-	<a href="/event/:{{_id}}">
-      <img src="{{imageUrl}}" data-caption="{{title}}" width="460" height="345"/>
-    </a>
-{{/if}}
-{{/each}}
-</div>
+Een activiteit (ook wel event of wikivent genoemd) kan van alles zijn. 
+Je kan bijvoorbeeld denken aan:
+<ul>
+	<li>Gezellig borrelen in een cafe.</li> 
+	<li>Met een groepje mensen ergens eten.</li>
+	<li>Een spelletjesavond bij iemand thuis of in een cafe.</li> 
+	<li>Een potje beachvolleybal of een andere sport.</li> 
+	<li>Een feestje al dan niet met een thema, verkleed, of met dansen</li> 
+	<li>Met een groep mensen naar een festival of een concert</li>
+	<li>Samen naar de film</li> 
+	<li>etc, etc.</li>
+</ul>
+<p>	 
+Iedereen kan een wikivent organiseren!
+Je drukt bij het activiteiten scherm op de knop om een nieuwe activiteiten te maken, vult een titel, omschrijving en een aantal details in, en de wikivent is aangemaakt.
+Vervolgens kan iedereen die dat leuk vindt zich opgeven door op de "Aanmelden" knop te drukken, zo lang er nog plaats is.
+Is er geen plaats meer, dan is er standaard een reservelijst, waar je opkomt.
+</p>
 
 
-<h2>Nieuwste activiteiten</h2>
+<h2>Komende activiteiten</h2>
+Hieronder zie je een lijst met wikivents die de komende tijd gepland staan.
 
 {{> include/embedded.event.list list=model.futureEvents tableid="events"}}
 
