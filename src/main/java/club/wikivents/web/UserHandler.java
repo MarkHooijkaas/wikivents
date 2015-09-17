@@ -3,7 +3,10 @@ package club.wikivents.web;
 import javax.servlet.http.HttpServletRequest;
 
 import org.kisst.http4j.form.HttpFormData;
+import org.kisst.item4j.struct.HashStruct;
+import org.kisst.item4j.struct.MultiStruct;
 import org.kisst.item4j.struct.Struct;
+import org.kisst.util.PasswordEncryption;
 
 import club.wikivents.model.User;
 import net.tanesha.recaptcha.ReCaptchaImpl;
@@ -78,6 +81,7 @@ public class UserHandler extends WikiventsActionHandler<User> {
 			call.output("false");
 	}
 	
+	@SuppressWarnings("unused")
 	private boolean checkCaptcha(HttpServletRequest request) {
 		String remoteAddr = request.getRemoteAddr();
 		ReCaptchaImpl reCaptcha = new ReCaptchaImpl();
@@ -85,11 +89,6 @@ public class UserHandler extends WikiventsActionHandler<User> {
 
 		String challenge = request.getParameter("recaptcha_challenge_field");
 		String uresponse = request.getParameter("recaptcha_response_field");
-		System.out.println("KEY:"+site.recaptchaPrivateKey);
-		System.out.println("challenge:"+challenge);
-		System.out.println("RESPONSE:"+uresponse);
-		System.out.println("ADDR:"+remoteAddr);
-
 		ReCaptchaResponse reCaptchaResponse = reCaptcha.checkAnswer(remoteAddr, challenge, uresponse);
 
 		if (reCaptchaResponse.isValid()) {
@@ -106,51 +105,52 @@ public class UserHandler extends WikiventsActionHandler<User> {
 	@NeedsNoAuthentication
 	public void handleRegister(WikiventsCall call) {
 		RegisterForm formdata = new RegisterForm(call);
-	
-		if (! checkCaptcha(call.request))
-			return;
-
-		if (formdata.isValid()) {
-			String pw = formdata.password.value;
-			String pw2 = formdata.passwordCheck.value;
-			if (pw==null || ! pw.equals(pw2))
-				formdata.showForm();
-			else {
-				User u = new User(call.model,formdata.record);
-				model.users.create(u);
-				u.changePassword(pw);
-				call.setCookie(u._id);
-				call.redirect("/user/"+u.username);
-			}
+		boolean valid = formdata.isValid();
+		//valid = valid && checkCaptcha(call.request);
+		
+		if (valid) {
+			String salt = PasswordEncryption.createSaltString();
+			String pw = PasswordEncryption.encryptPassword(formdata.password.value, salt);
+			User u = new User(call.model,new MultiStruct(
+				formdata.record, new HashStruct()
+				.add(User.schema.passwordSalt,  salt)
+				.add(User.schema.encryptedPassword, pw)
+			));
+			model.users.create(u);
+			call.setCookie(u._id);
+			call.redirect("/user/"+u.username);
 		}
 		else
 			formdata.handle();
 	}
 
 	@NeedsNoAuthentication
-	public void handleSetPassword(WikiventsCall call) {
-		RegisterForm formdata = new RegisterForm(call);
-	
-		if (! checkCaptcha(call.request))
-			return;
-
+	public void handleSetPassword(WikiventsCall call, User user) {
+		SetPasswordForm formdata = new SetPasswordForm(call);
 		if (formdata.isValid()) {
 			String pw = formdata.password.value;
 			String pw2 = formdata.passwordCheck.value;
 			if (pw==null || ! pw.equals(pw2))
 				formdata.showForm();
 			else {
-				User u = new User(call.model,formdata.record);
-				model.users.create(u);
-				u.changePassword(pw);
-				call.setCookie(u._id);
-				call.redirect("/user/"+u.username);
+				user.changePassword(pw);
+				call.setCookie(user._id);
+				call.redirect("/user/"+user.username);
 			}
 		}
 		else
 			formdata.handle();
 	}
 
+	public void handleRemoveEmailValidationNeeded(WikiventsCall call, User u) {
+		if (call.user.isAdmin)
+			table.updateField(u, User.schema.emailValidated, true);
+	}
+
+	public void handleRemoveMessage(WikiventsCall call, User u) {
+		//String message=call.request.getParameter("message");
+		table.updateField(u, User.schema.message, "");
+	}
 
 	public void handleChangeField(WikiventsCall call, User oldRecord) {
 		String field=call.request.getParameter("field");
@@ -175,7 +175,7 @@ public class UserHandler extends WikiventsActionHandler<User> {
 		public final InputField city     = new InputField(User.schema.city);
 		public final InputField avatarUrl= new InputField(User.schema.avatarUrl);
 	}
-	public static class RegisterForm extends HttpFormData {
+	public class RegisterForm extends HttpFormData {
 		public RegisterForm(WikiventsCall call) { super(call, call.getTheme().userRegister);
 			this.username = new InputField(User.schema.username, new UniqueKeyIndexValidator<User>(call.model.usernameIndex) );
 			this.email    = new InputField(User.schema.email, this::validateEmail, new UniqueKeyIndexValidator<User>(call.model.emailIndex) );
@@ -185,6 +185,14 @@ public class UserHandler extends WikiventsActionHandler<User> {
 		public final InputField city     = new InputField(User.schema.city);
 		public final InputField password = new InputField("password");
 		public final InputField passwordCheck = new InputField("passwordCheck");
+		@Override public boolean isValid() { 
+			return 
+				super.isValid() && 
+				password.value!=null &&
+				password.value.equals(passwordCheck.value);
+				//&& checkCaptcha(call.request); 
+		}
+
 	}
 	public static class SetPasswordForm extends HttpFormData {
 		public SetPasswordForm(WikiventsCall call) { super(call, call.getTheme().userSetPassword); }

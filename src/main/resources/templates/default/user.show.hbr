@@ -2,7 +2,34 @@
 	<script src="/lib/datatables/media/js/jquery.dataTables.min.js"></script>
 	<script src="/lib/ckeditor/ckeditor.js"></script>
 {{> include/page.header.end}}
-
+{{#ifMayChange record}}
+	{{#if record.emailValidated}}
+	{{else}} 
+		<div class="col-xs-12 overflow-hidden alert-danger">
+			{{#ifIsAdmin}}
+				{{> include/modal.delete title="Verwijder Validatie Noodzaak" action="removeEmailValidationNeeded" field="emailValidated" value="false" label="Weet je zeker dat het email adres valide is?"}} 
+			{{/ifIsAdmin}}
+			Je emailadres is nog niet gecontroleerd. Als het goed is heb je een validatie mail ontvangen met daarin een link om je emailadres te valideren.
+			Zo niet, neem dan contact op met de beheerders <a href="mailto:info@wikivents.nl">info@wikivents.nl</a>
+			Tot die tijd kan je niet deelnemen aan activiteiten, omdat je mogelijk niet bereikbaar bent voor andere leden.
+		</div>	
+	{{/if}} 
+	{{#if record.message}}
+		<div class="col-xs-12 overflow-hidden alert-info">
+			{{#ifIsAdmin}}
+				{{> include/modal.textField value=record.message  name="message" title="Plaats Beheerbericht"  label="Beheerbericht"}}
+			{{/ifIsAdmin}}
+			{{> include/modal.delete title="Verwijder Bericht" action="removeMessage" field="message" value="removeMessage" label="Dit bericht van de beheerders verwijderen?"}}
+			{{record.message}} 
+		</div>
+	{{else}}	
+		{{#ifIsAdmin}}
+			<div class="col-xs-12 overflow-hidden alert-info">
+				{{> include/modal.textField value=record.message  name="message" title="Plaats Beheerbericht"  label="Beheerbericht"}}
+			</div>		 
+		{{/ifIsAdmin}}
+	{{/if}}	
+{{/ifMayChange}}
 
 <div class="col-xs-12 col-md-3 col-lg-2 overflow-hidden">
 	{{> user.details}}

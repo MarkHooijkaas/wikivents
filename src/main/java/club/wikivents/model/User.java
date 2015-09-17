@@ -25,6 +25,7 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 	public final WikiventsModel model;
 	public final String username;
 	public final String description;
+	public final String message;
 	public final String email;
 	public final String city;
 	public final String avatarUrl;
@@ -32,12 +33,14 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 	public final String passwordSalt;
 	public final String encryptedPassword;
 	public final boolean isAdmin;
+	public final boolean emailValidated;
 
 	public User(WikiventsModel model, Struct data) {
 		super(model.users, data);
 		this.model=model;
 		this.username=schema.username.getString(data);
 		this.description=schema.description.getString(data,model.getUserProfileTemplate());
+		this.message=schema.message.getString(data,null);
 		this.email=schema.email.getString(data);
 		this.city=schema.city.getString(data);
 		this.avatarUrl=schema.avatarUrl.getString(data,null);
@@ -45,6 +48,7 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 		this.passwordSalt=schema.passwordSalt.getString(data);
 		this.encryptedPassword=schema.encryptedPassword.getString(data);
 		this.isAdmin=schema.isAdmin.getBoolean(data,false);
+		this.emailValidated=schema.emailValidated.getBoolean(data,false);
 	}
 	public ArrayList<Event> futureEvents() {
 		ArrayList<Event> result=new ArrayList<Event>();
@@ -114,13 +118,15 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 		public final IdField _id = new IdField();
 		public final StringField username = new StringField("username"); 
 		public final StringField description= new StringField("description"); 
+		public final StringField message = new StringField("message"); 
 		public final StringField email    = new StringField("email"); 
 		public final StringField city = new StringField("city"); 
 		public final StringField avatarUrl= new StringField("avatarUrl"); 
 		public final StringField passwordResetToken = new StringField("passwordResetToken"); 
 		public final StringField passwordSalt = new StringField("passwordSalt"); 
 		public final StringField encryptedPassword = new StringField("encryptedPassword"); 
-		public final BooleanField isAdmin = new BooleanField("isAdmin"); 
+		public final BooleanField isAdmin = new BooleanField("isAdmin");
+		public final BooleanField emailValidated = new BooleanField("emailValidated");
 	}
 	
 	public boolean mayBeViewedBy(User user) {

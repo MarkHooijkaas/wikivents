@@ -14,12 +14,16 @@
 
 {{#ifAmGuest record}}
 {{else}}
-{{#if record.allowNewGuest}}
-  	<form role="form" method="POST" >
-  		<input type="hidden" name="action" value="addGuest"/>				
-  		<input type="hidden" name="userId" value="{{record._id}}"/>				
-		<button type="submit" class="btn btn-default">Ik wil ook deelnemen</button>
- 	</form>
+{{#if user.emailValidated}}
+	{{#if record.allowNewGuest}}
+	  	<form role="form" method="POST" >
+	  		<input type="hidden" name="action" value="addGuest"/>				
+	  		<input type="hidden" name="userId" value="{{record._id}}"/>				
+			<button type="submit" class="btn btn-default">Ik wil ook deelnemen</button>
+	 	</form>
+	{{/if}}
+{{else}}
+	<span class="alert-danger">Deelname is pas mogelijk na email validatie</span>
 {{/if}}
 {{/ifAmGuest}}
 
@@ -40,17 +44,21 @@
 
 {{#ifAmGuest record}}
 {{else}}
-{{#if record.allowNewGuest}}
-{{else}}
-	{{#if record.allowNewBackupGuest}}
-	  	<form role="form" method="POST">
-	  		<input type="hidden" name="action" value="addGuest"/>				
-	  		<input type="hidden" name="userId" value="{{record._id}}"/>				
-			<button type="submit" class="btn btn-default">Ik wil op de reservelijst</button>
-	 	</form>
+{{#if user.emailValidated}}
+	{{#if record.allowNewGuest}}
 	{{else}}
-		Deelname is niet meer mogelijk.
+		{{#if record.allowNewBackupGuest}}
+		  	<form role="form" method="POST">
+		  		<input type="hidden" name="action" value="addGuest"/>				
+		  		<input type="hidden" name="userId" value="{{record._id}}"/>				
+				<button type="submit" class="btn btn-default">Ik wil op de reservelijst</button>
+		 	</form>
+		{{else}}
+			Deelname is niet meer mogelijk.
+		{{/if}}
 	{{/if}}
+{{else}}
+	<span class="alert-danger">Deelname is pas mogelijk na email validatie</span>
 {{/if}}
 {{/ifAmGuest}}
 
