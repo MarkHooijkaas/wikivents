@@ -84,7 +84,7 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 			img="/favicon.ico";
 		
 		img="<img class=\"link-avatar\" src=\""+img+"\"> ";
-		return "<a href=\"/user/"+username+"\">"+img+username+"</a>"; 
+		return "<a href=\"/user/"+username+"\" data-toggle=\"tooltip\" title=\""+username+"\">"+img+username+"</a>"; 
 	} 
 	public String usernameLink() { return "<a href=\"/user/"+username+"\">"+username+"</a>";	} 
 	public String avatarLink() {
@@ -92,7 +92,7 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 		if (img==null || img.trim().length()==0)
 			img="/favicon.ico";
 		img="<img class=\"link-avatar\" src=\""+img+"\"> ";
-		return "<a href=\"/user/"+username+"\">"+img+"</a>"; 
+		return "<a href=\"/user/"+username+"\" data-toggle=\"tooltip\" title=\""+username+"\">"+img+"</a>"; 
 	} 
 
 	
