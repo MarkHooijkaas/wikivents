@@ -1,7 +1,5 @@
 package club.wikivents.web;
 
-import java.io.IOException;
-
 import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.handlebar.TemplateEngine.CompiledTemplate;
 import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
@@ -51,10 +49,10 @@ public class WikiventsCall extends HttpCall {
 	}
 
 	@Override public void sendError(int code, String message) {
+		response.setStatus(code);
 		TemplateData context = createTemplateData();
 		context.add("message", message);
 		output(getTheme().error,context);
-		response.setStatus(code);
 		//try { response.sendError(code, message); } catch (IOException e) { throw new RuntimeException(e);}
 	}
 

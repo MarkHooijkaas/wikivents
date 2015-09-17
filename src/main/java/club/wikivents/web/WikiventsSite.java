@@ -8,14 +8,19 @@ import net.tanesha.recaptcha.ReCaptchaFactory;
 import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.HttpCallDispatcher;
 import org.kisst.http4j.HttpCallDispatcher.Path;
+import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
 import org.kisst.http4j.HttpCallHandler;
 import org.kisst.http4j.ResourceHandler;
 import org.kisst.props4j.Props;
 import org.kisst.util.MailSender;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 
 public class WikiventsSite implements HttpCallHandler {
+	final static Logger logger=LoggerFactory.getLogger(WikiventsSite.class);
+	
 	public final WikiventsModel model;
 	//public final TemplateEngine engine;
 	public final HttpCallHandler handler;
@@ -69,7 +74,15 @@ public class WikiventsSite implements HttpCallHandler {
 	}
 	@Override public void handle(HttpCall httpcall, String subPath) {
 		WikiventsCall call = WikiventsCall.of(httpcall, model);
-		this.handler.handle(call, subPath);
+		try {
+			this.handler.handle(call, subPath);
+		}
+		catch (RuntimeException e) {
+			logger.error("Error when handling "+call.request.getRequestURL(), e);
+			TemplateData context = new TemplateData(call);
+			context.add("message", e.getMessage());
+			call.output(call.getTheme().error,context);
+		}
 	}
 
 	public void close() { model.close(); }

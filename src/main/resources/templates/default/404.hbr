@@ -1,10 +1,11 @@
 {{> include/page.header}}
 
+<p>Er is een fout opgetreden.</p>
+
 <img src="/resources/sad-smiley.jpg"/>
 
-<p>Er is een fout opgetreden. {{message}}</p>
-
+<p>
 Mocht je problemen hebben bij het gebruik van wikivents, neem dan contact op met de beheerders: <a href="mailto:info@wikivents.nl">info@wikivents.nl</a>
- 
+</p>
 
 {{> include/page.footer}}
