@@ -77,14 +77,16 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 		User newOrganizer=model.usernameIndex.get(username);
 		if (newOrganizer==null)
 			call.sendError(500, "no organizer");
-		event.addOrganizer(model, newOrganizer);
+		else
+			event.addOrganizer(model, newOrganizer);
 	}
 	public void handleRemoveOrganizer(WikiventsCall call, Event event) {
 		String id=call.request.getParameter("userId");
 		User user=model.users.read(id);
 		if (user==null)
 			call.sendError(500, "no organizer");
-		event.removeOrganizer(model,user);
+		else
+			event.removeOrganizer(model,user);
 	}
 	@NeedsNoAuthorization
 	public void handleAddLike(WikiventsCall call, Event event) {

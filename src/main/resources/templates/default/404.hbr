@@ -1,5 +1,10 @@
 {{> include/page.header}}
 
-Deze pagina bestaat niet
+<img src="/resources/sad-smiley.jpg"/>
+
+<p>Er is een fout opgetreden. {{message}}</p>
+
+Mocht je problemen hebben bij het gebruik van wikivents, neem dan contact op met de beheerders: <a href="mailto:info@wikivents.nl">info@wikivents.nl</a>
+ 
 
 {{> include/page.footer}}

@@ -51,6 +51,17 @@ public class UserHandler extends WikiventsActionHandler<User> {
 		formdata.showForm();
 	}
 	@NeedsNoAuthentication
+	public void viewSetPassword(WikiventsCall call, User user) {
+		String token = call.request.getParameter("token");
+		if (user==null || token==null || token.equals("UNKNOWN_FIELD") || ! token.equals(user.passwordResetToken )) {
+			call.sendError(403, "Not authorized");
+			return;
+		}
+		SetPasswordForm formdata = new SetPasswordForm(call);
+		formdata.showForm();
+	}
+
+	@NeedsNoAuthentication
 	public void viewUsernameAvaliable(WikiventsCall call) {
 		String username = call.request.getParameter("username");
 		if (call.model.usernameIndex.get(username)==null)
@@ -114,19 +125,32 @@ public class UserHandler extends WikiventsActionHandler<User> {
 		}
 		else
 			formdata.handle();
-
-		/*
-		 *
-		 * 
-		 * When your users submit the form where you integrated reCAPTCHA, you'll get as part of the payload a string with the name "g-recaptcha-response". In order to check whether Google has verified that user, send a POST request with these parameters:
-URL: https://www.google.com/recaptcha/api/siteverify
-
-secret (required)	6LeC9gwTAAAAALBihIUuY2D5jdox0_Il-nIzGVbM
-response (required)	The value of 'g-recaptcha-response'.
-remoteip	The end user's ip address.
-		 */
 	}
+
+	@NeedsNoAuthentication
+	public void handleSetPassword(WikiventsCall call) {
+		RegisterForm formdata = new RegisterForm(call);
 	
+		if (! checkCaptcha(call.request))
+			return;
+
+		if (formdata.isValid()) {
+			String pw = formdata.password.value;
+			String pw2 = formdata.passwordCheck.value;
+			if (pw==null || ! pw.equals(pw2))
+				formdata.showForm();
+			else {
+				User u = new User(call.model,formdata.record);
+				model.users.create(u);
+				u.changePassword(pw);
+				call.setCookie(u._id);
+				call.redirect("/user/"+u.username);
+			}
+		}
+		else
+			formdata.handle();
+	}
+
 
 	public void handleChangeField(WikiventsCall call, User oldRecord) {
 		String field=call.request.getParameter("field");
@@ -159,6 +183,11 @@ remoteip	The end user's ip address.
 		public final InputField username;
 		public final InputField email;
 		public final InputField city     = new InputField(User.schema.city);
+		public final InputField password = new InputField("password");
+		public final InputField passwordCheck = new InputField("passwordCheck");
+	}
+	public static class SetPasswordForm extends HttpFormData {
+		public SetPasswordForm(WikiventsCall call) { super(call, call.getTheme().userSetPassword); }
 		public final InputField password = new InputField("password");
 		public final InputField passwordCheck = new InputField("passwordCheck");
 	}

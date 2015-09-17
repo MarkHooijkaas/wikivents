@@ -35,12 +35,14 @@ public class WikiventsTheme extends TemplateTheme {
 	public final CompiledTemplate login = template("login");
 	public final CompiledTemplate logout = template("logout");
 	public final CompiledTemplate sendMessage = template("sendMessage");
+	public final CompiledTemplate error = template("404");
 
 	public final CompiledTemplate userShow = template("user.show");
 	public final CompiledTemplate userEdit = template("user.edit");
 	public final CompiledTemplate userList = template("user.list");
 	public final CompiledTemplate userProfileTemplate = template("user.profile.template");
 	public final CompiledTemplate userRegister = template("user.register");
+	public final CompiledTemplate userSetPassword = template("user.setPassword");
 
 	public final CompiledTemplate eventShow = template("event.show");
 	public final CompiledTemplate eventEdit = template("event.edit");
