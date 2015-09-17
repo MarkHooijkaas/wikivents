@@ -15,7 +15,7 @@
 {{/ifMayChange}}
 
 {{#if record.avatarUrl}}
-	<img src="{{record.avatarUrl}}"/>
+	<img style="max-height:100%; max-width:100%;" src="{{record.avatarUrl}}"/>
 {{else}}
 	Gebruiker heeft nog geen profielfoto toegevoegd.
 	<img src="/favicon.ico"/>
