@@ -1,12 +1,4 @@
-{{#ifMayView record}}
-	{{#ifMayChange record}}
-    	{{#ifParam "inline-edit" "true"}}
-			<a class="btn btn-default" href="/event/:{{record._id}}">Klaar met wijzigen</a>
-		{{else}}
-			<a class="btn btn-default" href="/event/:{{record._id}}?inline-edit=true">Wijzig deze activiteit</a>
-		{{/ifParam}}
-	{{/ifMayChange}}
-	<h2>Details</h2>
+<h2>Details</h2>
 {{#ifInlineEdit record}}
 	{{> include/show.ajaxDateField value=record.title name="title"  label="Titel" }}
 {{/ifInlineEdit}}
@@ -37,7 +29,6 @@
 </div>
 {{/ifInlineEdit}}
 
-{{/ifMayView}}
 	{{> include/show.ajaxDateField value=record.date name="date"  label="Datum" }}
 	{{> include/show.ajaxTimeField value=record.time name="time"  label="Tijd"}}
 	{{> include/show.ajaxTimeField value=record.endTime name="endTime"  label="Eindtijd"}}

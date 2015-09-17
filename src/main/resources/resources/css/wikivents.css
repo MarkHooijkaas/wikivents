@@ -3,8 +3,8 @@ a img.link-avatar {
    height: auto;
 }
 .overflow-hidden { overflow:hidden; }
-span.glyphicon-pencil { font-size: 0.8em; color:grey }
-span.glyphicon-wrench { font-size: 0.8em; color:grey }
+sspan.glyphicon-pencil { font-size: 0.8em; color:grey }
+span.glyphicon-wrench { font-size: 0.8em;  }
 .commentTime { font-size: 0.7em; color:grey }
 
 .form-group div{

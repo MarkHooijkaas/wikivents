@@ -7,13 +7,13 @@
 </div>
 
 
+
 <div class="col-xs-12 col-sm-5 col-md-4 col-lg-4 overflow-hidden">
 	{{> include/like.button}} {{record.likes.size}} likes: 
 	{{#each record.likes}} 
 		{{&priv get0.avatarLink}}
 	{{/each}}
 
-	<br>
 	<br>
 	
 	{{>event.details}}

@@ -6,11 +6,7 @@
  					<input type="hidden" name="action" value="logout"/>
    					<button type="submit" class="btn btn-default btn-success">Loguit</button>
  				</form>
-			{{> include/modal.end}}	{{#ifParam "inline-edit" "true"}}
-		<a class="btn btn-default" href="/user/{{record.username}}">Klaar met wijzigen</a>
-	{{else}}
-		<a class="btn btn-default" href="/user/{{record.username}}?inline-edit=true">Wijzig je gegevens</a>
-	{{/ifParam}}
+			{{> include/modal.end}}
 	<br><br>
 {{/ifMayChange}}
 
