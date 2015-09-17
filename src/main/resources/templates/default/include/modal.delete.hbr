@@ -1,0 +1,24 @@
+<a data-toggle="modal" data-target="#{{action}}Modal"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+{{> include/modal.begin  id=action}}
+	<form role="form" method="POST" id="{{action}}Form" action="">
+		<input type="hidden" name="action" value="{{action}}"/>
+		<input type="hidden" name="{{field}}" value="{{value}}"/>
+		<label for="">{{label}}</label>
+		<a id="{{action}}Button" class="btn btn-default btn-success">Verwijder</a>
+		<br/>
+		<span id="{{action}}Message"></span>
+	</form>
+	<script>
+	$(document).ready(function(){
+		$("#{{action}}Button").click(function(){
+			$.ajax({
+				type: "POST",
+				url: "#",
+				data: $(this).closest('form').serialize(),
+				success: function(data, status, xhr){ location.reload(true); },
+				error: function(xhr,status,error){ $("#{{action}}Message").html(error); }
+			});
+	    });
+	});
+	</script>
+{{> include/modal.end}}

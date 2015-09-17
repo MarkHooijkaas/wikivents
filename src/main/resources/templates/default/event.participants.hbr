@@ -6,14 +6,8 @@
 
 {{#each record.allowedGuests}}
 	{{#ifMayChange this}}
-			<form role="form" method="POST">
-				{{&priv user.link}}
-				<input type="hidden" name="action" value="removeGuest"/>				
-		  		<input type="hidden" name="userId" value="{{user._id}}"/>				
-				<button type="submit" class="btn-link" aria-label="Annuleer deelname">
-			 		<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-				</button>
-			</form>
+		{{&priv user.link}}
+		{{> include/modal.delete action="removeGuest" field="userId" value=user._id label="Weet je zeker dat je je deelname wil annuleren?"}} 
 	{{else}}
 			{{&priv user.link}}<br/>
 	{{/ifMayChange}}
@@ -37,14 +31,8 @@
 {{#if record.backupGuests}}
 {{#each record.backupGuests}}
 	{{#ifMayChange this}}
-			<form role="form" method="POST">
-				{{&priv user.link}}
-				<input type="hidden" name="action" value="removeGuest"/>				
-		  		<input type="hidden" name="userId" value="{{user._id}}"/>				
-				<button type="submit" class="btn-link" aria-label="Annuleer deelname">
-			 		<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-				</button>
-			</form>
+		{{&priv user.link}}
+		{{> include/modal.delete action="removeGuest" field="userId" value=user._id label="Weet je zeker dat je je deelname wil annuleren?"}} 
 	{{else}}
 			{{&priv user.link}}<br/>
 	{{/ifMayChange}}
