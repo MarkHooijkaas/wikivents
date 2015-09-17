@@ -17,7 +17,11 @@ public class LoginPage extends WikiventsThing {
 		public final InputField password = new InputField("password", this::validatePassword);
 		
 		// TODO: what is correct behaviour? Should we validate these fields??? w 
-		public String validateUsername(InputField f) { return (user!=null) ? null : "Unknown username "+f.value;} 
+		public String validateUsername(InputField f) { 
+			if (username!=null && user==null)
+				return "Onbekende gebruiker";
+			return null;
+		} 
 		public String validatePassword(InputField f) { 
 			if (user==null)
 				return null;
@@ -25,7 +29,7 @@ public class LoginPage extends WikiventsThing {
 				return null;
 			return "Incorrect password";
 		} 
-
+		@Override public boolean isValid() { return super.isValid() && user!=null; } 
 	};
 
 

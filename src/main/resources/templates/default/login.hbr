@@ -1,6 +1,6 @@
 {{> include/page.header}}
 
-{{#if userid}}
+{{#if user}}
 Je bent al ingelogd als {{user.username}}
 
 Om uit te loggen kan je naar de <a href="/logout">Uitlog pagina</a> gaan.
