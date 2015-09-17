@@ -7,7 +7,7 @@
 {{#each record.allowedGuests}}
 	{{&priv user.link}}
 	{{#ifMayChange this}}
-		{{> include/modal.delete action="removeGuest" field="userId" value=user._id label="Weet je zeker dat je je deelname wil annuleren?"}} 
+		{{> include/modal.delete title=user.get0.username action="removeGuest" field="userId" value=user._id label="Weet je zeker dat je je deelname wil annuleren?"}} 
 	{{/ifMayChange}}
 	<br/>
 {{/each}}
@@ -31,7 +31,7 @@
 {{#each record.backupGuests}}
 	{{&priv user.link}}
 	{{#ifMayChange this}}
-		{{> include/modal.delete action="removeGuest" field="userId" value=user._id label="Weet je zeker dat je je deelname wil annuleren?"}} 
+		{{> include/modal.delete title=user.get0.username action="removeGuest" field="userId" value=user._id label="Weet je zeker dat je je deelname wil annuleren?"}} 
 	{{/ifMayChange}}
 	<br/>
 {{/each}}
