@@ -40,7 +40,7 @@ public class WikiventsSite implements HttpCallHandler {
 		public final HttpCallHandler sendMessage = new SendMessagePage(WikiventsSite.this);
 		public final HttpCallHandler lib=new ResourceHandler("lib/", "src/main/resources/lib");
 		public final HttpCallHandler css=new ResourceHandler("resources/css/", "src/main/resources/resources/css");
-		public final HttpCallHandler resources=new ResourceHandler("resources/resources/", "src/main/resources/resources");
+		public final HttpCallHandler resources=new ResourceHandler("resources/", "src/main/resources/resources");
 		@Path(dispatchPath="favicon.ico")
 		public final HttpCallHandler favicon =new ResourceHandler("resources/favicon.ico", "src/main/resources/resources/favicon.ico");
 	}
