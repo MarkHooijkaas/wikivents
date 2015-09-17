@@ -137,7 +137,6 @@ remoteip	The end user's ip address.
 	public void handleChangePassword(WikiventsCall call, User u) {
 		String newPassword= call.request.getParameter("newPassword");
 		String checkNewPassword= call.request.getParameter("checkNewPassword");
-		System.out.println(newPassword+", "+checkNewPassword);
 		if (! newPassword.equals(checkNewPassword))
 			call.sendError(500, "supplied passwords do not match");
 		else
