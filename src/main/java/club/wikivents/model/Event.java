@@ -192,4 +192,12 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 
 	@Override public int compareTo(Event other) { return this.date.compareTo(other.date);}
 
+	public Comment findComment(String id) { 
+		if (comments==null || id==null)
+			return null;
+		for (Comment com : comments)
+			if (id.equals(com.id()))
+				return com;
+		return null;
+	}
 }

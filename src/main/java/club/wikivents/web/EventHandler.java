@@ -3,6 +3,7 @@ package club.wikivents.web;
 import org.kisst.http4j.form.HttpFormData;
 import org.kisst.item4j.struct.Struct;
 
+import club.wikivents.model.Comment;
 import club.wikivents.model.Event;
 import club.wikivents.model.User;
 
@@ -97,6 +98,14 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 		event.removeLike(model,call.user);
 	}
 	
+	public void handleRemoveComment(WikiventsCall call, Event event) {
+		String commentId=call.request.getParameter("commentId");
+		if (event==null || commentId==null)
+			return;
+		Comment com=event.findComment(commentId);
+		model.events.removeSequenceItem(event, Event.schema.comments, com);
+	}
+
 	
 	public class Form extends HttpFormData {
 		public Form(WikiventsCall call, Struct data) { super(call, call.getTheme().eventEdit, data); }
