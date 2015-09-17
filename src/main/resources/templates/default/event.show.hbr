@@ -2,12 +2,12 @@
 <script src="/lib/ckeditor/ckeditor.js"></script>
 {{> include/page.header.end}}
 
-<div class="col-xs-12 col-md-8 col-lg-8 panel panel-default overflow-hidden">
+<div class="col-xs-12 col-sm-7 col-md-8 col-lg-8 panel panel-default overflow-hidden">
 	{{>event.description}}
 </div>
 
 
-<div class="col-xs-12 col-md-4 col-lg-4 overflow-hidden">
+<div class="col-xs-12 col-sm-5 col-md-4 col-lg-4 overflow-hidden">
 	{{> include/like.button}} {{record.likes.size}} likes: 
 	{{#each record.likes}} 
 		{{&priv get0.avatarLink}}
