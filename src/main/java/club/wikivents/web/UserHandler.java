@@ -3,6 +3,7 @@ package club.wikivents.web;
 import javax.servlet.http.HttpServletRequest;
 
 import org.kisst.http4j.form.HttpFormData;
+import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
 import org.kisst.item4j.struct.HashStruct;
 import org.kisst.item4j.struct.MultiStruct;
 import org.kisst.item4j.struct.Struct;
@@ -39,7 +40,16 @@ public class UserHandler extends WikiventsActionHandler<User> {
 			model.users.updateFields(oldRecord, formdata.record);
 		formdata.handle();
 	}
+
 	
+	@NeedsNoAuthentication
+	public void viewValidateEmail(WikiventsCall call, User u) {
+		String token = call.request.getParameter("token");
+		if (token!=null && token.equals(u.passwordSalt))
+			call.model.users.updateField(u, User.schema.emailValidated, true);
+		call.redirect("/user/"+u.username);
+	}
+
 	public void viewLogout(WikiventsCall call) {
 		call.output(call.getTheme().logout);
 	}
@@ -117,6 +127,12 @@ public class UserHandler extends WikiventsActionHandler<User> {
 				.add(User.schema.encryptedPassword, pw)
 			));
 			model.users.create(u);
+			String url= call.getTopUrl()+"/user/"+u.username+"?view=validateEmail&token="+u.passwordSalt;
+			TemplateData context=call.createTemplateData();
+			context.add("user", u);
+			context.add("url", url);
+			String message = call.getTheme().userRegisterSucces.toString(context);
+			u.sendSystemMail("Welkom bij Wikivents: valideer dit mail adres", message);
 			call.setCookie(u._id);
 			call.redirect("/user/"+u.username);
 		}

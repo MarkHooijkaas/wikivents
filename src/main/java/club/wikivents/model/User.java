@@ -22,6 +22,15 @@ import org.kisst.util.PasswordEncryption;
 
 
 public class User extends CrudObject implements AccessChecker<User>, Htmlable{
+	private final static InternetAddress systemMailAddress;
+	static {
+		try {
+			systemMailAddress=new InternetAddress("info@wikivents.nl","Wikivents beheer");
+		}
+		catch (UnsupportedEncodingException e) { throw new RuntimeException(e);}
+	}
+
+	
 	public final WikiventsModel model;
 	public final String username;
 	public final String description;
@@ -142,29 +151,35 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 		return u.isAdmin;
 	}
 	
-	public void sendSystemMail(String subject, String message) {
-		try {
-			final MimeMessage msg = model.site.emailer.createMessage();
-			msg.setFrom(new InternetAddress("info@wikivents.nl","Wikivents Beheer"));
-			msg.setRecipients(Message.RecipientType.TO, new InternetAddress[] {new InternetAddress(email, username)});
-			msg.setSubject(subject);
-			msg.setText(message, "utf-8");
-			model.site.emailer.send(msg);
-		} 
-		catch (MessagingException e) { throw new RuntimeException(e); } 
-		catch (UnsupportedEncodingException e) { throw new RuntimeException(e); }
-	}
 
+
+	public void sendSystemMail(String subject, String message) {
+		sendMailFrom(systemMailAddress, subject, message, false);
+	}
+	
 	public void sendMailFrom(User from, String subject, String message, boolean copyToSender) {
 		try {
+			sendMailFrom(new InternetAddress(from.email,from.username), subject, message, copyToSender);
+		} 
+		catch (UnsupportedEncodingException e) { throw new RuntimeException(e); }
+	}
+	public void sendMailFrom(InternetAddress from, String subject, String message, boolean copyToSender) {
+		try {
 			final MimeMessage msg = model.site.emailer.createMessage();
-			msg.setFrom(new InternetAddress("info@wikivents.nl","Wikivents gebruiker "+from.username));
-			msg.setReplyTo(new InternetAddress[] {new InternetAddress(from.email,from.username)});
+			if (from==systemMailAddress)
+				msg.setFrom(from);
+			else {
+				msg.setFrom(new InternetAddress("info@wikivents.nl","Wikivents gebruiker "+from.getPersonal()));
+				msg.setReplyTo(new InternetAddress[] {from});
+			}
 			msg.setRecipients(Message.RecipientType.TO, new InternetAddress[] {new InternetAddress(email, username)});
 			if (copyToSender)
-				msg.setRecipients(Message.RecipientType.CC, new InternetAddress[] {new InternetAddress(from.email, from.username)});
+				msg.setRecipients(Message.RecipientType.CC, new InternetAddress[] {from});
 			msg.setSubject(subject);
-			msg.setText(message, "utf-8");
+			if (message.trim().startsWith("<"))
+				msg.setContent(message, "text/html; charset=utf-8");
+			else
+				msg.setText(message, "utf-8");
 			model.site.emailer.send(msg);
 		} 
 		catch (MessagingException e) { throw new RuntimeException(e); } 

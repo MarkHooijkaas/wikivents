@@ -32,6 +32,13 @@ public class HttpCall {
 	public boolean isPost() { return "POST".equals(request.getMethod()); }
 	public boolean isAjax() { return "true".equals(request.getParameter("ajax")); }
 	
+	public String getTopUrl() {
+		String url=request.getScheme()+"://"+request.getServerName();
+		if (request.getServerPort()!=80)
+			url+=":"+request.getServerPort();
+		return url;
+	}
+	
 	public void handle(String subPath) {
 		String method = request.getMethod();
 		if (isGet())

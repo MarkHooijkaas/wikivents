@@ -1,0 +1,14 @@
+<h1>Welkom op Wikivents!</h1>
+
+<p>Je registratie is geslaagd.</p>
+
+<p>Door op onderstaande link te klikken toon je aan dat je dit mailtje hebt ontvangen, en dat je email adres correct is.</p>
+
+<p>
+<a href="{{url}}">{{url}}</a> 
+</p>
+
+<p>
+We wensen je veel plezier op Wikivents, en dat je daar veel mooie activiteiten mag beleven.
+</p>
+

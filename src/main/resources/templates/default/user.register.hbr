@@ -15,6 +15,8 @@
 			rules: {
 				username: { username: true, minlength: 2, remote: '/user/!usernameAvaliable' },
 				email: { email: true, remote: '/user/!emailAvaliable' },
+				password: { minlength: 5 },
+				passwordCheck: { equalTo: "#password" }
 			},
 			messages: {
 				username: { remote: "Gebruikersnaam is al in gebruik" },
@@ -29,6 +31,8 @@
 	{{> include/form.text form.username label="Gebruikersnaam" required="true"}}
 	{{> include/form.text form.email    label="E-mail" required="true"}}
 	{{> include/form.text form.city label="Woonplaats" required="true"}}
+	{{> include/form.text form.password label="Kies een wachtwoord" type="password" required="true"}}
+  	{{> include/form.text form.passwordCheck label="Herhaal het wachtwoord" type="password" required="true"}}
   
 	<div class="form-group col-xs-12">
 		<label for="captcha"  class="col-xs-2">Anti-SPAM check: </label>
