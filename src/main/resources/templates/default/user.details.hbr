@@ -1,14 +1,3 @@
-{{#ifMayChange record}}
-			<a href="" class="btn btn-default" data-toggle="modal" data-target="#logoutModal">Uitloggen</a>
-			{{> include/modal.begin id="logout"}}
-				Weet je zeker dat je wilt uitloggen?
- 				<form role="form" method="POST" action="/user/!logout">
- 					<input type="hidden" name="action" value="logout"/>
-   					<button type="submit" class="btn btn-default btn-success">Loguit</button>
- 				</form>
-			{{> include/modal.end}}
-	<br><br>
-{{/ifMayChange}}
 
 {{#if record.avatarUrl}}
 	<img style="max-height:100%; max-width:100%;" src="{{record.avatarUrl}}"/>
