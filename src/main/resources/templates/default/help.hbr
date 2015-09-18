@@ -3,8 +3,8 @@
 
 <h1>Wikivents in beweging</h1>
 Deze site is nog nieuw en volop in beweging.
-Er zijn vele idee&euml;n ter verbetering (zie ook de <a href="https://github.com/MarkHooijkaas/wikivents/wiki/toekomst">toekomstplannen</a>), 
-en ook fouten worden zo snel mogelijk verbeterd.
+Er zijn diverse idee&euml;n ter verbetering (zie ook de <a href="https://github.com/MarkHooijkaas/wikivents/wiki/toekomst">toekomstplannen</a>). 
+Ook fouten worden zo snel mogelijk verbeterd.
 Het kan daarom zijn dat de site er een paar seconden uit ligt omdat er een nieuwe versie wordt geplaatst.
 Het kan ook zijn dat de site er plotseling anders uit ziet, of net wat anders werkt, maar hopelijk is dit allemaal ten goede van de site 
 </p>
@@ -16,7 +16,7 @@ Mocht je toch problemen ervaren in het gebruik van Wikivents, neem dan contact o
 </p>
 
 <h1>Kosten van Wikivents</h1>
-Er zijn geen kosten verbonden aan het gebruik van wikivents! 
+Er zijn geen kosten verbonden aan het gebruik van wikivents. 
 De makers van deze site doen dit omdat ze 
 <ul>
 	<li>het leuk vinden om activiteiten te organiseren</li>
@@ -24,9 +24,26 @@ De makers van deze site doen dit omdat ze
 	<li>het leuk vinden om zo'n site te maken</li>
 	<li>veel leren van het maken van zo'n site</li>
 </ul> 
-De operationele kosten (hosting, domein, ...) zijn relatief laag, dat het niet nodig is om toegangsgeld te vragen.
+De operationele kosten (hosting, domein, ...) zijn relatief laag, zodat het niet nodig is om toegangsgeld te vragen.
 Mochten de kosten in de toekomst dusdanig hard groeien, dat het niet meer goed te dragen is, dan zullen we kijken hoe dit op te lossen, bijvoorbeeld door vrijwillige donaties, subsidies of sponsoring. 
 De intentie is echter om de toegang tot Wikivents altijd gratis te laten en ook geen hinderlijke advertenties te tonen. 
+
+<h1>Hoe wijzig ik mijn gegevens</h1>
+<p>
+Om je eigen profiel te wijzigen ga je eerst naar deze pagina, bijvoorbeeld, door op je gebruikersnaam rechtsboven in de oranje balk te klikken. 
+Dan verschijnt direct links van je gebruikersnaam een symbool van een potlood met de tekst "Wijzig".
+Als je hier op klikt, verschijnen er op diverse plekken in je profiel pagina potloodjes.
+Als je op een potloodje klikt kan je het bijbehorende gegeven wijzigen.
+</p>
+<p>
+Je kan ook een profielfoto instellen.
+Door op het potloodje rechts of onder je profielfoto te klikken, kan je een link (url) kopieren, naar een foto elders op Internet.
+Dit is nog wat primitef maar helaas is het momenteel nog niet mogelijk om foto's up te loaden naar de site.
+Mocht je problemen hebben, neem dan gerust contact op met de beheerders van wikivents
+</p>
+Voor het wijzigen van activiteiten verschijnt er ook een wijzig knop rechtsboven in de oranje balk.
+Deze verschijnt alleen voor activiteiten waar je zelf organisator van bent.
+Andere activiteiten kan je niet wijzigen. 
 
 <h1>Privacy bij Wikivents</h1>
 Er wordt veel waarde gehecht aan de privacy van de gebruikers. 
@@ -56,15 +73,18 @@ De plannen om dit los te kunnen laten zijn ruwweg als volgt:
 	</li>
 </ul>
 
-<h1>Samenwerking met andere sites</h1>
+<h1>Activiteiten op andere sites</h1>
+<p>
 Wikivents is opgericht in de filosofie van het samenwerken zoals dat gebeurt bij open-source software en wiki's. 
 In die filosofie werk je in alle openheid samen en leg je je gebruikers geen beperkingen op.
 Het is dan ook expliciet toegestaan om events die op wikivents staan ook op andere activiteiten sites (zoals b.v. facebook, meetup en couchsurfing) te plaatsen, daar te adverteren, etc.
 Wel dien je hierbij natuurlijk rekening te houden met de wensen van de organisator van het event (meestal is het de organisator zelf die een activiteit op meerdere sites plaatst).
 Ook dien je rekening te houden met de voorschriften en regels van die andere sites.
-
+<p>
 Omgekeerd mag je op wikivents natuurlijk ook events van andere sites plaatsen. 
 Dit kunnen grootschalige publieke events zijn, zoals bijvoorbeeld het Noorderzon festival in Groningen, 
-maar ook kleine prive events zoals een eetclub, zolang de organisator van dat event dat goed vindt. 
+maar ook kleine prive events zoals een eetclub, zolang de organisator van dat event dat goed vindt.
+<p> 
+Wij denken dat het in het belang van de gebruikers is om de vrijheid te hebben zelf te beslissen hoe en waar zij hun activiteiten organiseren en adverteren, en denken dat alle sites daarvan kunnen profiteren.
 
 {{> include/page.footer }}
