@@ -25,10 +25,17 @@
 		{{record.email}} {{> include/modal.textField value=record.email name="email" label="E-mail"}}<br>  
 	{{/ifIsAdmin}}  
 {{else}}
-	<br><br>{{record.city}}
+	<br><br>{{record.city}}<br>
+	{{#ifMayChange record}}
+		{{record.email}}
+	{{/ifMayChange}} 
 {{/ifInlineEdit}}
 <br><br>
+{{#if record.emailValidated}}
 <form role="form" method="GET" action="/sendMessage">
 	<input type="hidden" name="to" value="{{record.username}}"/>
 	<button type="submit" class="btn btn-default">Stuur {{record.username}} een e-mail</button>
 </form>
+{{else}}
+<div class="alert-danger">Het is nog niet mogelijk om email naar deze gebruiker te sturen</div>
+{{/if}}
