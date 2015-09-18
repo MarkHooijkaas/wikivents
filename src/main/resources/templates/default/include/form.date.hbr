@@ -2,7 +2,7 @@
  <div class="form-group {{#if required}}form-group-required{{/if}} col-xs-12">
     <label for="{{name}}"  class="col-xs-2">{{label}}: <i>{{message}}</i></label>
     <div class="col-xs-4">
-	    <input class="form-control" type="text" id="mydatepicker" name="{{name}}" value="{{value}}" data-date-format="yyyy-mm-dd" {{#if required}}required{{/if}}>
+	    <input class="form-control" type="date" id="mydatepicker2" name="{{name}}" value="{{value}}" data-date-format="yyyy-mm-dd" {{#if required}}required{{/if}}>
     </div>
  </div>
  </row>

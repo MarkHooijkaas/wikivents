@@ -1,8 +1,5 @@
 {{> include/page.header.begin}}
-<link rel="stylesheet" href="/lib/jt.timepicker/jquery.timepicker.css">
-
 <script src="/lib/ckeditor/ckeditor.js"></script>
-<script src="/lib/jt.timepicker/jquery.timepicker.min.js"></script>
 <script src="/lib/jquery-validation/dist/jquery.validate.min.js"></script>
 <script src="/lib/jquery-validation/src/localization/messages_nl.js"></script>
 {{> include/page.header.end}}
@@ -25,7 +22,6 @@
 			*/
 		});
 		$.extend($.validator.messages, { required: "Dit veld is verplicht" });
-		$('#mydatepicker').datepicker();
 	 }); 
 </script>
 
