@@ -16,6 +16,10 @@
       <tr>
         <th>Naam</th>
         <th>Woonplaats</th>
+{{#ifIsAdmin}}       
+        <th>email</th>
+        <th>validated</th>
+{{/ifIsAdmin}}       
       </tr>
     </thead>
     <tbody>
@@ -23,6 +27,10 @@
       <tr>
         <td>{{&link}}</td>
         <td>{{city}}</td>
+{{#ifIsAdmin}}       
+        <td>{{email}}</td>
+        <td>{{emailValidated}}</td>
+{{/ifIsAdmin}}       
       </tr>
 {{/each}}
     </tbody>
