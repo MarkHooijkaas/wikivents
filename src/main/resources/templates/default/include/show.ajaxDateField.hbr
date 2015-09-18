@@ -9,7 +9,7 @@
 				<input type="hidden" name="action" value="changeField"/>
 				<input type="hidden" name="field" value="{{name}}"/>
 				<label for="">{{label}}: </label>
-			    <input class="form-control" type="text" id="mydatepicker" name="value" value="{{value}}" >
+			    <input class="form-control" type="date" id="mydatepicker2" name="value" value="{{value}}" >
 				<a id="{{name}}Button" class="btn btn-default btn-success">Wijzig {{label}}</a>
 				<br/>
 				<span id="{{name}}Message"></span>

@@ -101,7 +101,7 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 		invoke(methodName, call, record);	
 		//System.out.println(call.response.getStatus());
 		if (!call.isAjax() && ! call.response.isCommitted()) 
-			call.redirect(call.request.getRequestURL().toString());
+			call.redirect(call.getLocalUrl());
 	}
 
 	private void invoke(String methodName, C call, T record) {

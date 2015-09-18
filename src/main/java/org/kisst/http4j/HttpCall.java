@@ -34,8 +34,14 @@ public class HttpCall {
 	
 	public String getTopUrl() {
 		String url=request.getScheme()+"://"+request.getServerName();
-		if (request.getServerPort()!=80)
-			url+=":"+request.getServerPort();
+		url+=":"+request.getServerPort();
+		return url;
+	}
+	public String getLocalUrl() {
+		String url=request.getRequestURI();
+		String query = request.getQueryString();
+		if (query!=null && query.trim().length()>0)
+			url+="?"+query;
 		return url;
 	}
 	
