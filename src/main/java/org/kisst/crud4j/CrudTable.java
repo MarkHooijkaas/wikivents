@@ -15,7 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
-	public final Logger logger = LoggerFactory.getLogger(CrudTable.class);
+	public static final Logger logger = LoggerFactory.getLogger(CrudTable.class);
 	
 	protected final CrudSchema<T> schema;
 	protected final CrudModel model;

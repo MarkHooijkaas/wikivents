@@ -7,6 +7,7 @@ import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
 import org.kisst.item4j.struct.HashStruct;
 import org.kisst.item4j.struct.MultiStruct;
 import org.kisst.item4j.struct.Struct;
+import org.kisst.util.CallInfo;
 import org.kisst.util.PasswordEncryption;
 
 import club.wikivents.model.Event;
@@ -19,9 +20,14 @@ public class UserHandler extends WikiventsActionHandler<User> {
 	public UserHandler(WikiventsSite site) { super(site, site.model.users); }
 
 	@Override protected User findRecord(String id) {
+		User result;
 		if (id.startsWith(":"))
-			return model.users.read(id.substring(1));
-		return model.usernameIndex.get(id);
+			result= model.users.read(id.substring(1));
+		else
+			result= model.usernameIndex.get(id);
+		if (result!=null)
+			CallInfo.instance.get().data=result.username;
+		return result;
 	}
 
 	public void listAll(WikiventsCall call) {

@@ -4,6 +4,7 @@ import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.handlebar.TemplateEngine.CompiledTemplate;
 import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
 import org.kisst.item4j.struct.Struct;
+import org.kisst.util.CallInfo;
 
 import club.wikivents.model.User;
 import club.wikivents.model.WikiventsModel;
@@ -32,7 +33,13 @@ public class WikiventsCall extends HttpCall {
 		this.authenticatedUser=user;
 		this.call=this;
 		this.authenticated=(user!=null);
-	}
+		CallInfo callinfo = CallInfo.instance.get();
+		callinfo.clear();
+		if (user!=null)
+			callinfo.user=user.username+" ("+request.getRemoteAddr()+")";
+		else
+			callinfo.user=request.getRemoteAddr();
+	}	
 	public static WikiventsCall of(HttpCall httpcall, WikiventsModel model) {
 		if (httpcall instanceof WikiventsCall)
 			return (WikiventsCall) httpcall;

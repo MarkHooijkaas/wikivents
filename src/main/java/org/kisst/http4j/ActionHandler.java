@@ -1,5 +1,6 @@
 package org.kisst.http4j;
 
+import org.kisst.util.CallInfo;
 import org.kisst.util.ReflectionUtil;
 import org.kisst.util.StringUtil;
 
@@ -106,6 +107,7 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 
 	private void invoke(String methodName, C call, T record) {
 		//System.out.println("id="+id+", method="+methodName+", rec="+record);
+		CallInfo.instance.get().action=methodName;
 		Method method=null;
 		if (record!=null)
 			method = ReflectionUtil.getMethod(this.getClass(), methodName, fullsignature);

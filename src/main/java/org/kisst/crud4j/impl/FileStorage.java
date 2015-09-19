@@ -15,6 +15,7 @@ import org.kisst.item4j.seq.ArraySequence;
 import org.kisst.item4j.seq.TypedSequence;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.props4j.Props;
+import org.kisst.util.CallInfo;
 import org.kisst.util.FileUtil;
 
 public class FileStorage implements StructStorage {
@@ -55,7 +56,7 @@ public class FileStorage implements StructStorage {
 		if (f.exists())
 			throw new RuntimeException("File "+f.getAbsolutePath()+" already exists");
 		FileUtil.saveString(f, outputter.createString(value));
-		gitCommit("created "+name+" "+key);
+		gitCommit("create"+name,key);
 		return key;
 	}
 	private static AtomicInteger number=new AtomicInteger(new Random().nextInt(13));
@@ -73,12 +74,12 @@ public class FileStorage implements StructStorage {
 		File f = getFile(oldId);
 		FileUtil.saveString(f, outputter.createString(newValue));
 		//git.add().addFilepattern(name+"/"+f.getName()).call();
-		gitCommit("updated "+name+" "+oldId);
+		gitCommit("update"+name,oldId);
 	}
 	@Override public void delete(Struct oldValue)  {
 		checkForConcurrentModification(oldValue);
 		getFile(oldValue).delete();
-		gitCommit("deleted "+name+" "+getKey(oldValue));
+		gitCommit("delete"+name,getKey(oldValue));
 	}
 	private void checkForConcurrentModification(Struct obj) {
 		// TODO Auto-generated method stub
@@ -110,11 +111,17 @@ public class FileStorage implements StructStorage {
 	}
 
 
-	private void gitCommit(String comment) {
+	private void gitCommit(String action, String data) {
 		try {
 			if (git==null)
 				return;
-			synchronized(git) {
+			CallInfo callinfo = CallInfo.instance.get();
+			if (callinfo.action!=null)
+				action=callinfo.action;
+			if (callinfo.data!=null)
+				data=callinfo.data;
+			String comment = action+" by "+callinfo.user+" on "+data;
+			synchronized(git) {				
 				git.add().addFilepattern(".").call();
 				git.commit().setMessage(comment).call();
 			}

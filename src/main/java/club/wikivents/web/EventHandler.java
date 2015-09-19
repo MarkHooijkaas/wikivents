@@ -2,6 +2,7 @@ package club.wikivents.web;
 
 import org.kisst.http4j.form.HttpFormData;
 import org.kisst.item4j.struct.Struct;
+import org.kisst.util.CallInfo;
 
 import club.wikivents.model.Comment;
 import club.wikivents.model.Event;
@@ -9,6 +10,13 @@ import club.wikivents.model.User;
 
 public class EventHandler extends WikiventsActionHandler<Event> {
 	public EventHandler(WikiventsSite site) { super(site, site.model.events);	}
+
+	@Override protected Event findRecord(String id) {
+		Event result=super.findRecord(id);
+		if (result!=null)
+			CallInfo.instance.get().data=result.title;
+		return result;
+	}
 
 
 	@NeedsNoAuthentication
