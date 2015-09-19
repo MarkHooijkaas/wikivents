@@ -9,6 +9,7 @@ import org.kisst.item4j.struct.MultiStruct;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.util.PasswordEncryption;
 
+import club.wikivents.model.Event;
 import club.wikivents.model.User;
 import net.tanesha.recaptcha.ReCaptchaImpl;
 import net.tanesha.recaptcha.ReCaptchaResponse;
@@ -215,5 +216,19 @@ public class UserHandler extends WikiventsActionHandler<User> {
 		public final InputField password = new InputField("password");
 		public final InputField passwordCheck = new InputField("passwordCheck");
 	}
+
+	@NeedsNoAuthorization
+	public void handleAddLike(WikiventsCall call) {
+		String id=call.request.getParameter("eventId");
+		Event event=model.events.read(id);
+		event.addLike(model, call.user);
+	}
+	@NeedsNoAuthorization
+	public void handleRemoveLike(WikiventsCall call) {
+		String id=call.request.getParameter("eventId");
+		Event event=model.events.read(id);
+		event.removeLike(model,call.user);
+	}
+
 }
 

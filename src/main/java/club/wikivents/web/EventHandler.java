@@ -90,11 +90,15 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 			event.removeOrganizer(model,user);
 	}
 	@NeedsNoAuthorization
-	public void handleAddLike(WikiventsCall call, Event event) {
+	public void handleAddLike(WikiventsCall call) {
+		String id=call.request.getParameter("eventId");
+		Event event=model.events.read(id);
 		event.addLike(model, call.user);
 	}
 	@NeedsNoAuthorization
-	public void handleRemoveLike(WikiventsCall call, Event event) {
+	public void handleRemoveLike(WikiventsCall call) {
+		String id=call.request.getParameter("eventId");
+		Event event=model.events.read(id);
 		event.removeLike(model,call.user);
 	}
 	

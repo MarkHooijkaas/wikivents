@@ -82,7 +82,7 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 			id=id2;
 		String action = call.request.getParameter("action");
 		T record=null;
-		if (id!=null && id.trim().length()>0 ) {
+		if (id!=null && id.trim().length()>0 && ! id.equals("NONE")) {
 			if (id.startsWith("!")) {
 //				String oldAction = action;
 				action=id.substring(1);
@@ -106,12 +106,13 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 
 	private void invoke(String methodName, C call, T record) {
 		//System.out.println("id="+id+", method="+methodName+", rec="+record);
-		Method method;
-		if (record==null) 
-			method = ReflectionUtil.getMethod(this.getClass(), methodName, shortsignature);
-		else
+		Method method=null;
+		if (record!=null)
 			method = ReflectionUtil.getMethod(this.getClass(), methodName, fullsignature);
-
+		if (method==null) {
+			method = ReflectionUtil.getMethod(this.getClass(), methodName, shortsignature);
+			record=null;
+		}
 		if (method==null)
 			throw new RuntimeException("Unknown method "+methodName);
 		NeedsNoAuthentication ann = method.getAnnotation(NeedsNoAuthentication.class);
