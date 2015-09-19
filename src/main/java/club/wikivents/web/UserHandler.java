@@ -52,8 +52,11 @@ public class UserHandler extends WikiventsActionHandler<User> {
 	@NeedsNoAuthentication
 	public void viewValidateEmail(WikiventsCall call, User u) {
 		String token = call.request.getParameter("token");
-		if (token!=null && token.equals(u.passwordSalt))
+		if (token!=null && token.equals(u.passwordSalt)) {
+			if (call.user==null && ! u.emailValidated)
+				call.setCookie(u._id);
 			call.model.users.updateField(u, User.schema.emailValidated, true);
+		}
 		call.redirect("/user/"+u.username);
 	}
 
