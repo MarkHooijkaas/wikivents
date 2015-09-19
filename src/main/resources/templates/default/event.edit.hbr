@@ -27,7 +27,7 @@
 
 <form role="form" method="POST" id="createEvent">
 	<input type="hidden" name="action" value="edit"/>
-	{{> include/form.text     form.title    label="Titel" required="true"}}
+	{{> include/form.text     form.title    label="Titel" type="" required="true"}}
 	{{> include/form.date     form.date     label="Datum" required="true"}}
 	{{> include/form.text     form.time     label="Tijd" type="time" required="true"}}
 	{{> include/form.text     form.endTime  label="Eindtijd" type="time" required="true"}}

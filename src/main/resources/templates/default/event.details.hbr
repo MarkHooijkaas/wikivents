@@ -1,6 +1,6 @@
 <h2>Details</h2>
 {{#ifInlineEdit record}}
-	{{> include/show.ajaxDateField value=record.title name="title"  label="Titel" }}
+	{{> include/show.ajaxField value=record.title name="title" type=""  label="Titel" }}
 {{/ifInlineEdit}}
 	<div class="row">
 		<div class="col-xs-3"><label>Organisator</label></div>
