@@ -1,8 +1,23 @@
-{{> include/page.header}}
+{{> include/page.header.begin}}
+<script src="/lib/ckeditor/ckeditor.js"></script>
+<script src="/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="/lib/jquery-validation/src/localization/messages_nl.js"></script>
+{{> include/page.header.end}}
 
 {{#ifLoggedIn}}
 
-<form role="form" method="POST">
+<script > 
+	$(document).ready(function(){ 
+		$('#sendMessage').validate({
+			rules: {
+				subject: { required: true },
+				message: { required: true }
+			}
+		});
+	 }); 
+</script>
+
+<form role="form" method="POST" id="sendMessage">
 	<div class="form-group col-xs-12">
 		<label for="copyToSender"  class="col-xs-2">Van: </label>
 		<div class="col-xs-4">
