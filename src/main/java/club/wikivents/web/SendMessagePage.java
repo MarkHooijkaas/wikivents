@@ -33,7 +33,7 @@ public class SendMessagePage extends WikiventsPage {
 					String subject=formdata.subject.value;
 					String message=formdata.message.value;
 					//System.out.println(formdata.copyToSender.value);
-					boolean copyToSender=true;//"true".equals(formdata.copyToSender.value);
+					boolean copyToSender=false;//true;//"true".equals(formdata.copyToSender.value);
 					toUser.sendMailFrom(call.user, subject, message, copyToSender);
 					call.redirect("/user/"+toUser.username);
 				}
