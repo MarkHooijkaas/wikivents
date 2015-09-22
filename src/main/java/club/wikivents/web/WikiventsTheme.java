@@ -40,7 +40,6 @@ public class WikiventsTheme extends TemplateTheme {
 	public final CompiledTemplate userShow = template("user.show");
 	public final CompiledTemplate userEdit = template("user.edit");
 	public final CompiledTemplate userList = template("user.list");
-	public final CompiledTemplate userProfileTemplate = template("user.profile.template");
 	public final CompiledTemplate userRegister = template("user.register");
 	public final CompiledTemplate userRegisterSucces = template("user.register.success");
 	public final CompiledTemplate userSetPassword = template("user.setPassword");
