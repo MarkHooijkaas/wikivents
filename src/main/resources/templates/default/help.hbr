@@ -28,6 +28,18 @@ De operationele kosten (hosting, domein, ...) zijn relatief laag, zodat het niet
 Mochten de kosten in de toekomst dusdanig hard groeien, dat het niet meer goed te dragen is, dan zullen we kijken hoe dit op te lossen, bijvoorbeeld door vrijwillige donaties, subsidies of sponsoring. 
 De intentie is echter om de toegang tot Wikivents altijd gratis te laten en ook geen hinderlijke advertenties te tonen. 
 
+<h1>Hoe start ik een activiteit</h1>
+<p>Op de activiteiten pagina staat linksboven een knop "Start een activiteit". 
+Als je hier op drukt moet je een paar gegevens ingeven. 
+Belangrijke aandachtspunten:
+</p>
+<ul>
+	<li>Datum opgeven hangt af van je browser hoe dat werkt. Bij Chrome krijg je een mooie datumprikker, maar bij andere browsers moet je datum invoeren in formaat 2015-12-31</li>
+	<li>Tijd opgeven gebeurt in formaat 19:30</li>
+	<li>De eindtijd is een indicatie. Er is nog geen mogelijkheid als dit na middernacht is. Gebruik dan 23:59</li>
+	<li>Gebruik als plaats, een normale plaatsnaam. In de toekomst kan er dan makkelijker op regio gezocht worden</li>
+</ul>
+
 <h1>Hoe wijzig ik mijn gegevens</h1>
 <p>
 Om je eigen profiel te wijzigen ga je eerst naar deze pagina, bijvoorbeeld, door op je gebruikersnaam rechtsboven in de oranje balk te klikken. 
@@ -38,6 +50,7 @@ Als je op een potloodje klikt kan je het bijbehorende gegeven wijzigen.
 <p>
 Je kan ook een profielfoto instellen.
 Door op het potloodje rechts of onder je profielfoto te klikken, kan je een link (url) kopieren, naar een foto elders op Internet.
+Een dergelijke url kan je bijvoorbeeld op je facebook pagina vinden door met je rechtermuisknop op je profielfoto daar te klikken en "copy image url" te kiezen.
 Dit is nog wat primitef maar helaas is het momenteel nog niet mogelijk om foto's up te loaden naar de site.
 Mocht je problemen hebben, neem dan gerust contact op met de beheerders van wikivents
 </p>
