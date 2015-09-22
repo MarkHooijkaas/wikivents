@@ -1,9 +1,9 @@
- <row>
- <div class="form-group {{#if required}}form-group-required{{/if}} col-xs-12">
-    <label for="{{name}}"  class="col-xs-2">{{label}}: <i>{{message}}</i></label>
-    <div class="col-xs-4">
-	    <input class="form-control" type="date" id="mydatepicker2" name="{{name}}" value="{{value}}" data-date-format="yyyy-mm-dd" {{#if required}}required{{/if}}>
+ <div class="form-group {{#if required}}form-group-required{{/if}}">
+    <label for="{{name}}"  class="control-label col-xs-6 col-sm-1">{{label}}:</label> 
+     <div class="col-xs-6 col-sm-5">
+	    <input class="form-control" type="date" id="mydatepicker2" name="{{name}}" value="{{value}}" data-date-format="yyyy-mm-dd" {{#if required}}required{{/if}} placeholder="yyyy-mm-dd">
+	     <i>{{message}}</i>
     </div>
  </div>
- </row>
+ 
   

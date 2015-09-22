@@ -25,8 +25,8 @@
 	 }); 
 </script>
 
-<form role="form" method="POST" id="createEvent">
-	<input type="hidden" name="action" value="edit"/>
+<div class="col-xs-12">
+<form role="form" method="POST" id="createEvent" class="form-horizontal">
 	{{> include/form.text     form.title    label="Titel" type="" required="true"}}
 	{{> include/form.date     form.date     label="Datum" required="true"}}
 	{{> include/form.text     form.time     label="Tijd" type="time" required="true"}}
@@ -36,6 +36,8 @@
 	{{> include/form.textarea form.description label="Omschrijving" rows=10 required=""}}
 
 	{{> include/form.submitButton submitTitle="Maak activiteit" cancelUrl="/event/*.future"}}
+	<input type="hidden" name="action" value="edit"/>
 </form>
+</div>
 
 {{> include/page.footer}}

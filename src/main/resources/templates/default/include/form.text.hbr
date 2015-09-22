@@ -1,7 +1,8 @@
- <div class="form-group {{#if required}}form-group-required{{/if}} col-xs-12">
-	<label for="{{name}}"  class="col-xs-2">{{label}}: <i>{{message}}</i></label>
-	<div class="col-xs-4">
-		<input type="{{#if type}}{{type}}{{else}}text{{/if}}" class="form-control" id="{{name}}" name="{{name}}" value="{{value}}" {{#if required}}required{{/if}}> 
+ <div class="form-group {{#if required}}form-group-required{{/if}}">
+	<label for="{{name}}"  class="control-label col-xs-6 col-sm-1">{{label}}:</label>
+	<div class="col-xs-6 col-sm-5">
+		<input type="{{#if type}}{{type}}{{else}}text{{/if}}" class="form-control" id="{{name}}" name="{{name}}" value="{{value}}" {{#if required}}required{{/if}}>
+		 <i>{{message}}</i> 
 	</div>
 </div>
   
