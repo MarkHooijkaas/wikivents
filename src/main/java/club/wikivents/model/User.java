@@ -43,12 +43,20 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 	public final String encryptedPassword;
 	public final boolean isAdmin;
 	public final boolean emailValidated;
+	public final boolean updateNeeded;
 
 	public User(WikiventsModel model, Struct data) {
 		super(model.users, data);
 		this.model=model;
 		this.username=schema.username.getString(data);
-		this.description=schema.description.getString(data,model.getUserProfileTemplate());
+		String descr = schema.description.getString(data,null);
+		if (descr!=null && descr.trim().equals(model.getUserProfileTemplate())) {
+			descr=null;
+			this.updateNeeded = true;
+		}
+		else
+			this.updateNeeded=false;
+		this.description=descr;
 		this.message=schema.message.getString(data,null);
 		this.email=schema.email.getString(data);
 		this.city=schema.city.getString(data);

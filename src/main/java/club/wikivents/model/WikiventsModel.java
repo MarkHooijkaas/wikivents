@@ -14,17 +14,14 @@ import club.wikivents.web.WikiventsSite;
 public class WikiventsModel extends CrudModel {
 	public final WikiventsSite site;
 	public final String userProfileTemplate;
-	public final String eventPrivateDetailsTemplate;
 
 	public WikiventsModel(WikiventsSite site, StorageOption ... storage){ 
 		super(storage);
 		this.site=site;
-		initModel();
 		//TemplateEngine engine = new TemplateEngine(props);
 		CompiledTemplate templ = site.defaultTheme.userProfileTemplate;
 		this.userProfileTemplate=templ.toString(new TemplateData(this));
-		templ = site.defaultTheme.eventPrivateDetailsTemplate;
-		this.eventPrivateDetailsTemplate=templ.toString(new TemplateData(this));
+		initModel();
 	}
 
 	public final CrudTable<User>  users  = new CrudTable<>(this, User.schema);

@@ -19,6 +19,9 @@
 {{#ifIsAdmin}}       
         <th>email</th>
         <th>validated</th>
+        <th>profiel</th>
+        <th>foto</th>
+        <th>updateNeeded</th>
 {{/ifIsAdmin}}       
       </tr>
     </thead>
@@ -30,6 +33,9 @@
 {{#ifIsAdmin}}       
         <td>{{email}}</td>
         <td>{{emailValidated}}</td>
+        <td>{{#if description}}true{{else}}false{{/if}}</td>
+        <td>{{#if avatarUrl}}true{{else}}false{{/if}}</td>
+        <td>{{updateNeeded}}</td>
 {{/ifIsAdmin}}       
       </tr>
 {{/each}}

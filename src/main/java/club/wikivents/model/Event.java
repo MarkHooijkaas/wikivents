@@ -44,7 +44,7 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 		super(model.events, data);
 		this.title=schema.title.getString(data);
 		this.description=schema.description.getString(data);
-		this.guestInfo=schema.guestInfo.getString(data, model.eventPrivateDetailsTemplate);
+		this.guestInfo=schema.guestInfo.getString(data, null);
 		this.imageUrl=schema.imageUrl.getString(data);
 		this.location=schema.location.getString(data);
 		this.date=schema.date.getLocalDate(data);
