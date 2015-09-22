@@ -18,8 +18,13 @@ import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class ResourceHandler implements HttpCallHandler {
+	public static final Logger logger = LoggerFactory.getLogger(ResourceHandler.class);
+
 	private static final long ONE_SECOND_IN_MILLIS = TimeUnit.SECONDS.toMillis(1);
 	private static final String ETAG_HEADER = "W/\"%s-%s\"";
 	private static final String CONTENT_DISPOSITION_HEADER = "inline;filename=\"%1$s\"; filename*=UTF-8''%1$s";
@@ -35,10 +40,11 @@ public class ResourceHandler implements HttpCallHandler {
 			Resource resource=finder.findResource(subPath);
 			//System.out.println("found "+subPath+"==> "+resource.getContentLength()+" bytes");
 			
-			//if (resource == null) {
-			//	response.sendError(HttpServletResponse.SC_NOT_FOUND);
-			//	return;
-			//}
+			if (resource == null) {
+				logger.error("no such resource: "+subPath);
+				call.response.sendError(HttpServletResponse.SC_NOT_FOUND);
+				return;
+			}
 
 			String fileName = URLEncoder.encode(resource.getFileName(), StandardCharsets.UTF_8.name());
 			boolean notModified = setCacheHeaders(call, fileName, resource.getLastModified());
@@ -127,9 +133,12 @@ public class ResourceHandler implements HttpCallHandler {
 		public Resource findResource(String name) { 
 			for (File dir : dirs) {
 				File f = new File(dir,name);
+				//System.out.println("Looking for "+f.getAbsolutePath());
 				if (f.exists())
 					return new FileResource(f);
 			}
+			if (prefix==null)
+				return null;
 			return new ClassPathResource(prefix+name); 
 		}
 		private class ClassPathResource implements Resource {
@@ -140,7 +149,10 @@ public class ResourceHandler implements HttpCallHandler {
 			@Override public long getLastModified() { return System.currentTimeMillis();}
 			@Override public long getContentLength() { return -1;}
 			@Override public InputStream getInputStream() {
-				return this.getClass().getClassLoader().getResourceAsStream(name);
+				InputStream result = this.getClass().getClassLoader().getResourceAsStream(name);
+				if (result==null)
+					throw new RuntimeException("No such resource "+name);
+				return result;
 			}
 		}
 		private class FileResource implements Resource {

@@ -2,6 +2,7 @@ package club.wikivents.web;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.kisst.http4j.ResourceHandler;
 import org.kisst.http4j.form.HttpFormData;
 import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
 import org.kisst.item4j.struct.HashStruct;
@@ -16,7 +17,7 @@ import net.tanesha.recaptcha.ReCaptchaImpl;
 import net.tanesha.recaptcha.ReCaptchaResponse;
 
 public class UserHandler extends WikiventsActionHandler<User> {
-	
+	private final ResourceHandler uploads = new ResourceHandler(null, "data/uploads");
 	public UserHandler(WikiventsSite site) { super(site, site.model.users); }
 
 	@Override protected User findRecord(String id) {
@@ -38,6 +39,12 @@ public class UserHandler extends WikiventsActionHandler<User> {
 	public void view(WikiventsCall call, User user) {
 		call.output(call.getTheme().userShow, user);
 	}
+	@NeedsNoAuthorization
+	public void viewAvatar(WikiventsCall call, User user) {
+		uploads.handle(call, user._id+"/avatar.jpg");
+	}
+
+	
 	public void viewEdit(WikiventsCall call, User u) {
 		new Form(call,u).showForm();
 	}

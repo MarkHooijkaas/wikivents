@@ -53,6 +53,12 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 	}
 	
 	private void handleGet(C call, String id) {
+		String subpath=null;
+		int pos=id.indexOf('/');
+		if (pos>0) {
+			subpath=id.substring(pos+1);
+			id=id.substring(0, pos);
+		}
 		String methodName=null;
 		T record=null;
 		if (id!=null && id.trim().length()>0 ) {
@@ -70,6 +76,8 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 					methodName = "view";
 				else
 					methodName = "view"+StringUtil.capitalize(view);
+				if (subpath!=null)
+					methodName += StringUtil.capitalize(subpath);
 				record=findRecord(id);
 				if (record==null)
 					throw new IllegalArgumentException("Could not find "+id);
