@@ -1,8 +1,7 @@
- <row>
- <div class="form-group col-xs-12">
-    <label for="{{name}}"  class="col-xs-2">{{label}}:</label>
-    <p class="col-xs-4">{{value}}
-    <div class="col-xs-6"></div>
-  </div>
-  </row>
+ <div class="form-group {{#if required}}form-group-required{{/if}}">
+	<label for="{{name}}"  class="control-label col-xs-6 col-sm-1">{{label}}:</label>
+	<div class="col-xs-6 col-sm-5">
+		{{value}}
+	</div>
+</div>
   

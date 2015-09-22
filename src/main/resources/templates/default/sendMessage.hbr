@@ -17,26 +17,17 @@
 	 }); 
 </script>
 
-<form role="form" method="POST" id="sendMessage">
-	<div class="form-group col-xs-12">
-		<label for="copyToSender"  class="col-xs-2">Van: </label>
-		<div class="col-xs-4">
-			<span>{{call.user.email}}
-				<!--
-				&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox"  id="copyToSender" name="copyToSender" value="true" checked="true">
-				afschrift aan mijzelf
-				-->
-			</span> 
-		</div>
-	</div>
-	
-	{{> include/form.fixtext  form.to      label="Aan"}}
+<div class="col-xs-12">
+<form role="form" method="POST" id="sendMessage"  class="form-horizontal">
+	{{> include/form.fixtext  value=call.user.email label="Van"}}
+	{{> include/form.fixtext  value=form.to.value   label="Aan"}}
 	{{> include/form.text     form.subject label="Onderwerp"}}
-	{{> include/form.textarea form.message label="Bericht" rows=10}}
-
+	{{> include/form.textarea form.message label="Bericht:" rows=10}}
+	<br>
 	<button type="submit" class="btn btn-default btn-success">Verzend email</button>
 	<a class="btn btn-default btn-danger" href="/user/{{form.to.value}}">Annuleer</a>
 </form>
+</div>
 
 N.B. Deze gebruiker krijgt een e-mail met daarin jouw email adres zichtbaar voor replies.
 Mocht je dat niet willen dan is het mogelijk om bij de beheerder van wikivents een eigen email adres aan te vragen, 

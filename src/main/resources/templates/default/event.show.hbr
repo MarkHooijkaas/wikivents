@@ -1,11 +1,18 @@
 {{> include/page.header.begin}}
 <script src="/lib/ckeditor/ckeditor.js"></script>
+{{#ifInlineEdit record}}
+<script src="/lib/webshim-1.15.10/js-webshim/minified/polyfiller.js"></script>
+{{/ifInlineEdit}}
 {{> include/page.header.end}}
+
+{{#ifInlineEdit record}}
+	<script>webshim.polyfill('forms forms-ext');</script>
+{{/ifInlineEdit}}
+
 
 <div class="col-xs-12 col-sm-7 col-md-8 col-lg-8 panel panel-default overflow-hidden">
 	{{>event.description}}
 </div>
-
 
 
 <div class="col-xs-12 col-sm-5 col-md-4 col-lg-4 overflow-hidden">
