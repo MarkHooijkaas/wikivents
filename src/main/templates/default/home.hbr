@@ -13,7 +13,7 @@
 	} );
 </script>
 
-<img style="max-height:100%; max-width:100%;" src="/resources/wikivents-logo.gif"/>
+<img style="max-height:100%; max-width:100%;" src="/images/wikivents-logo.gif"/>
 
 <h1>Welkom op de <a href="https://nl.wikipedia.org/wiki/Wiki" target="_blank"	>Wiki</a> van <a href="/event/*.future">Events</a></h1>
 {{#ifLoggedIn}}

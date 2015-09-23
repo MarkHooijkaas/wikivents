@@ -1,22 +1,23 @@
 package club.wikivents.web;
 
-import club.wikivents.WikiventsModels;
-import club.wikivents.model.WikiventsModel;
-import net.tanesha.recaptcha.ReCaptcha;
-import net.tanesha.recaptcha.ReCaptchaFactory;
+import java.io.File;
+import java.util.HashMap;
 
 import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.HttpCallDispatcher;
 import org.kisst.http4j.HttpCallDispatcher.Path;
-import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
 import org.kisst.http4j.HttpCallHandler;
 import org.kisst.http4j.ResourceHandler;
+import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
 import org.kisst.props4j.Props;
 import org.kisst.util.MailSender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
+import club.wikivents.WikiventsModels;
+import club.wikivents.model.WikiventsModel;
+import net.tanesha.recaptcha.ReCaptcha;
+import net.tanesha.recaptcha.ReCaptchaFactory;
 
 public class WikiventsSite implements HttpCallHandler {
 	final static Logger logger=LoggerFactory.getLogger(WikiventsSite.class);
@@ -43,11 +44,14 @@ public class WikiventsSite implements HttpCallHandler {
 		public final HttpCallHandler login  = loginPage::handleLogin;
 		public final HttpCallHandler logout = new LogoutPage(WikiventsSite.this);
 		public final HttpCallHandler sendMessage = new SendMessagePage(WikiventsSite.this);
-		public final HttpCallHandler lib=new ResourceHandler("lib/", "src/main/resources/lib");
-		public final HttpCallHandler css=new ResourceHandler("resources/css/", "src/main/resources/resources/css");
-		public final HttpCallHandler resources=new ResourceHandler("resources/", "src/main/resources/resources");
-		@Path(dispatchPath="favicon.ico")
-		public final HttpCallHandler favicon =new ResourceHandler("resources/favicon.ico", "src/main/resources/resources/favicon.ico");
+		private final File resourceDir=new File(props.getString("resourceDir","resources"));
+		//public final HttpCallHandler lib=new ResourceHandler("lib/", new File(resourceDir, "lib"));
+		//public final HttpCallHandler css=new ResourceHandler("css/", new File(resourceDir,"css"));
+		//public final HttpCallHandler images=new ResourceHandler("images/", new File(resourceDir,"images"));
+		//@Path(dispatchPath="favicon.ico")
+		//public final HttpCallHandler favicon =new ResourceHandler("resources/favicon.ico", new File(resourceDir,"images/favicon.ico"));
+		@Path(dispatchPath="*")
+		public final HttpCallHandler defaultHandler =new ResourceHandler(null, resourceDir);
 	}
 	public WikiventsSite(Props props) {
 		this.props=props;
@@ -80,7 +84,7 @@ public class WikiventsSite implements HttpCallHandler {
 		catch (RuntimeException e) {
 			logger.error("Error when handling "+call.request.getRequestURL(), e);
 			TemplateData context = new TemplateData(call);
-			context.add("message", e.getMessage());
+			context.add("exception", e);
 			call.output(call.getTheme().error,context);
 		}
 	}

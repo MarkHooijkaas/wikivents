@@ -1,8 +1,8 @@
 {{> include/page.header}}
 
-<p>Er is een fout opgetreden.</p>
+<p>Er is een fout opgetreden bij het aanroepen van pagina {{call.request.requestURL}}</p>
 
-<img src="/resources/sad-smiley.jpg"/>
+<img src="/images/sad-smiley.jpg"/>
 
 <p>
 Mocht je problemen hebben bij het gebruik van wikivents, neem dan contact op met de beheerders: <a href="mailto:info@wikivents.nl">info@wikivents.nl</a>

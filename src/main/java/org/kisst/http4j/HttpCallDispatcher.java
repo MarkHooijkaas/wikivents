@@ -20,9 +20,11 @@ public class HttpCallDispatcher implements HttpCallHandler {
 	
 	private final LinkedHashMap<String, HttpCallHandler> map=new LinkedHashMap<String, HttpCallHandler>();
 	private final HttpCallHandler home;
+	private final HttpCallHandler defaultHandler;
 
 	public HttpCallDispatcher(Object pages) {
 		HttpCallHandler tmpHome=null;
+		HttpCallHandler defaultHandler=null;
 		//System.out.println("Loading fields from "+ReflectionUtil.smartClassName(pages.getClass()));
 		for (java.lang.reflect.Field f : ReflectionUtil.getAllDeclaredFieldsOfType(pages.getClass(), HttpCallHandler.class)) {
 			f.setAccessible(true);
@@ -41,14 +43,17 @@ public class HttpCallDispatcher implements HttpCallHandler {
 			//System.out.println("Adding url "+path+" with value "+handler);
 			if ("home".equals(path))
 				tmpHome=handler;
-					
+			if ("*".equals(path))
+				defaultHandler=handler;
 		}
 		this.home=tmpHome;
+		this.defaultHandler=defaultHandler;
 	}
 
 	@Override public void handle(HttpCall call, String subPath) {
 		while (subPath.startsWith("/"))
 			subPath=subPath.substring(1);
+		String origPath=subPath;
 		int pos=subPath.indexOf("/");
 		String name=subPath;
 		if (pos>0) {
@@ -61,6 +66,10 @@ public class HttpCallDispatcher implements HttpCallHandler {
 			subPath=subPath.substring(1);
 		HttpCallHandler handler = name.length()==0 ? home : map.get(name);
 		//System.out.println("Handling {"+name+"} with subPath {"+subPath+"} with handler "+handler);
+		if (handler==null) {
+			handler=defaultHandler;
+			subPath=origPath;
+		}
 		if (handler==null)
 			call.invalidPage();
 		else

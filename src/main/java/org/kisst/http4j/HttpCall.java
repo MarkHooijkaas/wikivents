@@ -91,7 +91,11 @@ public class HttpCall {
 		out=null;
 	}
 
-	public void invalidPage() { throw new RuntimeException("Invalid page "+request.getRequestURI()); }
+	public class NoSuchPageException extends RuntimeException {
+		private static final long serialVersionUID = 1L;
+	}
+	
+	public void invalidPage() { throw new NoSuchPageException(); }
 
 	public void redirect(String url) {
 		try {

@@ -33,7 +33,7 @@ public class ResourceHandler implements HttpCallHandler {
 	public static final int DEFAULT_STREAM_BUFFER_SIZE = 102400;
 
 	private final ResourceFinder finder;
-	public ResourceHandler(String prefix, String dirname) { this.finder=new ResourceFinder(prefix, new File(dirname)); } 
+	public ResourceHandler(String prefix, File dir) { this.finder=new ResourceFinder(prefix, dir); } 
 	public void handle(HttpCall call, String subPath) {
 		try {
 			call.response.reset();
@@ -42,7 +42,8 @@ public class ResourceHandler implements HttpCallHandler {
 			
 			if (resource == null) {
 				logger.error("no such resource: "+subPath);
-				call.response.sendError(HttpServletResponse.SC_NOT_FOUND);
+				//call.response.sendError(HttpServletResponse.SC_NOT_FOUND);
+				call.invalidPage();
 				return;
 			}
 

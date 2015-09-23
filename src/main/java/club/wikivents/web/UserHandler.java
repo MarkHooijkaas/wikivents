@@ -1,5 +1,7 @@
 package club.wikivents.web;
 
+import java.io.File;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.kisst.http4j.ResourceHandler;
@@ -17,7 +19,7 @@ import net.tanesha.recaptcha.ReCaptchaImpl;
 import net.tanesha.recaptcha.ReCaptchaResponse;
 
 public class UserHandler extends WikiventsActionHandler<User> {
-	private final ResourceHandler uploads = new ResourceHandler(null, "data/uploads");
+	private final ResourceHandler uploads = new ResourceHandler(null, new File("data/uploads"));
 	public UserHandler(WikiventsSite site) { super(site, site.model.users); }
 
 	@Override protected User findRecord(String id) {
