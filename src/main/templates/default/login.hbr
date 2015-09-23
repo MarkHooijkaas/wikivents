@@ -7,9 +7,24 @@ Om uit te loggen kan je naar de <a href="/logout">Uitlog pagina</a> gaan.
 
 {{else}}
 
-<form role="form" method="post" action="/login">
-  {{> include/form.text form.username label="Gebruikersnaam" type="text"}}
-  {{> include/form.text form.password label="Wachtwoord" type="password"}}
+<form role="form" method="post" action="/login" class="form-horizontal">
+
+<div class="form-group">
+	<label class="control-label col-xs-6 col-sm-2">Gebruikersnaam:</label>
+	<div class="col-xs-6 col-sm-4">
+		<input type="username" class="form-control" id="username" name="username" value="{{form.username.value}}">
+		 <i>{{form.username.message}}</i> 
+	</div>
+</div>
+
+<div class="form-group">
+	<label for="password"  class="control-label col-xs-6 col-sm-2">Wachtwoord:</label>
+	<div class="col-xs-6 col-sm-4">
+		<input type="password" class="form-control" id="password" name="password" value="{{form.password.value}}">
+		 <i>{{form.password.message}}</i> 
+	</div>
+</div>
+
   <button type="submit" class="btn btn-default btn-success">Inloggen</button>
 </form>
 
