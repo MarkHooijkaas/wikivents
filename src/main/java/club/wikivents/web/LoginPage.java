@@ -12,7 +12,7 @@ public class LoginPage extends WikiventsThing {
 	public class Fields extends HttpFormData {
 		public Fields(WikiventsCall call) { super(call,call.getTheme().login); }
 
-		public final User user=model.usernameIndex.get(StructHelper.getString(record, "username",null));
+		public final User user=model.usernameIndex.get(StructHelper.getString(record, "username","").trim());
 		public final InputField username = new InputField("username", this::validateUsername);
 		public final InputField password = new InputField("password", this::validatePassword);
 		
