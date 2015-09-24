@@ -32,68 +32,68 @@ public interface Item {
 	default public <T> T asType(Factory factory, Class<T> cls) { return asType(factory, cls,asObject()); }
 	
 	public static String asString(Object obj) { 
-		if (obj==null) return null; 
+		if (obj==null || obj==ReflectionUtil.UNKNOWN_FIELD) return null; 
 		return obj.toString();
 	}
 	public static Item asItem(Object obj) { 
-		if (obj==null) return null; 
+		if (obj==null || obj==ReflectionUtil.UNKNOWN_FIELD) return null; 
 		if (obj instanceof Item) return (Item) obj;
 		return new Wrapper(obj);
 	}
 	public static Struct asStruct(Object obj) { 
-		if (obj==null) return null; 
+		if (obj==null || obj==ReflectionUtil.UNKNOWN_FIELD) return null; 
 		if (obj instanceof Struct) return (Struct) obj;
 		if (obj instanceof Map) return new MapStruct(cast(obj));
 		return new ReflectStruct(obj);
 	}		
 	public static Integer asInteger(Object obj) { 
-		if (obj==null) return null; 
+		if (obj==null || obj==ReflectionUtil.UNKNOWN_FIELD) return null; 
 		if (obj instanceof Integer) return (Integer) obj;
 		if (obj instanceof Number) return ((Number)obj).intValue();
 		return Integer.parseInt(asString(obj));
 	}		
 	public static Long asLong(Object obj) { 
-		if (obj==null) return null; 
+		if (obj==null || obj==ReflectionUtil.UNKNOWN_FIELD) return null; 
 		if (obj instanceof Long) return (Long) obj;
 		if (obj instanceof Number) return ((Number)obj).longValue();
 		return Long.parseLong(asString(obj));
 	}		
 	public static Byte asByte(Object obj) { 
-		if (obj==null) return null; 
+		if (obj==null || obj==ReflectionUtil.UNKNOWN_FIELD) return null; 
 		if (obj instanceof Byte) return (Byte) obj;
 		if (obj instanceof Number) return ((Number)obj).byteValue();
 		return Byte.parseByte(asString(obj));
 	}		
 	public static Short asShort(Object obj) { 
-		if (obj==null) return null; 
+		if (obj==null || obj==ReflectionUtil.UNKNOWN_FIELD) return null; 
 		if (obj instanceof Short) return (Short) obj;
 		if (obj instanceof Number) return ((Number)obj).shortValue();
 		return Short.parseShort(asString(obj));
 	}		
 	public static Float asFloat(Object obj) { 
-		if (obj==null) return null; 
+		if (obj==null || obj==ReflectionUtil.UNKNOWN_FIELD) return null; 
 		if (obj instanceof Float) return (Float) obj;
 		if (obj instanceof Number) return ((Number)obj).floatValue();
 		return Float.parseFloat(asString(obj));
 	}		
 	public static Double asDouble(Object obj) { 
-		if (obj==null) return null; 
+		if (obj==null || obj==ReflectionUtil.UNKNOWN_FIELD) return null; 
 		if (obj instanceof Double) return (Double) obj;
 		if (obj instanceof Number) return ((Number)obj).doubleValue();
 		return Double.parseDouble(asString(obj));
 	}				
 	public static Boolean asBoolean(Object obj) { 
-		if (obj==null) return null; 
+		if (obj==null || obj==ReflectionUtil.UNKNOWN_FIELD) return null; 
 		if (obj instanceof Boolean) return (Boolean) obj;
 		return Boolean.parseBoolean(asString(obj));
 	}
 	public static LocalDate asLocalDate(Object obj) { 
-		if (obj==null) return null; 
+		if (obj==null || obj==ReflectionUtil.UNKNOWN_FIELD) return null; 
 		if (obj instanceof LocalDate) return (LocalDate) obj;
 		return LocalDate.parse(asString(obj));
 	}
 	public static LocalTime asLocalTime(Object obj) { 
-		if (obj==null) return null;
+		if (obj==null || obj==ReflectionUtil.UNKNOWN_FIELD) return null; 
 		if (obj instanceof LocalTime) return (LocalTime) obj;
 		String str = asString(obj);
 		if (str==null || str.trim().length()==0)
@@ -101,25 +101,25 @@ public interface Item {
 		return LocalTime.parse(str);
 	}
 	public static LocalDateTime asLocalDateTime(Object obj) { 
-		if (obj==null) return null; 
+		if (obj==null || obj==ReflectionUtil.UNKNOWN_FIELD) return null; 
 		if (obj instanceof LocalDateTime) return (LocalDateTime) obj;
 		return LocalDateTime.parse(asString(obj));
 	}
 	public static Instant asInstant(Object obj) { 
-		if (obj==null) return null; 
+		if (obj==null || obj==ReflectionUtil.UNKNOWN_FIELD) return null; 
 		if (obj instanceof Instant) return (Instant) obj;
 		return Instant.parse(asString(obj));
 	}
 
 	public static Immutable.ItemSequence asItemSequence(Object obj) {
-		if (obj==null) return null; 
+		if (obj==null || obj==ReflectionUtil.UNKNOWN_FIELD) return null; 
 		if (obj instanceof ItemSequence) return Immutable.ItemSequence.smartCopy((ItemSequence) obj);
 		if (obj instanceof Collection)   return Immutable.ItemSequence.smartCopy((Collection<?>) obj);
 		throw new ClassCastException("Can not make a ItemSequence of type "+obj.getClass()+", "+obj);
 	}
 	@SuppressWarnings("unchecked")
 	public static <T> ImmutableSequence<T> asTypedSequence(Item.Factory factory, Class<?> type, Object obj) {
-		if (obj==null) return null; 
+		if (obj==null || obj==ReflectionUtil.UNKNOWN_FIELD) return null; 
 		if (obj instanceof TypedSequence) return ImmutableSequence.smartCopy(factory, type,(TypedSequence<T>) obj);
 		if (obj instanceof Collection)   return ImmutableSequence.smartCopy(factory, type, (Collection<T>) obj);
 		throw new ClassCastException("Can not make a ItemSequence of type "+obj.getClass()+", "+obj);
@@ -127,7 +127,7 @@ public interface Item {
 	
 	@SuppressWarnings("unchecked")
 	public static <T> T asType(Factory factory, Class<?> cls, Object obj) {
-		if (obj==null) return null;
+		if (obj==null || obj==ReflectionUtil.UNKNOWN_FIELD) return null; 
 		if (cls.isAssignableFrom(obj.getClass()))
 			return (T) obj;
 		//System.out.println("Converting "+obj+" to "+cls);
