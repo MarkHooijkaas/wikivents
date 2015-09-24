@@ -71,7 +71,7 @@ public class FileStorage implements StructStorage {
 	private Struct createStruct(File f) {
 		Struct result = new MultiStruct(
 				parser.parse(f),
-				new SingleItemStruct("fileModificationDate", Instant.ofEpochMilli(f.lastModified()))
+				new SingleItemStruct("savedModificationDate", Instant.ofEpochMilli(f.lastModified()))
 				);
 		//System.out.println(result);
 		return result;

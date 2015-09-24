@@ -17,7 +17,7 @@ public abstract class CrudObject extends SchemaObject {
 		this.table=table;
 		this._id=createUniqueKey(data);
 		this.creationDate=new ObjectId(_id).getDate().toInstant();
-		this.modificationDate=(Instant) data.getDirectFieldValue("fileMRodificationDate", Instant.now());
+		this.modificationDate=(Instant) data.getDirectFieldValue("savedModificationDate", Instant.now());
 		//System.out.println(data);
 	}
 	public String getKey() { return _id;} 
