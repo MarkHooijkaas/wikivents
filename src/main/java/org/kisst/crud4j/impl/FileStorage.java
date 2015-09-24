@@ -1,6 +1,7 @@
 package org.kisst.crud4j.impl;
 
 import java.io.File;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -13,6 +14,8 @@ import org.kisst.item4j.json.JsonOutputter;
 import org.kisst.item4j.json.JsonParser;
 import org.kisst.item4j.seq.ArraySequence;
 import org.kisst.item4j.seq.TypedSequence;
+import org.kisst.item4j.struct.MultiStruct;
+import org.kisst.item4j.struct.SingleItemStruct;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.props4j.Props;
 import org.kisst.util.CallInfo;
@@ -64,9 +67,20 @@ public class FileStorage implements StructStorage {
 		int i=number.incrementAndGet();
 		return Long.toHexString(System.currentTimeMillis())+Integer.toHexString(i);
 	}
+	
+	private Struct createStruct(File f) {
+		Struct result = new MultiStruct(
+				parser.parse(f),
+				new SingleItemStruct("fileModificationDate", Instant.ofEpochMilli(f.lastModified()))
+				);
+		//System.out.println(result);
+		return result;
+	}
+	
 	@Override public Struct read(String key) {
 		System.out.println("Reading "+key);
-		return parser.parse(getFile(key));
+		File f = getFile(key);
+		return createStruct(f);
 	}
 	@Override public void update(Struct oldValue, Struct newValue) {
 		// The newValue may contain an id, but that is ignored
@@ -101,7 +115,7 @@ public class FileStorage implements StructStorage {
 				count++;
 				key=key.substring(0,key.length()-4);
 
-				Struct doc=parser.parse(f);
+				Struct doc=createStruct(f);
 				list.add(doc);
 			}
 			catch (Exception e) { e.printStackTrace();}// TODO: return dummy placeholder

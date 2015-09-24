@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.StringJoiner;
 
-import org.bson.types.ObjectId;
 import org.kisst.crud4j.CrudObject;
 import org.kisst.crud4j.CrudSchema;
 import org.kisst.crud4j.CrudTable.CrudRef;
@@ -82,7 +81,6 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 		public final SequenceField<Comment> comments= new SequenceField<Comment>(Comment.schema,"comments");
 	}
 
-	public LocalDate creationDate() { return LocalDate.ofEpochDay(new ObjectId(_id).getTimestamp()/(24*3600)); }
 	public String guestCount() {
 		if (guests==null)
 			return "0";

@@ -16,6 +16,7 @@
       <tr>
         <th>Naam</th>
         <th>Woonplaats</th>
+        <th>Lid sinds</th>
 {{#ifIsAdmin}}       
         <th>email</th>
         <th>validated</th>
@@ -29,6 +30,7 @@
       <tr>
         <td>{{&link}}</td>
         <td>{{city}}</td>
+        <td data-order="{{creationDate}}">{{dateFormat creationDate "eee d MMM yyyy"}}</td>
 {{#ifIsAdmin}}       
         <td>{{email}}</td>
         <td>{{emailValidated}}</td>
