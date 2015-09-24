@@ -1,6 +1,6 @@
 {{#ifLoggedIn}}
 
-<h2>Deelnemers
+<h2>Deelnemers {{record.guestCount}}/{{record.max}}
 	{{> include/modal.lockField value=record.guestsAllowed name="guestsAllowed" label="Deelname"}}
 </h2> 
 
