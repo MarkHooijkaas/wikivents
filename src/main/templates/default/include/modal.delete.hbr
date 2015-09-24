@@ -1,5 +1,5 @@
-<a data-toggle="modal" data-target="#{{value}}Modal"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
-{{> include/modal.begin id=value}}
+<a data-toggle="modal" data-target="#{{action}}{{value}}Modal"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+{{> include/modal.begin id=value prefix=action}}
 	<form role="form" method="POST" id="{{action}}Form{{value}}" action="">
 		<input type="hidden" name="action" value="{{action}}"/>
 		<input type="hidden" name="{{field}}" value="{{value}}"/>
