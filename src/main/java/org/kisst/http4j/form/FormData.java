@@ -54,7 +54,7 @@ public class FormData  implements Struct{
 		public InputField(String name, String value, Validator ... validators) {
 			//System.out.println("setting field "+name+" to value "+value);
 			this.name=name.trim();
-			this.value=value;
+			this.value=value==null? null : value.trim();
 			for (Validator v: validators) {
 				String msg=v.validate(this);
 				if (msg!=null) {
