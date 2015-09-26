@@ -1,13 +1,13 @@
 {{#ifInlineEdit record}}
-	{{> include/modal.begin  id=name}}
+	{{> include/modal.begin prefix="" id=name}}
 		{{#block "helpText"}}
 		{{/block}}
-		<form role="form" method="POST" id="{{name}}Form" action="{{call.request.requestURI}}?inline-edit=true">
+		<form role="form" method="POST" id="changeField{{name}}Form" action="{{call.request.requestURI}}?inline-edit=true">
 			<input type="hidden" name="action" value="changeField"/>
 			<input type="hidden" name="field" value="{{name}}"/>
 			<label for="">{{label}}: </label>
 			
-		    <textarea type="{{type}}" class="form-control" id="{{name}}" name="value" rows="{{rows}}">
+		    <textarea type="{{type}}" class="form-control" id="changeField{{name}}" name="value" rows="{{rows}}">
 		    {{#if value}} 
 		    	{{&value}}
 		    {{else}}
@@ -15,7 +15,7 @@
 		    {{/if}}
 		    </textarea>
         	<script>
-        	CKEDITOR.replace( '{{name}}' );
+        	CKEDITOR.replace( 'changeField{{name}}' );
 			</script>
 			
 			<input type="submit" id="{{name}}Button" class="btn btn-default btn-success" value="Wijzig {{label}}">

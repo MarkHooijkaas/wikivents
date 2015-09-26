@@ -1,4 +1,4 @@
-{{> include/modal.begin  id=name}}
+{{> include/modal.begin  prefix="addComment" id=name}}
 	<form role="form" method="POST" id="{{name}}Form" action="">
 		<input type="hidden" name="action" value="addComment"/>
 		<label for="">Reactie: </label><br/>
@@ -9,7 +9,7 @@
 	</form>
 	<script>
 	$(document).ready(function(){
-		$("#{{name}}Button").click(function(){
+		$("#addCommentButton").click(function(){
 			$.ajax({
 				type: "POST",
 				url: "#",

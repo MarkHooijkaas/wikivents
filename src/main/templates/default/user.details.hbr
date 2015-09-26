@@ -6,12 +6,12 @@
 	<img src="/favicon.ico"/>
 {{/if}}
 {{#ifInlineEdit record}}
-	{{> include/modal.textField value=record.avatarUrl  name="avatarUrl"  label="Profielfoto URL"}}<br>
-	{{record.city}}  {{> include/modal.textField value=record.city  name="city"  label="Woonplaats"}}<br>  
+	{{> include/modal.textField value=record.avatarUrl  name="avatarUrl" prefix="" label="Profielfoto URL"}}<br>
+	{{record.city}}  {{> include/modal.textField value=record.city  name="city" prefix=""  label="Woonplaats"}}<br>  
 	Wachtwoord {{> dialog/changePassword}}
 	{{#ifIsAdmin}}
-		{{record.username}}  {{> include/modal.textField value=record.username  name="username"  label="Gebruikersnaam"}}<br>
-		{{record.email}} {{> include/modal.textField value=record.email name="email" label="E-mail"}}<br>  
+		{{record.username}}  {{> include/modal.textField value=record.username  name="username" prefix="" label="Gebruikersnaam"}}<br>
+		{{record.email}} {{> include/modal.textField value=record.email name="email" prefix="" label="E-mail"}}<br>  
 	{{/ifIsAdmin}}  
 {{else}}
 	<br><br>{{record.city}}<br>
