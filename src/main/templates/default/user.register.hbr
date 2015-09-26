@@ -26,7 +26,8 @@
 	 }); 
 </script>
 
-<form role="form" method="POST" action="/user/!register" id="registerUser">
+
+<form role="form" method="POST" action="/user/!register" id="registerUser" class="form-horizontal">
 	<input type="hidden" name="action" value="register"/>
 	{{> include/form.text form.username label="Gebruikersnaam" required="true"}}
 	{{> include/form.text form.email    label="E-mail" required="true"}}
