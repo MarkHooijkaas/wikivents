@@ -51,9 +51,4 @@ public class WikiventsTheme extends TemplateTheme {
 	public final CompiledTemplate groupShow = template("group.show");
 	public final CompiledTemplate groupEdit = template("group.edit");
 	public final CompiledTemplate groupList = template("group.list");
-
-	
-	public final CompiledTemplate pageEdit = template("page.edit");;
-	public final CompiledTemplate pageShow = template("page.show");;
-
 }

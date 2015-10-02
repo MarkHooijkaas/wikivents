@@ -1,5 +1,0 @@
-{{> include/page.header}}
-
-{{& page.content}}
-
-{{> include/page.footer}}
