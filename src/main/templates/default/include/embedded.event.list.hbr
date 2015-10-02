@@ -11,13 +11,13 @@
         <th>activiteit</th>
         <th>plaats</th>
         <th>deelnemers</th>
-        <th>aantal likes</th>
 {{#ifLoggedIn}}
         <th>Organisator</th>
 {{/ifLoggedIn}}
         <th>geplaatst op</th>
         <th>Update</th>
 {{#ifIsAdmin}}
+        <th>aantal likes</th>
         <th>Del</th>
 {{/ifIsAdmin}}
       </tr>
@@ -34,13 +34,13 @@
         <td><a href="/event/:{{_id}}">{{title}}</a></td>
         <td>{{location}}</td>
         <td data-order="{{guests.size}}">{{guestCount}}/{{max}}</td>
-        <td data-order="{{likes.size}}">{{likes.size}} likes</td>
 {{#ifLoggedIn}}
         <td>{{&join organizers "<br/>"}}</td>
 {{/ifLoggedIn}}
         <td data-order="{{creationDate}}">{{dateFormat creationDate "eee d MMM yyyy"}}</td>
         <td data-order="{{modificationDate}}">{{dateFormat modificationDate "eee d MMM yyyy"}}</td>
 {{#ifIsAdmin}}
+        <td data-order="{{likes.size}}">{{likes.size}} likes</td>
         <td>
 			{{> include/modal.delete action="delete" field="ActionHandlerId" value=record._id label="Weet je zeker dat je dit event wil verwijderen?"}} 
 		</td>
