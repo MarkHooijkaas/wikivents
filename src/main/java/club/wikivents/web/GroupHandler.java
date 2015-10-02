@@ -46,7 +46,7 @@ public class GroupHandler extends WikiventsActionHandler<Group> {
 		if (formdata.isValid()) {
 			Group t=new Group(call.model,call.user,formdata.record);
 			model.groups.create(t);
-			call.redirect("/group/:"+t._id);
+			call.redirect("/theme/:"+t._id);
 		}
 		else
 			formdata.handle();

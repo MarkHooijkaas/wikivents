@@ -13,22 +13,23 @@
 	} );
 </script>
 
-Welkom bij de Wikivents groepen. 
-Een groep bevat zowel een groep activiteiten, als een groep mensen die daar interesse in hebben.
-Een groep kan over een bepaald thema gaan zoals film, sport of dansen, maar ook voor een regelmatig terugkerende activiteit, zoals een pubquiz of een eetgroep.
-Bij een activiteit kan je deze in een groep plaatsen waar je lid van bent. (op dit moment kan dat alleen bij het wijzigen en nog niet bij het aanmaken).
-Een activiteit kan ook bij meerdere groepen horen.
-Vaak zal een groep enigszins regio gebonden zijn, maar dit hoeft natuurlijk niet.
+Hieronder zie je een lijst aan thema's.
+Bij een thema horen activiteiten, maar ook een groep mensen die interesse hebben in dat thema.
+Een thema kan over een bepaalde categorie activiteiten gaan zoals film, sport of dansen, maar ook voor een regelmatig terugkerende activiteit, zoals een pubquiz of een eetgroep.
+Bij een activiteit kan je aangeven bij welk thema deze activiteit past.
+Je krijgt dan een lijst te zien van alle thema's waar je zelf interesse in hebt. 
+Op dit moment kan dat alleen bij het wijzigen van een wikivent en nog niet bij het aanmaken.
+Een activiteit kan ook bij meerdere thema's passen.
 {{#ifLoggedIn}}
 <p>
-<a href="/group/!create">Maak een nieuwe groep</a>
+Heb je een creatief idee voor een leuk thema, <a href="/theme/!create">maak dan een nieuw thema</a>
 {{/ifLoggedIn}}
 
 {{#if list}}
   <table id="grouplist" class="display compact" cellspacing="0" width="100%">
     <thead>
       <tr>
-        <th>Groep</th>
+        <th>Thema</th>
         <th>Aantal Leden</th>
 {{#ifLoggedIn}}
         <th>Beheerders</th>
@@ -44,7 +45,7 @@ Vaak zal een groep enigszins regio gebonden zijn, maar dit hoeft natuurlijk niet
 		
 {{#each list}} 
 	  <tr>
-        <td><a href="/group/:{{_id}}">{{title}}</a></td>
+        <td><a href="/theme/:{{_id}}">{{title}}</a></td>
         <td>{{members.size}}</td>
 {{#ifLoggedIn}}
         <td>{{&join owners "<br/>"}}</td>
@@ -53,7 +54,7 @@ Vaak zal een groep enigszins regio gebonden zijn, maar dit hoeft natuurlijk niet
         <td data-order="{{modificationDate}}">{{dateFormat modificationDate "eee d MMM yyyy"}}</td>
 {{#ifIsAdmin}}
         <td>
-			{{> include/modal.delete action="delete" field="ActionHandlerId" value=record._id label="Weet je zeker dat je deze groep wil verwijderen?"}} 
+			{{> include/modal.delete action="delete" field="ActionHandlerId" value=record._id label="Weet je zeker dat je deze interesse wil verwijderen?"}} 
 		</td>
 {{/ifIsAdmin}}
       
@@ -63,7 +64,7 @@ Vaak zal een groep enigszins regio gebonden zijn, maar dit hoeft natuurlijk niet
   </table>
  
 {{else}}
-Nog geen groepen
+Nog geen thema's
 {{/if}}
   
 {{> include/page.footer}}

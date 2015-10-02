@@ -29,12 +29,12 @@
 <div class="alert-danger">Het is nog niet mogelijk om email naar deze gebruiker te sturen</div>
 {{/if}}
 
-<h2>Groepen</h2> 
+<h2>Interesses</h2> 
 
 {{#each record.groups}}
-	<a href="/group/:{{_id}}">{{title}}</a>
+	<a href="/theme/:{{_id}}">{{title}}</a>
 	{{#ifInlineEdit record}}
-		{{> include/modal.delete title=user.get0.username action="removeGroup" field="groupId" value=_id label="Weet je zeker dat je deze groep wilt verwijderen?"}} 
+		{{> include/modal.delete title=user.get0.username action="removeGroup" field="groupId" value=_id label="Weet je zeker dat je deze interesse wilt verwijderen?"}} 
 	{{/ifInlineEdit}}
 	<br/>
 {{/each}}

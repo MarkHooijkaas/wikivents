@@ -1,10 +1,14 @@
 {{#ifEquals record.groups.size 0}}
 {{else}}
-<h2>Groepen</h2> 
+{{#ifEquals record.groups.size 1}}
+<h2>Thema</h2> 
+{{else}}
+<h2>Thema's</h2> 
+{{/ifEquals}}
 {{/ifEquals}}
 
 {{#each record.groups}}
-	<a href="/group/:{{_id}}">{{get0.title}}</a>
+	<a href="/theme/:{{_id}}">{{get0.title}}</a>
 	{{#ifInlineEdit record}}
 		{{> include/modal.delete title=get0.title action="removeGroup" field="groupId" value=_id label="Weet je zeker dat je deze groep wilt verwijderen?"}} 
 	{{/ifInlineEdit}}
