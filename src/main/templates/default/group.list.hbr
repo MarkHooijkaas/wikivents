@@ -19,8 +19,10 @@ Een groep kan over een bepaald thema gaan zoals film, sport of dansen, maar ook 
 Bij een activiteit kan je deze in een groep plaatsen waar je lid van bent. (op dit moment kan dat alleen bij het wijzigen en nog niet bij het aanmaken).
 Een activiteit kan ook bij meerdere groepen horen.
 Vaak zal een groep enigszins regio gebonden zijn, maar dit hoeft natuurlijk niet.
+{{#ifLoggedIn}}
 <p>
 <a href="/group/!create">Maak een nieuwe groep</a>
+{{/ifLoggedIn}}
 
 {{#if list}}
   <table id="grouplist" class="display compact" cellspacing="0" width="100%">

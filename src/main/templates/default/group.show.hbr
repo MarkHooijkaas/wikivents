@@ -13,12 +13,11 @@
 	{{>group.events}}
 </div>
 
-
 <div class="col-xs-12 col-sm-5 col-md-4 col-lg-4 overflow-hidden">
+{{#ifLoggedIn}}
 	{{>group.details}}
 	{{>group.members}}
 	{{> include/show.comments}}
-	
+{{/ifLoggedIn}}
 </div>
-  
 {{> include/page.footer}}
