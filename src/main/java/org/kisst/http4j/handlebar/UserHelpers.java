@@ -178,5 +178,10 @@ public class UserHelpers<T> {
 			return options.fn();
 		return options.inverse();
 	}
+	public CharSequence ifEquals(Object obj1, Object obj2, final Options options) throws IOException {
+		if (obj1!=null && obj1.equals(obj2)) 
+			return options.fn();
+		return options.inverse();
+	}
 
 }

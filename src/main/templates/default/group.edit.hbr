@@ -1,0 +1,28 @@
+{{> include/page.header.begin}}
+<script src="/lib/ckeditor/ckeditor.js"></script>
+<script src="/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="/lib/jquery-validation/src/localization/messages_nl.js"></script>
+{{> include/page.header.end}}
+
+<script >
+	$(document).ready(function(){ 
+		$('#createEvent').validate({ // initialize the plugin
+			rules: {
+				description: { required: true }
+			},
+		});
+		$.extend($.validator.messages, { required: "Dit veld is verplicht" });
+	 }); 
+</script>
+
+<div class="col-xs-12">
+<form role="form" method="POST" id="createTheme" class="form-horizontal">
+	{{> include/form.text     form.title    label="Titel" type="" required="true"}}
+	{{> include/form.textarea form.description label="Omschrijving" rows=10 required=""}}
+
+	{{> include/form.submitButton submitTitle="Maak groep" cancelUrl="/group/*"}}
+	<input type="hidden" name="action" value="edit"/>
+</form>
+</div>
+
+{{> include/page.footer}}

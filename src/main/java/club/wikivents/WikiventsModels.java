@@ -16,6 +16,7 @@ import org.kisst.props4j.Props;
 
 import club.wikivents.model.Event;
 import club.wikivents.model.Page;
+import club.wikivents.model.Group;
 import club.wikivents.model.User;
 import club.wikivents.model.WikiventsModel;
 import club.wikivents.web.WikiventsSite;
@@ -33,6 +34,7 @@ public class WikiventsModels {
 			new FileStorage(User.class, props, git),
 			new FileStorage(Event.class, props, git),
 			new FileStorage(Page.class, props, git),
+			new FileStorage(Group.class, props, git),
 			new MemoryUniqueIndex<User>(User.schema, true, User.schema.username),
 			new MemoryUniqueIndex<User>(User.schema, true, User.schema.email),
 			new MemoryUniqueIndex<Page>(Page.schema, true, Page.schema.name),
@@ -48,6 +50,7 @@ public class WikiventsModels {
 		WikiventsModel model = new WikiventsModel(site, 
 			new MongoStorage(User.schema, props, db),
 			new MongoStorage(Event.schema, props, db),
+			new MongoStorage(Group.schema, props, db),
 			new MemoryUniqueIndex<User>(User.schema, true, User.schema.username),
 			new MemoryUniqueIndex<User>(User.schema, true, User.schema.email),
 			new MemoryOrderedIndex<>(Event.schema, false, Event.schema.date, Event.schema._id),

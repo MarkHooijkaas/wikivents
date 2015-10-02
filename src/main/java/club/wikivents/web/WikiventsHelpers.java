@@ -7,6 +7,7 @@ import org.kisst.http4j.handlebar.UserHelpers;
 import com.github.jknack.handlebars.Options;
 
 import club.wikivents.model.Event;
+import club.wikivents.model.Group;
 import club.wikivents.model.User;
 
 public class WikiventsHelpers extends UserHelpers<User> {
@@ -24,8 +25,16 @@ public class WikiventsHelpers extends UserHelpers<User> {
 			return options.fn();
 		return options.inverse();
 	}
-	public CharSequence ifLikedByMe(Event e, final Options options) throws IOException { 
-		if (e.isLikedBy((User) getUserOrNull(options))) 
+	public CharSequence ifAmMember(Group gr, final Options options) throws IOException { 
+		if (gr.hasMember((User) getUserOrNull(options))) 
+			return options.fn();
+		return options.inverse();
+	}
+	public CharSequence ifLikedByMe(Object obj, final Options options) throws IOException {
+		boolean liked = false;
+		if (obj instanceof Event)
+			liked= ((Event) obj).isLikedBy((User) getUserOrNull(options));
+		if (liked)
 			return options.fn();
 		return options.inverse();
 	}

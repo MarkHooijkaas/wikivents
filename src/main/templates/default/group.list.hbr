@@ -1,0 +1,59 @@
+{{> include/page.header.begin}}
+	<script src="/lib/datatables/media/js/jquery.dataTables.min.js"></script>
+{{> include/page.header.end}}
+
+<script>
+	$(document).ready(function() {
+		$('#grouplist').dataTable( {
+			"language": { "url": "/lib/datatables-i18n/i18n/nl.json" },
+			 "lengthMenu": [[-1, 20, 50, 100], ["Alle", 20, 50, 100]],
+			  "dom": '<"top"f>rt<"bottom"><"clear">',
+			  //"aaSorting": [[2, "asc" ]],
+		} );
+	} );
+</script>
+
+
+{{#if list}}
+  <table id="grouplist" class="display compact" cellspacing="0" width="100%">
+    <thead>
+      <tr>
+        <th>Groep</th>
+        <th>Aantal Leden</th>
+{{#ifLoggedIn}}
+        <th>Beheerders</th>
+{{/ifLoggedIn}}
+        <th>Aangemaakt op</th>
+        <th>Update</th>
+{{#ifIsAdmin}}
+        <th>Del</th>
+{{/ifIsAdmin}}
+      </tr>
+    </thead>
+    <tbody>
+		
+{{#each list}} 
+	  <tr>
+        <td><a href="/group/:{{_id}}">{{title}}</a></td>
+        <td>{{members.size}}</td>
+{{#ifLoggedIn}}
+        <td>{{&join owners "<br/>"}}</td>
+{{/ifLoggedIn}}
+        <td data-order="{{creationDate}}">{{dateFormat creationDate "eee d MMM yyyy"}}</td>
+        <td data-order="{{modificationDate}}">{{dateFormat modificationDate "eee d MMM yyyy"}}</td>
+{{#ifIsAdmin}}
+        <td>
+			{{> include/modal.delete action="delete" field="ActionHandlerId" value=record._id label="Weet je zeker dat je deze groep wil verwijderen?"}} 
+		</td>
+{{/ifIsAdmin}}
+      
+      </tr>
+{{/each}}
+    </tbody>
+  </table>
+ 
+{{else}}
+Nog geen groepen
+{{/if}}
+  
+{{> include/page.footer}}
