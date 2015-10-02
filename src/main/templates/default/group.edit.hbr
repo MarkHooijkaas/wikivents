@@ -20,7 +20,7 @@
 	{{> include/form.text     form.title    label="Titel" type="" required="true"}}
 	{{> include/form.textarea form.description label="Omschrijving" rows=10 required=""}}
 
-	{{> include/form.submitButton submitTitle="Maak groep" cancelUrl="/theme/*"}}
+	{{> include/form.submitButton submitTitle="Maak thema" cancelUrl="/theme/*"}}
 	<input type="hidden" name="action" value="edit"/>
 </form>
 </div>
