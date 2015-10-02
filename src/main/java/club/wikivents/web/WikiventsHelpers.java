@@ -25,6 +25,11 @@ public class WikiventsHelpers extends UserHelpers<User> {
 			return options.fn();
 		return options.inverse();
 	}
+	public CharSequence ifEventHasGroup(Event e, Group gr, final Options options) throws IOException { 
+		if (e.hasGroup(gr)) 
+			return options.fn();
+		return options.inverse();
+	}
 	public CharSequence ifAmMember(Group gr, final Options options) throws IOException { 
 		if (gr.hasMember((User) getUserOrNull(options))) 
 			return options.fn();

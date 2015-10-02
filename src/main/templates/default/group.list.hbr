@@ -13,6 +13,14 @@
 	} );
 </script>
 
+Welkom bij de Wikivents groepen. 
+Een groep bevat zowel een groep activiteiten, als een groep mensen die daar interesse in hebben.
+Een groep kan over een bepaald thema gaan zoals film, sport of dansen, maar ook voor een regelmatig terugkerende activiteit, zoals een pubquiz of een eetgroep.
+Bij een activiteit kan je deze in een groep plaatsen waar je lid van bent. (op dit moment kan dat alleen bij het wijzigen en nog niet bij het aanmaken).
+Een activiteit kan ook bij meerdere groepen horen.
+Vaak zal een groep enigszins regio gebonden zijn, maar dit hoeft natuurlijk niet.
+<p>
+<a href="/group/!create">Maak een nieuwe groep</a>
 
 {{#if list}}
   <table id="grouplist" class="display compact" cellspacing="0" width="100%">

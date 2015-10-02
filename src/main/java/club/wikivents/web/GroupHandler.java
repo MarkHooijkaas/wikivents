@@ -5,6 +5,7 @@ import org.kisst.item4j.struct.Struct;
 import org.kisst.util.CallInfo;
 
 import club.wikivents.model.Comment;
+import club.wikivents.model.Event;
 import club.wikivents.model.Group;
 import club.wikivents.model.User;
 
@@ -100,6 +101,19 @@ public class GroupHandler extends WikiventsActionHandler<Group> {
 			return;
 		Comment com=gr.findComment(commentId);
 		model.groups.removeSequenceItem(gr, Group.schema.comments, com);
+	}
+
+	@NeedsNoAuthorization
+	public void handleAddLike(WikiventsCall call) {
+		String id=call.request.getParameter("eventId");
+		Event event=model.events.read(id);
+		event.addLike(model, call.user);
+	}
+	@NeedsNoAuthorization
+	public void handleRemoveLike(WikiventsCall call) {
+		String id=call.request.getParameter("eventId");
+		Event event=model.events.read(id);
+		event.removeLike(model,call.user);
 	}
 
 	

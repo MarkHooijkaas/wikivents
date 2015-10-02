@@ -1,8 +1,6 @@
 {{> include/page.header.begin}}
-<script src="/lib/ckeditor/ckeditor.js"></script>
-{{#ifInlineEdit record}}
-<script src="/lib/webshim-1.15.10/js-webshim/minified/polyfiller.js"></script>
-{{/ifInlineEdit}}
+	<script src="/lib/datatables/media/js/jquery.dataTables.min.js"></script>
+	<script src="/lib/ckeditor/ckeditor.js"></script>
 {{> include/page.header.end}}
 
 
@@ -12,6 +10,7 @@
 		{{#partial "emptyTemplate"}}{{/partial}}
 		{{> include/show.textAreaField label="" name="description" prefix="" value=record.description}}
 	</div>
+	{{>group.events}}
 </div>
 
 

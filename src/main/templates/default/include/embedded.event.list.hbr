@@ -29,7 +29,7 @@
         <td data-order="{{date}}">{{dateFormat date "eee d MMM yyyy"}}</td>
         <td>{{time}}</td>
 {{#ifLoggedIn}}
-        <td>{{> include/like.button record=this}}</td>
+        <td>{{> include/like.button event=this}}</td>
 {{/ifLoggedIn}}
         <td><a href="/event/:{{_id}}">{{title}}</a></td>
         <td>{{location}}</td>

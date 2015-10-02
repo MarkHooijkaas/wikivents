@@ -75,6 +75,16 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 		}
 		return result;
 	}
+
+	public ArrayList<Group> groups() {
+		ArrayList<Group> result=new ArrayList<Group>();
+		for (Group gr: model.groups) {
+			if (gr.hasMember(this) || gr.hasOwner(this))
+				result.add(gr);
+		}
+		return result;
+	}
+
 	
 	@Override public String getHtmlString() { return link(); }
 	public String link() {

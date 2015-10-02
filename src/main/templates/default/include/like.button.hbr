@@ -1,15 +1,15 @@
-{{#ifLikedByMe record}}
+{{#ifLikedByMe event}}
   	<form role="form" method="POST" style="display:inline;">
   		<input type="hidden" name="action" value="removeLike"/>				  	
   		<input type="hidden" name="ActionHandlerId" value="NONE"/>				
-  		<input type="hidden" name="eventId" value="{{record._id}}"/>
+  		<input type="hidden" name="eventId" value="{{event._id}}"/>
 		<button type="submit" class="btn-link"><span title="Neutraal" style="color:blue;" class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></button>
  	</form>
 {{else}}
   	<form role="form" method="POST" style="display:inline;">
   		<input type="hidden" name="action" value="addLike"/>
   		<input type="hidden" name="ActionHandlerId" value="NONE"/>				
-  		<input type="hidden" name="eventId" value="{{record._id}}"/>
+  		<input type="hidden" name="eventId" value="{{event._id}}"/>
 		<button type="submit" class="btn-link"><span title="Leuk" style="color:grey;" class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></button>
  	</form>
 {{/ifLikedByMe}}

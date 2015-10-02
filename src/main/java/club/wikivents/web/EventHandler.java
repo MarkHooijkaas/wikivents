@@ -6,6 +6,7 @@ import org.kisst.util.CallInfo;
 
 import club.wikivents.model.Comment;
 import club.wikivents.model.Event;
+import club.wikivents.model.Group;
 import club.wikivents.model.User;
 
 public class EventHandler extends WikiventsActionHandler<Event> {
@@ -97,6 +98,25 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 		else
 			event.removeOrganizer(model,user);
 	}
+
+	public void handleAddGroup(WikiventsCall call, Event event) {
+		String id=call.request.getParameter("groupId");
+		Group gr=model.groups.read(id);
+		if (gr==null)
+			call.sendError(500, "no such group");
+		else
+			event.addGroup(model, gr);
+	}
+	public void handleRemoveGroup(WikiventsCall call, Event event) {
+		String id=call.request.getParameter("groupId");
+		Group gr=model.groups.read(id);
+		if (gr==null)
+			call.sendError(500, "no such group");
+		else
+			event.removeGroup(model,gr);
+	}
+
+	
 	@NeedsNoAuthorization
 	public void handleAddLike(WikiventsCall call) {
 		String id=call.request.getParameter("eventId");

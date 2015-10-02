@@ -1,17 +1,22 @@
 package club.wikivents.model;
 
+import java.util.ArrayList;
 import java.util.StringJoiner;
 
+import org.kisst.crud4j.CrudModelObject;
 import org.kisst.crud4j.CrudObject;
 import org.kisst.crud4j.CrudSchema;
 import org.kisst.crud4j.CrudTable.CrudRef;
 import org.kisst.http4j.handlebar.AccessChecker;
 import org.kisst.item4j.ImmutableSequence;
+import org.kisst.item4j.Item;
+import org.kisst.item4j.Type;
 import org.kisst.item4j.struct.MultiStruct;
 import org.kisst.item4j.struct.SingleItemStruct;
 import org.kisst.item4j.struct.Struct;
 
 public class Group extends CrudObject implements AccessChecker<User> {
+	public final WikiventsModel model;
 	public final String title;
 	public final String description;
 	public final ImmutableSequence<User.Ref> owners;
@@ -27,6 +32,7 @@ public class Group extends CrudObject implements AccessChecker<User> {
 	}
 	public Group(WikiventsModel model, Struct data) {
 		super(model.groups, data);
+		this.model=model;
 		this.title=schema.title.getString(data);
 		this.description=schema.description.getString(data);
 		this.owners=schema.owners.getSequenceOrEmpty(model, data);
@@ -47,6 +53,17 @@ public class Group extends CrudObject implements AccessChecker<User> {
 		public final SequenceField<Comment> comments= new SequenceField<Comment>(Comment.schema,"comments");
 	}
 
+	public static class Ref extends CrudRef<Group> implements CrudModelObject {
+		public static final Type<Group.Ref> type = new Type.Java<Group.Ref>(Group.Ref.class, null); // XXX TODO: parser is null 
+		public static class Field extends Schema.BasicField<Group.Ref> {
+			public Field(String name) { super(Group.Ref.type, name); }
+			public Ref getRef(WikiventsModel model, Struct data) { return new Group.Ref(model, Item.asString(data.getDirectFieldValue(name)));}
+		}
+		public Ref(WikiventsModel model, String _id) { super(model.groups, _id); }
+	}
+
+	
+	
 	public String ownerNames() {
 		StringJoiner sj = new StringJoiner(", ");
 		for (CrudRef<User> r : owners)
@@ -107,5 +124,22 @@ public class Group extends CrudObject implements AccessChecker<User> {
 			if (id.equals(com.id()))
 				return com;
 		return null;
+	}
+	
+	public ArrayList<Event> futureEvents() {
+		ArrayList<Event> result=new ArrayList<Event>();
+		for (Event e: model.futureEvents()) {
+			if (e.hasGroup(this))
+				result.add(e);
+		}
+		return result;
+	}
+	public ArrayList<Event> pastEvents() {
+		ArrayList<Event> result=new ArrayList<Event>();
+		for (Event e: model.pastEvents()) {
+			if (e.hasGroup(this))
+				result.add(e);
+		}
+		return result;
 	}
 }

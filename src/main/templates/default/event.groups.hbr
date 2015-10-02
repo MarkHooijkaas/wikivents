@@ -1,0 +1,39 @@
+{{#ifEquals record.groups.size 0}}
+{{else}}
+<h2>Groepen</h2> 
+{{/ifEquals}}
+
+{{#each record.groups}}
+	<a href="/group/:{{_id}}">{{get0.title}}</a>
+	{{#ifInlineEdit record}}
+		{{> include/modal.delete title=get0.title action="removeGroup" field="groupId" value=_id label="Weet je zeker dat je deze groep wilt verwijderen?"}} 
+	{{/ifInlineEdit}}
+	<br/>
+{{/each}}
+
+{{#ifInlineEdit record}}
+<form action="" method="POST" id="addGroup">
+<input type="hidden" name="action" value="addGroup">
+<input type="hidden" name="groupId" value="" id="groupId">
+<div class="dropdown">
+	<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Voeg groep toe<span class="caret"></span></button>
+	<ul class="dropdown-menu">
+	{{#each user.groups}}
+		{{#ifEventHasGroup record this}}
+		{{else}}
+		<li onclick="$('#groupId').val('{{_id}}'); $('#addGroup').submit()"><a>{{title}}</a></li>
+		{{/ifEventHasGroup}}
+	{{/each}}
+	</ul>
+</div>
+<script>
+$(function() 
+{
+    $('.dropdown-menu li').click(function()
+    {
+        $('#my_topic').val($(this).html());
+        $('#my_form').submit();
+    });
+});
+</script>
+{{/ifInlineEdit}}

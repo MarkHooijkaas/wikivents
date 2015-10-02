@@ -30,6 +30,13 @@ public abstract class ImmutableSequence<T> implements TypedSequence<T>, RandomAc
 	public ImmutableSequence<T> subsequence(int start, int end) { return new SubSequence<T>(this, start, end); }
 	public ImmutableSequence<T> subsequence(int start) { return subsequence(start, size()); }
 	public ImmutableSequence<T> reverse() { return new ReverseSequence<T>(this); }
+	public boolean contains(T elm) {
+		if (elm==null) return false;
+		for (T e: this)
+			if (elm.equals(e))
+				return true;
+		return false;
+	}
 
 	@SafeVarargs
 	public static <E> ImmutableSequence<E> of(Class<E> type, E ... elements) {

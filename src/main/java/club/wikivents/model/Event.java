@@ -29,6 +29,7 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 	public final boolean backupGuestsAllowed;
 	public final ImmutableSequence<User.Ref> organizers;
 	public final ImmutableSequence<User.Ref> likes;
+	public final ImmutableSequence<Group.Ref> groups;
 	public final ImmutableSequence<Guest> guests;
 	public final ImmutableSequence<Comment> comments;
 	
@@ -56,7 +57,7 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 		this.likes=schema.likes.getSequenceOrEmpty(model, data);
 		this.guests=schema.guests.getSequenceOrEmpty(model, data);
 		this.comments=schema.comments.getSequenceOrEmpty(model, data);
-		
+		this.groups=schema.groups.getSequenceOrEmpty(model, data);
 	}
 	
 	public static final Schema schema=new Schema();
@@ -79,6 +80,7 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 		public final StringField guestInfo = new StringField("guestInfo"); 
 		public final SequenceField<Guest> guests= new SequenceField<Guest>(Guest.schema,"guests"); 
 		public final SequenceField<Comment> comments= new SequenceField<Comment>(Comment.schema,"comments");
+		public final SequenceField<Group.Ref> groups = new SequenceField<Group.Ref>(Group.Ref.type,"groups");
 	}
 
 	public String guestCount() {
@@ -188,6 +190,26 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 		model.events.removeSequenceItem(this, schema.organizers, ref);
 	}
 
+	public boolean hasGroup(Group gr) {
+		if (groups==null || gr==null)
+			return false;
+		for (Group.Ref r: groups) {
+			if (r._id.equals(gr._id)) 
+				return true;
+		}
+		return false;
+	}
+	public void addGroup(WikiventsModel model, Group gr) {
+		if (hasGroup(gr))
+			return;
+		model.events.addSequenceItem(this, schema.groups, new Group.Ref(model, gr._id));
+	}
+	public void removeGroup(WikiventsModel model, Group gr) {
+		Group.Ref ref = new Group.Ref(model, gr._id);
+		model.events.removeSequenceItem(this, schema.groups, ref);
+	}
+
+	
 	@Override public int compareTo(Event other) { return this.date.compareTo(other.date);}
 
 	public Comment findComment(String id) { 
