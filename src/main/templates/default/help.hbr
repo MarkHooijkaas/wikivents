@@ -75,7 +75,8 @@ In de site wordt daar naar gestreefd door de volgende maatregelen:
 	</li>
 	<li>De verplichte informatie bij het registreren is minimaal. 
 		Behalve een profielnaam, wachtwoord, emailadres en woonplaats zijn er momenteel geen verplichte velden.
-		Het emailadres wordt nergens getoond, ook niet aan ingelogde gebruikers, maar wordt wel getoond als afzender als men een email naar een andere gebruiker stuurt. 
+		Het emailadres wordt nergens getoond, ook niet aan ingelogde gebruikers, maar wordt wel getoond als afzender als men een email naar een andere gebruiker stuurt.
+		Het emailadres is ook zichtbaar voor de beheerders van wikivents die dat soms zullen gebruiken om contact op te nemen. 
 	</li>
 </ul>
 
