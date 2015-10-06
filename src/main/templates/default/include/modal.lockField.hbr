@@ -3,7 +3,7 @@
 	<span style="font-size:0.7em;" class="glyphicon glyphicon-lock" aria-hidden="true"></span>
 {{/if}}
 {{#ifInlineEdit record}}
-	<a data-toggle="modal" data-target="#changeField{{name}}Modal"><span style="font-size:0.7em;" class="glyphicon glyphicon-wrench" aria-hidden="true"></span></a>
+	<a data-toggle="modal" data-target="#changeField{{name}}Modal"><span style="font-size:0.7em; cursor:pointer;" class="glyphicon glyphicon-wrench" aria-hidden="true"></span></a>
 	{{> include/modal.begin  id=name prefix="changeField" title="Deelname"}}
 		<form role="form" method="POST" id="{{name}}Form" action="">
 			<input type="hidden" name="action" value="changeField"/>
