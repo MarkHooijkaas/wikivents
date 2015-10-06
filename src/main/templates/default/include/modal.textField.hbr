@@ -13,7 +13,6 @@
 		$("#{{name}}Button").click(function(){
 			$.ajax({
 				type: "POST",
-				url: "#",
 				data: $(this).closest('form').serialize(),
 				success: function(data, status, xhr){ location.reload(true); },
 				error: function(xhr,status,error){ $("#{{name}}Message").html(error); }
