@@ -26,7 +26,7 @@
 {{#if record.emailValidated}}
 <form role="form" method="GET" action="/sendMessage">
 	<input type="hidden" name="to" value="{{record.username}}"/>
-	<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-envelope" style="cursor:pointer;" aria-hidden="true"></span> Stuur {{record.username}} een e-mail</button>
+	<button type="submit" class="btn btn-default">Stuur {{record.username}} een e-mail</button>
 </form>
 {{else}}
 <div class="alert-danger">Het is nog niet mogelijk om email naar deze gebruiker te sturen</div>
