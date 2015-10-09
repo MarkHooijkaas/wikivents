@@ -5,16 +5,19 @@
 	Gebruiker heeft nog geen profielfoto toegevoegd.
 	<img src="/favicon.ico"/>
 {{/if}}
+	<br><br>
 {{#ifInlineEdit record}}
-	{{> include/modal.textField value=record.avatarUrl  name="avatarUrl" prefix="" label="Profielfoto URL"}}<br>
-	{{record.city}}  {{> include/modal.textField value=record.city  name="city" prefix=""  label="Woonplaats"}}<br>  
-	Wachtwoord {{> dialog/changePassword}}
+	{{record.city}}  {{> include/modal.textField value=record.city  name="city" prefix=""  label="Woonplaats"}}<br>
+	<br><br>  
+	Profielfoto URL: {{> include/modal.textField value=record.avatarUrl  name="avatarUrl" prefix="" label="Profielfoto URL"}}<br>
+	{{> user.uploadAvatar label="Profielfoto" name="uploadAvatar" }}<br>
+	{{> dialog/changePassword}}
 	{{#ifIsAdmin}}
 		{{record.username}}  {{> include/modal.textField value=record.username  name="username" prefix="" label="Gebruikersnaam"}}<br>
 		{{record.email}} {{> include/modal.textField value=record.email name="email" prefix="" label="E-mail"}}<br>  
 	{{/ifIsAdmin}}  
 {{else}}
-	<br><br>{{record.city}}<br>
+	{{record.city}}<br>
 	{{#ifMayChange record}}
 		{{record.email}}
 	{{/ifMayChange}} 
@@ -23,7 +26,7 @@
 {{#if record.emailValidated}}
 <form role="form" method="GET" action="/sendMessage">
 	<input type="hidden" name="to" value="{{record.username}}"/>
-	<button type="submit" class="btn btn-default">Stuur {{record.username}} een e-mail</button>
+	<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-envelope" style="cursor:pointer;" aria-hidden="true"></span> Stuur {{record.username}} een e-mail</button>
 </form>
 {{else}}
 <div class="alert-danger">Het is nog niet mogelijk om email naar deze gebruiker te sturen</div>

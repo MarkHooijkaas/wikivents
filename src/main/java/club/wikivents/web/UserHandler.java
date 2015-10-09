@@ -1,9 +1,17 @@
 package club.wikivents.web;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
+import javax.servlet.MultipartConfigElement;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
 
+import org.eclipse.jetty.server.Request;
 import org.kisst.http4j.ResourceHandler;
 import org.kisst.http4j.form.HttpFormData;
 import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
@@ -19,7 +27,7 @@ import net.tanesha.recaptcha.ReCaptchaImpl;
 import net.tanesha.recaptcha.ReCaptchaResponse;
 
 public class UserHandler extends WikiventsActionHandler<User> {
-	private final ResourceHandler uploads = new ResourceHandler(null, new File("data/uploads"));
+	private final ResourceHandler uploads = new ResourceHandler(null, new File("data/uploads/"));
 	public UserHandler(WikiventsSite site) { super(site, site.model.users); }
 
 	@Override protected User findRecord(String id) {
@@ -44,6 +52,11 @@ public class UserHandler extends WikiventsActionHandler<User> {
 	@NeedsNoAuthorization
 	public void viewAvatar(WikiventsCall call, User user) {
 		uploads.handle(call, user._id+"/avatar.jpg");
+	}
+	@NeedsNoAuthorization
+	public void viewUploaded(WikiventsCall call, User user, String subpath) {
+		System.out.println(subpath);
+		uploads.handle(call, user._id+"/"+subpath);
 	}
 
 	
@@ -248,5 +261,54 @@ public class UserHandler extends WikiventsActionHandler<User> {
 		event.removeLike(model,call.user);
 	}
 
+	
+	private static final MultipartConfigElement MULTI_PART_CONFIG = new MultipartConfigElement(System.getProperty("java.io.tmpdir"));
+	public void handleUploadAvatar(WikiventsCall call, User u) {
+		if (call.request.getContentType() != null && call.request.getContentType().startsWith("multipart/form-data"))
+			call.baseRequest.setAttribute(Request.__MULTIPART_CONFIG_ELEMENT, MULTI_PART_CONFIG);
+		OutputStream out = null;
+		InputStream filecontent = null;
+		System.out.println("START");
+		try {
+			final Part filePart = call.request.getPart("avatar");
+			final String fileName = getFileName(filePart); // "testje.img";
+
+			out = new FileOutputStream(new File("data/uploads/"+u._id+"/"+fileName));
+			filecontent = filePart.getInputStream();
+
+			int read = 0;
+			final byte[] bytes = new byte[1024];
+
+			while ((read = filecontent.read(bytes)) != -1) {
+				out.write(bytes, 0, read);
+			}
+			//writer.println("New file " + fileName + " created at " + path);
+			//LOGGER.log(Level.INFO, "File{0}being uploaded to {1}", 
+			System.out.println("OK");
+			table.updateField(u, User.schema.avatarUrl, "/user/:"+u._id+"/uploaded/"+fileName);
+		} 
+		catch (IOException e) { throw new RuntimeException(e); }
+		catch (ServletException e) { throw new RuntimeException(e); }
+		finally {
+			try {
+				if (out != null) out.close();
+				if (filecontent != null)  filecontent.close();
+			} 
+			catch (IOException e) { throw new RuntimeException(e); }
+		}
+		call.redirect("/user/"+u.username+"?inline-edit=true");
+	}
+
+	private String getFileName(final Part part) {
+	    //final String partHeader = part.getHeader("content-disposition");
+	    for (String content : part.getHeader("content-disposition").split(";")) {
+	        if (content.trim().startsWith("filename")) {
+	            return content.substring(
+	                    content.indexOf('=') + 1).trim().replace("\"", "");
+	        }
+	    }
+	    return null;
+	}
+	
 }
 

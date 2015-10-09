@@ -123,7 +123,7 @@ public class HttpServer extends AbstractHandler {
 					return;
 				}
 			}
-			HttpCall call=new HttpCall(request,response);
+			HttpCall call=new HttpCall(baseRequest, request,response);
 			handler.handle(call,request.getRequestURI());
 		}
         catch (UnauthorizedException e) {

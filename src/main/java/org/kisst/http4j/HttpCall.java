@@ -8,11 +8,13 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.eclipse.jetty.server.Request;
 import org.kisst.http4j.HttpServer.HttpException;
 import org.kisst.util.Base64;
 import org.kisst.util.CallInfo;
 
 public class HttpCall {
+	public final Request baseRequest;
 	public final HttpServletRequest request;
 	public final HttpServletResponse response;
 	private PrintWriter out=null;
@@ -23,8 +25,9 @@ public class HttpCall {
 	public final String userid;
 	public final CallInfo callinfo=new CallInfo();
 	
-	protected HttpCall(HttpCall call) { this(call.request,call.response); }
-	public HttpCall(HttpServletRequest request,HttpServletResponse response) {
+	protected HttpCall(HttpCall call) { this(call.baseRequest, call.request,call.response); }
+	public HttpCall(Request baseRequest,HttpServletRequest request, HttpServletResponse response) {
+		this.baseRequest=baseRequest;
 		this.request=request;
 		this.response=response;
 		this.userid=getUserId();

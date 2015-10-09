@@ -25,9 +25,11 @@ import java.lang.reflect.Method;
  * 		/<path>/<id>[action=addGuest]  handleAddGuest
  */
 public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHandler {
+	private final Class<?>[] extralongsignature;
 	private final Class<?>[] fullsignature;
 	private final Class<?>[] shortsignature;
 	public ActionHandler(Class<C> callClass, Class<T> recordClass) {
+		this.extralongsignature= new Class<?>[] { callClass, recordClass, String.class };
 		this.fullsignature= new Class<?>[] { callClass, recordClass };
 		this.shortsignature= new Class<?>[] { callClass };
 	}
@@ -76,14 +78,21 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 					methodName = "view";
 				else
 					methodName = "view"+StringUtil.capitalize(view);
-				if (subpath!=null)
-					methodName += StringUtil.capitalize(subpath);
+				if (subpath!=null) {
+					String view2="";
+					int pos2=subpath.indexOf('/');
+					if (pos2>0) {
+						view2=subpath.substring(0, pos2);
+						subpath=subpath.substring(pos2+1);
+					}
+					methodName += StringUtil.capitalize(view2);
+				}
 				record=findRecord(id);
 				if (record==null)
 					throw new IllegalArgumentException("Could not find "+id);
 			}
 		}
-		invoke(methodName, call, record);
+		invoke(methodName, call, record, subpath);
 	}
 	private void handlePost(C call, String id) {
 		String  id2 = call.request.getParameter("ActionHandlerId");
@@ -107,18 +116,24 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 		if (action==null)
 			call.throwUnauthorized("No action specified");
 		String methodName="handle"+StringUtil.capitalize(action);
-		invoke(methodName, call, record);	
+		invoke(methodName, call, record, null);	
 		//System.out.println(call.response.getStatus());
 		if (!call.isAjax() && ! call.response.isCommitted()) 
 			call.redirect(call.getLocalUrl());
 	}
 
-	private void invoke(String methodName, C call, T record) {
+	private void invoke(String methodName, C call, T record, String subpath) {
 		//System.out.println("id="+id+", method="+methodName+", rec="+record);
 		CallInfo.instance.get().action=methodName;
 		Method method=null;
-		if (record!=null)
-			method = ReflectionUtil.getMethod(this.getClass(), methodName, fullsignature);
+		boolean extralong=false;
+		if (record!=null) {
+			method = ReflectionUtil.getMethod(this.getClass(), methodName, extralongsignature);
+			if (method==null)
+				method = ReflectionUtil.getMethod(this.getClass(), methodName, fullsignature);
+			else
+				extralong=true;
+		}
 		if (method==null) {
 			method = ReflectionUtil.getMethod(this.getClass(), methodName, shortsignature);
 			record=null;
@@ -138,8 +153,12 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 		}
 		if (record==null)
 			ReflectionUtil.invoke(this, method, new Object[]{ call});
-		else
-			ReflectionUtil.invoke(this, method, new Object[]{ call, record});
+		else {
+			if (extralong)
+				ReflectionUtil.invoke(this, method, new Object[]{ call, record, subpath});
+			else
+				ReflectionUtil.invoke(this, method, new Object[]{ call, record});
+		}
 	}
 
 	
