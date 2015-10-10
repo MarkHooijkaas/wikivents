@@ -1,10 +1,6 @@
 {{> include/page.header.begin}}
 	<script src="/lib/datatables/media/js/jquery.dataTables.min.js"></script>
 	<script src="/lib/ckeditor/ckeditor.js"></script>
-	<script src="/lib/jQuery-File-Upload-9.11.2/js/vendor/jquery.ui.widget.js"></script>
-	<script src="/lib/jQuery-File-Upload-9.11.2/js/jquery.iframe-transport.js"></script>
-	<script src="/lib/jQuery-File-Upload-9.11.2/js/jquery.fileupload.js"></script>
-	<script src="/lib/dropzone.js"></script>
 {{> include/page.header.end}}
 {{#ifMayChange record}}
 	{{#if record.emailValidated}}

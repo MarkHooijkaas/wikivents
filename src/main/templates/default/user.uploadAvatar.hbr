@@ -1,6 +1,6 @@
 <a data-toggle="modal" data-target="#uploadAvatar{{name}}Modal" class="btn btn-default">Upload profielfoto</a>
 {{> include/modal.begin  id=name prefix="uploadAvatar"}}
-	<form role="form" method="POST" id="uploadAvatarForm" enctype="multipart/form-data" action="/user/{{user.username}}?action=uploadAvatar">
+	<form role="form" method="POST" id="uploadAvatarForm" enctype="multipart/form-data" action="?action=uploadAvatar">
 		<input type="hidden" name="action" value="uploadAvatar"/>
 		<input type="hidden" name="field" value="{{name}}"/>
 		<label for="">Bestand: </label><input type="file" name="avatar" value="" id="avatar">

@@ -35,9 +35,9 @@
 <h2>Interesses</h2> 
 
 {{#each record.groups}}
-	<a href="/theme/:{{_id}}">{{title}}</a>
 	{{#ifInlineEdit record}}
 		{{> include/modal.delete title=user.get0.username action="removeGroup" field="groupId" value=_id label="Weet je zeker dat je deze interesse wilt verwijderen?"}} 
 	{{/ifInlineEdit}}
+	<a href="/theme/:{{_id}}">{{title}}</a>
 	<br/>
 {{/each}}

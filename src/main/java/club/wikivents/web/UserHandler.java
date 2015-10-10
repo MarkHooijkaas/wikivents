@@ -272,8 +272,10 @@ public class UserHandler extends WikiventsActionHandler<User> {
 		try {
 			final Part filePart = call.request.getPart("avatar");
 			final String fileName = getFileName(filePart); // "testje.img";
-
-			out = new FileOutputStream(new File("data/uploads/"+u._id+"/"+fileName));
+			File uploadDir = new File("data/uploads/"+u._id);
+			if (! uploadDir.exists())
+				uploadDir.mkdirs();
+			out = new FileOutputStream(new File(uploadDir, fileName));
 			filecontent = filePart.getInputStream();
 
 			int read = 0;
