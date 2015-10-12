@@ -1,9 +1,9 @@
 <a data-toggle="modal" data-target="#uploadAvatar{{name}}Modal" class="btn btn-default">Upload profielfoto</a>
-{{> include/modal.begin  id=name prefix="uploadAvatar"}}
+{{> include/modal.begin  id=name prefix="uploadAvatar" title="Upload profielfoto (kleiner dan 100kb)"}}
 	<form role="form" method="POST" id="uploadAvatarForm" enctype="multipart/form-data" action="?action=uploadAvatar">
 		<input type="hidden" name="action" value="uploadAvatar"/>
 		<input type="hidden" name="field" value="{{name}}"/>
-		<label for="">Bestand: </label><input type="file" name="avatar" value="" id="avatar">
+		<label for="">Bestand: </label><input type="file" name="avatar" value="" id="avatar"><br>
 		<input type="submit" id="{{name}}Button" class="btn btn-default btn-success" value="Upload profielfoto" style="display:inline;">
 		<br/>
 	</form>
@@ -11,12 +11,12 @@
 <script > 
 $(document).ready(function(){ 
 	$.validator.addMethod('filesize', function(value, element, param) {
-		return this.optional(element) || (element.files[0].size <= param) 
+		return element.files[0].size <= param; 
 	});
 
 	$('#uploadAvatarForm').validate({ 
-		rules: { avatar: { required: true, accept: "png|jpe?g|gif", filesize: 102400  }},
-		messages: { avatar: "Bestand moet PNG, JPG of GIF zijn en kleiner dan 100Kb" }
+		rules: { avatar: { required: true, filesize: 102400  }},
+		messages: { avatar: "Bestand moet kleiner zijn dan 100Kb" }
 	});
 }); 
 </script>
