@@ -55,7 +55,6 @@ public class UserHandler extends WikiventsActionHandler<User> {
 	}
 	@NeedsNoAuthorization
 	public void viewUploaded(WikiventsCall call, User user, String subpath) {
-		System.out.println(subpath);
 		uploads.handle(call, user._id+"/"+subpath);
 	}
 
@@ -268,7 +267,6 @@ public class UserHandler extends WikiventsActionHandler<User> {
 			call.baseRequest.setAttribute(Request.__MULTIPART_CONFIG_ELEMENT, MULTI_PART_CONFIG);
 		OutputStream out = null;
 		InputStream filecontent = null;
-		System.out.println("START");
 		try {
 			final Part filePart = call.request.getPart("avatar");
 			final String fileName = getFileName(filePart); // "testje.img";
@@ -286,7 +284,6 @@ public class UserHandler extends WikiventsActionHandler<User> {
 			}
 			//writer.println("New file " + fileName + " created at " + path);
 			//LOGGER.log(Level.INFO, "File{0}being uploaded to {1}", 
-			System.out.println("OK");
 			table.updateField(u, User.schema.avatarUrl, "/user/:"+u._id+"/uploaded/"+fileName);
 		} 
 		catch (IOException e) { throw new RuntimeException(e); }
