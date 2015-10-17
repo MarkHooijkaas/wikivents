@@ -8,6 +8,7 @@ public class HttpServerConfiguration {
 	public final int port;
 	public final long idleTimeout;
 	public final String[] restrictedToHost;
+	public final boolean redirectToHttps;
 	public final boolean sslEnabled;
 	public final int sslPort;
 	public final String sslKeyStorePath;
@@ -21,6 +22,7 @@ public class HttpServerConfiguration {
 		this.port = props.getInteger("port", 8080);
 		this.idleTimeout = props.getInteger("idleTimeout", 30000);
 		this.restrictedToHost = props.getStringArray("restrictedToHost");
+		this.redirectToHttps= props.getBoolean("redirectToHttps",false);
 		this.sslEnabled = props.getBoolean("sslEnabled");
 		this.sslPort = sslEnabled ? props.getInteger("sslPort", 8443) : -1;
 		this.sslKeyStorePath = sslEnabled ? props.getString("sslKeyStorePath") : null;

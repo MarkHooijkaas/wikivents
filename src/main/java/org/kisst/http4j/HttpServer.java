@@ -113,8 +113,17 @@ public class HttpServer extends AbstractHandler {
 
 	public void handle(String path, Request baseRequest , HttpServletRequest request, HttpServletResponse response) {
 		try {
+			String host=request.getServerName();
+			if (config.redirectToHttps && ! request.isSecure()) {
+				StringBuilder url = new StringBuilder("https://");
+				url.append(request.getServerName());
+				if (request.getRequestURI() != null)
+					url.append(request.getRequestURI());
+				if (request.getQueryString() != null) 
+					url.append("?").append(request.getQueryString());
+				response.sendRedirect(url.toString());
+			}
 			if (config.restrictedToHost!=null) {
-				String host=request.getServerName();
 				boolean allowed = false;
 				for (String h: config.restrictedToHost)
 					allowed=allowed || h.equals(host);
