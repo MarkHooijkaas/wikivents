@@ -27,7 +27,8 @@ Om uit te loggen kan je naar de <a href="/logout">Uitlog pagina</a> gaan.
 
   <button type="submit" class="btn btn-default btn-success">Inloggen</button>
 </form>
-
+<br>
+Er is nog geen wachtwoord reset mechanisme. Als je je wachtwoord vergeten bent, kan je contact opnemen met <a href="mailto:info@wikivents.nl">info@wikivents.nl</a> 
 {{/if}}
 
 
