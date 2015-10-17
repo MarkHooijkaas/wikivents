@@ -1,6 +1,6 @@
 {{#ifMayChange record}}
 			<a href="" class="btn btn-default pull-right" data-toggle="modal" data-target="#logoutModal">Uitloggen</a>
-			{{> include/modal.begin id="logout"}}
+			{{> include/modal.begin id="logout" prefix="" title="Uitloggen"}}
 				Weet je zeker dat je wilt uitloggen?
  				<form role="form" method="POST" action="/user/!logout">
  					<input type="hidden" name="action" value="logout"/>
