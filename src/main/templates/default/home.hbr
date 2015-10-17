@@ -7,7 +7,7 @@
 		$('#events').dataTable( {
 			"language": { "url": "/lib/datatables-i18n/i18n/nl.json" },
 			 "lengthMenu": [[-1, 20, 50, 100], ["Alle", 20, 50, 100]],
-			  "order": [[ 4, "asc" ]],
+			  //"order": [[ 4, "asc" ]],
 			  "dom": '<"top"f>rt<"bottom"><"clear">'
 		} );
 	} );
