@@ -122,6 +122,7 @@ public class HttpServer extends AbstractHandler {
 				if (request.getQueryString() != null) 
 					url.append("?").append(request.getQueryString());
 				response.sendRedirect(url.toString());
+				return;
 			}
 			if (config.restrictedToHost!=null) {
 				boolean allowed = false;
