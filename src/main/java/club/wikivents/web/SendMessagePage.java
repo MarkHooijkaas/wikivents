@@ -2,6 +2,7 @@ package club.wikivents.web;
 
 import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.form.HttpFormData;
+import org.kisst.item4j.Item;
 import org.kisst.item4j.struct.Struct;
 
 import club.wikivents.model.User;
@@ -13,11 +14,35 @@ public class SendMessagePage extends WikiventsPage {
 		public Form(WikiventsCall call, Struct data) { super(call, call.getTheme().sendMessage, data); }
 		public Form(WikiventsCall call) { super(call, call.getTheme().sendMessage); }
 
-		public final InputField to = new InputField("to",this::notEmpty);
+		public final ToField to = new ToField("to",this::notEmpty);
 		public final InputField subject = new InputField("subject");
 		public final InputField message= new InputField("message",this::notEmpty);
+		public final InputField returnTo = new InputField("returnTo");
 		//public final InputField copyToSender= new InputField("copyToSender",this::notEmpty);;
+		
+		public class ToField extends InputField {
+			public ToField(String name, Validator... validators) {
+				super(name, (record==null) ? null : stripCommas(record, name), validators); }
+			// TODO Auto-generated constructor stub
+		}
+
 	}
+	private static String stripCommas(Struct rec, String name) {
+		if (rec==null)
+			return null;
+		String result = Item.asString(rec.getDirectFieldValue(name));
+		String[] parts = result.split("[,]");
+		result="";
+		String sep="";
+		for (String part : parts) {
+			if (part.trim().length()>0) {
+				result+=sep+part;
+				sep=", ";
+			}
+		}
+		return result;
+	}
+
 
 	@Override public void handle(HttpCall httpcall, String subPath) {
 		WikiventsCall call = WikiventsCall.of(httpcall, model);
@@ -26,17 +51,24 @@ public class SendMessagePage extends WikiventsPage {
 			formdata.showForm();
 		else {
 			if (formdata.isValid()) {
-				User toUser=model.usernameIndex.get(formdata.to.value);
-				if (toUser==null)
-					formdata.handle();
-				else {
-					String subject=formdata.subject.value;
-					String message=formdata.message.value;
-					//System.out.println(formdata.copyToSender.value);
-					boolean copyToSender=false;//true;//"true".equals(formdata.copyToSender.value);
-					toUser.sendMailFrom(call.user, subject, message, copyToSender);
-					call.redirect("/user/"+toUser.username);
+				String[] usernames=formdata.to.value.split("[,]");
+				User[] toUser=new User[usernames.length];
+				int i=0;
+				for (String name: usernames) {
+					toUser[i]=model.usernameIndex.get(name.trim());
+					if (toUser[i]==null) {
+						formdata.handle();
+						return;
+					}
+					i++;
 				}
+				String subject=formdata.subject.value;
+				String message=formdata.message.value;
+				//System.out.println(formdata.copyToSender.value);
+				boolean copyToSender=false;//true;//"true".equals(formdata.copyToSender.value);
+				for (User u: toUser)
+					u.sendMailFrom(call.user, subject, message, copyToSender);
+				call.redirect(formdata.returnTo.value);
 			}
 			formdata.handle();
 		}

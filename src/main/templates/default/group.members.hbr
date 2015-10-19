@@ -9,6 +9,11 @@
 	{{/ifEquals}}
 	<br/>
 {{/each}}
+<form role="form" method="GET" action="/sendMessage">
+	<input type="hidden" name="returnTo" value="{{call.localUrl}}"/>
+	<input type="hidden" name="to" value="{{#each record.members}}{{get0.username}},{{/each}}"/>
+	<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Stuur ge&iuml;nteresseerden een e-mail</button>
+</form>
 
 {{#ifAmMember record}}
 {{else}}

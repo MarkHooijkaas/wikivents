@@ -19,6 +19,7 @@
 
 <div class="col-xs-12">
 <form role="form" method="POST" id="sendMessage"  class="form-horizontal">
+	<input type="hidden" id="returnTo" name="returnTo" value="{{form.returnTo.value}}">
 	{{> include/form.fixtext  value=call.user.email label="Van"}}
 	{{> include/form.fixtext  value=form.to.value   label="Aan"}}
 	{{> include/form.text     form.subject label="Onderwerp"}}
