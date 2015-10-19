@@ -17,7 +17,9 @@ import com.github.jknack.handlebars.Handlebars.SafeString;
 
 public class Event extends CrudObject implements Comparable<Event>, AccessChecker<User> {
 	public final String title;
+	public final String city;
 	public final String location;
+	public final String cost;
 	public final String description;
 	public final String guestInfo;
 	public final String imageUrl;
@@ -46,7 +48,9 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 		this.description=schema.description.getString(data);
 		this.guestInfo=schema.guestInfo.getString(data, null);
 		this.imageUrl=schema.imageUrl.getString(data);
+		this.city=schema.city.getString(data);
 		this.location=schema.location.getString(data);
+		this.cost=schema.cost.getString(data);
 		this.date=schema.date.getLocalDate(data);
 		this.time=schema.time.getLocalTime(data);
 		this.endTime=schema.endTime.getLocalTime(data);
@@ -75,7 +79,9 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 		public final LocalDateField date = new LocalDateField("date"); 
 		public final LocalTimeField time = new LocalTimeField("time"); 
 		public final LocalTimeField endTime = new LocalTimeField("endTime"); 
+		public final StringField city = new StringField("city"); 
 		public final StringField location = new StringField("location"); 
+		public final StringField cost = new StringField("cost"); 
 		public final StringField description = new StringField("description"); 
 		public final StringField guestInfo = new StringField("guestInfo"); 
 		public final SequenceField<Guest> guests= new SequenceField<Guest>(Guest.schema,"guests"); 

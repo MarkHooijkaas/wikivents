@@ -33,5 +33,7 @@
 	{{> include/show.ajaxTimeField value=record.time name="time"  label="Tijd"}}
 	{{> include/show.ajaxTimeField value=record.endTime name="endTime"  label="Eindtijd"}}
 	{{> include/show.ajaxField value=record.max      name="max"   label="Maximum" postfix="deelnemers"}}
-	{{> include/show.ajaxField value=record.location name="location" label="Plaats" postfix=""}}
+	{{> include/show.ajaxField value=record.city     name="city" label="Plaats" postfix=""}}
+	{{> include/show.ajaxField value=record.location name="location" label="Locatie" postfix=""}}
+	{{> include/show.ajaxField value=record.cost     name="cost" label="Kosten" postfix=""}}
 

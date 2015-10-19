@@ -10,6 +10,8 @@
 {{/ifLoggedIn}}
         <th>activiteit</th>
         <th>plaats</th>
+        <th>locatie</th>
+        <th>kosten</th>
         <th>deelnemers</th>
 {{#ifLoggedIn}}
         <th>Organisator</th>
@@ -32,7 +34,9 @@
         <td>{{> include/like.button event=this}}</td>
 {{/ifLoggedIn}}
         <td><a href="/event/:{{_id}}">{{title}}</a></td>
+        <td>{{city}}</td>
         <td>{{location}}</td>
+        <td>{{cost}}</td>
         <td data-order="{{guests.size}}">{{guestCount}}/{{max}}</td>
 {{#ifLoggedIn}}
         <td>{{&join organizers "<br/>"}}</td>

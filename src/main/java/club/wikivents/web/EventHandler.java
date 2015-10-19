@@ -152,7 +152,9 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 		public final InputField max = new InputField(Event.schema.max);
 		public final InputField guestsAllowed = new InputField(Event.schema.guestsAllowed);
 		public final InputField backupGuestsAllowed= new InputField(Event.schema.backupGuestsAllowed);
+		public final InputField city = new InputField(Event.schema.city);
 		public final InputField location = new InputField(Event.schema.location);
+		public final InputField cost = new InputField(Event.schema.cost);
 		public final InputField guestInfo = new InputField(Event.schema.guestInfo);
 		public final InputField description= new InputField(Event.schema.description);
 	}

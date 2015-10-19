@@ -34,7 +34,9 @@
 	{{> include/form.text     form.time     label="Tijd" type="time" required="true"}}
 	{{> include/form.text     form.endTime  label="Eindtijd" type="time" required="true"}}
 	{{> include/form.text     form.max      label="Maximum aantal deelnemers" type="" required="true"}}
-	{{> include/form.text     form.location label="Plaats" required="true"}}
+	{{> include/form.text     form.city     label="Plaats" required="true"}}
+	{{> include/form.text     form.location label="Locatie" required="true"}}
+	{{> include/form.text     form.cost     label="Kosten" required="false"}}
 	{{> include/form.textarea form.description label="Omschrijving" rows=10 required=""}}
 
 	{{> include/form.submitButton submitTitle="Maak activiteit" cancelUrl="/event/*.future"}}
