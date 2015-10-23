@@ -29,6 +29,7 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 	public final int max;
 	public final boolean guestsAllowed;
 	public final boolean backupGuestsAllowed;
+	public final boolean cancelled;
 	public final ImmutableSequence<User.Ref> organizers;
 	public final ImmutableSequence<User.Ref> likes;
 	public final ImmutableSequence<Group.Ref> groups;
@@ -57,6 +58,7 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 		this.max=schema.max.getInt(data);
 		this.guestsAllowed=schema.guestsAllowed.getBoolean(data,true);
 		this.backupGuestsAllowed=schema.backupGuestsAllowed.getBoolean(data,true);
+		this.cancelled=schema.cancelled.getBoolean(data,false);
 		this.organizers=schema.organizers.getSequenceOrEmpty(model, data);
 		this.likes=schema.likes.getSequenceOrEmpty(model, data);
 		this.guests=schema.guests.getSequenceOrEmpty(model, data);
@@ -76,6 +78,7 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 		public final IntField max = new IntField("max"); 
 		public final BooleanField guestsAllowed = new BooleanField("guestsAllowed");
 		public final BooleanField backupGuestsAllowed = new BooleanField("backupGuestsAllowed");
+		public final BooleanField cancelled = new BooleanField("cancelled");
 		public final LocalDateField date = new LocalDateField("date"); 
 		public final LocalTimeField time = new LocalTimeField("time"); 
 		public final LocalTimeField endTime = new LocalTimeField("endTime"); 
@@ -117,8 +120,8 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 		return guests.subsequence(0,max);
 	}
 	
-	public boolean allowNewGuest() { return guestsAllowed && guests.size()<max; }
-	public boolean allowNewBackupGuest() { return guestsAllowed && backupGuestsAllowed; }
+	public boolean allowNewGuest() { return guestsAllowed && guests.size()<max && ! cancelled; }
+	public boolean allowNewBackupGuest() { return guestsAllowed && backupGuestsAllowed && ! cancelled; }
 	
 	@Override public boolean mayBeChangedBy(User user) { return user!=null && (user.isAdmin || hasOrganizer(user)); }
 	@Override public boolean mayBeViewedBy(User user) { return true; }

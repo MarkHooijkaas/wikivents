@@ -37,3 +37,7 @@
 	{{> include/show.ajaxField value=record.location name="location" label="Locatie" postfix=""}}
 	{{> include/show.ajaxField value=record.cost     name="cost" label="Kosten" postfix=""}}
 
+{{#ifInlineEdit record}}
+	{{> include/modal.cancelEvent value=record.cancelled name="cancelled"}}
+{{/ifInlineEdit}}
+
