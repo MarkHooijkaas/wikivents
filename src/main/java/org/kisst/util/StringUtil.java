@@ -1,5 +1,7 @@
 package org.kisst.util;
 
+import java.text.Normalizer;
+
 import org.kisst.item4j.struct.Struct;
 import org.kisst.item4j.struct.StructHelper;
 
@@ -18,6 +20,17 @@ public class StringUtil {
 			return '"'+name+'"';
 		else
 			return name;
+	}
+	
+	public static String urlify(String s) {
+		//s=s.replaceAll("[\"']+", "");
+		//s=s.replaceAll("[;:]+", ".");
+		s = Normalizer.normalize(s, Normalizer.Form.NFD);
+		s = s.replaceAll("[^\\p{ASCII}]", "-");
+		s = s.replaceAll("[&]+", "+");
+		s = s.replaceAll("[^a-zA-Z0-9$_+.]+", "-");
+		s = s.replaceAll("[+-]*\\+[+-]*", "+");
+		return s;
 	}
 
 	public static String substitute(String str, Struct vars) {

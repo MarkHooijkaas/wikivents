@@ -20,6 +20,7 @@ import org.kisst.item4j.struct.MultiStruct;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.util.CallInfo;
 import org.kisst.util.PasswordEncryption;
+import org.kisst.util.StringUtil;
 
 import club.wikivents.model.Event;
 import club.wikivents.model.User;
@@ -269,7 +270,7 @@ public class UserHandler extends WikiventsActionHandler<User> {
 		InputStream filecontent = null;
 		try {
 			final Part filePart = call.request.getPart("avatar");
-			final String fileName = getFileName(filePart); // "testje.img";
+			final String fileName = StringUtil.urlify(getFileName(filePart)); 
 			File uploadDir = new File("data/uploads/"+u._id);
 			if (! uploadDir.exists())
 				uploadDir.mkdirs();
