@@ -3,7 +3,7 @@
 	{{> include/show.ajaxField value=record.title name="title" type=""  label="Titel" }}
 {{/ifInlineEdit}}
 	<div class="row">
-		<div class="col-xs-3"><label>Organisator</label></div>
+		<div class="col-xs-3"><label>{{#if record.idea}}Bedenker{{else}}Organisator{{/if}}</label></div>
 		<div class="col-xs-9"><span>
 			{{#each record.organizers}}
 				{{&priv get0.link}}
@@ -38,6 +38,11 @@
 	{{> include/show.ajaxField value=record.cost     name="cost" label="Kosten" postfix=""}}
 
 {{#ifInlineEdit record}}
+	{{> include/modal.ideaOK value=record.idea name="idea"}}
+{{/ifInlineEdit}}
+
+{{#ifInlineEdit record}}
 	{{> include/modal.cancelEvent value=record.cancelled name="cancelled"}}
 {{/ifInlineEdit}}
+
 

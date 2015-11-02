@@ -17,7 +17,8 @@
 
 {{#ifLoggedIn}}
 	{{#if user.emailValidated}}
-		<a href="!create"  class="btn btn-default">Start een activiteit</a>
+		<a href="!create"  class="btn btn-default btn-success">Start een activiteit</a>
+		<a href="!createIdea"  class="btn btn-default btn-success">Suggereer een Wikidee</a>
 	{{else}}
 		<span class="alert-danger">Activiteiten starten is pas mogelijk na email validatie</span>
 	{{/if}}

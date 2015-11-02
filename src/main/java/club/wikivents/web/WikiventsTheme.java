@@ -46,6 +46,7 @@ public class WikiventsTheme extends TemplateTheme {
 
 	public final CompiledTemplate eventShow = template("event.show");
 	public final CompiledTemplate eventEdit = template("event.edit");
+	public final CompiledTemplate eventCreateIdea = template("event.createIdea");
 	public final CompiledTemplate eventList = template("event.list");
 
 	public final CompiledTemplate groupShow = template("group.show");

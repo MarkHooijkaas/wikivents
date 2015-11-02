@@ -1,6 +1,7 @@
 package club.wikivents.web;
 
 import org.kisst.http4j.form.HttpFormData;
+import org.kisst.http4j.handlebar.TemplateEngine.CompiledTemplate;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.util.CallInfo;
 
@@ -36,7 +37,7 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 	}
 
 	public void handleEdit(WikiventsCall call, Event oldRecord) {
-		Form formdata = new Form(call,null);
+		Form formdata = new Form(call,(Struct) null);
 		if (formdata.isValid()) 
 			model.events.updateFields(oldRecord, formdata.record);
 		formdata.handle();
@@ -44,7 +45,11 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 	public void viewCreate(WikiventsCall call) {
 		new Form(call).showForm();
 	}
+	public void viewCreateIdea(WikiventsCall call) {
+		new Form(call, call.getTheme().eventCreateIdea).showForm();
+	}
 	
+	public void handleCreateIdea(WikiventsCall call) { handleCreate(call); }
 	public void handleCreate(WikiventsCall call) {
 		Form formdata = new Form(call);
 		if (formdata.isValid()) {
@@ -141,7 +146,8 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 	
 	public class Form extends HttpFormData {
 		public Form(WikiventsCall call, Struct data) { super(call, call.getTheme().eventEdit, data); }
-		public Form(WikiventsCall call) { super(call, call.getTheme().eventEdit); }
+		public Form(WikiventsCall call, CompiledTemplate theme) { super(call, theme); }
+		public Form(WikiventsCall call) { this(call, call.getTheme().eventEdit); }
 
 		public final InputField organizer=new InputField("organizer", call.userid);
 		public final InputField title = new InputField(Event.schema.title);
@@ -157,6 +163,7 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 		public final InputField cost = new InputField(Event.schema.cost);
 		public final InputField guestInfo = new InputField(Event.schema.guestInfo);
 		public final InputField description= new InputField(Event.schema.description);
+		public final InputField idea= new InputField(Event.schema.idea);
 	}
 }
 

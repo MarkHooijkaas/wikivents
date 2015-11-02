@@ -1,0 +1,36 @@
+{{#ifInlineEdit record}}
+{{#if record.idea}}
+	Wikidee kan definitief worden als alle details zijn ingevuld.
+	{{#if record.city}}{{#if record.location}}{{#if record.date}}{{#if record.time}}{{#if record.endTime}} 
+	<a class="btn btn-default btn-success" data-toggle="modal" data-target="#changeField{{name}}Modal">Wikidee definitief maken</a><br>
+	{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}
+
+	{{> include/modal.begin  id=name prefix="changeField" title="Wikidee definitief maken"}}
+		<form role="form" method="POST" id="{{name}}Form" action="">
+			<input type="hidden" name="action" value="changeField"/>
+			<input type="hidden" name="field" value="{{name}}"/>
+			<label for="">Activiteit is momenteel {{#if value}} nog maar een WIKIDEE {{else}} DEFINITIEF {{/if}}
+			<a id="{{name}}Button" class="btn btn-default btn-success">Activiteit {{#if value}} DEFINITIEF {{else}} WIKIDEE {{/if}} maken</a>
+			{{#if value}}
+				<input type="hidden" name="value" value="false">
+			{{else}}
+				<input type="hidden" name="value" value="true">
+			{{/if}}
+			<br/>
+			<span id="{{name}}Message"></span>
+		</form>
+		<script>
+		$(document).ready(function(){
+			$("#{{name}}Button").click(function(){
+				$.ajax({
+					type: "POST",
+					data: $(this).closest('form').serialize(),
+					success: function(data, status, xhr){ location.reload(true); },
+					error: function(xhr,status,error){ $("#{{name}}Message").html(error); }
+				});
+		    });
+		});
+		</script>
+	{{> include/modal.end}}
+{{/if}}
+{{/ifInlineEdit}}

@@ -30,6 +30,7 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 	public final boolean guestsAllowed;
 	public final boolean backupGuestsAllowed;
 	public final boolean cancelled;
+	public final boolean idea;
 	public final ImmutableSequence<User.Ref> organizers;
 	public final ImmutableSequence<User.Ref> likes;
 	public final ImmutableSequence<Group.Ref> groups;
@@ -59,6 +60,7 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 		this.guestsAllowed=schema.guestsAllowed.getBoolean(data,true);
 		this.backupGuestsAllowed=schema.backupGuestsAllowed.getBoolean(data,true);
 		this.cancelled=schema.cancelled.getBoolean(data,false);
+		this.idea=schema.idea.getBoolean(data,false);
 		this.organizers=schema.organizers.getSequenceOrEmpty(model, data);
 		this.likes=schema.likes.getSequenceOrEmpty(model, data);
 		this.guests=schema.guests.getSequenceOrEmpty(model, data);
@@ -79,6 +81,7 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 		public final BooleanField guestsAllowed = new BooleanField("guestsAllowed");
 		public final BooleanField backupGuestsAllowed = new BooleanField("backupGuestsAllowed");
 		public final BooleanField cancelled = new BooleanField("cancelled");
+		public final BooleanField idea = new BooleanField("idea");
 		public final LocalDateField date = new LocalDateField("date"); 
 		public final LocalTimeField time = new LocalTimeField("time"); 
 		public final LocalTimeField endTime = new LocalTimeField("endTime"); 

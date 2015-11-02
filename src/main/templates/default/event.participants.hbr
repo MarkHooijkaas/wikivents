@@ -1,6 +1,6 @@
 {{#ifLoggedIn}}
 
-<h2>Deelnemers {{record.guestCount}}/{{record.max}}
+<h2>{{#if record.idea}}Ge&iuml;nteresseerden {{record.guestCount}}{{else}}Deelnemers {{record.guestCount}}/{{record.max}}{{/if}}
 	{{> include/modal.lockField value=record.guestsAllowed name="guestsAllowed" label="Deelname"}}
 </h2> 
 {{#each record.allowedGuests}}
@@ -13,7 +13,7 @@
 <form role="form" method="GET" action="/sendMessage">
 	<input type="hidden" name="returnTo" value="{{call.localUrl}}"/>
 	<input type="hidden" name="to" value="{{#each record.allowedGuests}}{{user.get0.username}},{{/each}}"/>
-	<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Stuur Deelnemers een e-mail</button>
+	<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Stuur {{#if record.idea}}Ge&iuml;nteresseerden{{else}}Deelnemers{{/if}} een e-mail</button>
 </form>
 
 {{#ifAmGuest record}}
@@ -23,7 +23,7 @@
 	  	<form role="form" method="POST" >
 	  		<input type="hidden" name="action" value="addGuest"/>				
 	  		<input type="hidden" name="userId" value="{{record._id}}"/>				
-			<button type="submit" class="btn btn-default">Ik wil ook deelnemen</button>
+			<button type="submit" class="btn btn-default">{{#if record.idea}}Ik ben ge&iuml;nteresseerd{{else}}Ik wil ook deelnemen{{/if}}</button>
 	 	</form>
 	{{/if}}
 {{else}}

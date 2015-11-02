@@ -1,0 +1,43 @@
+{{> include/page.header.begin}}
+<script src="/lib/ckeditor/ckeditor.js"></script>
+<script src="/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="/lib/jquery-validation/src/localization/messages_nl.js"></script>
+<script src="/lib/webshim-1.15.10/js-webshim/minified/polyfiller.js"></script>
+{{> include/page.header.end}}
+
+<script >
+	webshim.polyfill('forms forms-ext');
+	$(document).ready(function(){ 
+		$('#createEvent').validate({ // initialize the plugin
+			rules: {
+				description: { required: true }
+			},
+		});
+		$.extend($.validator.messages, { required: "Dit veld is verplicht" });
+	 }); 
+</script>
+
+<h1>Wikidee maken</h1>
+Een Wikidee is een idee voor een nieuwe activiteit. 
+Deze activiteit is echter nog niet gepland, maar slechts een idee om te kijken hoe de interesse is.
+Je hoeft de datum, locatie etc dan ook nog niet op te geven. 
+Pas als er genoeg animo is, kan je de details invullen. 
+Eventueel kan je de ge&iuml;nteresseerden vooraf polsen voor een geschikte datum.
+Ook kan je kijken of iemand de organisatie op zich wil nemen of helpen bij de organisatie.
+<br>
+<br>
+
+
+<div class="col-xs-12">
+<form role="form" method="POST" id="createEvent" class="form-horizontal">
+	{{> include/form.text     form.title    label="Titel" type="" required="true"}}
+	{{> include/form.textarea form.description label="Omschrijving" rows=10 required=""}}
+
+	<input type="hidden" name="idea" value="true"/>
+	<input type="hidden" name="max" value="9999"/>
+	{{> include/form.submitButton submitTitle="Plaats dit idee" cancelUrl="/event/*.future"}}
+	<input type="hidden" name="action" value="edit"/>
+</form>
+</div>
+
+{{> include/page.footer}}
