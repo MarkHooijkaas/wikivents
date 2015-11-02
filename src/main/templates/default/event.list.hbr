@@ -8,7 +8,9 @@
 			"language": { "url": "/lib/datatables-i18n/i18n/nl.json" },
 			 "lengthMenu": [[-1, 20, 50, 100], ["Alle", 20, 50, 100]],
 			  "dom": '<"top"f>rt<"bottom"><"clear">',
-			  //"aaSorting": [[2, "asc" ]],
+			  //"stateSave": true,
+			  //"stateDuration": -1,
+			  "aaSorting": [[0, "asc" ]],
 		} );
 	} );
 </script>
