@@ -1,4 +1,4 @@
-{{> include/page.header.begin}}
+{{> include/page.header.begin  pagetitle="stuur e-mail"}}
 <script src="/lib/ckeditor/ckeditor.js"></script>
 <script src="/lib/jquery-validation/dist/jquery.validate.min.js"></script>
 <script src="/lib/jquery-validation/src/localization/messages_nl.js"></script>

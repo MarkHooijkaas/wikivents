@@ -1,4 +1,4 @@
-{{> include/page.header}}
+{{> include/page.header pagetitle="Fout"}}
 
 <p>Er is een fout opgetreden bij het aanroepen van pagina {{call.request.requestURL}}</p>
 

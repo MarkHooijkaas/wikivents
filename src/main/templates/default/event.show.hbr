@@ -1,4 +1,4 @@
-{{> include/page.header.begin}}
+{{> include/page.header.begin pagetitle=record.title}}
 <script src="/lib/ckeditor/ckeditor.js"></script>
 {{#ifInlineEdit record}}
 <script src="/lib/webshim-1.15.10/js-webshim/minified/polyfiller.js"></script>

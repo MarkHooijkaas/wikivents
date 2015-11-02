@@ -1,4 +1,4 @@
-{{> include/page.header.begin}}
+{{> include/page.header.begin pagetitle=record.username}}
 	<script src="/lib/datatables/media/js/jquery.dataTables.min.js"></script>
 	<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js"></script>
 	<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/localization/messages_nl.js"></script>
