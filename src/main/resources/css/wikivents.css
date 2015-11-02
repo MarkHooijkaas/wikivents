@@ -17,3 +17,34 @@ span.glyphicon-wrench { font-size: 0.8em;  }
     right:-10px;
     top:0;
 }
+
+/*
+EmojiSymbols Font (c)blockworks - Kenichi Kaneko
+http://emojisymbols.com/
+*/
+@font-face {
+	font-family: "EmojiSymbols";
+	src: url('EmojiSymbols-Regular.woff') format('woff');
+	text-decoration: none;
+	font-style: normal;
+}
+.emj {
+	font-family: "EmojiSymbols";
+	line-height: 1;
+}
+
+.emj2 {
+	font-family: "emoji";
+	line-height: 1;
+}
+
+@font-face {
+	font-family: emoji;
+	src: local('Apple Color Emoji'), local('Android Emoji'),
+		local('Segoe UI'), local(EmojiSymbols), local(Symbola),
+		url('font/Symbola-Emoji.eot?#iefix') format('embedded-opentype'),
+		url('font/Symbola-Emoji.woff') format('woff'),
+		url('font/Symbola-Emoji.ttf') format('truetype');
+	/* Emoji unicode blocks */
+	unicode-range: U+1F300-1F5FF, U+1F600-1F64F, U+1F680-1F6FF, U+2600-26FF;
+}

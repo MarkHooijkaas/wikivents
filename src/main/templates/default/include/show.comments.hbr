@@ -7,7 +7,7 @@
 <table class="table table-hover">
     <tbody>
 	{{#each record.comments.reverse}}
-		<tr><td>{{& user.get0.avatarLink}}</td><td>
+		<tr><td>{{& user.get0.avatarLink}}</td><td class="emj3">
 			{{#ifInlineEdit record}}
 				{{> include/modal.delete title=comment action="removeComment" field="commentId" value=id label="Weet je zeker dat je deze reactie wil verwijderen?"}} 
 			{{/ifInlineEdit}}
