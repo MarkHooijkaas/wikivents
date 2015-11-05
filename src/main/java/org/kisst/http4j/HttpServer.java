@@ -65,6 +65,13 @@ public class HttpServer extends AbstractHandler {
 			logger.info("HTTPS disabled");
 		}
 
+		NCSARequestLog requestLog = new NCSARequestLog("logs/jetty-yyyy_mm_dd.request.log");
+		requestLog.setAppend(true);
+		requestLog.setExtended(false);
+		//requestLog.setLogTimeZone("GMT");
+		requestLog.setLogTimeZone("CET");
+		server.setRequestLog(requestLog);
+		
 		server.setHandler(this);
 		return server;
 	}
