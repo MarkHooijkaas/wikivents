@@ -50,7 +50,7 @@ public class SendMessagePage extends WikiventsPage {
 		if (call.isGet()) 
 			formdata.showForm();
 		else {
-			if (formdata.isValid()) {
+			if (formdata.isValid() && call.user.emailValidated) {
 				String[] usernames=formdata.to.value.split("[,]");
 				User[] toUser=new User[usernames.length];
 				int i=0;
