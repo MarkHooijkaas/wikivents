@@ -149,7 +149,7 @@ public class UserHandler extends WikiventsActionHandler<User> {
 		RegisterForm formdata = new RegisterForm(call);
 		boolean valid = formdata.isValid();
 		//valid = valid && checkCaptcha(call.request);
-		
+		valid=false;
 		if (valid) {
 			String salt = PasswordEncryption.createSaltString();
 			String pw = PasswordEncryption.encryptPassword(formdata.password.value, salt);
@@ -158,6 +158,7 @@ public class UserHandler extends WikiventsActionHandler<User> {
 				.add(User.schema.passwordSalt,  salt)
 				.add(User.schema.encryptedPassword, pw)
 			));
+			CallInfo.instance.get().data=u.username;
 			model.users.create(u);
 			String url= call.getTopUrl()+"/user/"+u.username+"?view=validateEmail&token="+u.passwordSalt;
 			TemplateData context=call.createTemplateData();
