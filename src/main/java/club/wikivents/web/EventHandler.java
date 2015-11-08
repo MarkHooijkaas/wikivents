@@ -54,6 +54,7 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 		Form formdata = new Form(call);
 		if (formdata.isValid()) {
 			Event e=new Event(call.model,call.user,formdata.record);
+			CallInfo.instance.get().data=e.title;
 			model.events.create(e);
 			call.redirect("/event/:"+e._id);
 		}
