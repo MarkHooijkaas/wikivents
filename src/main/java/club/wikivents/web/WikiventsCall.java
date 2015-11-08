@@ -15,6 +15,12 @@ public class WikiventsCall extends HttpCall {
 	public final WikiventsCall call;
 	public final boolean authenticated;
 	
+	public static class BlockedUserException extends RuntimeException {
+		private static final long serialVersionUID = 1L;
+		public final User user;
+		public BlockedUserException(User u) { this.user=u; }
+	}
+	
 	private WikiventsCall(HttpCall call, WikiventsModel model) {
 		super(call);
 		this.model=model;
@@ -22,6 +28,8 @@ public class WikiventsCall extends HttpCall {
 			this.user=null;
 		else {
 			User u=model.users.readOrNull(userid); // TODO cache info in cookie, so table does not to be read with every call
+			if (u.blocked)
+				throw new BlockedUserException(u);
 			if (u!=null && u.isAdmin) {
 				String uname = request.getParameter("viewAs");
 				if (uname!=null)

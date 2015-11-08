@@ -8,6 +8,7 @@ import org.kisst.http4j.HttpCallDispatcher;
 import org.kisst.http4j.HttpCallDispatcher.Path;
 import org.kisst.http4j.HttpCallHandler;
 import org.kisst.http4j.ResourceHandler;
+import org.kisst.http4j.handlebar.TemplateEngine.CompiledTemplate;
 import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
 import org.kisst.props4j.Props;
 import org.kisst.util.MailSender;
@@ -16,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import club.wikivents.WikiventsModels;
 import club.wikivents.model.WikiventsModel;
+import club.wikivents.web.WikiventsCall.BlockedUserException;
 import net.tanesha.recaptcha.ReCaptcha;
 import net.tanesha.recaptcha.ReCaptchaFactory;
 
@@ -77,15 +79,18 @@ public class WikiventsSite implements HttpCallHandler {
 
 	}
 	@Override public void handle(HttpCall httpcall, String subPath) {
-		WikiventsCall call = WikiventsCall.of(httpcall, model);
 		try {
+			WikiventsCall call = WikiventsCall.of(httpcall, model);
 			this.handler.handle(call, subPath);
 		}
 		catch (RuntimeException e) {
-			logger.error("Error when handling "+call.request.getRequestURL(), e);
-			TemplateData context = new TemplateData(call);
+			logger.error("Error when handling "+httpcall.request.getRequestURL(), e);
+			TemplateData context = new TemplateData(httpcall);
 			context.add("exception", e);
-			call.output(call.getTheme().error,context);
+			CompiledTemplate templ = this.defaultTheme.error;
+			if (e instanceof BlockedUserException)
+				templ=this.defaultTheme.blockedUser;
+			httpcall.output(templ.toString(context));
 		}
 	}
 

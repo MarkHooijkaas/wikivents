@@ -13,7 +13,7 @@
 
   <table id="users" class="table table-hover">
     <thead>
-      <tr>
+   	  <tr>
         <th>Naam</th>
         <th>Woonplaats</th>
         <th>Lid sinds</th>
@@ -27,8 +27,8 @@
     </thead>
     <tbody>
 {{#each list}}  
-      <tr>
-        <td>{{&link}}</td>
+   	  <tr{{#if blocked}} style="color: grey;"{{/if}}>
+        <td>{{&link}}{{#if blocked}}<br>GEBLOKKEERD{{/if}}</td>
         <td>{{city}}</td>
         <td data-order="{{creationDate}}">{{dateFormat creationDate "eee d MMM yyyy"}}</td>
 {{#ifIsAdmin}}       

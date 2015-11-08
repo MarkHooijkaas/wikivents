@@ -36,6 +36,7 @@ public class WikiventsTheme extends TemplateTheme {
 	public final CompiledTemplate logout = template("logout");
 	public final CompiledTemplate sendMessage = template("sendMessage");
 	public final CompiledTemplate error = template("404");
+	public final CompiledTemplate blockedUser = template("blockedUser");
 
 	public final CompiledTemplate userShow = template("user.show");
 	public final CompiledTemplate userEdit = template("user.edit");

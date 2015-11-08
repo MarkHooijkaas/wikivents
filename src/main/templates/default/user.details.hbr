@@ -13,8 +13,10 @@
 	{{> user.uploadAvatar label="Profielfoto" name="uploadAvatar" }}<br>
 	{{> dialog/changePassword}}
 	{{#ifIsAdmin}}
+		<br>
 		{{record.username}}  {{> include/modal.textField value=record.username  name="username" prefix="" label="Gebruikersnaam"}}<br>
 		{{record.email}} {{> include/modal.textField value=record.email name="email" prefix="" label="E-mail"}}<br>  
+		geblokkeerd: {{> include/modal.boolField value=record.blocked name="blocked" title="Blokkeren" prefix="" label="geblokkeerd" trueLabel="AAN" falseLabel="UIT"}}<br>  
 	{{/ifIsAdmin}}  
 {{else}}
 	{{record.city}}<br>

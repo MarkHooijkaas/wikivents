@@ -43,6 +43,7 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 	public final String encryptedPassword;
 	public final boolean isAdmin;
 	public final boolean emailValidated;
+	public final boolean blocked;
 
 	public User(WikiventsModel model, Struct data) {
 		super(model.users, data);
@@ -58,6 +59,7 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 		this.encryptedPassword=schema.encryptedPassword.getString(data);
 		this.isAdmin=schema.isAdmin.getBoolean(data,false);
 		this.emailValidated=schema.emailValidated.getBoolean(data,false);
+		this.blocked=schema.blocked.getBoolean(data,false);
 	}
 	public ArrayList<Event> futureEvents() {
 		ArrayList<Event> result=new ArrayList<Event>();
@@ -146,6 +148,7 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 		public final StringField encryptedPassword = new StringField("encryptedPassword"); 
 		public final BooleanField isAdmin = new BooleanField("isAdmin");
 		public final BooleanField emailValidated = new BooleanField("emailValidated");
+		public final BooleanField blocked = new BooleanField("blocked");
 	}
 	
 	public boolean mayBeViewedBy(User user) {

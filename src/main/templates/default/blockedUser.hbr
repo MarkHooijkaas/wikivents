@@ -1,0 +1,6 @@
+{{> include/page.header pagetitle="Fout"}}
+
+<p>Deze gebruiker is door de beheerders geblokkeerd. Neem contact op met de beheerders: <a href="mailto:info@wikivents.nl">info@wikivents.nl</a>
+</p>
+
+{{> include/page.footer}}
