@@ -10,7 +10,7 @@
 	{{/ifMayChange}}
 	<br/>
 {{/each}}
-<form role="form" method="GET" action="/sendMessage">
+<form role="form" method="POST" action="/sendMessage">
 	<input type="hidden" name="returnTo" value="{{call.localUrl}}"/>
 	<input type="hidden" name="to" value="{{#each record.allowedGuests}}{{user.get0.username}},{{/each}}"/>
 	<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Stuur {{#if record.idea}}Ge&iuml;nteresseerden{{else}}Deelnemers{{/if}} een e-mail</button>
@@ -43,7 +43,7 @@
 	{{/ifMayChange}}
 	<br/>
 {{/each}}
-<form role="form" method="GET" action="/sendMessage">
+<form role="form" method="POST" action="/sendMessage">
 	<input type="hidden" name="returnTo" value="{{call.localUrl}}"/>
 	<input type="hidden" name="to" value="{{#each record.backupGuests}}{{user.get0.username}},{{/each}}"/>
 	<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Stuur Reservelijst een e-mail</button>

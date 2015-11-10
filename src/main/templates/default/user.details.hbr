@@ -26,8 +26,9 @@
 {{/ifInlineEdit}}
 <br><br>
 {{#if record.emailValidated}}
-<form role="form" method="GET" action="/sendMessage">
+<form role="form" method="POST" action="/sendMessage">
 	<input type="hidden" name="to" value="{{record.username}}"/>
+	<input type="hidden" name="returnTo" value="{{call.localUrl}}"/>
 	<button type="submit" class="btn btn-default">Stuur {{record.username}} een e-mail</button>
 </form>
 {{else}}

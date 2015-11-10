@@ -23,8 +23,8 @@ public class SendMessagePage extends WikiventsPage {
 		
 		public class ToField extends InputField {
 			public ToField(String name, Validator... validators) {
-				super(name, (record==null) ? null : stripCommas(record, name), validators); }
-			// TODO Auto-generated constructor stub
+				super(name, (record==null) ? null : stripCommas(record, name), validators);
+			}
 		}
 
 	}
