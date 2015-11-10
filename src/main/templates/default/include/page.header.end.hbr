@@ -1,5 +1,5 @@
 </head>
-<body>
+<body{{#if model.site.props.development}} style="background-color:lightgrey;"{{/if}}>
 
 <nav class="navbar navbar-default">
   <div class="container-fluid">
