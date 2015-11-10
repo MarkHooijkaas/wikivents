@@ -2,6 +2,7 @@ package club.wikivents.web;
 
 import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.form.HttpFormData;
+import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
 import org.kisst.item4j.Item;
 import org.kisst.item4j.struct.Struct;
 
@@ -66,8 +67,11 @@ public class SendMessagePage extends WikiventsPage {
 				String message=formdata.message.value;
 				//System.out.println(formdata.copyToSender.value);
 				boolean copyToSender=false;//true;//"true".equals(formdata.copyToSender.value);
+				TemplateData context = call.createTemplateData();
+				context.add("message", message);
+				String body=call.getTheme().mail.toString(context);
 				for (User u: toUser)
-					u.sendMailFrom(call.user, subject, message, copyToSender);
+					u.sendMailFrom(call.user, subject, body, copyToSender);
 				call.redirect(formdata.returnTo.value);
 			}
 			formdata.handle();

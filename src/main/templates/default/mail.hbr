@@ -1,0 +1,12 @@
+<div style="border-style:double; padding:0px 20px">
+<p>Dit bericht is gestuurd door wikivents gebruiker <a href="https://wikivents.nl/user/:{{call.user._id}}">{{call.user.username}}</a> via de website <a href="https://wikivents.nl">wikivents.nl</a>.
+Je kan gewoon antwoorden op deze mail in je normale mailprogramma waarin je dit nu leest.
+</p>
+<p><i><b>Mocht je niet gediend zijn van dit bericht dan kan je het beste niet reageren</b> (dan wordt namelijk je email adres zichtbaar als afzender adres).
+Het best kan je dan dit bericht doorsturen naar meldpunt@wikivents.nl, met eventueel een toelichting waarom je hier niet van gediend bent.
+</i>
+</p>
+</div>
+<hr>
+
+{{&message}}

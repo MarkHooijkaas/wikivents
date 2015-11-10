@@ -27,9 +27,9 @@ public class JsonOutputter {
 			if (value==null)
 				continue;
 			if (! firstElement)
-				out.write(", ");
+				out.write(",\n");
 			firstElement=false;
-			out.print('"'+name+"\":");
+			out.print("\""+name+"\":");
 			write(out,value);
 		}
 		out.write('}');
@@ -40,7 +40,7 @@ public class JsonOutputter {
 		for (int i=0; i<seq.size(); i++) {
 			Item value=seq.getItem(i);
 			if (! firstElement)
-				out.write(", ");
+				out.write(",\n");
 			
 			firstElement=false;
 			write(out,value);
@@ -52,7 +52,7 @@ public class JsonOutputter {
 		boolean firstElement=true;
 		for (Object obj: seq) {
 			if (! firstElement)
-				out.write(", ");
+				out.write(",\n");
 			firstElement=false;
 			write(out,obj);
 		}
