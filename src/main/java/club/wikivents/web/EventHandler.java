@@ -51,6 +51,8 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 	
 	public void handleCreateIdea(WikiventsCall call) { handleCreate(call); }
 	public void handleCreate(WikiventsCall call) {
+		if (! call.user.trusted())
+			throw new RuntimeException("User "+call.user.username+" not trusted to create event "+call.request.getParameter("title") );
 		Form formdata = new Form(call);
 		if (formdata.isValid()) {
 			Event e=new Event(call.model,call.user,formdata.record);

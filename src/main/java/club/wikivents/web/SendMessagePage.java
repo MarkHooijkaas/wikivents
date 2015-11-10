@@ -51,6 +51,8 @@ public class SendMessagePage extends WikiventsPage {
 
 	@Override public void handle(HttpCall httpcall, String subPath) {
 		WikiventsCall call = WikiventsCall.of(httpcall, model);
+		if (!call.user.trusted())
+			throw new RuntimeException("User not trusted to send email");
 		Form formdata = new Form(call);
 		if (call.isGet()) 
 			formdata.showForm();
@@ -73,10 +75,14 @@ public class SendMessagePage extends WikiventsPage {
 				boolean copyToSender=false;//true;//"true".equals(formdata.copyToSender.value);
 				TemplateData context = call.createTemplateData();
 				context.add("message", message);
-				String body=call.getTheme().mail.toString(context);
-				maillogger.info("Sending mail from {} ({}) to {} : {} ",call.user.username, call.request.getRemoteAddr(), formdata.to.value, subject);
-				for (User u: toUser)
+				context.add("from", call.user);
+				context.add("subject", formdata.subject.value);
+				for (User u: toUser) {
+					maillogger.info("Sending mail from {} ({}) to {} : {} ",call.user.username, call.request.getRemoteAddr(), formdata.to.value, subject);
+					context.add("to", message);
+					String body=call.getTheme().mail.toString(context);
 					u.sendMailFrom(call.user, subject, body, copyToSender);
+				}
 				call.redirect(formdata.returnTo.value);
 			}
 			formdata.handle();

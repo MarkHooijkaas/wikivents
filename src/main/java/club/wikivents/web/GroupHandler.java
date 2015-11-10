@@ -42,6 +42,8 @@ public class GroupHandler extends WikiventsActionHandler<Group> {
 	}
 	
 	public void handleCreate(WikiventsCall call) {
+		if (! call.user.trusted())
+			throw new RuntimeException("User "+call.user.username+" not trusted to create thema "+call.request.getParameter("title") );
 		Form formdata = new Form(call);
 		if (formdata.isValid()) {
 			Group t=new Group(call.model,call.user,formdata.record);

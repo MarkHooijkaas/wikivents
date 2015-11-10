@@ -19,7 +19,8 @@
         <th>Lid sinds</th>
 {{#ifIsAdmin}}       
         <th>email</th>
-        <th>validated</th>
+        <th>email validated</th>
+        <th>vertrouwd</th>
         <th>profiel</th>
         <th>foto</th>
 {{/ifIsAdmin}}       
@@ -34,6 +35,7 @@
 {{#ifIsAdmin}}       
         <td>{{email}}</td>
         <td>{{emailValidated}}</td>
+        <td>{{trusted}}</td>
         <td>{{#if description}}true{{else}}false{{/if}}</td>
         <td>{{#if avatarUrl}}true{{else}}false{{/if}}</td>
 {{/ifIsAdmin}}       

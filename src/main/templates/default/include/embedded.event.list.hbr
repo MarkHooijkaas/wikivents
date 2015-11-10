@@ -39,7 +39,7 @@
         <td>{{cost}}</td>
         <td data-order="{{guests.size}}">{{#if idea}}{{guests.size}}{{else}}{{guestCount}}/{{max}}{{/if}}</td>
 {{#ifLoggedIn}}
-        <td>{{&join organizers "<br/>"}}</td>
+        <td>{{#if user.trusted}}{{&join organizers "<br/>"}}{{else}}{{#each organizers}}{{&get0.usernameLink}} {{/each}}{{/if}}</td>
 {{/ifLoggedIn}}
         <td data-order="{{creationDate}}">{{dateFormat creationDate "eee d MMM yyyy"}}</td>
         <td data-order="{{modificationDate}}">{{dateFormat modificationDate "eee d MMM yyyy"}}</td>

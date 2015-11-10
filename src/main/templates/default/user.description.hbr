@@ -28,8 +28,12 @@ Dit geldt helemaal voor organisatoren die mensen bij hun thuis uitnodigen.
 </h1>
 {{> include/modal.textAreaField label="Profielinformatie" name="description" value=record.description}}
  
+{{#ifMayView record}}
 {{#if record.description}}
 	{{&record.description}}
 {{else}}
 	Deze gebruiker heeft nog geen profiel informatie opgegeven
 {{/if}}
+{{else}}
+	Je identiteit is nog niet gevalideerd. Daarom mag je alleen je eigen profiel beschrijving zien. Neem contact op met <a href="mailto.info@wikivents.nl">info@wikivents.nl</a> om je identiteit te valideren.
+{{/ifMayView}}

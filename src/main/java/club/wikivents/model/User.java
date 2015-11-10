@@ -44,6 +44,7 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 	public final boolean isAdmin;
 	public final boolean emailValidated;
 	public final boolean blocked;
+	public final boolean identityValidated;
 
 	public User(WikiventsModel model, Struct data) {
 		super(model.users, data);
@@ -60,6 +61,7 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 		this.isAdmin=schema.isAdmin.getBoolean(data,false);
 		this.emailValidated=schema.emailValidated.getBoolean(data,false);
 		this.blocked=schema.blocked.getBoolean(data,false);
+		this.identityValidated=schema.identityValidated.getBoolean(data,true);
 	}
 	public ArrayList<Event> futureEvents() {
 		ArrayList<Event> result=new ArrayList<Event>();
@@ -149,12 +151,13 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 		public final BooleanField isAdmin = new BooleanField("isAdmin");
 		public final BooleanField emailValidated = new BooleanField("emailValidated");
 		public final BooleanField blocked = new BooleanField("blocked");
+		public final BooleanField identityValidated = new BooleanField("identityValidated");
 	}
 	
 	public boolean mayBeViewedBy(User user) {
 		if (user==null) return false;
 		if (_id.equals(user._id))	return true;
-		if (user.isAdmin) return true;
+		if (user.trusted()) return true;
 		return false;		
 	}
 	public boolean mayBeChangedBy(User u) {
@@ -164,13 +167,15 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 		return u.isAdmin;
 	}
 	
-
+	public boolean trusted() { return identityValidated && emailValidated; }
 
 	public void sendSystemMail(String subject, String message) {
 		sendMailFrom(systemMailAddress, subject, message, false);
 	}
 	
 	public void sendMailFrom(User from, String subject, String message, boolean copyToSender) {
+		if (! from.trusted())
+			throw new RuntimeException("User "+from.username+" not trusted to send email to "+this.username+" about "+subject);
 		try {
 			sendMailFrom(new InternetAddress(from.email,from.username), subject, message, copyToSender);
 		} 
@@ -183,7 +188,8 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 				msg.setFrom(from);
 			else {
 				msg.setFrom(new InternetAddress("info@wikivents.nl","Wikivents gebruiker "+from.getPersonal()));
-				msg.setReplyTo(new InternetAddress[] {from});
+				if (this.trusted())
+					msg.setReplyTo(new InternetAddress[] {from});
 			}
 			msg.setRecipients(Message.RecipientType.TO, new InternetAddress[] {new InternetAddress(email, username)});
 			if (copyToSender)
