@@ -5,10 +5,14 @@ import org.kisst.http4j.form.HttpFormData;
 import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
 import org.kisst.item4j.Item;
 import org.kisst.item4j.struct.Struct;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import club.wikivents.model.User;
 
 public class SendMessagePage extends WikiventsPage {
+	private final static Logger maillogger=LoggerFactory.getLogger("mail");
+
 	public SendMessagePage(WikiventsSite site) { super(site); }
 
 	public class Form extends HttpFormData {
@@ -70,6 +74,7 @@ public class SendMessagePage extends WikiventsPage {
 				TemplateData context = call.createTemplateData();
 				context.add("message", message);
 				String body=call.getTheme().mail.toString(context);
+				maillogger.info("Sending mail from {} ({}) to {} : {} ",call.user.username, call.request.getRemoteAddr(), formdata.to.value, subject);
 				for (User u: toUser)
 					u.sendMailFrom(call.user, subject, body, copyToSender);
 				call.redirect(formdata.returnTo.value);
