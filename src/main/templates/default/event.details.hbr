@@ -6,7 +6,7 @@
 		<div class="col-xs-3"><label>{{#if record.idea}}Bedenker{{else}}Organisator{{/if}}</label></div>
 		<div class="col-xs-9"><span>
 			{{#each record.organizers}}
-				{{#if call.user.trusted}}{{&priv get0.link}}{{else}}{{&get0.usernameLink}}{{/if}}
+				<img class="karma-icon" src="{{get0.karmaIcon}}">{{#if call.user.trusted}}{{&priv get0.link}}{{else}}{{&get0.usernameLink}}{{/if}}
 				{{#ifInlineEdit record}}
 					{{> include/modal.delete action="removeOrganizer" title=get0.username field="userId" value=_id label="Weet je zeker dat je deze organisator wil verwijderen?"}} 
 				{{/ifInlineEdit}}

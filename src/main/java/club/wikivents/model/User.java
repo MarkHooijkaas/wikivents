@@ -183,7 +183,10 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 	}
 	public boolean karmaPositive() { return karma()>0; }
 	public boolean karmaNeutral() { return karma()==0; }
+	public boolean karmaNegative() { return karma()<0; }
 	public boolean karmaNotNegative() { return karma()>=0; }
+	public boolean karmaNotPositive() { return karma()<=0; }
+
 	public String karmaIcon() { 
 		int k=karma();
 		if (k>0) return "/images/yin_yang_green.gif";

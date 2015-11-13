@@ -38,17 +38,34 @@
 </div>	 
 
 <div class="col-xs-12 col-md-9 col-lg-10 overflow-hidden">
-{{#if record.trusted}}
-{{else}}
-<h1 style="color:red;">Identiteit nog niet gecontroleerd</h1>
+{{#if record.karmaNeutral}}
+<h1 style="color:orange;">Karma neutraal: (Identiteit nog niet gecontroleerd)</h1>
 <p style="color:red;">
-Van deze gebruiker is de identiteit nog niet gevalideerd. 
-Meestal is dit omdat dit een nieuwe gebruiker is, die zich recent heeft aangemeld, waarbij de controle enige tijd kan kosten.
+De Karma van deze gebruiker staat op neutraal. 
+Meestal is dat een teken dat deze gebruiker zich nieuw heeft geregistreerd.
+Waarschijnlijk is het email adres of de identiteit van deze gebruiker nog niet gevalideerd. 
+Deze controle enige tijd kan kosten.
 Deze gebruiker mag nog geen email verzenden of profielen van andere gebruikers zien, om misbruik te voorkomen.
 Deze gebruiker mag al wel deelnemen aan activiteiten, want juist dat is een goede manier om iemand te leren kennen.
 Mocht je toch vragen hebben, neem dan gerust contact op met <a href="mailto:info@wikivents.nl">info@wikivents.nl</a>.  
 </p>  
 {{/if}}
+
+{{#if record.karmaNegative}}
+<h1 style="color:red;">Karma negatief: verdachte omstandigheden</h1>
+<p style="color:red;">
+Van deze gebruiker is door de beheerders aangegeven dat er verdachte omstandigheden zijn.
+Dit kan zijn omdat er meldingen van ongewenst gedrag zijn gekomen van andere gebruikers.
+Het kan ook zijn dat er andere verdachte omstandigheden zijn, zoals het gebruik van Tor IP netwerken, verdachte email adressen, ongewenste afbeelding en dergelijke.
+Het kan zijn dat er sprake is van een misverstand, maar enige voorzichtigheid is geboden. 
+Deze gebruiker mag geen email verzenden of profielen van andere gebruikers meer zien, om misbruik te voorkomen.
+Deze gebruiker mag zich ook niet meer opgeven voor activiteiten, tot er meer duidelijkheid is.
+Mocht je toch vragen hebben, neem dan gerust contact op met <a href="mailto:info@wikivents.nl">info@wikivents.nl</a>,
+of <a href="mailto:meldpunt@wikivents.nl">meldpunt@wikivents.nl</a>.  
+</p>  
+{{/if}}
+
+
 	{{> user.description}}
 	{{> user.events}}
 </div>	 
