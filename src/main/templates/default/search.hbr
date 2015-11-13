@@ -16,13 +16,9 @@
 <h1>Zoeken naar {{tekst}}</h1>
 
 <h2>Activiteiten met de tekst: {{text}}</h2>
-Hieronder zie je een lijst met wikivents met in de titel of omschrijving de tekst: {{text}}
-
-
 {{> include/embedded.event.list list=events tableid="events"}}
 
 <h2>Gebruikers met de tekst: {{text}}</h2>
-Hieronder zie je een lijst met wikivents met in de titel of omschrijving de tekst: {{text}}
 {{> embedded.user.list list=users tableid="users"}}
 
 
