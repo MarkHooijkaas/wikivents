@@ -4,7 +4,7 @@
 	{{> include/modal.lockField value=record.guestsAllowed name="guestsAllowed" label="Deelname"}}
 </h2> 
 {{#each record.allowedGuests}}
-	{{#if call.user.trusted}}{{&priv user.link}}{{else}}{{&user.get0.usernameLink}}{{/if}}
+	<img class="karma-icon" src="{{user.get0.karmaIcon}}">{{#if call.user.trusted}}{{&priv user.link}}{{else}}{{&user.get0.usernameLink}}{{/if}}
 	{{#ifMayChange this}}
 		{{> include/modal.delete title=user.get0.username action="removeGuest" field="userId" value=user._id label="Weet je zeker dat je je deelname wil annuleren?"}} 
 	{{/ifMayChange}}
@@ -39,7 +39,7 @@
 </h2>
 {{#if record.backupGuests}}
 {{#each record.backupGuests}}
-	{{#if user.get0.trusted}}{{&priv user.link}}{{else}}{{&user.get0.usernameLink}}{{/if}}
+	<img class="karma-icon" src="{{user.get0.karmaIcon}}">{{#if user.get0.trusted}}{{&priv user.link}}{{else}}{{&user.get0.usernameLink}}{{/if}}
 	{{#ifMayChange this}}
 		{{> include/modal.delete title=user.get0.username action="removeGuest" field="userId" value=user._id label="Weet je zeker dat je je deelname wil annuleren?"}} 
 	{{/ifMayChange}}

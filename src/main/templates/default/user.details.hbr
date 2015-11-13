@@ -7,7 +7,7 @@
 	<img src="/favicon.ico"/>
 {{/if}}
 {{else}}
-	Je identiteit is nog niet gevalideerd. Daarom mag je alleen je eigen profielfoto zien. Neem contact op met <a href="mailto.info@wikivents.nl">info@wikivents.nl</a> om je identiteit te valideren.
+	<span style="color:red;">Je identiteit is nog niet gevalideerd. Daarom mag je alleen je eigen profielfoto zien. Neem contact op met <a href="mailto.info@wikivents.nl">info@wikivents.nl</a> om je identiteit te valideren.</span>
 {{/ifMayView}}
 	<br><br>
 {{#ifInlineEdit record}}

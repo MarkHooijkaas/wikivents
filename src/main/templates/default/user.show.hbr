@@ -38,6 +38,17 @@
 </div>	 
 
 <div class="col-xs-12 col-md-9 col-lg-10 overflow-hidden">
+{{#if record.trusted}}
+{{else}}
+<h1 style="color:red;">Identiteit nog niet gecontroleerd</h1>
+<p style="color:red;">
+Van deze gebruiker is de identiteit nog niet gevalideerd. 
+Meestal is dit omdat dit een nieuwe gebruiker is, die zich recent heeft aangemeld, waarbij de controle enige tijd kan kosten.
+Deze gebruiker mag nog geen email verzenden of profielen van andere gebruikers zien, om misbruik te voorkomen.
+Deze gebruiker mag al wel deelnemen aan activiteiten, want juist dat is een goede manier om iemand te leren kennen.
+Mocht je toch vragen hebben, neem dan gerust contact op met <a href="mailto:info@wikivents.nl">info@wikivents.nl</a>.  
+</p>  
+{{/if}}
 	{{> user.description}}
 	{{> user.events}}
 </div>	 

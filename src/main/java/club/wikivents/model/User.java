@@ -167,8 +167,24 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 		return u.isAdmin;
 	}
 	
-	public boolean trusted() { return identityValidated && emailValidated; }
-
+	public boolean trusted() { return identityValidated && emailValidated && ! blocked; }
+	public int karma() {
+		if (trusted())
+			return 10;
+		if (blocked)
+			return -100;
+		return 0;
+	}
+	public boolean karmaPositive() { return karma()>0; }
+	public boolean karmaNeutral() { return karma()==0; }
+	public boolean karmaNotNegative() { return karma()>=0; }
+	public String karmaIcon() { 
+		int k=karma();
+		if (k>0) return "/images/yin_yang_green.gif";
+		if (k==0) return "/images/yin_yang_grey.png";
+		return "/images/yin_yang_red.png";
+	}
+	
 	public void sendSystemMail(String subject, String message) {
 		sendMailFrom(systemMailAddress, subject, message, false);
 	}

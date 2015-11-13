@@ -1,4 +1,8 @@
-a img.link-avatar {
+img.link-avatar {
+   max-width: 30px;
+   height: auto;
+}
+img.karma-icon {
    max-width: 30px;
    height: auto;
 }
