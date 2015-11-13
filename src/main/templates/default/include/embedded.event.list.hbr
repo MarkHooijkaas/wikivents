@@ -5,19 +5,19 @@
       <tr>
         <th>Datum</th>
         <th>Tijd</th>
-{{#ifLoggedIn}}
-        <th>Vind ik Leuk</th>
-{{/ifLoggedIn}}
         <th>activiteit</th>
         <th>plaats</th>
         <th>locatie</th>
-        <th>kosten</th>
         <th>deelnemers</th>
 {{#ifLoggedIn}}
         <th>Organisator</th>
 {{/ifLoggedIn}}
+        <th>kosten</th>
         <th>geplaatst op</th>
         <th>Update</th>
+{{#ifLoggedIn}}
+        <th>Vind ik Leuk</th>
+{{/ifLoggedIn}}
 {{#ifIsAdmin}}
         <th>aantal likes</th>
         <th>Del</th>
@@ -28,21 +28,21 @@
 		
 {{#each list}} 
 	  <tr{{#if cancelled}} style="color: grey;"{{/if}}>
-        <td data-order="{{#if idea}}9999 {{creationDate}}{{else}}{{date}}{{/if}} {{time}}">{{dateFormat date "eee d MMM yyyy"}}</td>
+        <td data-order="{{#if date}}{{date}}{{else}}9999 {{creationDate}}{{/if}} {{time}}">{{dateFormat date "eee d MMM yyyy"}}</td>
         <td>{{time}}</td>
-{{#ifLoggedIn}}
-        <td>{{> include/like.button event=this}}</td>
-{{/ifLoggedIn}}
         <td><a href="/event/:{{_id}}" {{#if cancelled}} style="color: grey;"{{/if}}>{{#if idea}}<span style="color:grey;">WIKIDEE</span><br>{{/if}}{{#if cancelled}}GEANNULEERD<br>{{/if}}{{title}}</a></td>
         <td>{{city}}</td>
         <td>{{location}}</td>
-        <td>{{cost}}</td>
         <td data-order="{{guests.size}}">{{#if idea}}{{guests.size}}{{else}}{{guestCount}}/{{max}}{{/if}}</td>
 {{#ifLoggedIn}}
         <td>{{#if user.trusted}}{{&join organizers "<br/>"}}{{else}}{{#each organizers}}{{&get0.usernameLink}} {{/each}}{{/if}}</td>
 {{/ifLoggedIn}}
+        <td>{{cost}}</td>
         <td data-order="{{creationDate}}">{{dateFormat creationDate "eee d MMM yyyy"}}</td>
         <td data-order="{{modificationDate}}">{{dateFormat modificationDate "eee d MMM yyyy"}}</td>
+{{#ifLoggedIn}}
+        <td>{{> include/like.button event=this}}</td>
+{{/ifLoggedIn}}
 {{#ifIsAdmin}}
         <td data-order="{{likes.size}}">{{likes.size}} likes</td>
         <td>
