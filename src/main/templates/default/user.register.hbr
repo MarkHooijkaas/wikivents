@@ -4,7 +4,7 @@
 <script src='https://www.google.com/recaptcha/api.js'></script>
 {{> include/page.header.end}}
 
-{{#if 1}}
+{{#if 0}}
 Wegens problemen is het momenteel niet mogelijk om als nieuwe gebruiker te registreren.
 Mocht je vragen hebben of toch geinteresseerd zijn om je als nieuwe gebruiker te registreren, 
 dan kan je een email sturen aan <a href="mailto:info@wikivents.nl">info@wikivents.nl</a>

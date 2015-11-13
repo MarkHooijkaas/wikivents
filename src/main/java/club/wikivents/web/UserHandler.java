@@ -123,7 +123,6 @@ public class UserHandler extends WikiventsActionHandler<User> {
 			call.output("false");
 	}
 	
-	@SuppressWarnings("unused")
 	private boolean checkCaptcha(HttpServletRequest request) {
 		String remoteAddr = request.getRemoteAddr();
 		ReCaptchaImpl reCaptcha = new ReCaptchaImpl();
@@ -148,8 +147,7 @@ public class UserHandler extends WikiventsActionHandler<User> {
 	public void handleRegister(WikiventsCall call) {
 		RegisterForm formdata = new RegisterForm(call);
 		boolean valid = formdata.isValid();
-		//valid = valid && checkCaptcha(call.request);
-		valid=false;
+		valid = valid && checkCaptcha(call.request);
 		if (valid) {
 			String salt = PasswordEncryption.createSaltString();
 			String pw = PasswordEncryption.encryptPassword(formdata.password.value, salt);
