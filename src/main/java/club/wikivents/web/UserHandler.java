@@ -161,7 +161,7 @@ public class UserHandler extends WikiventsActionHandler<User> {
 			context.add("user", u);
 			context.add("url", url);
 			String message = call.getTheme().userRegisterSucces.toString(context);
-			u.sendSystemMail("Welkom bij Wikivents: valideer dit mail adres", message);
+			u.sendSystemMail("Welkom bij Wikivents "+u.username+": valideer dit mail adres", message);
 			call.setCookie(u._id);
 			call.redirect("/user/"+u.username);
 		}

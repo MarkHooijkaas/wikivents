@@ -4,50 +4,7 @@
 
 {{#if call.user.karmaPositive}}
 
-<script>
-	$(document).ready(function() {
-	    $('#users').dataTable({
-			"language": { "url": "/lib/datatables-i18n/i18n/nl.json" },
-			"lengthMenu": [[-1, 20, 50, 100], ["Alle", 20, 50, 100]],
-			"aaSorting": [[1, "asc" ]],
-		});
-	});
-</script>
-
-  <table id="users" class="table table-hover">
-    <thead>
-   	  <tr>
-        <th>Karma</th>
-        <th>Naam</th>
-        <th>Woonplaats</th>
-        <th>Lid sinds</th>
-{{#ifIsAdmin}}       
-        <th>email</th>
-        <th>email validated</th>
-        <th>vertrouwd</th>
-        <th>profiel</th>
-        <th>foto</th>
-{{/ifIsAdmin}}       
-      </tr>
-    </thead>
-    <tbody>
-{{#each list}}  
-   	  <tr{{#if blocked}} style="color: grey;"{{/if}}>
-        <td data-order="{{karma}}"><img class="karma-icon" src="{{karmaIcon}}"></td>
-        <td>{{&link}}{{#if blocked}}<br>GEBLOKKEERD{{/if}}</td>
-        <td>{{city}}</td>
-        <td data-order="{{creationDate}}">{{dateFormat creationDate "eee d MMM yyyy"}}</td>
-{{#ifIsAdmin}}       
-        <td>{{email}}</td>
-        <td>{{emailValidated}}</td>
-        <td>{{trusted}}</td>
-        <td>{{#if description}}true{{else}}false{{/if}}</td>
-        <td>{{#if avatarUrl}}true{{else}}false{{/if}}</td>
-{{/ifIsAdmin}}       
-      </tr>
-{{/each}}
-    </tbody>
-  </table>
+{{>embedded.user.list}}
 
 {{else}}
 Deze pagina is alleen zichtbaar voor leden van wie de identiteit gecontroleerd is

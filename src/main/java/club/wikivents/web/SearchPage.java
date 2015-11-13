@@ -6,6 +6,7 @@ import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
 
 import club.wikivents.model.Event;
+import club.wikivents.model.User;
 
 public class SearchPage extends WikiventsPage {
 	public SearchPage(WikiventsSite site) { super(site); }
@@ -24,6 +25,13 @@ public class SearchPage extends WikiventsPage {
 				events.add(e);
 			}
 		}
+		ArrayList<User> users=new ArrayList<User>() ;
+		for (User u: call.model.users) {
+			if ((u.description+u.username+u.city).toLowerCase().indexOf(text)>0) {
+				users.add(u);
+			}
+		}		
+		context.add("users", users);
 		context.add("events", events);
 		call.output(call.getTheme().search.toString(context));
 	}
