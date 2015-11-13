@@ -45,6 +45,7 @@ public class WikiventsSite implements HttpCallHandler {
 		public final HttpCallHandler theme=new GroupHandler(WikiventsSite.this);
 		public final HttpCallHandler login  = loginPage::handleLogin;
 		public final HttpCallHandler logout = new LogoutPage(WikiventsSite.this);
+		public final HttpCallHandler search = new SearchPage(WikiventsSite.this);
 		public final HttpCallHandler sendMessage = new SendMessagePage(WikiventsSite.this);
 		private final File resourceDir=new File(props.getString("resourceDir","resources"));
 		//public final HttpCallHandler lib=new ResourceHandler("lib/", new File(resourceDir, "lib"));
@@ -98,7 +99,7 @@ public class WikiventsSite implements HttpCallHandler {
 	public WikiventsTheme getTheme(String themeName) { return themes.get(themeName); }
 
 	public String captchaHtml() {
-		ReCaptcha c = ReCaptchaFactory.newReCaptcha(recaptchaPublicKey, recaptchaPrivateKey, false);
+		ReCaptcha c = ReCaptchaFactory.newSecureReCaptcha(recaptchaPublicKey, recaptchaPrivateKey, false);
 		return c.createRecaptchaHtml(null, null);
 	}
 
