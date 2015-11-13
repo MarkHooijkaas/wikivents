@@ -48,6 +48,7 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 
 	public User(WikiventsModel model, Struct data) {
 		super(model.users, data);
+		int dataversion = getCrudObjectVersionOf(data);
 		this.model=model;
 		this.username=schema.username.getString(data);
 		this.description=schema.description.getString(data,null);
@@ -61,8 +62,12 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 		this.isAdmin=schema.isAdmin.getBoolean(data,false);
 		this.emailValidated=schema.emailValidated.getBoolean(data,false);
 		this.blocked=schema.blocked.getBoolean(data,false);
-		this.identityValidated=schema.identityValidated.getBoolean(data,true);
+		boolean defaultValue = dataversion==0;
+		this.identityValidated=schema.identityValidated.getBoolean(data,defaultValue);
 	}
+	@Override public int getCrudObjectVersion() { return 1;}
+
+	
 	public ArrayList<Event> futureEvents() {
 		ArrayList<Event> result=new ArrayList<Event>();
 		for (Event e: model.futureEvents()) {
@@ -139,6 +144,7 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 	public static final class Schema extends CrudSchema<User> {
 		private Schema() { super(User.class); }
 		public final IdField _id = new IdField();
+		public final IntField _crudObjectVersion = new IntField("_crudObjectVersion");
 		public final StringField username = new StringField("username"); 
 		public final StringField description= new StringField("description"); 
 		public final StringField message = new StringField("message"); 

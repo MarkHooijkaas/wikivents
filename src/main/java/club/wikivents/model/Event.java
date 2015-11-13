@@ -73,6 +73,7 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 		private Schema() { super(Event.class); }
 		public IdField getKeyField() { return _id; }
 		public final IdField _id = new IdField();
+		public final IntField _crudObjectVersion = new IntField("_crudObjectVersion");
 		public final StringField title = new StringField("title"); 
 		public final StringField imageUrl = new StringField("imageUrl"); 
 		public final SequenceField<User.Ref> organizers = new SequenceField<User.Ref>(User.Ref.type,"organizers");

@@ -46,6 +46,7 @@ public class Group extends CrudObject implements AccessChecker<User> {
 		private Schema() { super(Group.class); }
 		public IdField getKeyField() { return _id; }
 		public final IdField _id = new IdField();
+		public final IntField _crudObjectVersion = new IntField("_crudObjectVersion");
 		public final StringField title = new StringField("title"); 
 		public final StringField description = new StringField("description"); 
 		public final SequenceField<User.Ref> owners = new SequenceField<User.Ref>(User.Ref.type,"owners");
