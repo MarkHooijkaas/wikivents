@@ -1,9 +1,10 @@
 
-{{#ifMayView record}}
 {{#if record.karmaPositive}}
 {{else}}
 	<img style="max-height:100%; max-width:100%;" src="{{record.karmaIcon}}"/><br>
 {{/if}}
+
+{{#ifMayView record}}
 
 {{#if record.avatarUrl}}
 	<img style="max-height:100%; max-width:100%;" src="{{record.avatarUrl}}"/>
