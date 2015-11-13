@@ -56,5 +56,5 @@
   </table>
  
 {{else}}
-Nog geen activiteiten
+ geen activiteiten
 {{/if}}
