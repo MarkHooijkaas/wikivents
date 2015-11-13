@@ -35,5 +35,5 @@ public abstract class CrudObject extends SchemaObject {
 	public<T extends CrudObject> CrudRef<T> getRef() { return (CrudRef<T>) table.createRef(_id);}
 	
 	public int getCrudObjectVersion() { return 0;}
-	public int getCrudObjectVersionOf(Struct data) { return (int) data.getDirectFieldValue("_crudObjectVersion", 0);}
+	public int getCrudObjectVersionOf(Struct data) { return Integer.parseInt(""+data.getDirectFieldValue("_crudObjectVersion", "0"));}
 }

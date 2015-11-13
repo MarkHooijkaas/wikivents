@@ -28,7 +28,7 @@ public class WikiventsCall extends HttpCall {
 			this.user=null;
 		else {
 			User u=model.users.readOrNull(userid); // TODO cache info in cookie, so table does not to be read with every call
-			if (u.blocked)
+			if (u!=null && u.blocked)
 				throw new BlockedUserException(u);
 			if (u!=null && u.isAdmin) {
 				String uname = request.getParameter("viewAs");

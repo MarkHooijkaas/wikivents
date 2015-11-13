@@ -195,7 +195,7 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 	}
 	
 	public void sendSystemMail(String subject, String message) {
-		sendMailFrom(systemMailAddress, subject, message, false);
+		sendMailFrom(systemMailAddress, subject, message, true);
 	}
 	
 	public void sendMailFrom(User from, String subject, String message, boolean copyToSender) {

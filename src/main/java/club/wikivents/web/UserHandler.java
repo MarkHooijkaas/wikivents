@@ -133,11 +133,9 @@ public class UserHandler extends WikiventsActionHandler<User> {
 		ReCaptchaResponse reCaptchaResponse = reCaptcha.checkAnswer(remoteAddr, challenge, uresponse);
 
 		if (reCaptchaResponse.isValid()) {
-			System.out.println("Answer was entered correctly!");
 			return true;
 		} 
 		else {
-			System.out.println("Answer is wrong");
 			return false;
 		}
 
