@@ -100,7 +100,9 @@ public class WikiventsSite implements HttpCallHandler {
 
 	public String captchaHtml() {
 		ReCaptcha c = ReCaptchaFactory.newSecureReCaptcha(recaptchaPublicKey, recaptchaPrivateKey, false);
-		return c.createRecaptchaHtml(null, null);
+		String result = c.createRecaptchaHtml(null, null);
+		result=result.replace("https://api-secure.recaptcha.net/", "https://www.google.com/recaptcha/api/");
+		return result;
 	}
 
 }
