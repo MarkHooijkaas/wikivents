@@ -150,9 +150,12 @@ public class UserHandler extends WikiventsActionHandler<User> {
 			String salt = PasswordEncryption.createSaltString();
 			String pw = PasswordEncryption.encryptPassword(formdata.password.value, salt);
 			User u = new User(call.model,new MultiStruct(
-				formdata.record, new HashStruct()
-				.add(User.schema.passwordSalt,  salt)
-				.add(User.schema.encryptedPassword, pw)
+				new HashStruct()
+					.add(User.schema.passwordSalt,  salt)
+					.add(User.schema.encryptedPassword, pw)
+					.add(User.schema.identityValidated, "false")
+					.add(User.schema.isAdmin, "false")
+				,formdata.record 
 			));
 			CallInfo.instance.get().data=u.username;
 			model.users.create(u);
