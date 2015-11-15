@@ -257,12 +257,16 @@ public class UserHandler extends WikiventsActionHandler<User> {
 	public void handleAddLike(WikiventsCall call) {
 		String id=call.request.getParameter("eventId");
 		Event event=model.events.read(id);
+		if (event!=null)
+			CallInfo.instance.get().data=event.title;
 		event.addLike(model, call.user);
 	}
 	@NeedsNoAuthorization
 	public void handleRemoveLike(WikiventsCall call) {
 		String id=call.request.getParameter("eventId");
 		Event event=model.events.read(id);
+		if (event!=null)
+			CallInfo.instance.get().data=event.title;
 		event.removeLike(model,call.user);
 	}
 
