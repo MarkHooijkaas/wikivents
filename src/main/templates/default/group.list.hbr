@@ -33,10 +33,10 @@ Heb je een creatief idee voor een leuk thema, <a href="/theme/!create">maak dan 
         <th>Aantal Leden</th>
         <th>Aangemaakt op</th>
         <th>Update</th>
-{{#ifIsAdmin}}
+{{#ifAdminMode}}
         <th>Beheerders</th>
         <th>Del</th>
-{{/ifIsAdmin}}
+{{/ifAdminMode}}
       </tr>
     </thead>
     <tbody>
@@ -47,12 +47,12 @@ Heb je een creatief idee voor een leuk thema, <a href="/theme/!create">maak dan 
         <td>{{members.size}}</td>
         <td data-order="{{creationDate}}">{{dateFormat creationDate "eee d MMM yyyy"}}</td>
         <td data-order="{{modificationDate}}">{{dateFormat modificationDate "eee d MMM yyyy"}}</td>
-{{#ifIsAdmin}}
+{{#ifAdminMode}}
         <td>{{&join owners "<br/>"}}</td>
         <td>
 			{{> include/modal.delete action="delete" field="ActionHandlerId" value=record._id label="Weet je zeker dat je deze interesse wil verwijderen?"}} 
 		</td>
-{{/ifIsAdmin}}
+{{/ifAdminMode}}
       
       </tr>
 {{/each}}

@@ -18,10 +18,10 @@
 {{#ifLoggedIn}}
         <th>Vind ik Leuk</th>
 {{/ifLoggedIn}}
-{{#ifIsAdmin}}
+{{#ifAdminMode}}
         <th>aantal likes</th>
         <th>Del</th>
-{{/ifIsAdmin}}
+{{/ifAdminMode}}
       </tr>
     </thead>
     <tbody>
@@ -43,12 +43,12 @@
 {{#ifLoggedIn}}
         <td>{{> include/like.button event=this}}</td>
 {{/ifLoggedIn}}
-{{#ifIsAdmin}}
+{{#ifAdminMode}}
         <td data-order="{{likes.size}}">{{likes.size}} likes</td>
         <td>
 			{{> include/modal.delete action="delete" field="ActionHandlerId" value=record._id label="Weet je zeker dat je dit event wil verwijderen?"}} 
 		</td>
-{{/ifIsAdmin}}
+{{/ifAdminMode}}
       
       </tr>
 {{/each}}

@@ -2,6 +2,7 @@ package club.wikivents.web;
 
 import java.io.IOException;
 
+import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.handlebar.UserHelpers;
 
 import com.github.jknack.handlebars.Options;
@@ -20,12 +21,30 @@ public class WikiventsHelpers extends UserHelpers<User> {
 			return options.fn();
 		return options.inverse();
 	}
+	public CharSequence ifAdminMode(final Options options) throws IOException { 
+		User u=getUserOrNull(options);
+		HttpCall call = getCallOrNull(options);
+		if (u!=null && u.isAdmin && call!=null && "true".equals(call.request.getParameter("admin-mode")))
+			return options.fn();
+		return options.inverse();
+	}
 	public CharSequence ifAmGuest(Event e, final Options options) throws IOException { 
 		if (e.hasGuest((User) getUserOrNull(options))) 
 			return options.fn();
 		return options.inverse();
 	}
-	public CharSequence ifEventHasGroup(Event e, Group gr, final Options options) throws IOException { 
+	public CharSequence ifAmOwner(Object o, final Options options) throws IOException { 
+		boolean owner=false;
+		if ((o instanceof Event) && ((Event) o).hasOrganizer(((User) getUserOrNull(options)))) 
+			owner=true;
+		if ((o instanceof Group) && ((Group) o).hasOwner(((User) getUserOrNull(options)))) 
+			owner=true;
+		if ((o instanceof User) && ((User) o).equals(((User) getUserOrNull(options)))) 
+			owner=true;
+		if (owner)
+			return options.fn();
+		return options.inverse();
+	}	public CharSequence ifEventHasGroup(Event e, Group gr, final Options options) throws IOException { 
 		if (e.hasGroup(gr)) 
 			return options.fn();
 		return options.inverse();

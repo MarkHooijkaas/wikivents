@@ -34,7 +34,7 @@ public class UserHelpers<T> {
 			return (T) obj;
 		throw new RuntimeException("Object "+obj+" is not of type "+cls);
 	}
-	private HttpCall getCallOrNull(Options options) {
+	protected HttpCall getCallOrNull(Options options) {
 		Object obj = getRootContext(options).get("call");
 		if (obj==null)
 			return null;
@@ -85,15 +85,20 @@ public class UserHelpers<T> {
 	public class IfInlineEditHelper implements Helper<Object> {
 		@SuppressWarnings({ "unchecked" })
 		@Override public CharSequence apply(final Object obj, final Options options) throws IOException {
-			boolean authorized=false;
+			boolean editMode=false;
 			if (obj instanceof AccessChecker) {
 				T user =getUserOrNull(options);
-				authorized= ((AccessChecker<T>)obj).mayBeChangedBy(user);
 				HttpCall call = getCallOrNull(options);
-				if (call==null || ! "true".equals(call.request.getParameter("inline-edit")))
-					authorized=false;
+				if (call==null)
+					editMode=false;
+				else if ( "true".equals(call.request.getParameter("inline-edit")))
+					editMode=true;
+				else if ( "true".equals(call.request.getParameter("admin-mode")))
+					editMode=true;
+				if (editMode)
+					editMode= ((AccessChecker<T>)obj).mayBeChangedBy(user);
 			}
-			if (authorized) 
+			if (editMode) 
 				return options.fn();
 			else
 				return options.inverse();
