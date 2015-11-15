@@ -61,6 +61,10 @@ public class GroupHandler extends WikiventsActionHandler<Group> {
 	public void handleChangeField(WikiventsCall call, Group oldRecord) {
 		String field=call.request.getParameter("field");
 		String value=call.request.getParameter("value");
+		String logValue=value;
+		if (logValue.length()>10)
+			logValue=logValue.substring(0, 7)+"...";
+		CallInfo.instance.get().action="handleChangeField "+field+" to "+logValue;
 		table.updateField(oldRecord, table.getSchema().getField(field), value);
 	}
 

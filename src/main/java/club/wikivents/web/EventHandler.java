@@ -71,6 +71,10 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 	public void handleChangeField(WikiventsCall call, Event oldRecord) {
 		String field=call.request.getParameter("field");
 		String value=call.request.getParameter("value");
+		String logValue=value;
+		if (logValue.length()>10)
+			logValue=logValue.substring(0, 7)+"...";
+		CallInfo.instance.get().action="handleChangeField "+field+" to "+logValue;
 		table.updateField(oldRecord, table.getSchema().getField(field), value);
 	}
 
@@ -129,6 +133,9 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 	public void handleAddLike(WikiventsCall call) {
 		String id=call.request.getParameter("eventId");
 		Event event=model.events.read(id);
+		if (event!=null)
+			CallInfo.instance.get().data=event.title;
+
 		event.addLike(model, call.user);
 	}
 	@NeedsNoAuthorization
