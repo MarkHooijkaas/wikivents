@@ -79,7 +79,7 @@ public class SendMessagePage extends WikiventsPage {
 				context.add("subject", formdata.subject.value);
 				for (User u: toUser) {
 					maillogger.info("Sending mail from {} ({}) to {} : {} ",call.user.username, call.request.getRemoteAddr(), formdata.to.value, subject);
-					context.add("to", message);
+					context.add("to", toUser);
 					String body=call.getTheme().mail.toString(context);
 					u.sendMailFrom(call.user, subject, body, copyToSender);
 				}
