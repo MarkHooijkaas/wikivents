@@ -24,10 +24,12 @@ public abstract class SchemaBase implements Schema {
 	public class IntField extends BasicField<Integer> {
 		public IntField(String name) { super(Type.javaInteger, name); }
 		public int getInt(Struct s) { return  Item.asInteger(s.getDirectFieldValue(name)); }
+		public int getInt(Struct s, int defaultValue) { return  Item.asInteger(getObject(s, defaultValue)); }
 	}
 	public class LongField extends BasicField<Long> { 
 		public LongField(String name) { super(Type.javaLong, name); }
 		public long getLong(Struct s) { return  Item.asLong(s.getDirectFieldValue(name)); }
+		public long getLong(Struct s, long defaultValue) { return  Item.asLong(getObject(s, defaultValue)); }
 	}
 	public class LocalDateField extends BasicField<LocalDate> { 
 		public LocalDateField(String name) { super(Type.javaLocalDate, name); }
