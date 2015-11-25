@@ -50,52 +50,52 @@ public interface Item {
 		if (obj==null || obj==ReflectionUtil.UNKNOWN_FIELD) return null; 
 		if (obj instanceof Integer) return (Integer) obj;
 		if (obj instanceof Number) return ((Number)obj).intValue();
-		return Integer.parseInt(asString(obj));
+		return Integer.parseInt(asString(obj).trim());
 	}		
 	public static Long asLong(Object obj) { 
 		if (obj==null || obj==ReflectionUtil.UNKNOWN_FIELD) return null; 
 		if (obj instanceof Long) return (Long) obj;
 		if (obj instanceof Number) return ((Number)obj).longValue();
-		return Long.parseLong(asString(obj));
+		return Long.parseLong(asString(obj).trim());
 	}		
 	public static Byte asByte(Object obj) { 
 		if (obj==null || obj==ReflectionUtil.UNKNOWN_FIELD) return null; 
 		if (obj instanceof Byte) return (Byte) obj;
 		if (obj instanceof Number) return ((Number)obj).byteValue();
-		return Byte.parseByte(asString(obj));
+		return Byte.parseByte(asString(obj).trim());
 	}		
 	public static Short asShort(Object obj) { 
 		if (obj==null || obj==ReflectionUtil.UNKNOWN_FIELD) return null; 
 		if (obj instanceof Short) return (Short) obj;
 		if (obj instanceof Number) return ((Number)obj).shortValue();
-		return Short.parseShort(asString(obj));
+		return Short.parseShort(asString(obj).trim());
 	}		
 	public static Float asFloat(Object obj) { 
 		if (obj==null || obj==ReflectionUtil.UNKNOWN_FIELD) return null; 
 		if (obj instanceof Float) return (Float) obj;
 		if (obj instanceof Number) return ((Number)obj).floatValue();
-		return Float.parseFloat(asString(obj));
+		return Float.parseFloat(asString(obj).trim());
 	}		
 	public static Double asDouble(Object obj) { 
 		if (obj==null || obj==ReflectionUtil.UNKNOWN_FIELD) return null; 
 		if (obj instanceof Double) return (Double) obj;
 		if (obj instanceof Number) return ((Number)obj).doubleValue();
-		return Double.parseDouble(asString(obj));
+		return Double.parseDouble(asString(obj).trim());
 	}				
 	public static Boolean asBoolean(Object obj) { 
 		if (obj==null || obj==ReflectionUtil.UNKNOWN_FIELD) return null; 
 		if (obj instanceof Boolean) return (Boolean) obj;
-		return Boolean.parseBoolean(asString(obj));
+		return Boolean.parseBoolean(asString(obj).trim());
 	}
 	public static LocalDate asLocalDate(Object obj) { 
 		if (obj==null || obj==ReflectionUtil.UNKNOWN_FIELD) return null; 
 		if (obj instanceof LocalDate) return (LocalDate) obj;
-		return LocalDate.parse(asString(obj));
+		return LocalDate.parse(asString(obj).trim());
 	}
 	public static LocalTime asLocalTime(Object obj) { 
 		if (obj==null || obj==ReflectionUtil.UNKNOWN_FIELD) return null; 
 		if (obj instanceof LocalTime) return (LocalTime) obj;
-		String str = asString(obj);
+		String str = asString(obj).trim();
 		if (str==null || str.trim().length()==0)
 			return null;
 		return LocalTime.parse(str);
@@ -103,12 +103,12 @@ public interface Item {
 	public static LocalDateTime asLocalDateTime(Object obj) { 
 		if (obj==null || obj==ReflectionUtil.UNKNOWN_FIELD) return null; 
 		if (obj instanceof LocalDateTime) return (LocalDateTime) obj;
-		return LocalDateTime.parse(asString(obj));
+		return LocalDateTime.parse(asString(obj).trim());
 	}
 	public static Instant asInstant(Object obj) { 
 		if (obj==null || obj==ReflectionUtil.UNKNOWN_FIELD) return null; 
 		if (obj instanceof Instant) return (Instant) obj;
-		return Instant.parse(asString(obj));
+		return Instant.parse(asString(obj).trim());
 	}
 
 	public static Immutable.ItemSequence asItemSequence(Object obj) {
