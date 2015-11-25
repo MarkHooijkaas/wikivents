@@ -175,18 +175,34 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 	
 	public boolean trusted() { return identityValidated && emailValidated && ! blocked; }
 	public int karma() {
-		if (trusted())
-			return 10;
 		if (blocked)
 			return -100;
-		return 0;
+		if (! emailValidated)
+			return 0; // TODO: - complaints.size
+		int karma=0;
+		// karma += recommendations.size()
+		// karma -= complaints.size()
+		if (identityValidated)
+			karma+=10;
+		return karma;
 	}
 	public boolean karmaPositive() { return karma()>0; }
 	public boolean karmaNeutral() { return karma()==0; }
 	public boolean karmaNegative() { return karma()<0; }
 	public boolean karmaNotNegative() { return karma()>=0; }
 	public boolean karmaNotPositive() { return karma()<=0; }
+	
+	public boolean canReceiveMail() { return emailValidated && karma()>0; }
+	public boolean maySeeSender() { return karma()>0; }
+	public boolean maySendMail() { return karma()>0; }
+	public boolean mayComment() { return karma()>0; }
+	public boolean mayParticipate() { return karma()>0; }
+	public boolean maySeeProfile() { return karma()>0; }
+	public boolean maySeePicture() { return karma()>0; }
+	public boolean mayRecommend() { return identityValidated && karma()>=13; }
+	
 
+	
 	public String karmaIcon() { 
 		int k=karma();
 		if (k>0) return "/images/yin_yang_green.gif";
