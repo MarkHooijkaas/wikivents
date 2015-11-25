@@ -99,7 +99,7 @@ public class FileStorage implements StructStorage {
 		// TODO Auto-generated method stub
 
 	}
-	private File getFile(String key) { return new File(dir, key+".rec"); }
+	private File getFile(String key) { return new File(dir, key+".dir/record.dat"); }
 	private File getFile(Struct obj) { return getFile(getKey(obj));}
 
 	@Override public TypedSequence<Struct> findAll() {
@@ -110,8 +110,9 @@ public class FileStorage implements StructStorage {
 		for (File f:dir.listFiles()) {
 			try {
 				String key=f.getName();
-				if (! key.endsWith(".rec"))
+				if (! (key.endsWith(".dir") && f.isDirectory()))
 					continue;
+				f=new File(f,"record.dat");
 				count++;
 				key=key.substring(0,key.length()-4);
 
