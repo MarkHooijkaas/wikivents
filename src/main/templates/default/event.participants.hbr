@@ -13,7 +13,7 @@
 	{{/ifMayChange}}
 	<br/>
 {{/each}}
-{{#if call.user.trusted}}
+{{#if call.user.maySendMail}}
 <form role="form" method="POST" action="/sendMessage">
 	<input type="hidden" name="returnTo" value="{{call.localUrl}}"/>
 	<input type="hidden" name="to" value="{{#each record.allowedGuests}}{{user.get0.username}},{{/each}}"/>
@@ -23,7 +23,7 @@
 
 {{#ifAmGuest record}}
 {{else}}
-{{#if user.emailValidated}}
+{{#if user.mayParticipate}}
 	{{#if record.allowNewGuest}}
 	  	<form role="form" method="POST" >
 	  		<input type="hidden" name="action" value="addGuest"/>				
@@ -32,7 +32,7 @@
 	 	</form>
 	{{/if}}
 {{else}}
-	<span class="alert-danger">Deelname is pas mogelijk na email validatie</span>
+	<span class="alert-danger">Deelname is pas mogelijk bij een groen Karma</span>
 {{/if}}
 {{/ifAmGuest}}
 
@@ -51,7 +51,7 @@
 	{{/ifMayChange}}
 	<br/>
 {{/each}}
-{{#if call.user.trusted}}
+{{#if call.user.maySendMail}}
 <form role="form" method="POST" action="/sendMessage">
 	<input type="hidden" name="returnTo" value="{{call.localUrl}}"/>
 	<input type="hidden" name="to" value="{{#each record.backupGuests}}{{user.get0.username}},{{/each}}"/>
@@ -63,7 +63,7 @@
 
 {{#ifAmGuest record}}
 {{else}}
-{{#if user.emailValidated}}
+{{#if user.mayParticipate}}
 	{{#if record.allowNewGuest}}
 	{{else}}
 		{{#if record.allowNewBackupGuest}}
@@ -77,7 +77,7 @@
 		{{/if}}
 	{{/if}}
 {{else}}
-	<span class="alert-danger">Deelname is pas mogelijk na email validatie</span>
+	<span class="alert-danger">Deelname is pas mogelijk bij een groen Karma</span>
 {{/if}}
 {{/ifAmGuest}}
 

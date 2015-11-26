@@ -82,11 +82,13 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 	@NeedsNoAuthorization
 	public void handleAddComment(WikiventsCall call, Event event) {
 		String text=call.request.getParameter("comment");
-		event.addComment(model, call.user, text);
+		if (call.user.mayComment())
+			event.addComment(model, call.user, text);
 	}
 	@NeedsNoAuthorization
 	public void handleAddGuest(WikiventsCall call, Event event) {
-		event.addGuest(model, call.user);
+		if (call.user.mayParticipate())
+			event.addGuest(model, call.user);
 	}
 	@NeedsNoAuthorization
 	public void handleRemoveGuest(WikiventsCall call, Event event) {
