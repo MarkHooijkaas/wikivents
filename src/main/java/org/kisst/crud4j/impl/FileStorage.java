@@ -58,6 +58,9 @@ public class FileStorage implements StructStorage {
 		File f = getFile(key);
 		if (f.exists())
 			throw new RuntimeException("File "+f.getAbsolutePath()+" already exists");
+		File dir = getDir(key);
+		if (! dir.exists())
+			dir.mkdirs();
 		FileUtil.saveString(f, outputter.createString(value));
 		gitCommit("create"+name,key);
 		return key;
@@ -99,6 +102,7 @@ public class FileStorage implements StructStorage {
 		// TODO Auto-generated method stub
 
 	}
+	private File getDir(String key) { return new File(dir, key+".dir"); }
 	private File getFile(String key) { return new File(dir, key+".dir/record.dat"); }
 	private File getFile(Struct obj) { return getFile(getKey(obj));}
 
