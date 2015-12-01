@@ -188,5 +188,10 @@ public class UserHelpers<T> {
 			return options.fn();
 		return options.inverse();
 	}
-
+	public CharSequence ifUrlEndsWith(String str, final Options options) throws IOException {
+		HttpCall call = getCallOrNull(options);
+		if (call!=null && call.getLocalUrl().endsWith(str)) 
+			return options.fn();
+		return options.inverse();
+	}
 }

@@ -17,6 +17,8 @@
 	 }); 
 </script>
 
+{{>event.tabs}}
+
 <h1>Wikidee maken</h1>
 Een Wikidee is een idee voor een nieuwe activiteit. 
 Deze activiteit is echter nog niet gepland, maar slechts een idee om te kijken hoe de interesse is.

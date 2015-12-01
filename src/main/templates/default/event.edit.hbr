@@ -27,6 +27,9 @@
 	 }); 
 </script>
 
+{{>event.tabs}}
+<h1>Wikivent maken</h1>
+
 <div class="col-xs-12">
 <form role="form" method="POST" id="createEvent" class="form-horizontal">
 	{{> include/form.text     form.title    label="Titel" type="" required="true"}}
