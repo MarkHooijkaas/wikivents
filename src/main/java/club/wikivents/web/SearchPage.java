@@ -25,13 +25,15 @@ public class SearchPage extends WikiventsPage {
 				events.add(e);
 			}
 		}
-		ArrayList<User> users=new ArrayList<User>() ;
-		for (User u: call.model.users) {
-			if ((u.description+u.username+u.city).toLowerCase().indexOf(text)>0) {
-				users.add(u);
-			}
-		}		
-		context.add("users", users);
+		if (call.authenticated) {
+			ArrayList<User> users=new ArrayList<User>() ;
+			for (User u: call.model.users) {
+				if ((u.description+u.username+u.city).toLowerCase().indexOf(text)>0) {
+					users.add(u);
+				}
+			}		
+			context.add("users", users);
+		}
 		context.add("events", events);
 		call.output(call.getTheme().search.toString(context));
 	}
