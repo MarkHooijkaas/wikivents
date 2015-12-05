@@ -20,7 +20,7 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 	protected final CrudSchema<T> schema;
 	protected final CrudModel model;
 	private final String name;
-	private final StructStorage storage;
+	final StructStorage storage;
 	private final MemoryUniqueIndex<T> cache;
 	private final ChangeHandler<T>[] indices;
 

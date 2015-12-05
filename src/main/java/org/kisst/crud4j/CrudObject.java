@@ -36,4 +36,8 @@ public abstract class CrudObject extends SchemaObject {
 	
 	public int getCrudObjectVersion() { return 0;}
 	public int getCrudObjectVersionOf(Struct data) { return Integer.parseInt(""+data.getDirectFieldValue("_crudObjectVersion", "0"));}
+
+	public String readBlob(String path) { return table.storage.readBlob(_id, path); }
+	public void writeBlob(String path, String blob) { table.storage.writeBlob(_id, path, blob); }
+	public void appendBlob(String path, String blob) { table.storage.appendBlob(_id, path, blob); }
 }

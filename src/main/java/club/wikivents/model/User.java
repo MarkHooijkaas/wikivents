@@ -1,7 +1,11 @@
 package club.wikivents.model;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -19,6 +23,10 @@ import org.kisst.item4j.Type;
 import org.kisst.item4j.struct.HashStruct;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.util.PasswordEncryption;
+
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.javafx.collections.MappingChange.Map;
 
 
 public class User extends CrudObject implements AccessChecker<User>, Htmlable{
@@ -201,6 +209,17 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 	public boolean maySeePicture() { return karma()>0; }
 	public boolean mayRecommend() { return identityValidated && karma()>=13; }
 	
+	public String getNotifications() throws IOException { 
+		final InputStream in = new FileInputStream("json.json");
+		try {
+		  for (Iterator it = new ObjectMapper().readValues(
+		      new JsonFactory().createJsonParser(in), Map.class); it.hasNext();)
+		    System.out.println(it.next());
+		}
+		finally { in.close();} 
+		return readBlob("messages.dat"); 
+	}
+	public void addNotification(String message) { appendBlob("messages.dat", message); }
 
 	
 	public String karmaIcon() { 

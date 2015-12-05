@@ -30,10 +30,26 @@ import java.io.Reader;
 import java.util.Properties;
 
 public class FileUtil {
-	public static void saveString(File filename, String content) {
+	public static void saveString(File f, String content) {
 		FileWriter out=null;
 		try {
-			out=new FileWriter(filename);
+			out=new FileWriter(f);
+			out.write(content);
+		}
+		catch (IOException e) { throw new RuntimeException(e); }
+		finally {
+			if (out!=null) {
+				try {
+					out.close();
+				}
+				catch (IOException e) { throw new RuntimeException(e); }
+			}
+		}
+	}
+	public static void appendString(File f, String content) {
+		FileWriter out=null;
+		try {
+			out=new FileWriter(f,true);
 			out.write(content);
 		}
 		catch (IOException e) { throw new RuntimeException(e); }

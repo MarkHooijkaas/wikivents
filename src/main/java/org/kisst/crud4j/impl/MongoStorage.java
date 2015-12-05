@@ -61,6 +61,9 @@ public class MongoStorage implements StructStorage {
 		}
 		finally { cursor.close(); }
 	}
+	@Override public String readBlob(String key, String path) { return null; }		// TODO Auto-generated method stub
+	@Override public void writeBlob(String key, String path, String blob) {} 		// TODO Auto-generated method stub
+	@Override public void appendBlob(String key, String path, String blob) {} 		// TODO Auto-generated method stub
 
 /*
 	private class MyUniqueIndex extends Index implements UniqueIndex {

@@ -12,4 +12,8 @@ public interface StructStorage extends StorageOption {
 	public TypedSequence<Struct> findAll();
 	default public void close() {}
 	public boolean useCache();
+
+	public String readBlob(String key, String path);
+	public void writeBlob(String key, String path, String blob);
+	public void appendBlob(String key, String path, String blob);
 }

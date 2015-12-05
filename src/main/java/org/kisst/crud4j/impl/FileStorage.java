@@ -81,7 +81,6 @@ public class FileStorage implements StructStorage {
 	}
 	
 	@Override public Struct read(String key) {
-		System.out.println("Reading "+key);
 		File f = getFile(key);
 		return createStruct(f);
 	}
@@ -103,7 +102,8 @@ public class FileStorage implements StructStorage {
 
 	}
 	private File getDir(String key) { return new File(dir, key+".dir"); }
-	private File getFile(String key) { return new File(dir, key+".dir/record.dat"); }
+	private File getFile(String key, String path) { return new File(dir, key+".dir/"+path); }
+	private File getFile(String key) { return getFile(key, "record.dat"); }
 	private File getFile(Struct obj) { return getFile(getKey(obj));}
 
 	@Override public TypedSequence<Struct> findAll() {
@@ -148,4 +148,16 @@ public class FileStorage implements StructStorage {
 		catch (Exception e) { throw new RuntimeException(e); }
 	}
 
+	public String readBlob(String key, String path) {
+		File f = getFile(key, path);
+		return FileUtil.loadString(f);
+	}
+	public void writeBlob(String key, String path, String blob) {
+		File f = getFile(key, path);
+		FileUtil.saveString(f, blob);
+	}
+	public void appendBlob(String key, String path, String blob) {
+		File f = getFile(key, path);
+		FileUtil.appendString(f, blob);
+	}
 }
