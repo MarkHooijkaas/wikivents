@@ -163,7 +163,7 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 		public Form(WikiventsCall call, CompiledTemplate theme) { super(call, theme); }
 		public Form(WikiventsCall call) { this(call, call.getTheme().eventEdit); }
 
-		public final InputField organizer=new InputField("organizer", call.userid);
+		public final InputField organizer=new InputField("organizer", ((WikiventsCall) call).user._id);
 		public final InputField title = new InputField(Event.schema.title);
 		public final InputField imageUrl = new InputField(Event.schema.imageUrl);
 		public final InputField date= new InputField(Event.schema.date);

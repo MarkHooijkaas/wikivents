@@ -4,9 +4,11 @@ import java.io.File;
 import java.util.HashMap;
 
 import org.kisst.http4j.HttpCall;
+import org.kisst.http4j.HttpCall.UnauthorizedException;
 import org.kisst.http4j.HttpCallDispatcher;
 import org.kisst.http4j.HttpCallDispatcher.Path;
 import org.kisst.http4j.HttpCallHandler;
+import org.kisst.http4j.HttpServer.PageRedirectedException;
 import org.kisst.http4j.ResourceHandler;
 import org.kisst.http4j.handlebar.TemplateEngine.CompiledTemplate;
 import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
@@ -80,12 +82,17 @@ public class WikiventsSite implements HttpCallHandler {
 
 	}
 	@Override public void handle(HttpCall httpcall, String subPath) {
+		WikiventsCall call = null;
 		try {
-			WikiventsCall call = WikiventsCall.of(httpcall, model);
+			call = WikiventsCall.of(httpcall, model);
 			this.handler.handle(call, subPath);
 		}
+        catch (PageRedirectedException e) { logger.info("redirect to {} from {}",e.url, httpcall.request.getRequestURI()); }
 		catch (RuntimeException e) {
-			logger.error("Error when handling "+httpcall.request.getRequestURL(), e);
+			if (e instanceof UnauthorizedException)
+				logger.warn("User {} unauthorized to call {}", call==null? null : call.user, httpcall.getLocalUrl());
+			else
+				logger.error("Error when handling "+httpcall.request.getRequestURL(), e);
 			TemplateData context = new TemplateData(httpcall);
 			context.add("exception", e);
 			CompiledTemplate templ = this.defaultTheme.error;

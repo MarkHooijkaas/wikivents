@@ -12,7 +12,7 @@ public class LogoutPage extends WikiventsPage {
 			call.output(call.getTheme().logout);
 		}
 		else if (call.isPost()) {
-			call.clearCookie();
+			call.clearUserCookie();
 			call.redirect("/");
 		}
 	}

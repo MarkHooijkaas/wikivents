@@ -16,6 +16,13 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 public class HttpServer extends AbstractHandler {
+	public static class PageRedirectedException extends RuntimeException {
+		private static final long serialVersionUID = 1L;
+		public final String url;
+		public PageRedirectedException(String url) { super("call redirected to "+url); this.url=url; }
+	}
+	
+	
 	private final static Logger logger=LoggerFactory.getLogger(HttpServer.class);
 
 	private Server server=null;
@@ -143,13 +150,16 @@ public class HttpServer extends AbstractHandler {
 			HttpCall call=new HttpCall(baseRequest, request,response);
 			handler.handle(call,request.getRequestURI());
 		}
+        catch (PageRedirectedException e) { logger.info("redirect to {} from {}",e.url, request.getRequestURI()); }
         catch (UnauthorizedException e) {
         	try {
+        		System.out.println("UNAUTH");
 				response.sendError(403, e.getMessage());
 			}
         	catch (IOException e1) { e.printStackTrace(); }
         }
 		catch (Exception e) {
+    		System.out.println("GENERAL");
         	try {
         		if (e instanceof HttpException) {
         			HttpException he=(HttpException) e;

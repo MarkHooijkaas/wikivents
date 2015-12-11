@@ -76,7 +76,7 @@ public class UserHandler extends WikiventsActionHandler<User> {
 		String token = call.request.getParameter("token");
 		if (token!=null && token.equals(u.passwordSalt)) {
 			if (call.user==null && ! u.emailValidated)
-				call.setCookie(u._id);
+				call.setUserCookie(u);
 			call.model.users.updateField(u, User.schema.emailValidated, true);
 		}
 		call.redirect("/user/"+u.username);
@@ -86,7 +86,7 @@ public class UserHandler extends WikiventsActionHandler<User> {
 		call.output(call.getTheme().logout);
 	}
 	public void handleLogout(WikiventsCall call) {
-		call.clearCookie();
+		call.clearUserCookie();
 		call.redirect("/");
 	}
 	
@@ -147,7 +147,7 @@ public class UserHandler extends WikiventsActionHandler<User> {
 		boolean valid = formdata.isValid();
 		valid = valid && checkCaptcha(call.request);
 		if (valid) {
-			String salt = PasswordEncryption.createSaltString();
+			String salt = PasswordEncryption.generateSalt();
 			String pw = PasswordEncryption.encryptPassword(formdata.password.value, salt);
 			User u = new User(call.model,new MultiStruct(
 				new HashStruct()
@@ -165,7 +165,7 @@ public class UserHandler extends WikiventsActionHandler<User> {
 			context.add("url", url);
 			String message = call.getTheme().userRegisterSucces.toString(context);
 			u.sendSystemMail("Welkom bij Wikivents "+u.username+": valideer dit mail adres", message);
-			call.setCookie(u._id);
+			call.setUserCookie(u);
 			call.redirect("/user/"+u.username);
 		}
 		else
@@ -182,7 +182,7 @@ public class UserHandler extends WikiventsActionHandler<User> {
 				formdata.showForm();
 			else {
 				user.changePassword(pw);
-				call.setCookie(user._id);
+				call.setUserCookie(user);
 				call.redirect("/user/"+user.username);
 			}
 		}

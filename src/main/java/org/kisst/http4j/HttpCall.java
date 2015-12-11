@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.jetty.server.Request;
 import org.kisst.http4j.HttpServer.HttpException;
-import org.kisst.util.Base64;
 import org.kisst.util.CallInfo;
 
 public class HttpCall {
@@ -19,10 +18,6 @@ public class HttpCall {
 	public final HttpServletResponse response;
 	private PrintWriter out=null;
 
-	private static final String COOKIE_NAME = "Hooi4jUser";
-	private static final int LOGIN_DURATION= 7*24*60*60; // a week in seconds
-
-	public final String userid;
 	public final CallInfo callinfo=new CallInfo();
 	
 	protected HttpCall(HttpCall call) { this(call.baseRequest, call.request,call.response); }
@@ -30,7 +25,6 @@ public class HttpCall {
 		this.baseRequest=baseRequest;
 		this.request=request;
 		this.response=response;
-		this.userid=getUserId();
 		CallInfo.instance.set(callinfo);
 	}
 	
@@ -101,6 +95,7 @@ public class HttpCall {
 	public void invalidPage() { throw new NoSuchPageException(); }
 
 	public void redirect(String url) {
+		System.out.println("redirect to "+url+ " from "+getLocalUrl());
 		try {
 			response.sendRedirect(url);
 		}
@@ -119,72 +114,36 @@ public class HttpCall {
 		return path;
 	}
 
-	public UnauthorizedException throwUnauthorized(String message) { throw new UnauthorizedException(message); }
-	
-	public boolean isAuthenticated() { return userid!=null; }
-	public void ensureUser() { if (! isAuthenticated()) throwUnauthorized("Not Authenticated user"); }
-	public void ensureUserId(String userId) {	
-		ensureUser();
-		if (userid== null || ! userid.equals(userId))
-			throwUnauthorized("Not Authorized expected "+userId+" but got "+userid);
-	}
-	
-	public void clearCookie() {
-		Cookie cookie = new Cookie(COOKIE_NAME, null);
-		cookie.setMaxAge(0);
-		cookie.setPath("/");
-		response.addCookie(cookie);		
-	}
-
-	public void setCookie(String userid) {
-		Cookie cookie = new Cookie(COOKIE_NAME, createCookieString(userid, System.currentTimeMillis()));
-		cookie.setMaxAge(LOGIN_DURATION);
-		cookie.setPath("/");
-		response.addCookie(cookie);		
-	}
-
-	private String getUserId() {
+	public Cookie getNamedCookie(String name) {
 		Cookie[] cookies = request.getCookies();
 		if (cookies==null)
 			return null;
 		for (Cookie c: cookies) {
-			if (COOKIE_NAME.equals(c.getName()))
-				return decodeCookie(c.getValue());
+			if (name.equals(c.getName()))
+				return c;
 		}
 		return null;
 	}
-	
-	private String decodeCookie(String cookie) {
-			//System.out.println("got cookie:"+cookie);
-			String decode;
-			try {
-				decode = new String(Base64.decode(cookie),"UTF-8");
-			}
-			catch (IOException e) {  return null; } // ignore invalid cookie
-			//System.out.println("decoded to:"+decode);
-			String[] parts = decode.split("[:]");
-			String userid=parts[0];
-			//System.out.println("user id:"+userid);
-			long loginTime=Long.parseLong(parts[1]);
-			//System.out.println("login :"+(System.currentTimeMillis()-loginTime));
-			if ((System.currentTimeMillis()-loginTime)>(LOGIN_DURATION*1000))
-				return null; // Cookie too old
-			String expectedCookie= createCookieString(userid,loginTime);
-			//System.out.println("expected cookie:"+cookie);
-			if (expectedCookie.equals(cookie))
-				return userid;
-			//System.out.println("expected cookie:"+cookie+" differs from "+cookie);
-			return null; // invalid cookie
+	public String getNamedCookieValue(String name, String defaultValue) {
+		Cookie c=getNamedCookie(name);
+		if (c==null)
+			return defaultValue;
+		return c.getValue();
 	}
 	
-	private static final String createCookieString(String userid, long time) {
-		byte[] bytes = userid.getBytes();
-		byte[] hash = Long.toHexString(time).getBytes();
-		for (int i=0; i<bytes.length; i++)
-			bytes[i] = (byte) (bytes[i] ^ hash[i%hash.length]);
-		String signature=Base64.encodeBytes(bytes); // TODO: better signature
-		return Base64.encodeBytes((userid+":"+time+":"+signature).getBytes());
+	public void setNamedCookieValue(String name, String value, int duration) {
+		Cookie cookie = new Cookie(name, value);
+		cookie.setMaxAge(duration);
+		//cookie.setSecure(true); // TODO: does not work with http: development
+		cookie.setPath("/");
+		response.addCookie(cookie);
 	}
+	
+	public UnauthorizedException throwUnauthorized(String message) { throw new UnauthorizedException(message); }
+	
+	public boolean isAuthenticated() { return false; }
+	public void ensureUser() { if (! isAuthenticated()) throwUnauthorized("Not Authenticated user"); }
+	
 	public static class UnauthorizedException extends HttpException {
 		private static final long serialVersionUID = 1L;
 		public UnauthorizedException(String msg) {super(HttpServletResponse.SC_UNAUTHORIZED, msg); } 

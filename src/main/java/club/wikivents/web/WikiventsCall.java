@@ -1,6 +1,7 @@
 package club.wikivents.web;
 
 import org.kisst.http4j.HttpCall;
+import org.kisst.http4j.SecureCookie;
 import org.kisst.http4j.handlebar.TemplateEngine.CompiledTemplate;
 import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
 import org.kisst.item4j.struct.Struct;
@@ -9,6 +10,7 @@ import club.wikivents.model.User;
 import club.wikivents.model.WikiventsModel;
 
 public class WikiventsCall extends HttpCall {
+
 	public final WikiventsModel model;
 	public final User user;
 	public final User authenticatedUser;
@@ -24,10 +26,17 @@ public class WikiventsCall extends HttpCall {
 	private WikiventsCall(HttpCall call, WikiventsModel model) {
 		super(call);
 		this.model=model;
+		SecureCookie cookie = SecureCookie.of(this);
+		String userid = cookie==null ? null : cookie.data;
 		if (userid==null)
 			this.user=null;
 		else {
-			User u=model.users.readOrNull(userid); // TODO cache info in cookie, so table does not to be read with every call
+			User u=model.users.readOrNull(userid); 
+			if (u!=null && !cookie.isValid(u.passwordSalt)) {
+				u=null;
+				if (! this.getLocalUrl().endsWith("/login"))
+					redirect("/login");
+			}
 			if (u!=null && u.blocked)
 				throw new BlockedUserException(u);
 			if (u!=null && u.isAdmin) {
@@ -49,6 +58,12 @@ public class WikiventsCall extends HttpCall {
 		if (httpcall instanceof WikiventsCall)
 			return (WikiventsCall) httpcall;
 		return new WikiventsCall(httpcall,model);
+	}
+	
+	public void setRememberedUserName(String value) { setNamedCookieValue("rememberUserName", value, 365*24*3600); }
+	public String getRememberedUserName() { return getNamedCookieValue("rememberUserName", null); }
+
+	public void expireLogin() {
 	}
 
 	@Override public boolean isAuthenticated() { return user!=null; }
@@ -82,5 +97,10 @@ public class WikiventsCall extends HttpCall {
 		if (theme==null)
 			theme="default";
 		return model.site.getTheme(theme);
+	}
+	
+	public void clearUserCookie() { SecureCookie.clear(this); }
+	public void setUserCookie(User user) {
+		SecureCookie.set(this, user._id, user.passwordSalt);
 	}
 }

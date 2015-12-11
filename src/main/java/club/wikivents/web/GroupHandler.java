@@ -131,7 +131,7 @@ public class GroupHandler extends WikiventsActionHandler<Group> {
 		public Form(WikiventsCall call, Struct data) { super(call, call.getTheme().groupEdit, data); }
 		public Form(WikiventsCall call) { super(call, call.getTheme().groupEdit); }
 
-		public final InputField owner=new InputField("owner", call.userid);
+		public final InputField owner=new InputField("owner", ((WikiventsCall) call).user._id);
 		public final InputField title = new InputField(Group.schema.title);
 		public final InputField description= new InputField(Group.schema.description);
 	}

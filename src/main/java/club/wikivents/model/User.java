@@ -23,13 +23,14 @@ import org.kisst.item4j.Type;
 import org.kisst.item4j.struct.HashStruct;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.util.PasswordEncryption;
+import org.kisst.util.PasswordEncryption.HasPasswordSalt;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.javafx.collections.MappingChange.Map;
 
 
-public class User extends CrudObject implements AccessChecker<User>, Htmlable{
+public class User extends CrudObject implements AccessChecker<User>, Htmlable, HasPasswordSalt {
 	private final static InternetAddress systemMailAddress;
 	static {
 		try {
@@ -74,6 +75,7 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 		this.identityValidated=schema.identityValidated.getBoolean(data,defaultValue);
 	}
 	@Override public int getCrudObjectVersion() { return 1;}
+	@Override public String getPasswordSalt() { return passwordSalt; }
 
 	
 	public ArrayList<Event> futureEvents() {
@@ -267,7 +269,7 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable{
 	
 	
 	public void changePassword(String newPassword) {
-		String salt = PasswordEncryption.createSaltString();
+		String salt = PasswordEncryption.generateSalt();
 		String pw = PasswordEncryption.encryptPassword(newPassword, salt);
 		model.users.updateFields(this, new HashStruct()
 			.add(schema.passwordSalt,  salt)

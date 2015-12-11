@@ -33,9 +33,11 @@ public class LoginPage extends WikiventsThing {
 	};
 
 
-	public void handleLogout(HttpCall call, String subPath) {
+
+	public void handleLogout(HttpCall httpcall, String subPath) {
+		WikiventsCall call=WikiventsCall.of(httpcall,model);
 		if (call.isPost() && "true".equals(call.request.getParameter("logout"))) {
-			call.clearCookie();
+			call.clearUserCookie();
 			call.redirect("/home");
 		}
 	}
@@ -43,12 +45,13 @@ public class LoginPage extends WikiventsThing {
 	
 	public void handleLogin(HttpCall httpcall, String subPath) {
 		WikiventsCall call=WikiventsCall.of(httpcall,model);
+
 		Fields data = new Fields(call);
 		if (call.isGet())
 			data.showForm();
 		else {
 			if (data.isValid()) {
-				call.setCookie(data.user._id);
+				call.setUserCookie(data.user);
 				call.redirect("/user/"+data.user.username);
 			}
 			else
