@@ -10,6 +10,8 @@ import club.wikivents.model.User;
 import club.wikivents.model.WikiventsModel;
 
 public class WikiventsCall extends HttpCall {
+	public static final int    LOGIN_DURATION = 10; //7*24*60*60; // a week in seconds
+	public static final String LOGIN_COOKIE = "wikilogin";
 
 	public final WikiventsModel model;
 	public final User user;
@@ -26,16 +28,18 @@ public class WikiventsCall extends HttpCall {
 	private WikiventsCall(HttpCall call, WikiventsModel model) {
 		super(call);
 		this.model=model;
-		SecureCookie cookie = SecureCookie.of(this);
+		SecureCookie cookie = SecureCookie.of(this, LOGIN_COOKIE);
 		String userid = cookie==null ? null : cookie.data;
 		if (userid==null)
 			this.user=null;
 		else {
 			User u=model.users.readOrNull(userid); 
-			if (u!=null && !cookie.isValid(u.passwordSalt)) {
+			if (u!=null && !cookie.isValid(LOGIN_DURATION, u.passwordSalt)) {
 				u=null;
-				if (! this.getLocalUrl().endsWith("/login"))
-					redirect("/login");
+				//String url=this.getLocalUrl();
+				//if (! (url.endsWith("/login") || url.startsWith("/resources") || url.startsWith("/favicon.ico") || url.startsWith("/lb") || url.startsWith("/css"))) {
+				//	//redirect("/login");
+				//}
 			}
 			if (u!=null && u.blocked)
 				throw new BlockedUserException(u);
@@ -99,8 +103,8 @@ public class WikiventsCall extends HttpCall {
 		return model.site.getTheme(theme);
 	}
 	
-	public void clearUserCookie() { SecureCookie.clear(this); }
+	public void clearUserCookie() { SecureCookie.clear(this, LOGIN_COOKIE); }
 	public void setUserCookie(User user) {
-		SecureCookie.set(this, user._id, user.passwordSalt);
+		SecureCookie.set(this, LOGIN_COOKIE, user._id, LOGIN_DURATION, user.passwordSalt);
 	}
 }

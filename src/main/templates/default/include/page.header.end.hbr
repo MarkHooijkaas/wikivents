@@ -52,4 +52,15 @@
   </div>
 </nav>
 <div class="container-fluid">
-
+{{#ifLoggedIn}}
+{{else}}
+{{#ifUrlEndsWith "login|register"}}
+{{else}}
+<p>
+Je bent momenteel niet ingelogd: 
+<a class="btn btn-default btn-success" href="/user/!register">Registreer je bij Wikivents om gezellig mee te kunnen doen</a>
+of login als je al lid bent
+<a class="btn btn-default btn-success" href="/login">Login</a>
+</p>
+{{/ifUrlEndsWith}}
+{{/ifLoggedIn}}

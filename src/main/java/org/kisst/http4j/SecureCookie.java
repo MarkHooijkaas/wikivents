@@ -8,7 +8,6 @@ import org.kisst.util.Base64;
 import org.kisst.util.PasswordEncryption;
 
 public class SecureCookie{
-	public static final int LOGIN_DURATION= 10; //7*24*60*60; // a week in seconds
 	public static String globalSecret="a3sikmnu5ds75vkk";
 
 	public final String data;
@@ -20,28 +19,26 @@ public class SecureCookie{
 		this.timestamp=timestamp;
 		this.signature=signature;
 	}
-	public static String cookieName() { return "Hooi4jUser"; }
-
 	
-	public static void set(HttpCall call, String data, String salt) {
+	public static void set(HttpCall call, String cookieName, String data, int cookieAge, String salt) {
 		long timestamp=System.currentTimeMillis();
 		String signature=calcSignature(data, timestamp, salt);
-		Cookie cookie = new Cookie(cookieName(), Base64.encodeBytes((data+":"+timestamp+":"+signature).getBytes()));
-		cookie.setMaxAge(LOGIN_DURATION);
+		Cookie cookie = new Cookie(cookieName, Base64.encodeBytes((data+":"+timestamp+":"+signature).getBytes()));
+		cookie.setMaxAge(cookieAge);
 		//cookie.setSecure(true); // TODO: does not work with http: development
 		cookie.setPath("/");
 		call.response.addCookie(cookie);
 	}
 	
-	public static void clear(HttpCall call) {
-		Cookie cookie = new Cookie(cookieName(), null);
+	public static void clear(HttpCall call, String cookieName) {
+		Cookie cookie = new Cookie(cookieName, null);
 		cookie.setMaxAge(0);
 		cookie.setPath("/");
 		call.response.addCookie(cookie);		
 	}
 	
-	public static SecureCookie of(HttpCall call) {
-		Cookie cookie=call.getNamedCookie(cookieName());
+	public static SecureCookie of(HttpCall call, String cookieName) {
+		Cookie cookie=call.getNamedCookie(cookieName);
 		if (cookie==null)
 			return null;
 
@@ -60,8 +57,8 @@ public class SecureCookie{
 		return new SecureCookie(parts[0], Long.parseLong(parts[1]), parts[2]);
 	}
 	
-	public boolean isValid(String salt) {
-		if ((System.currentTimeMillis()-timestamp)>(LOGIN_DURATION*1000))
+	public boolean isValid(int loginDuration, String salt) {
+		if ((System.currentTimeMillis()-timestamp)>(loginDuration*1000))
 			return false;
 		String expectedSignature = calcSignature(data, timestamp, salt);
 		return signature.equals(expectedSignature);
