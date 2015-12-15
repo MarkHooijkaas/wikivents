@@ -10,7 +10,7 @@ import club.wikivents.model.User;
 import club.wikivents.model.WikiventsModel;
 
 public class WikiventsCall extends HttpCall {
-	public static final int    LOGIN_DURATION = 10; //7*24*60*60; // a week in seconds
+	public static final int    LOGIN_DURATION = 7*24*60*60; // a week in seconds
 	public static final String LOGIN_COOKIE = "wikilogin";
 
 	public final WikiventsModel model;
