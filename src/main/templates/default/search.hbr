@@ -18,10 +18,10 @@
 <h2>Activiteiten met de tekst: {{text}}</h2>
 {{> include/embedded.event.list list=events tableid="events"}}
 
-{{#ifLoggedIn}}
+{{#if call.user.maySeeProfile}}
 <h2>Gebruikers met de tekst: {{text}}</h2>
 {{> embedded.user.list list=users tableid="users"}}
-{{/ifLoggedIn}}
+{{/if}}
 
 
 {{> include/page.footer }}
