@@ -95,7 +95,7 @@ public class HttpCall {
 	public void invalidPage() { throw new NoSuchPageException(); }
 
 	public void redirect(String url) {
-		System.out.println("redirect to "+url+ " from "+getLocalUrl());
+		//System.out.println("redirect to "+url+ " from "+getLocalUrl());
 		try {
 			response.sendRedirect(url);
 		}
