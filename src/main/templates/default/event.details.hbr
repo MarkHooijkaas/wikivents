@@ -5,6 +5,7 @@
 	<div class="row">
 		<div class="col-xs-3"><label>{{#if record.idea}}Bedenker{{else}}Organisator{{/if}}</label></div>
 		<div class="col-xs-9"><span>
+			{{#if call.user.maySeeProfile}}
 			{{#each record.organizers}}
 				<img class="karma-icon" src="{{get0.karmaIcon}}">{{#if call.user.trusted}}{{&priv get0.link}}{{else}}{{&get0.usernameLink}}{{/if}}
 				{{#ifInlineEdit record}}
@@ -12,6 +13,9 @@
 				{{/ifInlineEdit}}
 				<br/>
 			{{/each}}
+			{{else}}
+				***
+			{{/if}}
 		</span></div>
 	</div>
 
