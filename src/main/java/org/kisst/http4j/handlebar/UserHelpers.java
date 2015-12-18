@@ -139,14 +139,33 @@ public class UserHelpers<T> {
 		if (obj==null)
 			return "";
 		if (obj instanceof Instant) {
+			Instant inst=(Instant) obj;
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format, localeNl);
-			return formatter.format(LocalDateTime.ofInstant((Instant) obj,zoneId));
+			return formatter.format(LocalDateTime.ofInstant(inst,zoneId));
 		}
 		else if (obj instanceof TemporalAccessor) {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format, localeNl);
 			return formatter.format((TemporalAccessor) obj);
 		}
 		return obj.toString();
+	}
+	public CharSequence dateShortFormat(Object obj) {
+		String format = "eee d MMM yyyy";
+		if (obj==null)
+			return "";
+		if (obj instanceof Instant) {
+			Instant inst=(Instant) obj;
+			if (inst.plusSeconds(3600*24*180).isAfter(Instant.now()))
+				format="eee d MMM";
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format, localeNl);
+			return formatter.format(LocalDateTime.ofInstant(inst,zoneId));
+		}
+		else if (obj instanceof TemporalAccessor) {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format, localeNl);
+			return formatter.format((TemporalAccessor) obj);
+		}
+		return obj.toString();
+
 	}
 	public CharSequence debug(Object obj) {
 		if (obj==null)

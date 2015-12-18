@@ -28,7 +28,7 @@
 		
 {{#each list}} 
 	  <tr{{#if cancelled}} style="color: grey;"{{/if}}>
-        <td data-order="{{#if date}}{{date}}{{else}}9999 {{creationDate}}{{/if}} {{time}}">{{dateFormat date "eee d MMM yyyy"}}</td>
+        <td data-order="{{#if date}}{{date}}{{else}}9999 {{creationDate}}{{/if}} {{time}}">{{dateShortFormat date}}</td>
         <td>{{time}}</td>
         <td><a href="/event/:{{_id}}" {{#if cancelled}} style="color: grey;"{{/if}}>{{#if idea}}<span style="color:grey;">WIKIDEE</span><br>{{/if}}{{#if cancelled}}GEANNULEERD<br>{{/if}}{{title}}</a></td>
         <td>{{city}}</td>
@@ -38,8 +38,8 @@
         <td>{{#if user.trusted}}{{&join organizers "<br/>"}}{{else}}{{#each organizers}}{{&get0.usernameLink}} {{/each}}{{/if}}</td>
 {{/ifLoggedIn}}
         <td>{{cost}}</td>
-        <td data-order="{{creationDate}}">{{dateFormat creationDate "eee d MMM yyyy"}}</td>
-        <td data-order="{{modificationDate}}">{{dateFormat modificationDate "eee d MMM yyyy"}}</td>
+        <td data-order="{{creationDate}}">{{dateShortFormat creationDate}}</td>
+        <td data-order="{{modificationDate}}">{{dateShortFormat modificationDate}}</td>
 {{#ifLoggedIn}}
         <td>{{> include/like.button event=this}}</td>
 {{/ifLoggedIn}}
