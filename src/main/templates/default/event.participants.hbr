@@ -7,7 +7,7 @@
 	{{#ifAdminMode}}
 		{{> include/modal.delete title=user.get0.username action="removeGuest" field="userId" value=user._id label="Weet je zeker dat je deze deelnemer wilt verwijderen?"}} 
 	{{/ifAdminMode}}
-	<img class="karma-icon" src="{{user.get0.karmaIcon}}">{{#if call.user.trusted}}{{&priv user.link}}{{else}}{{&user.get0.usernameLink}}{{/if}}
+	{{#if call.user.trusted}}{{&priv user.link}}{{else}}{{&user.get0.usernameLink}}{{/if}}
 	{{#ifMayChange this}}
 		{{> include/modal.delete title=user.get0.username action="removeGuest" field="userId" value=user._id label="Weet je zeker dat je je deelname wil annuleren?"}} 
 	{{/ifMayChange}}
@@ -45,7 +45,7 @@
 	{{#ifAdminMode}}
 		{{> include/modal.delete title=user.get0.username action="removeGuest" field="userId" value=user._id label="Weet je zeker dat je deze deelnemer wilt verwijderen?"}} 
 	{{/ifAdminMode}}
-	<img class="karma-icon" src="{{user.get0.karmaIcon}}">{{#if user.get0.trusted}}{{&priv user.link}}{{else}}{{&user.get0.usernameLink}}{{/if}}
+	{{#if user.get0.trusted}}{{&priv user.link}}{{else}}{{&user.get0.usernameLink}}{{/if}}
 	{{#ifMayChange this}}
 		{{> include/modal.delete title=user.get0.username action="removeGuest" field="userId" value=user._id label="Weet je zeker dat je je deelname wil annuleren?"}} 
 	{{/ifMayChange}}
