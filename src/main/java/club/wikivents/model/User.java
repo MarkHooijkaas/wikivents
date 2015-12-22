@@ -174,19 +174,32 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable, H
 		public final SequenceField<UserItem> recommendations= new SequenceField<UserItem>(UserItem.schema,"recommendations");
 	}
 	
-	public boolean mayBeViewedBy(User user) {
+	@Override public boolean mayBeViewedBy(User user) {
 		if (user==null) return false;
 		if (_id.equals(user._id))	return true;
 		if (user.trusted()) return true;
 		return false;		
 	}
-	public boolean mayBeChangedBy(User u) {
+	@Override public boolean mayBeChangedBy(User u) {
 		if (u==null) return false;
 		if (_id.equals(u._id))
 			return true;
 		return u.isAdmin;
 	}
-	
+	@Override public boolean fieldMayBeChangedBy(String field, User user) { 
+		if (! mayBeChangedBy(user))
+			return false;
+		if (user.isAdmin)
+			return true;
+		if (schema.isAdmin.name.equals(field))
+			return false;
+		if (schema.identityValidated.name.equals(field))
+			return false;
+		//if (schema.emailValidated.name.equals(field))
+		//	return false;
+		return true;
+	}
+
 	public boolean trusted() { return identityValidated && emailValidated && ! blocked; }
 	public int karma() {
 		if (blocked)

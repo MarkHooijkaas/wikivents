@@ -48,6 +48,8 @@ public abstract class WikiventsActionHandler<T extends CrudObject & AccessChecke
 	public void handleChangeField(WikiventsCall call, T oldRecord) {
 		String field=call.request.getParameter("field");
 		String value=call.request.getParameter("value");
+		if (field==null || ! oldRecord.fieldMayBeChangedBy(field, call.user))
+			return;
 		String logValue=value;
 		if (logValue.length()>10)
 			logValue=logValue.substring(0, 7)+"...";
