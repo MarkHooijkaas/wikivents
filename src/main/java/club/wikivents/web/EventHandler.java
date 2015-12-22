@@ -8,6 +8,7 @@ import org.kisst.util.CallInfo;
 import club.wikivents.model.Comment;
 import club.wikivents.model.Event;
 import club.wikivents.model.Group;
+import club.wikivents.model.Guest;
 import club.wikivents.model.User;
 
 public class EventHandler extends WikiventsActionHandler<Event> {
@@ -68,34 +69,25 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 			table.delete(event);
 	}
 
-	public void handleChangeField(WikiventsCall call, Event oldRecord) {
-		String field=call.request.getParameter("field");
-		String value=call.request.getParameter("value");
-		String logValue=value;
-		if (logValue.length()>10)
-			logValue=logValue.substring(0, 7)+"...";
-		CallInfo.instance.get().action="handleChangeField "+field+" to "+logValue;
-		table.updateField(oldRecord, table.getSchema().getField(field), value);
-	}
-
-	
 	@NeedsNoAuthorization
 	public void handleAddComment(WikiventsCall call, Event event) {
 		String text=call.request.getParameter("comment");
 		if (call.user.mayComment())
 			event.addComment(model, call.user, text);
 	}
+
 	@NeedsNoAuthorization
 	public void handleAddGuest(WikiventsCall call, Event event) {
-		if (call.user.mayParticipate())
-			event.addGuest(model, call.user);
+		if (call.user.mayParticipate() && ! event.hasGuest(call.user))
+			model.events.addSequenceItem(event, Event.schema.guests, new Guest(model, call.user));
 	}
 	@NeedsNoAuthorization
 	public void handleRemoveGuest(WikiventsCall call, Event event) {
 		String userId=call.request.getParameter("userId");
 		if (call.user._id.equals(userId) || call.user.isAdmin)
-			event.removeGuest(model,userId);
+			model.events.removeSequenceItem(event, Event.schema.guests, event.findGuest(userId));
 	}
+
 	public void handleAddOrganizer(WikiventsCall call, Event event) {
 		String username=call.request.getParameter("newOrganizer");
 		User newOrganizer=model.usernameIndex.get(username);
@@ -130,25 +122,6 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 			event.removeGroup(model,gr);
 	}
 
-	
-	@NeedsNoAuthorization
-	public void handleAddLike(WikiventsCall call) {
-		String id=call.request.getParameter("eventId");
-		Event event=model.events.read(id);
-		if (event!=null)
-			CallInfo.instance.get().data=event.title;
-
-		event.addLike(model, call.user);
-	}
-	@NeedsNoAuthorization
-	public void handleRemoveLike(WikiventsCall call) {
-		String id=call.request.getParameter("eventId");
-		Event event=model.events.read(id);
-		if (event!=null)
-			CallInfo.instance.get().data=event.title;
-		event.removeLike(model,call.user);
-	}
-	
 	public void handleRemoveComment(WikiventsCall call, Event event) {
 		String commentId=call.request.getParameter("commentId");
 		if (event==null || commentId==null)

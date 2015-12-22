@@ -145,12 +145,17 @@ public class ReflectionUtil {
 
 	
 	public static Method getMethod(Class<?> cls, String name, Class<?>[] signature) {
-		Method[] metharr = cls.getDeclaredMethods();
+		Method[] metharr = cls.getMethods();
+		//System.out.println("Looking for "+name);
+		//printSignature(signature);
+		//System.out.println("----");
 		for (Method meth :metharr) {
 			if (name.equals(meth.getName())) {
 				Class<?>[] paramtypes = meth.getParameterTypes();
+				//printSignature(paramtypes);
 				if (java.util.Arrays.equals(signature, paramtypes))
 					return meth;
+				//System.out.println("NOT");
 			}
 		}
 		return null;
@@ -196,11 +201,16 @@ public class ReflectionUtil {
 	}
 	public static Object invoke(Class<?> c, Object o, String name, Object[] args) {
 		try {
-			return invoke(o, c.getDeclaredMethod(name, getSignature(args)), args);
+			return invoke(o, c.getMethod(name, getSignature(args)), args);
 		}
 		catch (NoSuchMethodException e) { throw new ReflectionException(c, name, e); }
 	}
 
+	public static void printSignature(Class<?>[] sig) {
+		for (Class<?> c: sig)
+			System.out.println(c);
+	}
+	
 	private static Class<?>[] getSignature(Object[] args) {
 		Class<?>[] signature=new Class<?>[args.length];
 		for (int i=0; i<args.length; i++)

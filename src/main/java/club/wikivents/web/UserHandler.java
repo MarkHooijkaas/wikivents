@@ -22,7 +22,6 @@ import org.kisst.util.CallInfo;
 import org.kisst.util.PasswordEncryption;
 import org.kisst.util.StringUtil;
 
-import club.wikivents.model.Event;
 import club.wikivents.model.User;
 import club.wikivents.model.UserItem;
 import net.tanesha.recaptcha.ReCaptchaImpl;
@@ -201,17 +200,6 @@ public class UserHandler extends WikiventsActionHandler<User> {
 		table.updateField(u, User.schema.message, "");
 	}
 
-	public void handleChangeField(WikiventsCall call, User oldRecord) {
-		String field=call.request.getParameter("field");
-		String value=call.request.getParameter("value");
-		String logValue=value;
-		if (logValue.length()>10)
-			logValue=logValue.substring(0, 7)+"...";
-		CallInfo.instance.get().action="handleChangeField "+field+" to "+logValue;
-
-		table.updateField(oldRecord, table.getSchema().getField(field), value);
-	}
-
 	public void handleChangePassword(WikiventsCall call, User u) {
 		String newPassword= call.request.getParameter("newPassword");
 		String checkNewPassword= call.request.getParameter("checkNewPassword");
@@ -262,24 +250,6 @@ public class UserHandler extends WikiventsActionHandler<User> {
 		public final InputField password = new InputField("password");
 		public final InputField passwordCheck = new InputField("passwordCheck");
 	}
-
-	@NeedsNoAuthorization
-	public void handleAddLike(WikiventsCall call) {
-		String id=call.request.getParameter("eventId");
-		Event event=model.events.read(id);
-		if (event!=null)
-			CallInfo.instance.get().data=event.title;
-		event.addLike(model, call.user);
-	}
-	@NeedsNoAuthorization
-	public void handleRemoveLike(WikiventsCall call) {
-		String id=call.request.getParameter("eventId");
-		Event event=model.events.read(id);
-		if (event!=null)
-			CallInfo.instance.get().data=event.title;
-		event.removeLike(model,call.user);
-	}
-
 	
 	private static final MultipartConfigElement MULTI_PART_CONFIG = new MultipartConfigElement(System.getProperty("java.io.tmpdir"));
 	public void handleUploadAvatar(WikiventsCall call, User u) {

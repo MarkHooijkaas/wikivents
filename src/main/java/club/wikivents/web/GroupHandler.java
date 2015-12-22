@@ -5,7 +5,6 @@ import org.kisst.item4j.struct.Struct;
 import org.kisst.util.CallInfo;
 
 import club.wikivents.model.Comment;
-import club.wikivents.model.Event;
 import club.wikivents.model.Group;
 import club.wikivents.model.User;
 
@@ -58,17 +57,6 @@ public class GroupHandler extends WikiventsActionHandler<Group> {
 			table.delete(gr);
 	}
 
-	public void handleChangeField(WikiventsCall call, Group oldRecord) {
-		String field=call.request.getParameter("field");
-		String value=call.request.getParameter("value");
-		String logValue=value;
-		if (logValue.length()>10)
-			logValue=logValue.substring(0, 7)+"...";
-		CallInfo.instance.get().action="handleChangeField "+field+" to "+logValue;
-		table.updateField(oldRecord, table.getSchema().getField(field), value);
-	}
-
-	
 	@NeedsNoAuthorization
 	public void handleAddComment(WikiventsCall call, Group gr) {
 		String text=call.request.getParameter("comment");
@@ -109,24 +97,6 @@ public class GroupHandler extends WikiventsActionHandler<Group> {
 		model.groups.removeSequenceItem(gr, Group.schema.comments, com);
 	}
 
-	@NeedsNoAuthorization
-	public void handleAddLike(WikiventsCall call) {
-		String id=call.request.getParameter("eventId");
-		Event event=model.events.read(id);
-		if (event!=null)
-			CallInfo.instance.get().data=event.title;
-		event.addLike(model, call.user);
-	}
-	@NeedsNoAuthorization
-	public void handleRemoveLike(WikiventsCall call) {
-		String id=call.request.getParameter("eventId");
-		Event event=model.events.read(id);
-		if (event!=null)
-			CallInfo.instance.get().data=event.title;
-		event.removeLike(model,call.user);
-	}
-
-	
 	public class Form extends HttpFormData {
 		public Form(WikiventsCall call, Struct data) { super(call, call.getTheme().groupEdit, data); }
 		public Form(WikiventsCall call) { super(call, call.getTheme().groupEdit); }

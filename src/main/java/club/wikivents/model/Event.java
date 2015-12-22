@@ -136,25 +136,12 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 	
 	public boolean hasGuest(User user) { return guests.hasItem(Guest.key,user._id); }
 	public Guest findGuest(String id) { return guests.findItemOrNull(Guest.key, id); }
-	public void addGuest(WikiventsModel model, User user) { 
-		if (! hasGuest(user))
-			model.events.addSequenceItem(this, schema.guests, new Guest(model, user));
-	}
-	public void removeGuest(WikiventsModel model, String id) {
-		model.events.removeSequenceItem(this, schema.guests, findGuest(id));
-	}
+
 
 	private static ImmutableSequence.StringExpression userRefKey=(ref) -> {return ((User.Ref) ref)._id; };
 
 	public boolean isLikedBy(User user) { return likes.hasItem(userRefKey, user._id); }
-	public void addLike(WikiventsModel model, User user) {
-		if (! isLikedBy(user))
-			model.events.addSequenceItem(this, schema.likes, new User.Ref(model, user._id));
-	}
-	public void removeLike(WikiventsModel model, User user) {
-		User.Ref ref = new User.Ref(model, user._id);
-		model.events.removeSequenceItem(this, schema.likes, ref);
-	}
+
 
 	
 	

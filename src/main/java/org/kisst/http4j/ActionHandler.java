@@ -1,5 +1,6 @@
 package org.kisst.http4j;
 
+import org.kisst.crud4j.CrudObject;
 import org.kisst.util.CallInfo;
 import org.kisst.util.ReflectionUtil;
 import org.kisst.util.StringUtil;
@@ -27,10 +28,12 @@ import java.lang.reflect.Method;
 public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHandler {
 	private final Class<?>[] extralongsignature;
 	private final Class<?>[] fullsignature;
+	private final Class<?>[] fullsignature2;
 	private final Class<?>[] shortsignature;
 	public ActionHandler(Class<C> callClass, Class<T> recordClass) {
 		this.extralongsignature= new Class<?>[] { callClass, recordClass, String.class };
 		this.fullsignature= new Class<?>[] { callClass, recordClass };
+		this.fullsignature2= new Class<?>[] { callClass, CrudObject.class};
 		this.shortsignature= new Class<?>[] { callClass };
 	}
 
@@ -133,6 +136,8 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 				method = ReflectionUtil.getMethod(this.getClass(), methodName, fullsignature);
 			else
 				extralong=true;
+			if (method==null)
+				method = ReflectionUtil.getMethod(this.getClass(), methodName, fullsignature2);
 		}
 		if (method==null) {
 			method = ReflectionUtil.getMethod(this.getClass(), methodName, shortsignature);
