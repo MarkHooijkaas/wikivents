@@ -9,13 +9,14 @@ import club.wikivents.model.User;
 public class LoginPage extends WikiventsThing {
 	public LoginPage(WikiventsSite site) { super(site); }
 
+	
 	public class Fields extends HttpFormData {
 		public Fields(WikiventsCall call) { super(call,call.getTheme().login); }
 
-		public final User user=model.usernameIndex.get(StructHelper.getString(record, "username","").trim());
+		public final User user=findUser(StructHelper.getString(record, "username","").trim());
 		public final InputField username = new InputField("username", this::validateUsername);
 		public final InputField password = new InputField("password", this::validatePassword);
-		
+
 		// TODO: what is correct behaviour? Should we validate these fields??? w 
 		public String validateUsername(InputField f) { 
 			if (username!=null && user==null)
@@ -32,6 +33,11 @@ public class LoginPage extends WikiventsThing {
 		@Override public boolean isValid() { return super.isValid() && user!=null; } 
 	};
 
+	private User findUser(String name) {
+		if (name.indexOf("@")>0)
+			return model.emailIndex.get(name);
+		return model.usernameIndex.get(name);
+	}
 
 
 	public void handleLogout(HttpCall httpcall, String subPath) {
