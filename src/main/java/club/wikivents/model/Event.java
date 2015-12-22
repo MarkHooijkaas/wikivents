@@ -133,46 +133,23 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 	public void addComment(WikiventsModel model, User user, String text) {
 		model.events.addSequenceItem(this, schema.comments, new Comment(user,text));
 	}
-	public boolean hasGuest(User user) {
-		if (guests==null || user==null)
-			return false;
-		for (Guest g : guests)
-			if (g.user._id.equals(user._id)) // already member
-				return true;
-		return false;
-	}
-	public Guest findGuest(String id) {
-		if (guests==null || id==null)
-			return null;
-		for (Guest g : guests)
-			if (g.user._id.equals(id)) // already member
-				return g;
-		return null;
-	}
-	public void addGuest(WikiventsModel model, User user) {
-		if (hasGuest(user))
-			return;
-		model.events.addSequenceItem(this, schema.guests, new Guest(model, user));
+	
+	public boolean hasGuest(User user) { return guests.hasItem(Guest.key,user._id); }
+	public Guest findGuest(String id) { return guests.findItemOrNull(Guest.key, id); }
+	public void addGuest(WikiventsModel model, User user) { 
+		if (! hasGuest(user))
+			model.events.addSequenceItem(this, schema.guests, new Guest(model, user));
 	}
 	public void removeGuest(WikiventsModel model, String id) {
-		Guest g=findGuest(id);
-		if (g!=null)
-			model.events.removeSequenceItem(this, schema.guests, g);
+		model.events.removeSequenceItem(this, schema.guests, findGuest(id));
 	}
 
-	public boolean isLikedBy(User user) {
-		if (likes==null || user==null)
-			return false;
-		for (User.Ref r: likes) {
-			if (r._id.equals(user._id)) 
-				return true;
-		}
-		return false;
-	}
+	private static ImmutableSequence.StringExpression userRefKey=(ref) -> {return ((User.Ref) ref)._id; };
+
+	public boolean isLikedBy(User user) { return likes.hasItem(userRefKey, user._id); }
 	public void addLike(WikiventsModel model, User user) {
-		if (isLikedBy(user))
-			return;
-		model.events.addSequenceItem(this, schema.likes, new User.Ref(model, user._id));
+		if (! isLikedBy(user))
+			model.events.addSequenceItem(this, schema.likes, new User.Ref(model, user._id));
 	}
 	public void removeLike(WikiventsModel model, User user) {
 		User.Ref ref = new User.Ref(model, user._id);
