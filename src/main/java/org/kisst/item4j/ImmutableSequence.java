@@ -44,7 +44,30 @@ public abstract class ImmutableSequence<T> implements TypedSequence<T>, RandomAc
 		return new ImmutableSequence.ArraySequence<E>(type, elements);
 	}
 
+	@FunctionalInterface
+	public static interface StringExpression { public String calculateString(Object item); }
+	
+	public boolean hasItem(StringExpression expr, String key) { return findItemOrNull(expr, key)!=null; }
+	public T findItemOrNull(StringExpression expr, String key) {
+		if (key==null)
+			return null;
+		for (T item : this)
+			if (key.equals(expr.calculateString(item)))
+				return item;
+		return null;
+	}
+	public ImmutableSequence<T> removeKeyedItem(StringExpression expr, String key) { // TODO: remove all for a key?
+		int index=0;
+		for (T item: this) {
+			if (key.equals(expr.calculateString(item)))
+				return remove(index);
+			index++;
+		}
+		return this;
+	}
 
+	
+	
 	public static <E> ImmutableSequence<E> realCopy(Item.Factory factory, Class<?> type, org.kisst.item4j.seq.ItemSequence seq) {
 		E[] arr = createArray(seq.size());
 		int i=0; 
