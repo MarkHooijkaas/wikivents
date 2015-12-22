@@ -24,6 +24,7 @@ import org.kisst.util.StringUtil;
 
 import club.wikivents.model.Event;
 import club.wikivents.model.User;
+import club.wikivents.model.UserItem;
 import net.tanesha.recaptcha.ReCaptchaImpl;
 import net.tanesha.recaptcha.ReCaptchaResponse;
 
@@ -219,6 +220,15 @@ public class UserHandler extends WikiventsActionHandler<User> {
 		else
 			u.changePassword(newPassword);
 	}
+	
+	public void addRecommendation(WikiventsCall call, User user) { 
+		if (! user.isRecommendedBy(call.user))
+			model.users.addSequenceItem(user, User.schema.recommendations, new UserItem(model, call.user));
+	}
+	public void removeRecommendation(WikiventsCall call, User user) {
+		model.users.removeSequenceItem(user, User.schema.recommendations, user.findRecommendation(call.user._id));
+	}
+
 	
 	public static class Form extends HttpFormData {
 		public Form(WikiventsCall call, Struct data) { super(call, call.getTheme().userEdit, data); }
