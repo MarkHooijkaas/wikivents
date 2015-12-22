@@ -217,8 +217,11 @@ public class UserHandler extends WikiventsActionHandler<User> {
 		String checkNewPassword= call.request.getParameter("checkNewPassword");
 		if (! newPassword.equals(checkNewPassword))
 			call.sendError(500, "supplied passwords do not match");
-		else
+		else {
 			changePassword(u,newPassword);
+			if (call.user==u)
+				call.setUserCookie(u);
+		}
 	}
 	
 	public void addRecommendation(WikiventsCall call, User user) { 

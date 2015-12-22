@@ -45,6 +45,7 @@ public class WikiventsTheme extends TemplateTheme {
 	public final CompiledTemplate userRegister = template("user.register");
 	public final CompiledTemplate userRegisterSucces = template("user.register.success");
 	public final CompiledTemplate userSetPassword = template("user.setPassword");
+	public final CompiledTemplate userForgotPassword = template("user.forgotPassword");
 
 	public final CompiledTemplate eventShow = template("event.show");
 	public final CompiledTemplate eventEdit = template("event.edit");

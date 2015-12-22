@@ -32,8 +32,23 @@ Om uit te loggen kan je naar de <a href="/logout">Uitlog pagina</a> gaan.
   <button type="submit" class="btn btn-default btn-success">Inloggen</button>
 </form>
 <br>
-Er is nog geen wachtwoord reset mechanisme. Als je je wachtwoord vergeten bent, kan je contact opnemen met <a href="mailto:info@wikivents.nl">info@wikivents.nl</a> 
+Ben je je wachtwoord vergeten, vul dan hieronder je gebruikersnaam of e-mail adres in. Je krijgt dan een e-mail waarmee je kan inloggen.
+<form role="form" method="post" action="/forgotPassword" class="form-horizontal">
+
+<div class="form-group">
+	<label class="control-label col-xs-6 col-sm-2">Gebruikersnaam of e-mail:</label>
+	<div class="col-xs-6 col-sm-4">
+		<input type="username" class="form-control" id="username" name="username" value="{{form.username.value}}">
+		 <i>{{form.username.message}}</i> 
+	</div>
+</div>
+  <button type="submit" class="btn btn-default btn-success">Wachtwoord vergeten</button>
+  <input type="hidden" name="action" value="forgotPassword"/>
+</form>
+ 
 {{/if}}
+<br>
+ Als je nog vragen hebt, kan je contact opnemen met <a href="mailto:info@wikivents.nl">info@wikivents.nl</a>
 
 
 {{message}}

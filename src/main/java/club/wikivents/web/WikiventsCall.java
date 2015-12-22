@@ -1,7 +1,9 @@
 package club.wikivents.web;
 
+import javax.servlet.http.Cookie;
+
 import org.kisst.http4j.HttpCall;
-import org.kisst.http4j.SecureCookie;
+import org.kisst.http4j.SecureToken;
 import org.kisst.http4j.handlebar.TemplateEngine.CompiledTemplate;
 import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
 import org.kisst.item4j.struct.Struct;
@@ -10,7 +12,7 @@ import club.wikivents.model.User;
 import club.wikivents.model.WikiventsModel;
 
 public class WikiventsCall extends HttpCall {
-	public static final int    LOGIN_DURATION = 7*24*60*60; // a week in seconds
+	public static final int    LOGIN_DURATION = 365*24*60*60; // a week in seconds
 	public static final String LOGIN_COOKIE = "wikilogin";
 
 	public final WikiventsModel model;
@@ -28,13 +30,24 @@ public class WikiventsCall extends HttpCall {
 	private WikiventsCall(HttpCall call, WikiventsModel model) {
 		super(call);
 		this.model=model;
-		SecureCookie cookie = SecureCookie.of(this, LOGIN_COOKIE);
+		SecureToken cookie =null; 
+		String token = call.request.getParameter("loginToken");
+		if (token!=null) {
+			cookie=SecureToken.of(token);
+			Cookie c = new Cookie(LOGIN_COOKIE, token); 
+			c.setMaxAge(LOGIN_DURATION);
+			//cookie.setSecure(true); // TODO: does not work with http: development
+			c.setPath("/");
+			call.response.addCookie(c);
+		}
+		else
+			cookie = SecureToken.of(getNamedCookieValue(LOGIN_COOKIE, null));
 		String userid = cookie==null ? null : cookie.data;
 		if (userid==null)
 			this.user=null;
 		else {
 			User u=model.users.readOrNull(userid); 
-			if (u!=null && !cookie.isValid(LOGIN_DURATION, u.passwordSalt)) {
+			if (u!=null && !cookie.isValid(model, LOGIN_DURATION)) {
 				u=null;
 				//String url=this.getLocalUrl();
 				//if (! (url.endsWith("/login") || url.startsWith("/resources") || url.startsWith("/favicon.ico") || url.startsWith("/lb") || url.startsWith("/css"))) {
@@ -103,8 +116,9 @@ public class WikiventsCall extends HttpCall {
 		return model.site.getTheme(theme);
 	}
 	
-	public void clearUserCookie() { SecureCookie.clear(this, LOGIN_COOKIE); }
+	public void clearUserCookie() { this.clearCookie(LOGIN_COOKIE); }
 	public void setUserCookie(User user) {
-		SecureCookie.set(this, LOGIN_COOKIE, user._id, LOGIN_DURATION, user.passwordSalt);
+		SecureToken tok=new SecureToken(model, user._id);
+		this.setNamedCookieValue(LOGIN_COOKIE, tok.getToken(), LOGIN_DURATION);
 	}
 }

@@ -138,6 +138,13 @@ public class HttpCall {
 		cookie.setPath("/");
 		response.addCookie(cookie);
 	}
+	public void clearCookie(String cookieName) {
+		Cookie cookie = new Cookie(cookieName, null);
+		cookie.setMaxAge(0);
+		cookie.setPath("/");
+		response.addCookie(cookie);		
+	}
+
 	
 	public UnauthorizedException throwUnauthorized(String message) { throw new UnauthorizedException(message); }
 	

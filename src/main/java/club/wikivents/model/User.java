@@ -31,7 +31,7 @@ import org.kisst.util.PasswordEncryption.HasPasswordSalt;
 
 
 public class User extends CrudObject implements AccessChecker<User>, Htmlable, HasPasswordSalt {
-	private final static InternetAddress systemMailAddress;
+	public final static InternetAddress systemMailAddress;
 	static {
 		try {
 			systemMailAddress=new InternetAddress("info@wikivents.nl","Wikivents beheer");

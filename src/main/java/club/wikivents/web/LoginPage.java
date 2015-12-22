@@ -1,7 +1,9 @@
 package club.wikivents.web;
 
 import org.kisst.http4j.HttpCall;
+import org.kisst.http4j.SecureToken;
 import org.kisst.http4j.form.HttpFormData;
+import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
 import org.kisst.item4j.struct.StructHelper;
 
 import club.wikivents.model.User;
@@ -64,4 +66,20 @@ public class LoginPage extends WikiventsThing {
 				data.handle();
 		}
 	}
+	
+	public void handleForgotPassword(HttpCall httpcall, String subPath) {
+		WikiventsCall call=WikiventsCall.of(httpcall,model);
+		String username=call.request.getParameter("username");
+		User user=findUser(username);
+		if (user!=null) {
+			String token = new SecureToken(call.model, user._id).getToken();
+			String url= call.getTopUrl()+"/user/"+user.username+"?inline-edit=true&loginToken="+token;
+			TemplateData context=call.createTemplateData();
+			context.add("url", url);
+			String message = call.getTheme().userForgotPassword.toString(context);
+			System.out.println(message);
+			user.sendMailFrom(User.systemMailAddress, "Inloggen op wikivents", message, false);
+		}
+	}
+
 }
