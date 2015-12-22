@@ -4,17 +4,12 @@
 	<img style="max-height:100%; max-width:100%;" src="{{record.karmaIcon}}"/><br>
 {{/if}}
 
-{{#ifMayView record}}
-
 {{#if record.avatarUrl}}
 	<img style="max-height:100%; max-width:100%;" src="{{record.avatarUrl}}"/>
 {{else}}
 	Gebruiker heeft nog geen profielfoto toegevoegd.
 	<img src="/favicon.ico"/>
 {{/if}}
-{{else}}
-	<span style="color:red;">Je identiteit is nog niet gevalideerd. Daarom mag je alleen je eigen profielfoto zien. Neem contact op met <a href="mailto.info@wikivents.nl">info@wikivents.nl</a> om je identiteit te valideren.</span>
-{{/ifMayView}}
 	<br><br>
 {{#ifInlineEdit record}}
 	{{record.city}}  {{> include/modal.textField value=record.city  name="city" prefix=""  label="Woonplaats"}}<br>

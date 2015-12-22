@@ -207,6 +207,7 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable, H
 	public boolean karmaNotPositive() { return karma()<=0; }
 	
 	public boolean canReceiveMail() { return emailValidated && karma()>0; }
+	public boolean maySeeUsers() { return karma()>0; }
 	public boolean maySeeSender() { return karma()>0; }
 	public boolean maySendMail() { return karma()>0; }
 	public boolean mayComment() { return karma()>0; }

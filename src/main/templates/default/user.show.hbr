@@ -4,6 +4,8 @@
 	<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/localization/messages_nl.js"></script>
 	<script src="/lib/ckeditor/ckeditor.js"></script>
 {{> include/page.header.end}}
+
+{{#ifMayView record}}
 {{#ifMayChange record}}
 	{{#if record.emailValidated}}
 	{{else}} 
@@ -67,5 +69,10 @@ of <a href="mailto:meldpunt@wikivents.nl">meldpunt@wikivents.nl</a>.
 	{{> user.description}}
 	{{> user.events}}
 </div>	 
+
+{{else}}
+	<span style="color:red;">Je identiteit is nog niet gevalideerd. Daarom mag je alleen je eigen profielfoto zien. Neem contact op met <a href="mailto.info@wikivents.nl">info@wikivents.nl</a> om je identiteit te valideren.</span>
+{{/ifMayView}}
+
 
 {{> include/page.footer}}

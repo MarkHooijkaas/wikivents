@@ -2,7 +2,7 @@
 	<script src="/lib/datatables/media/js/jquery.dataTables.min.js"></script>
 {{> include/page.header.end}}
 
-{{#if call.user.karmaPositive}}
+{{#if call.user.maySeeUsers}}
 
 {{>embedded.user.list}}
 
