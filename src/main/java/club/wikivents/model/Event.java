@@ -130,10 +130,6 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 	@Override public boolean mayBeChangedBy(User user) { return user!=null && (user.isAdmin || hasOrganizer(user)); }
 	@Override public boolean mayBeViewedBy(User user) { return true; }
 	
-	public void addComment(WikiventsModel model, User user, String text) {
-		model.events.addSequenceItem(this, schema.comments, new Comment(user,text));
-	}
-	
 	public boolean hasGuest(User user) { return guests.hasItem(Guest.key,user._id); }
 	public Guest findGuest(String id) { return guests.findItemOrNull(Guest.key, id); }
 
@@ -155,18 +151,6 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 		return false;
 	}
 
-	public void addOrganizer(WikiventsModel model, User user) {
-		if (hasOrganizer(user))
-			return;
-		model.events.addSequenceItem(this, schema.organizers, new User.Ref(model, user._id));
-	}
-	public void removeOrganizer(WikiventsModel model, User user) {
-		if (organizers.size()==1) // never remove the last organizer
-			return;
-		User.Ref ref = new User.Ref(model, user._id);
-		model.events.removeSequenceItem(this, schema.organizers, ref);
-	}
-
 	public boolean hasGroup(Group gr) {
 		if (groups==null || gr==null)
 			return false;
@@ -176,16 +160,6 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 		}
 		return false;
 	}
-	public void addGroup(WikiventsModel model, Group gr) {
-		if (hasGroup(gr))
-			return;
-		model.events.addSequenceItem(this, schema.groups, new Group.Ref(model, gr._id));
-	}
-	public void removeGroup(WikiventsModel model, Group gr) {
-		Group.Ref ref = new Group.Ref(model, gr._id);
-		model.events.removeSequenceItem(this, schema.groups, ref);
-	}
-
 	
 	@Override public int compareTo(Event other) { return this.date.compareTo(other.date);}
 

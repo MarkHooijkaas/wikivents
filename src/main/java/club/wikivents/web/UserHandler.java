@@ -172,6 +172,17 @@ public class UserHandler extends WikiventsActionHandler<User> {
 			formdata.handle();
 	}
 
+	
+	
+	private void changePassword(User user, String newPassword) {
+		String salt = PasswordEncryption.generateSalt();
+		String pw = PasswordEncryption.encryptPassword(newPassword, salt);
+		model.users.updateFields(user, new HashStruct()
+			.add(User.schema.passwordSalt,  salt)
+			.add(User.schema.encryptedPassword, pw)
+		);
+	}
+	
 	@NeedsNoAuthentication
 	public void handleSetPassword(WikiventsCall call, User user) {
 		SetPasswordForm formdata = new SetPasswordForm(call);
@@ -181,7 +192,7 @@ public class UserHandler extends WikiventsActionHandler<User> {
 			if (pw==null || ! pw.equals(pw2))
 				formdata.showForm();
 			else {
-				user.changePassword(pw);
+				changePassword(user,pw);
 				call.setUserCookie(user);
 				call.redirect("/user/"+user.username);
 			}
@@ -206,7 +217,7 @@ public class UserHandler extends WikiventsActionHandler<User> {
 		if (! newPassword.equals(checkNewPassword))
 			call.sendError(500, "supplied passwords do not match");
 		else
-			u.changePassword(newPassword);
+			changePassword(u,newPassword);
 	}
 	
 	public void addRecommendation(WikiventsCall call, User user) { 

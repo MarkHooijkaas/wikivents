@@ -74,10 +74,7 @@ public class Group extends CrudObject implements AccessChecker<User> {
 	
 	@Override public boolean mayBeChangedBy(User user) { return user!=null && (user.isAdmin || hasOwner(user)); }
 	@Override public boolean mayBeViewedBy(User user) { return true; }
-	
-	public void addComment(WikiventsModel model, User user, String text) {
-		model.groups.addSequenceItem(this, schema.comments, new Comment(user,text));
-	}
+
 	public boolean hasMember(User user) {
 		if (members==null || user==null)
 			return false;
@@ -85,15 +82,6 @@ public class Group extends CrudObject implements AccessChecker<User> {
 			if (r._id.equals(user._id)) 
 				return true;
 		return false;
-	}
-	public void addMember(WikiventsModel model, User user) {
-		if (hasMember(user))
-			return;
-		model.groups.addSequenceItem(this, schema.members, new User.Ref(model, user._id));
-	}
-	public void removeMember(WikiventsModel model, String id) {
-		User.Ref ref = new User.Ref(model, id);
-		model.groups.removeSequenceItem(this, schema.members, ref);
 	}
 
 	public boolean hasOwner(User user) {
@@ -104,18 +92,6 @@ public class Group extends CrudObject implements AccessChecker<User> {
 				return true;
 		}
 		return false;
-	}
-
-	public void addOwner(WikiventsModel model, User user) {
-		if (hasOwner(user))
-			return;
-		model.groups.addSequenceItem(this, schema.owners, new User.Ref(model, user._id));
-	}
-	public void removeOwner(WikiventsModel model, User user) {
-		if (owners.size()==1) // never remove the last organizer
-			return;
-		User.Ref ref = new User.Ref(model, user._id);
-		model.groups.removeSequenceItem(this, schema.owners, ref);
 	}
 
 	public Comment findComment(String id) { 

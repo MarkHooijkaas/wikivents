@@ -9,7 +9,9 @@ import club.wikivents.model.Group;
 import club.wikivents.model.User;
 
 public class GroupHandler extends WikiventsActionHandler<Group> {
-	public GroupHandler(WikiventsSite site) { super(site, site.model.groups);	}
+	public final Group.Schema schema;
+
+	public GroupHandler(WikiventsSite site) { super(site, site.model.groups); this.schema=Group.schema;	}
 
 	@Override protected Group findRecord(String id) {
 		Group result=super.findRecord(id);
@@ -60,33 +62,35 @@ public class GroupHandler extends WikiventsActionHandler<Group> {
 	@NeedsNoAuthorization
 	public void handleAddComment(WikiventsCall call, Group gr) {
 		String text=call.request.getParameter("comment");
-		gr.addComment(model, call.user, text);
+		table.addSequenceItem(gr, schema.comments, new Comment(call.user,text));
 	}
 	@NeedsNoAuthorization
 	public void handleAddMember(WikiventsCall call, Group gr) {
-		gr.addMember(model, call.user);
+		if (!gr.hasMember(call.user))
+			table.addSequenceItem(gr, schema.members, new User.Ref(model, call.user._id));
 	}
 	@NeedsNoAuthorization
 	public void handleRemoveMember(WikiventsCall call,Group gr) {
 		String userId=call.request.getParameter("userId");
 		if (call.user._id.equals(userId) || call.user.isAdmin)
-			gr.removeMember(model,userId);
+			table.removeSequenceItem(gr, schema.members, new User.Ref(model, userId));
 	}
+	
 	public void handleAddOwner(WikiventsCall call, Group gr) {
 		String username=call.request.getParameter("newOwner");
 		User newOwner=model.usernameIndex.get(username);
 		if (newOwner==null)
 			call.sendError(500, "no owner");
-		else
-			gr.addOwner(model, newOwner);
+		else if (! gr.hasOwner(newOwner))
+			table.addSequenceItem(gr, schema.owners, new User.Ref(model, newOwner._id));
 	}
 	public void handleRemoveOwner(WikiventsCall call, Group gr) {
 		String id=call.request.getParameter("userId");
 		User user=model.users.read(id);
 		if (user==null)
 			call.sendError(500, "no owner");
-		else
-			gr.removeOwner(model,user);
+		else if (gr.owners.size()>1) // never remove the last organizer
+			table.removeSequenceItem(gr, schema.owners, new User.Ref(model, user._id));
 	}
 	
 	public void handleRemoveComment(WikiventsCall call, Group gr) {

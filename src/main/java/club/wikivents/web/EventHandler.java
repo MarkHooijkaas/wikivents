@@ -12,7 +12,10 @@ import club.wikivents.model.Guest;
 import club.wikivents.model.User;
 
 public class EventHandler extends WikiventsActionHandler<Event> {
-	public EventHandler(WikiventsSite site) { super(site, site.model.events);	}
+	public final Event.Schema schema;
+
+
+	public EventHandler(WikiventsSite site) { super(site, site.model.events); this.schema=Event.schema; }
 
 	@Override protected Event findRecord(String id) {
 		Event result=super.findRecord(id);
@@ -40,7 +43,7 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 	public void handleEdit(WikiventsCall call, Event oldRecord) {
 		Form formdata = new Form(call,(Struct) null);
 		if (formdata.isValid()) 
-			model.events.updateFields(oldRecord, formdata.record);
+			table.updateFields(oldRecord, formdata.record);
 		formdata.handle();
 	}
 	public void viewCreate(WikiventsCall call) {
@@ -58,7 +61,7 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 		if (formdata.isValid()) {
 			Event e=new Event(call.model,call.user,formdata.record);
 			CallInfo.instance.get().data=e.title;
-			model.events.create(e);
+			table.create(e);
 			call.redirect("/event/:"+e._id);
 		}
 		else
@@ -69,23 +72,24 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 			table.delete(event);
 	}
 
+	
 	@NeedsNoAuthorization
 	public void handleAddComment(WikiventsCall call, Event event) {
 		String text=call.request.getParameter("comment");
 		if (call.user.mayComment())
-			event.addComment(model, call.user, text);
+			table.addSequenceItem(event, schema.comments, new Comment(call.user,text));
 	}
 
 	@NeedsNoAuthorization
 	public void handleAddGuest(WikiventsCall call, Event event) {
 		if (call.user.mayParticipate() && ! event.hasGuest(call.user))
-			model.events.addSequenceItem(event, Event.schema.guests, new Guest(model, call.user));
+			table.addSequenceItem(event, schema.guests, new Guest(model, call.user));
 	}
 	@NeedsNoAuthorization
 	public void handleRemoveGuest(WikiventsCall call, Event event) {
 		String userId=call.request.getParameter("userId");
 		if (call.user._id.equals(userId) || call.user.isAdmin)
-			model.events.removeSequenceItem(event, Event.schema.guests, event.findGuest(userId));
+			table.removeSequenceItem(event, schema.guests, event.findGuest(userId));
 	}
 
 	public void handleAddOrganizer(WikiventsCall call, Event event) {
@@ -93,16 +97,16 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 		User newOrganizer=model.usernameIndex.get(username);
 		if (newOrganizer==null)
 			call.sendError(500, "no organizer");
-		else
-			event.addOrganizer(model, newOrganizer);
+		else if (! event.hasOrganizer(newOrganizer))
+			table.addSequenceItem(event, schema.organizers, new User.Ref(model, call.user._id));
 	}
 	public void handleRemoveOrganizer(WikiventsCall call, Event event) {
 		String id=call.request.getParameter("userId");
 		User user=model.users.read(id);
 		if (user==null)
 			call.sendError(500, "no organizer");
-		else
-			event.removeOrganizer(model,user);
+		else if (event.organizers.size()>1) // never remove the last organizer
+			table.removeSequenceItem(event, schema.organizers, new User.Ref(model, user._id));
 	}
 
 	public void handleAddGroup(WikiventsCall call, Event event) {
@@ -110,8 +114,8 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 		Group gr=model.groups.read(id);
 		if (gr==null)
 			call.sendError(500, "no such group");
-		else
-			event.addGroup(model, gr);
+		else if (! event.hasGroup(gr))
+			table.addSequenceItem(event, schema.groups, new Group.Ref(model, gr._id));
 	}
 	public void handleRemoveGroup(WikiventsCall call, Event event) {
 		String id=call.request.getParameter("groupId");
@@ -119,7 +123,7 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 		if (gr==null)
 			call.sendError(500, "no such group");
 		else
-			event.removeGroup(model,gr);
+			table.removeSequenceItem(event, schema.groups, new Group.Ref(model, gr._id));
 	}
 
 	public void handleRemoveComment(WikiventsCall call, Event event) {
@@ -127,7 +131,7 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 		if (event==null || commentId==null)
 			return;
 		Comment com=event.findComment(commentId);
-		model.events.removeSequenceItem(event, Event.schema.comments, com);
+		table.removeSequenceItem(event, schema.comments, com);
 	}
 
 	
@@ -137,20 +141,20 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 		public Form(WikiventsCall call) { this(call, call.getTheme().eventEdit); }
 
 		public final InputField organizer=new InputField("organizer", ((WikiventsCall) call).user._id);
-		public final InputField title = new InputField(Event.schema.title);
-		public final InputField imageUrl = new InputField(Event.schema.imageUrl);
-		public final InputField date= new InputField(Event.schema.date);
-		public final InputField time = new InputField(Event.schema.time);
-		public final InputField endTime = new InputField(Event.schema.endTime);
-		public final InputField max = new InputField(Event.schema.max);
-		public final InputField guestsAllowed = new InputField(Event.schema.guestsAllowed);
-		public final InputField backupGuestsAllowed= new InputField(Event.schema.backupGuestsAllowed);
-		public final InputField city = new InputField(Event.schema.city);
-		public final InputField location = new InputField(Event.schema.location);
-		public final InputField cost = new InputField(Event.schema.cost);
-		public final InputField guestInfo = new InputField(Event.schema.guestInfo);
-		public final InputField description= new InputField(Event.schema.description);
-		public final InputField idea= new InputField(Event.schema.idea);
+		public final InputField title = new InputField(schema.title);
+		public final InputField imageUrl = new InputField(schema.imageUrl);
+		public final InputField date= new InputField(schema.date);
+		public final InputField time = new InputField(schema.time);
+		public final InputField endTime = new InputField(schema.endTime);
+		public final InputField max = new InputField(schema.max);
+		public final InputField guestsAllowed = new InputField(schema.guestsAllowed);
+		public final InputField backupGuestsAllowed= new InputField(schema.backupGuestsAllowed);
+		public final InputField city = new InputField(schema.city);
+		public final InputField location = new InputField(schema.location);
+		public final InputField cost = new InputField(schema.cost);
+		public final InputField guestInfo = new InputField(schema.guestInfo);
+		public final InputField description= new InputField(schema.description);
+		public final InputField idea= new InputField(schema.idea);
 	}
 }
 

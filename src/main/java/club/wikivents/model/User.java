@@ -21,7 +21,6 @@ import org.kisst.http4j.handlebar.Htmlable;
 import org.kisst.item4j.ImmutableSequence;
 import org.kisst.item4j.Item;
 import org.kisst.item4j.Type;
-import org.kisst.item4j.struct.HashStruct;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.util.PasswordEncryption;
 import org.kisst.util.PasswordEncryption.HasPasswordSalt;
@@ -271,16 +270,6 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable, H
 		} 
 		catch (MessagingException e) { throw new RuntimeException(e); } 
 		catch (UnsupportedEncodingException e) { throw new RuntimeException(e); }
-	}
-	
-	
-	public void changePassword(String newPassword) {
-		String salt = PasswordEncryption.generateSalt();
-		String pw = PasswordEncryption.encryptPassword(newPassword, salt);
-		model.users.updateFields(this, new HashStruct()
-			.add(schema.passwordSalt,  salt)
-			.add(schema.encryptedPassword, pw)
-		);
 	}
 	
 	
