@@ -29,7 +29,8 @@ import net.tanesha.recaptcha.ReCaptchaResponse;
 
 public class UserHandler extends WikiventsActionHandler<User> {
 	private final ResourceHandler uploads = new ResourceHandler(null, new File("data/uploads/"));
-	public UserHandler(WikiventsSite site) { super(site, site.model.users); }
+	public final User.Schema schema;
+	public UserHandler(WikiventsSite site) { super(site, site.model.users); this.schema=User.schema; }
 
 	@Override protected User findRecord(String id) {
 		User result;
@@ -77,7 +78,7 @@ public class UserHandler extends WikiventsActionHandler<User> {
 		if (token!=null && token.equals(u.passwordSalt)) {
 			if (call.user==null && ! u.emailValidated)
 				call.setUserCookie(u);
-			call.model.users.updateField(u, User.schema.emailValidated, true);
+			call.model.users.updateField(u, schema.emailValidated, true);
 		}
 		call.redirect("/user/"+u.username);
 	}
@@ -151,10 +152,10 @@ public class UserHandler extends WikiventsActionHandler<User> {
 			String pw = PasswordEncryption.encryptPassword(formdata.password.value, salt);
 			User u = new User(call.model,new MultiStruct(
 				new HashStruct()
-					.add(User.schema.passwordSalt,  salt)
-					.add(User.schema.encryptedPassword, pw)
-					.add(User.schema.identityValidated, "false")
-					.add(User.schema.isAdmin, "false")
+					.add(schema.passwordSalt,  salt)
+					.add(schema.encryptedPassword, pw)
+					.add(schema.identityValidated, "false")
+					.add(schema.isAdmin, "false")
 				,formdata.record 
 			));
 			CallInfo.instance.get().data=u.username;
@@ -178,8 +179,8 @@ public class UserHandler extends WikiventsActionHandler<User> {
 		String salt = PasswordEncryption.generateSalt();
 		String pw = PasswordEncryption.encryptPassword(newPassword, salt);
 		model.users.updateFields(user, new HashStruct()
-			.add(User.schema.passwordSalt,  salt)
-			.add(User.schema.encryptedPassword, pw)
+			.add(schema.passwordSalt,  salt)
+			.add(schema.encryptedPassword, pw)
 		);
 	}
 	
@@ -203,12 +204,12 @@ public class UserHandler extends WikiventsActionHandler<User> {
 
 	public void handleRemoveEmailValidationNeeded(WikiventsCall call, User u) {
 		if (call.user.isAdmin)
-			table.updateField(u, User.schema.emailValidated, true);
+			table.updateField(u, schema.emailValidated, true);
 	}
 
 	public void handleRemoveMessage(WikiventsCall call, User u) {
 		//String message=call.request.getParameter("message");
-		table.updateField(u, User.schema.message, "");
+		table.updateField(u, schema.message, "");
 	}
 
 	public void handleChangePassword(WikiventsCall call, User u) {
@@ -222,10 +223,10 @@ public class UserHandler extends WikiventsActionHandler<User> {
 	
 	public void addRecommendation(WikiventsCall call, User user) { 
 		if (! user.isRecommendedBy(call.user))
-			model.users.addSequenceItem(user, User.schema.recommendations, new UserItem(model, call.user));
+			model.users.addSequenceItem(user, schema.recommendations, new UserItem(model, call.user));
 	}
 	public void removeRecommendation(WikiventsCall call, User user) {
-		model.users.removeSequenceItem(user, User.schema.recommendations, user.findRecommendation(call.user._id));
+		model.users.removeSequenceItem(user, schema.recommendations, user.findRecommendation(call.user._id));
 	}
 
 	
@@ -239,12 +240,12 @@ public class UserHandler extends WikiventsActionHandler<User> {
 	}
 	public class RegisterForm extends HttpFormData {
 		public RegisterForm(WikiventsCall call) { super(call, call.getTheme().userRegister);
-			this.username = new InputField(User.schema.username, new UniqueKeyIndexValidator<User>(call.model.usernameIndex) );
-			this.email    = new InputField(User.schema.email, this::validateEmail, new UniqueKeyIndexValidator<User>(call.model.emailIndex) );
+			this.username = new InputField(schema.username, new UniqueKeyIndexValidator<User>(call.model.usernameIndex) );
+			this.email    = new InputField(schema.email, this::validateEmail, new UniqueKeyIndexValidator<User>(call.model.emailIndex) );
 		}
 		public final InputField username;
 		public final InputField email;
-		public final InputField city     = new InputField(User.schema.city);
+		public final InputField city     = new InputField(schema.city);
 		public final InputField password = new InputField("password");
 		public final InputField passwordCheck = new InputField("passwordCheck");
 		@Override public boolean isValid() { 
@@ -285,7 +286,7 @@ public class UserHandler extends WikiventsActionHandler<User> {
 			}
 			//writer.println("New file " + fileName + " created at " + path);
 			//LOGGER.log(Level.INFO, "File{0}being uploaded to {1}", 
-			table.updateField(u, User.schema.avatarUrl, "/user/:"+u._id+"/uploaded/"+fileName);
+			table.updateField(u, schema.avatarUrl, "/user/:"+u._id+"/uploaded/"+fileName);
 		} 
 		catch (IOException e) { throw new RuntimeException(e); }
 		catch (ServletException e) { throw new RuntimeException(e); }
