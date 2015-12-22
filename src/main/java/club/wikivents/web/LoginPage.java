@@ -77,8 +77,8 @@ public class LoginPage extends WikiventsThing {
 			TemplateData context=call.createTemplateData();
 			context.add("url", url);
 			String message = call.getTheme().userForgotPassword.toString(context);
-			System.out.println(message);
 			user.sendMailFrom(User.systemMailAddress, "Inloggen op wikivents", message, false);
+			call.redirect("/");
 		}
 	}
 
