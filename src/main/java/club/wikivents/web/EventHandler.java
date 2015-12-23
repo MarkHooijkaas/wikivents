@@ -97,7 +97,7 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 		User newOrganizer=model.usernameIndex.get(username);
 		if (newOrganizer==null)
 			call.sendError(500, "no organizer");
-		else if (! event.hasOrganizer(newOrganizer))
+		else if (! event.hasOrganizer(newOrganizer) && event.hasGuest(newOrganizer))
 			table.addSequenceItem(event, schema.organizers, new User.Ref(model, call.user._id));
 	}
 	public void handleRemoveOrganizer(WikiventsCall call, Event event) {
