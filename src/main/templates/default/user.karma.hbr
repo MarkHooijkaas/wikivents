@@ -1,3 +1,6 @@
+<h1>Karma van {{record.username}}</h1>
+<img src="{{record.karmaIcon}}">
+
 {{#if record.karmaNeutral}}
 <h1 style="color:orange;">Karma neutraal: (Identiteit nog niet gecontroleerd)</h1>
 <p style="color:red;">
@@ -23,8 +26,21 @@ of <a href="mailto:meldpunt@wikivents.nl">meldpunt@wikivents.nl</a>.
 </p>  
 {{/if}}
 
-
-<h1>Mensen die {{record.username}} kennen en aanbevelen</h1>
+<p>
+Het karma van een gebruiker wordt o.a. bepaald door de aanbevelingen van andere gebruikers.
+Als je voldoende karma hebt kan je andere gebruikers aanbevelen.
+Je kan iedereen aanbevelen als je hem of haar persoonlijk kent, en het idee hebt dat deze gebruiker te goede trouw is.
+</p>
+{{#if  call.user.mayRecommend}}
+  	<form role="form" method="POST" >
+  		<input type="hidden" name="action" value="addRecommendation"/>				
+  		<input type="hidden" name="userId" value="{{record._id}}"/>				
+		<button type="submit" class="btn btn-default">Beveel {{record.username}} aan</button>
+ 	</form>
+{{else}}
+	<span class="alert-danger">Aanbevelen is pas mogelijk na 2 aanbevelingen van anderen</span>
+{{/if}}
+<h2>Aanbevelingen</h2>
 {{#each record.recommendations}}
 	{{#ifAdminMode}}
 		{{> include/modal.delete title=user.get0.username action="removeRecommendation" field="userId" value=user._id label="Weet je zeker dat je deze aanbeveling wilt verwijderen?"}} 
@@ -36,12 +52,3 @@ of <a href="mailto:meldpunt@wikivents.nl">meldpunt@wikivents.nl</a>.
 	<br/>
 {{/each}}
 
-{{#if  call.user.mayRecommend}}
-  	<form role="form" method="POST" >
-  		<input type="hidden" name="action" value="addRecommendation"/>				
-  		<input type="hidden" name="userId" value="{{record._id}}"/>				
-		<button type="submit" class="btn btn-default">Beveel {{record.username}} aan</button>
- 	</form>
-{{else}}
-	<span class="alert-danger">Aanbevelen is pas mogelijk na 2 aanbevelingen van anderen</span>
-{{/if}}
