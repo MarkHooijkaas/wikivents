@@ -8,7 +8,6 @@ Als er genoeg animo is, en de details zijn ingevuld (b.v. na de ge&iuml;nteresse
 Verder werkt een Wikidee hetzelfde als een Wikivent.
 {{/if}}
 
-<h1>{{record.title}}</h1>
 <div class="panel-body">
 	{{&record.description}}
 </div>

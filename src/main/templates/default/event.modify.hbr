@@ -1,5 +1,4 @@
-<h1>Wijzigen activiteit</h1>
-
+<h2>Wijzig Details</h2>
 {{> event.details edit=true}}
 	{{> include/show.booleanField value=record.idea  name="idea" label="Wikidee" title="Wikidee" trueLabel="WIKIDEE" falseLabel="DEFINITIEF"}}
 	{{> include/show.booleanField value=record.cancelled  name="cancelled" label="Geannuleeerd" title="annul" trueLabel="GEANNULLEERD" falseLabel="GAAT-DOOR"}}
@@ -22,7 +21,7 @@
 	Als je dit wilt voorkomen kan je de activiteit (of alleen de reservelijst) dicht zetten voor nieuwe aanmeldingen, of kan je beter gevoelige informatie in een mail naar iedereen sturen.</p>
 {{/partial}}
 
-{{> include/show.textAreaField label="Informatie voor deelnemers" name="guestInfo" prefix="" value=record.guestInfo}}
+{{> include/show.textAreaField label="Wijzig informatie voor deelnemers" name="guestInfo" prefix="" value=record.guestInfo}}
 {{#partial "emptyTemplate"}}{{/partial}}
-{{> include/show.textAreaField label="Informatie voor iedereen" name="description" prefix="" value=record.description}}
+{{> include/show.textAreaField label="Wijzig omschrijving" name="description" prefix="" value=record.description}}
 	

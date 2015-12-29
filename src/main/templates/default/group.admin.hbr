@@ -1,2 +1,3 @@
-<h1>Beheer thema: {{record.title}}</h1>
-TODO
+<h2>Beheer thema</h2>
+
+Er is nog geen speciale functionaliteit voor site beheerders

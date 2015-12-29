@@ -12,7 +12,7 @@
 
 	<br>
 {{/if}}
-	
+	<h2>Details</h2>
 	{{>event.details}}
 	{{>event.groups}}
 	

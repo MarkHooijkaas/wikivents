@@ -32,18 +32,16 @@
 	{{/ifMayChange}}
 	</ul>
 	{{> rememberTabs}}
+	<h1>Thema: {{record.title}}</h1>
 
 	<div class="tab-content">
 		<div class="tab-pane active" role="tabpanel" id="mainTab">
-			<h1>Thema: {{record.title}}</h1>
 			{{&record.description}}
 		</div>
 		<div class="tab-pane" role="tabpanel" id="eventsTab">
-		    <h1>Gepland in thema {{record.title}}</h1>
 			{{> include/embedded.event.list list=record.futureEvents tableid="events"}}
 		</div>
 		<div class="tab-pane" role="tabpanel" id="pastEventsTab">
-		    <h1>Geweest in thema {{record.title}}</h1>
 			{{> include/embedded.event.list list=record.pastEvents tableid="pastEvents"}}
 		</div>
 		
@@ -51,7 +49,6 @@
 			{{>group.members}}
 		</div>
 		<div class="tab-pane" role="tabpanel" id="commentsTab">
-			<h1>Reacties in thema: {{record.title}}</h1>
 			{{> include/show.comments}}
 		</div>
 {{#ifMayChange record}} 

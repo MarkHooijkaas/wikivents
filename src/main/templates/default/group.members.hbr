@@ -1,6 +1,6 @@
 {{#ifLoggedIn}}
 
-<h1>Ge&iuml;nteresseerden in {{record.title}}</h1> 
+<h2>Ge&iuml;nteresseerden</h2> 
 
 {{#each record.members}}
 	{{#if call.user.trusted}}{{&priv link}}{{else}}{{&get0.usernameLink}}{{/if}}

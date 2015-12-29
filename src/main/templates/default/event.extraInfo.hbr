@@ -1,4 +1,4 @@
-<h1>Extra informatie voor deelnemers</h1>
+<h2>Extra informatie voor deelnemers</h2>
 {{#ifAmGuest record}}
 {{#if record.guestInfo}}
 	{{& record.guestInfo}}

@@ -1,4 +1,4 @@
-<h1>Wijzig thema: {{record.title}}</h1>
+<h2>Wijzig details</h2>
 
 {{> include/show.ajaxField value=record.title name="title" type=""  label="Titel" edit=true}}
 
