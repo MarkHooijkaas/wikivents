@@ -1,4 +1,4 @@
-<h1>Wijzig gegevens</h1>
+<h1>Wijzig gegevens van {{record.username}}</h1>
 Woonplaats: {{record.city}}  {{> include/modal.textField value=record.city  name="city" prefix=""  label="Woonplaats"}}<br>
 <br>  
 {{> user.uploadAvatar label="Profielfoto" name="uploadAvatar" }}<br>
