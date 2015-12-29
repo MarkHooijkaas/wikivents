@@ -3,7 +3,8 @@
 	<tr><td>Profielfoto URL:</td><td> {{record.avatarUrl}} {{> include/modal.textField value=record.avatarUrl  name="avatarUrl" prefix="" label="Profielfoto URL"}}</td></tr>	
 	<tr><td>Gebruikersnaam:</td><td> {{record.username}}  {{> include/modal.textField value=record.username  name="username" prefix="" label="Gebruikersnaam"}}</td></tr>
 	<tr><td>email:</td><td> {{record.email}} {{> include/modal.textField value=record.email name="email" prefix="" label="E-mail"}}</td></tr>
-	<tr><td>geblokkeerd:</td><td> {{> include/modal.boolField value=record.blocked name="blocked" title="Blokkeren" prefix="hoi" label="geblokkeerd" trueLabel="AAN" falseLabel="UIT"}}</td></tr>
+	<tr><td>geblokkeerd:</td><td> {{> include/modal.boolField value=record.blocked name="blocked" title="Blokkeren" prefix="" label="geblokkeerd" trueLabel="AAN" falseLabel="UIT"}}</td></tr>
+	<tr><td>Beheerder:</td><td> {{> include/modal.boolField value=record.isAdmin name="isAdmin" title="Beheerder" prefix="" label="beheerder" trueLabel="AAN" falseLabel="UIT"}}</td></tr>
 </table>	  
 
 {{/ifIsAdmin}}  
