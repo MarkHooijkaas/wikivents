@@ -1,3 +1,4 @@
+<div class="col-xs-12 col-sm-6 panel panel-default overflow-hidden">
 
 <h2>{{#if record.idea}}Ge&iuml;nteresseerden {{record.guestCount}}{{else}}Deelnemers {{record.guestCount}}/{{record.max}}{{/if}}
 	{{> include/modal.lockField value=record.guestsAllowed name="guestsAllowed" label="Deelname"}}
@@ -7,7 +8,9 @@
 	{{&user.link}}
 	<br/>
 {{/each}}
+</div>
 
+<div class="col-xs-12 col-sm-6 panel panel-default overflow-hidden">
 <h2>Reservelijst
 	{{> include/modal.lockField value=record.backupGuestsAllowed name="backupGuestsAllowed" label="Reservelijst"}}
 </h2>
@@ -16,3 +19,4 @@
 	{{&user.link}}
 	<br/>
 {{/each}}
+</div>

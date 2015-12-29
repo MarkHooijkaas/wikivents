@@ -1,3 +1,7 @@
-<h2>Beheer thema</h2>
 
-Er is nog geen speciale functionaliteit voor site beheerders
+<h2>Verwijder Ge&iuml;nteresseerden</h2> 
+{{#each record.members}}
+	{{> include/modal.delete title=this.get0.username action="removeMember" field="userId" value=this._id label="Weet je zeker dat je deze geinteresseerde wilt verwijderen?"}} 
+	{{& this.link}}
+	<br/>
+{{/each}}

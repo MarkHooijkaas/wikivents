@@ -1,5 +1,5 @@
 {{#ifLoggedIn}}
-
+<div class="col-xs-12 col-sm-6 panel panel-default overflow-hidden">
 <h2>Ge&iuml;nteresseerden</h2> 
 
 {{#each record.members}}
@@ -29,10 +29,13 @@
 	<span class="alert-danger">Deelname is pas mogelijk na email validatie</span>
 {{/if}}
 {{/ifAmMember}}
+</div>
 
+<div class="col-xs-12 col-sm-6 panel panel-default overflow-hidden">
 <h2>Beheerders</h2>
 {{#each record.owners}}
 	{{& get0.link}}{{else}}<br/>
 {{/each}}
+</div>
 
 {{/ifLoggedIn}}
