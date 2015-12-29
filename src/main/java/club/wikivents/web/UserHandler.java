@@ -154,7 +154,7 @@ public class UserHandler extends WikiventsActionHandler<User> {
 				new HashStruct()
 					.add(schema.passwordSalt,  salt)
 					.add(schema.encryptedPassword, pw)
-					.add(schema.identityValidated, "false")
+					//.add(schema.identityValidated, "false")
 					.add(schema.isAdmin, "false")
 				,formdata.record 
 			));
@@ -224,11 +224,11 @@ public class UserHandler extends WikiventsActionHandler<User> {
 		}
 	}
 	
-	public void addRecommendation(WikiventsCall call, User user) { 
+	public void handleAddRecommendation(WikiventsCall call, User user) { 
 		if (! user.isRecommendedBy(call.user))
 			model.users.addSequenceItem(user, schema.recommendations, new UserItem(model, call.user));
 	}
-	public void removeRecommendation(WikiventsCall call, User user) {
+	public void handleRemoveRecommendation(WikiventsCall call, User user) {
 		model.users.removeSequenceItem(user, schema.recommendations, user.findRecommendation(call.user._id));
 	}
 

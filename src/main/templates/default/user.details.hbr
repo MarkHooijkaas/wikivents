@@ -21,7 +21,6 @@
 		<br>
 		{{record.username}}  {{> include/modal.textField value=record.username  name="username" prefix="" label="Gebruikersnaam"}}<br>
 		{{record.email}} {{> include/modal.textField value=record.email name="email" prefix="" label="E-mail"}}<br>  
-		identiteit: {{> include/modal.boolField value=record.identityValidated name="identityValidated" title="Identiteit" prefix="" label="identiteit" trueLabel="BEKEND" falseLabel="ONBEKEND"}}<br>  
 		geblokkeerd: {{> include/modal.boolField value=record.blocked name="blocked" title="Blokkeren" prefix="" label="geblokkeerd" trueLabel="AAN" falseLabel="UIT"}}<br>  
 	{{/ifIsAdmin}}  
 {{else}}

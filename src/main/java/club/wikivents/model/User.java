@@ -21,6 +21,8 @@ import org.kisst.http4j.handlebar.Htmlable;
 import org.kisst.item4j.ImmutableSequence;
 import org.kisst.item4j.Item;
 import org.kisst.item4j.Type;
+import org.kisst.item4j.struct.MultiStruct;
+import org.kisst.item4j.struct.SingleItemStruct;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.util.PasswordEncryption;
 import org.kisst.util.PasswordEncryption.HasPasswordSalt;
@@ -53,7 +55,7 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable, H
 	public final boolean isAdmin;
 	public final boolean emailValidated;
 	public final boolean blocked;
-	public final boolean identityValidated;
+	//public final boolean identityValidated;
 	public final ImmutableSequence<UserItem> recommendations;
 
 	public User(WikiventsModel model, Struct data) {
@@ -73,9 +75,20 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable, H
 		this.emailValidated=schema.emailValidated.getBoolean(data,false);
 		this.blocked=schema.blocked.getBoolean(data,false);
 		boolean defaultValue = dataversion==0;
-		this.identityValidated=schema.identityValidated.getBoolean(data,defaultValue);
-		this.recommendations=schema.recommendations.getSequenceOrEmpty(model, data);
-
+		//this.identityValidated=schema.identityValidated.getBoolean(data,defaultValue);
+		boolean identityValidated =  Item.asBoolean(data.getDirectFieldValue("identityValidated",defaultValue));
+		if (identityValidated)
+			this.recommendations=startingRecommendation(model);
+		else
+			this.recommendations=schema.recommendations.getSequenceOrEmpty(model, data);
+	}
+	private ImmutableSequence<UserItem> startingRecommendation(WikiventsModel model2) {
+		MultiStruct data=new MultiStruct(
+			new SingleItemStruct(UserItem.schema.date.name, ""+this.creationDate),
+			new SingleItemStruct(UserItem.schema.user.name, "55bd0486a1e0df4a250cd3eb")
+		);
+		UserItem item=new UserItem(model, data);
+		return ImmutableSequence.of(UserItem.class, item);
 	}
 	@Override public int getCrudObjectVersion() { return 1;}
 	@Override public String getPasswordSalt() { return passwordSalt; }
@@ -170,7 +183,7 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable, H
 		public final BooleanField isAdmin = new BooleanField("isAdmin");
 		public final BooleanField emailValidated = new BooleanField("emailValidated");
 		public final BooleanField blocked = new BooleanField("blocked");
-		public final BooleanField identityValidated = new BooleanField("identityValidated");
+		//public final BooleanField identityValidated = new BooleanField("identityValidated");
 		public final SequenceField<UserItem> recommendations= new SequenceField<UserItem>(UserItem.schema,"recommendations");
 	}
 	
@@ -193,24 +206,23 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable, H
 			return true;
 		if (schema.isAdmin.name.equals(field))
 			return false;
-		if (schema.identityValidated.name.equals(field))
-			return false;
+		//if (schema.identityValidated.name.equals(field))
+		//	return false;
 		//if (schema.emailValidated.name.equals(field))
 		//	return false;
 		return true;
 	}
 
-	public boolean trusted() { return identityValidated && emailValidated && ! blocked; }
+	public boolean trusted() { return (karma()>=10) && emailValidated && ! blocked; }
 	public int karma() {
 		if (blocked)
 			return -100;
 		if (! emailValidated)
-			return 0; // TODO: - complaints.size
-		int karma=0;
-		// karma += recommendations.size()
+			return 0;
+		int karma=10*recommendations.size();
+		if (isAdmin)
+			karma+=100;
 		// karma -= complaints.size()
-		if (identityValidated)
-			karma+=10;
 		return karma;
 	}
 	public boolean karmaPositive() { return karma()>0; }
@@ -227,7 +239,7 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable, H
 	public boolean mayParticipate() { return karma()>0; }
 	public boolean maySeeProfile() { return karma()>0; }
 	public boolean maySeePicture() { return karma()>0; }
-	public boolean mayRecommend() { return identityValidated && karma()>=13; }
+	public boolean mayRecommend() { return karma()>=20; }
 	
 	/*
 	public String getNotifications() throws IOException { 
