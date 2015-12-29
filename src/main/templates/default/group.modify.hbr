@@ -1,21 +1,22 @@
-<h2>Beheerders</h2>
-{{#ifInlineEdit record}}
-	{{> include/show.ajaxField value=record.title name="title" type=""  label="Titel" }}
-{{/ifInlineEdit}}
-	<div class="row">
-		<div class="col-xs-9"><span>
+<h1>Wijzig thema: {{record.title}}</h1>
+
+{{> include/show.ajaxField value=record.title name="title" type=""  label="Titel" edit=true}}
+
+<div class="row">
+	<div class="col-xs-3"><label>Beheerder(s)</label></div>
+	<div class="col-xs-9">
+		<span>
 			{{#each record.owners}}
-				{{#if call.user.trusted}}{{&priv get0.link}}{{else}}{{&get0.usernameLink}}{{/if}}
-				{{#ifInlineEdit record}}
+				{{&get0.link}}
 					{{> include/modal.delete action="removeOwner" title=get0.username field="userId" value=_id label="Weet je zeker dat je deze beheerder wil verwijderen?"}} 
-				{{/ifInlineEdit}}
 				<br/>
 			{{/each}}
-		</span></div>
+		</span>
 	</div>
+</div>
 
 
-{{#ifInlineEdit record}}
+{{#if edit}}
 <div class="row">
 	<form role="form" method="POST">
 		<div class="col-xs-3"><label></label></div>
@@ -26,4 +27,8 @@
 		</span></div>
 	</form>
 </div>
-{{/ifInlineEdit}}
+{{/if}}
+
+{{#partial "emptyTemplate"}}{{/partial}}
+
+{{> include/show.textAreaField label="Wijzig omschrijving" name="description" prefix="" value=record.description}}

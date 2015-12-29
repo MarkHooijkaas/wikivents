@@ -3,21 +3,69 @@
 	<script src="/lib/ckeditor/ckeditor.js"></script>
 {{> include/page.header.end}}
 
+<script>
+	$(document).ready(function() {
+		$('#events').dataTable( {
+			"language": { "url": "/lib/datatables-i18n/i18n/nl.json" },
+			 "lengthMenu": [[-1, 20, 50, 100], ["Alle", 20, 50, 100]],
+			  "dom": '<"top"f>rt<"bottom"><"clear">'			
+		} );
+		$('#pastEvents').dataTable( {
+			"language": { "url": "/lib/datatables-i18n/i18n/nl.json" },
+			 "lengthMenu": [[-1, 20, 50, 100], ["Alle", 20, 50, 100]],
+			  "dom": '<"top"f>rt<"bottom"><"clear">'			
+		} );
+	} );
+</script>
+<div>
+	<ul class="nav nav-tabs" id="navTabs">
+		<li role="presentation" class="active"><a role="tab" data-toggle="tab" data-target="#mainTab">Info</a></li>
+		<li role="presentation"><a role="tab" data-toggle="tab" data-target="#eventsTab"    >Gepland</a></li>	
+		<li role="presentation"><a role="tab" data-toggle="tab" data-target="#pastEventsTab">Geweest</a></li>	
+		<li role="presentation"><a role="tab" data-toggle="tab" data-target="#participantsTab"    >Ge&iuml;nteresseerden {{record.members.size}}</a></li>
+		<li role="presentation"><a role="tab" data-toggle="tab" data-target="#commentsTab">Reacties {{record.comments.size}}</a></li>
+	{{#if call.user.isAdmin}}
+		<li role="presentation" class="pull-right"><a role="tab" data-toggle="tab" data-target="#adminTab"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Beheer</a></li>
+	{{/if}}
+	{{#ifMayChange record}} 
+		<li role="presentation" class="pull-right"><a role="tab" data-toggle="tab" data-target="#modifyTab"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Wijzig</a></li>
+	{{/ifMayChange}}
+	</ul>
+	{{> rememberTabs}}
 
-<div class="col-xs-12 col-sm-7 col-md-8 col-lg-8 panel panel-default overflow-hidden">
-	<h1>{{record.title}}</h1>
-	<div class="panel-body">
-		{{#partial "emptyTemplate"}}{{/partial}}
-		{{> include/show.textAreaField label="" name="description" prefix="" value=record.description}}
+	<div class="tab-content">
+		<div class="tab-pane active" role="tabpanel" id="mainTab">
+			<h1>Thema: {{record.title}}</h1>
+			{{&record.description}}
+		</div>
+		<div class="tab-pane" role="tabpanel" id="eventsTab">
+		    <h1>Gepland in thema {{record.title}}</h1>
+			{{> include/embedded.event.list list=record.futureEvents tableid="events"}}
+		</div>
+		<div class="tab-pane" role="tabpanel" id="pastEventsTab">
+		    <h1>Geweest in thema {{record.title}}</h1>
+			{{> include/embedded.event.list list=record.pastEvents tableid="pastEvents"}}
+		</div>
+		
+		<div class="tab-pane" role="tabpanel" id="participantsTab">
+			{{>group.members}}
+		</div>
+		<div class="tab-pane" role="tabpanel" id="commentsTab">
+			<h1>Reacties in thema: {{record.title}}</h1>
+			{{> include/show.comments}}
+		</div>
+{{#ifMayChange record}} 
+		<div class="tab-pane" role="tabpanel" id="modifyTab">
+			{{> group.modify}}
+		</div>
+{{/ifMayChange}}
+{{#if call.user.isAdmin}}
+		<div class="tab-pane" role="tabpanel" id="adminTab">
+			{{> group.admin}}
+		</div>
+{{/if}}
 	</div>
-	{{>group.events}}
 </div>
 
-<div class="col-xs-12 col-sm-5 col-md-4 col-lg-4 overflow-hidden">
-{{#ifLoggedIn}}
-	{{>group.details}}
-	{{>group.members}}
-	{{> include/show.comments}}
-{{/ifLoggedIn}}
-</div>
+
 {{> include/page.footer}}
