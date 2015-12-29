@@ -1,9 +1,9 @@
 <div class="row">
 	<div class="col-xs-3"><label>{{label}}</label></div>
 	<div class="col-xs-9">
-		<span>{{value}} {{postfix}}</span>
+		<span>{{postfix}}</span>
 	{{#if edit}}
-		{{> include/modal.textField}}
+		{{> include/modal.boolField}}
 	{{/if}}
 	</div>
 </div>

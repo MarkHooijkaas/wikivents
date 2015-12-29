@@ -1,16 +1,16 @@
 <h2>Details</h2>
-{{#ifInlineEdit record}}
+{{#if edit}}
 	{{> include/show.ajaxField value=record.title name="title" type=""  label="Titel" }}
-{{/ifInlineEdit}}
+{{/if}}
 	<div class="row">
 		<div class="col-xs-3"><label>{{#if record.idea}}Bedenker{{else}}Organisator{{/if}}</label></div>
 		<div class="col-xs-9"><span>
 			{{#if call.user.maySeeProfile}}
 			{{#each record.organizers}}
 				{{#if call.user.trusted}}{{&priv get0.link}}{{else}}{{&get0.usernameLink}}{{/if}}
-				{{#ifInlineEdit record}}
+				{{#if edit}}
 					{{> include/modal.delete action="removeOrganizer" title=get0.username field="userId" value=_id label="Weet je zeker dat je deze organisator wil verwijderen?"}} 
-				{{/ifInlineEdit}}
+				{{/if}}
 				<br/>
 			{{/each}}
 			{{else}}
@@ -20,7 +20,7 @@
 	</div>
 
 
-{{#ifInlineEdit record}}
+{{#if edit}}
 <div class="row">
 	<form role="form" method="POST">
 		<div class="col-xs-3"><label></label></div>
@@ -31,7 +31,7 @@
 		</span></div>
 	</form>
 </div>
-{{/ifInlineEdit}}
+{{/if}}
 
 	{{> include/show.ajaxDateField value=record.date name="date"  label="Datum" }}
 	{{> include/show.ajaxTimeField value=record.time name="time"  label="Tijd"}}
@@ -40,13 +40,4 @@
 	{{> include/show.ajaxField value=record.city     name="city" label="Plaats" postfix=""}}
 	{{> include/show.ajaxField value=record.location name="location" label="Locatie" postfix=""}}
 	{{> include/show.ajaxField value=record.cost     name="cost" label="Kosten" postfix=""}}
-
-{{#ifInlineEdit record}}
-	{{> include/modal.ideaOK value=record.idea name="idea"}}
-{{/ifInlineEdit}}
-
-{{#ifInlineEdit record}}
-	{{> include/modal.cancelEvent value=record.cancelled name="cancelled"}}
-{{/ifInlineEdit}}
-
 

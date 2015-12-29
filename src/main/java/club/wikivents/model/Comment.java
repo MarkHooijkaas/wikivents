@@ -3,11 +3,12 @@ package club.wikivents.model;
 import java.time.Instant;
 
 import org.kisst.crud4j.CrudModelObject;
+import org.kisst.http4j.handlebar.AccessChecker;
 import org.kisst.item4j.ReflectSchema;
 import org.kisst.item4j.struct.ReflectStruct;
 import org.kisst.item4j.struct.Struct;
 
-public  class Comment extends ReflectStruct implements CrudModelObject{
+public  class Comment extends ReflectStruct implements CrudModelObject, AccessChecker<User>{
 	public final User.Ref user;
 	public final Instant date;
 	public final String comment;
@@ -36,4 +37,7 @@ public  class Comment extends ReflectStruct implements CrudModelObject{
 		this.comment= schema.comment.getString(data);
 		//this.hidden= schema.hidden.getBoolean(data,false);
 	}
+
+	@Override public boolean mayBeViewedBy(User user) { return user!=null; }
+	@Override public boolean mayBeChangedBy(User user) { return user.isAdmin || user._id.equals(this.user._id); }
 }

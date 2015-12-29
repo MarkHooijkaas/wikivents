@@ -79,6 +79,15 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 		if (call.user.mayComment())
 			table.addSequenceItem(event, schema.comments, new Comment(call.user,text));
 	}
+	@NeedsNoAuthorization
+	public void handleRemoveComment(WikiventsCall call, Event event) {
+		String commentId=call.request.getParameter("commentId");
+		if (event==null || commentId==null)
+			return;
+		Comment com=event.findComment(commentId);
+		if (com.mayBeChangedBy(call.user))
+			table.removeSequenceItem(event, schema.comments, com);
+	}
 
 	@NeedsNoAuthorization
 	public void handleAddGuest(WikiventsCall call, Event event) {
@@ -125,15 +134,6 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 		else
 			table.removeSequenceItem(event, schema.groups, new Group.Ref(model, gr._id));
 	}
-
-	public void handleRemoveComment(WikiventsCall call, Event event) {
-		String commentId=call.request.getParameter("commentId");
-		if (event==null || commentId==null)
-			return;
-		Comment com=event.findComment(commentId);
-		table.removeSequenceItem(event, schema.comments, com);
-	}
-
 	
 	public class Form extends HttpFormData {
 		public Form(WikiventsCall call, Struct data) { super(call, call.getTheme().eventEdit, data); }

@@ -12,21 +12,4 @@
 {{/ifMayChange}}
 </ul>
 
-<script>
-	$('.nav-tabs li a').click(function(e){
-	  e.preventDefault();
-	  $(this).tab('show');
-	});
-
-    // store the currently selected tab in the hash value
-    $("ul.nav-tabs > li > a").on("shown.bs.tab", function (e) {
-		var id = $(e.target).attr("data-target");
-		sessionStorage.setItem(window.location+'.lastTab',id);
-    });
-
-    // on load of the page: switch to the currently selected tab
-	$(document).ready(function() {
-		var id = sessionStorage.getItem(window.location+'.lastTab');
-		$('#navTabs a[data-target="' + id + '"]').tab('show');
-	});
-</script>
+{{> rememberTabs}}

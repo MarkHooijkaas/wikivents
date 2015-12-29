@@ -22,6 +22,15 @@ span.glyphicon-wrench { font-size: 0.8em;  }
     top:0;
 }
 
+.hover-btn {
+	display: none;
+}
+
+tr:hover .hover-btn {
+	display: block;
+}
+
+
 /*
 EmojiSymbols Font (c)blockworks - Kenichi Kaneko
 http://emojisymbols.com/

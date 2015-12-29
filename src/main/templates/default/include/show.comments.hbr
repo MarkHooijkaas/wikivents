@@ -7,17 +7,22 @@
 <table class="table table-hover">
     <tbody>
 	{{#each record.comments.reverse}}
-		<tr><td>{{#if call.user.trusted}}{{&priv user.get0.avatarLink}}{{else}}{{user.get0.username}}:{{/if}}</td><td class="emj3">
-			{{#ifInlineEdit record}}
-				{{> include/modal.delete title=comment action="removeComment" field="commentId" value=id label="Weet je zeker dat je deze reactie wil verwijderen?"}} 
-			{{/ifInlineEdit}}
-			{{#if call.user.trusted}}{{& user.get0.usernameLink}}: {{/if}}{{comment}}<br>
-			<span class="commentTime">{{dateFormat date "eee d MMM HH:mm:ss"}}</span>
-		</td></tr>
+		<tr>
+			<td>{{#if call.user.trusted}}{{&priv user.get0.avatarLink}}{{else}}{{user.get0.username}}:{{/if}}</td>
+			<td class="emj3">
+				{{#if call.user.trusted}}{{& user.get0.usernameLink}}: {{/if}}{{comment}}<br>
+				<span class="commentTime">{{dateFormat date "eee d MMM HH:mm:ss"}}</span>
+			</td>
+			<td width="1.5em">
+				{{#ifMayChange this}}
+				<div class="hover-btn">
+					{{> include/modal.delete title=comment action="removeComment" field="commentId" value=id label="Weet je zeker dat je deze reactie wil verwijderen?"}} 
+				</div>
+				{{/ifMayChange}}
+			</td>
+		</tr>
 	{{/each}}
     </tbody>
 </table>
-
-
 </div>
 {{/ifLoggedIn}}

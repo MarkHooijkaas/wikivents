@@ -1,0 +1,19 @@
+<div class="col-xs-12 col-sm-7 col-md-8 col-lg-8 panel panel-default overflow-hidden">
+	{{>event.description}}
+</div>
+
+
+<div class="col-xs-12 col-sm-5 col-md-4 col-lg-4">
+{{#if call.user.maySeeProfile}}
+	{{> include/like.button event=record}} {{record.likes.size}} likes: 
+	{{#each record.likes}} 
+		{{#if call.user.trusted}}{{&priv get0.avatarLink}}{{else}}{{get0.username}}{{/if}}
+	{{/each}}
+
+	<br>
+{{/if}}
+	
+	{{>event.details}}
+	{{>event.groups}}
+	
+</div>

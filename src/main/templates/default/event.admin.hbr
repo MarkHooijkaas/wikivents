@@ -1,0 +1,18 @@
+
+<h2>{{#if record.idea}}Ge&iuml;nteresseerden {{record.guestCount}}{{else}}Deelnemers {{record.guestCount}}/{{record.max}}{{/if}}
+	{{> include/modal.lockField value=record.guestsAllowed name="guestsAllowed" label="Deelname"}}
+</h2> 
+{{#each record.allowedGuests}}
+	{{> include/modal.delete title=user.get0.username action="removeGuest" field="userId" value=user._id label="Weet je zeker dat je deze deelnemer wilt verwijderen?"}} 
+	{{&user.link}}
+	<br/>
+{{/each}}
+
+<h2>Reservelijst
+	{{> include/modal.lockField value=record.backupGuestsAllowed name="backupGuestsAllowed" label="Reservelijst"}}
+</h2>
+{{#each record.backupGuests}}
+	{{> include/modal.delete title=user.get0.username action="removeGuest" field="userId" value=user._id label="Weet je zeker dat je deze deelnemer wilt verwijderen?"}} 
+	{{&user.link}}
+	<br/>
+{{/each}}

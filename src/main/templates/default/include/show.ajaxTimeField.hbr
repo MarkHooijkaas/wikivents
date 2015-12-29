@@ -2,7 +2,7 @@
 	<div class="col-xs-3"><label>{{label}}</label></div>
 	<div class="col-xs-9">
 		<span>{{value}}</span>
-	{{#ifInlineEdit record}}
+	{{#if edit}}
 		<a data-toggle="modal" data-target="#changeField{{name}}Modal"><span class="glyphicon glyphicon-pencil" aria-hidden="true" style="cursor:pointer;"></span></a>
 		{{> include/modal.begin prefix="changeField" id=name}}
 			<form role="form" method="POST" id="{{name}}Form" action="">
@@ -27,6 +27,6 @@
 			});
 			</script>
 		{{> include/modal.end}}
-	{{/ifInlineEdit}}
+	{{/if}}
 	</div>
 </div>
