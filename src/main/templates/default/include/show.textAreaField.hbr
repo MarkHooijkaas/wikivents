@@ -4,4 +4,6 @@
 {{/ifInlineEdit}}
 </h2>
 {{&value}}
+{{#ifInlineEdit record}}
 {{> include/modal.textAreaField}}
+{{/ifInlineEdit}}

@@ -1,0 +1,47 @@
+{{#if record.karmaNeutral}}
+<h1 style="color:orange;">Karma neutraal: (Identiteit nog niet gecontroleerd)</h1>
+<p style="color:red;">
+De Karma van deze gebruiker staat op neutraal. 
+Meestal is dat een teken dat deze gebruiker zich nieuw heeft geregistreerd.
+Waarschijnlijk is het email adres of de identiteit van deze gebruiker nog niet gevalideerd. 
+Deze controle enige tijd kan kosten.
+Deze gebruiker mag nog niet deelnemen aan activiteiten, een email verzenden of profielen van andere gebruikers zien, om misbruik te voorkomen.
+Mocht je toch vragen hebben, neem dan gerust contact op met <a href="mailto:info@wikivents.nl">info@wikivents.nl</a>.  
+</p>  
+{{/if}}
+
+{{#if record.karmaNegative}}
+<h1 style="color:red;">Karma negatief: verdachte omstandigheden</h1>
+<p style="color:red;">
+Van deze gebruiker is door de beheerders aangegeven dat er verdachte omstandigheden zijn.
+Dit kan zijn omdat er meldingen van ongewenst gedrag zijn gekomen van andere gebruikers.
+Het kan ook zijn dat er andere verdachte omstandigheden zijn, zoals het gebruik van anonieme Tor IP netwerken, verdachte email adressen, ongewenste afbeelding en dergelijke.
+Het kan zijn dat er sprake is van een misverstand, maar enige voorzichtigheid is geboden. 
+Deze gebruiker is voorlopig geblokkeerd tot er meer duidelijkheid is.
+Mocht je vragen hebben hierover, neem dan gerust contact op met <a href="mailto:info@wikivents.nl">info@wikivents.nl</a>,
+of <a href="mailto:meldpunt@wikivents.nl">meldpunt@wikivents.nl</a>.  
+</p>  
+{{/if}}
+
+
+<h1>Mensen die {{record.username}} kennen en aanbevelen</h1>
+{{#each record.recommendations}}
+	{{#ifAdminMode}}
+		{{> include/modal.delete title=user.get0.username action="removeRecommendation" field="userId" value=user._id label="Weet je zeker dat je deze aanbeveling wilt verwijderen?"}} 
+	{{/ifAdminMode}}
+	{{&priv user.link}}
+	{{#ifMayChange this}}
+		{{> include/modal.delete title=user.get0.username action="removeRecommendation" field="userId" value=user._id label="Weet je zeker dat je deze aanbeveling wilt verwijderen?"}} 
+	{{/ifMayChange}}
+	<br/>
+{{/each}}
+
+{{#if  call.user.mayRecommend}}
+  	<form role="form" method="POST" >
+  		<input type="hidden" name="action" value="addRecommendation"/>				
+  		<input type="hidden" name="userId" value="{{record._id}}"/>				
+		<button type="submit" class="btn btn-default">Beveel {{record.username}} aan</button>
+ 	</form>
+{{else}}
+	<span class="alert-danger">Aanbevelen is pas mogelijk na 2 aanbevelingen van anderen</span>
+{{/if}}

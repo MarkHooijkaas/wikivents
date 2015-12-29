@@ -1,4 +1,3 @@
-{{#ifInlineEdit record}}
 	{{> include/modal.begin prefix="" id=name}}
 		{{#block "helpText"}}
 		{{/block}}
@@ -21,4 +20,3 @@
 			<input type="submit" id="{{name}}Button" class="btn btn-default btn-success" value="Wijzig {{label}}">
 		</form>
 	{{> include/modal.end}}
-{{/ifInlineEdit}}

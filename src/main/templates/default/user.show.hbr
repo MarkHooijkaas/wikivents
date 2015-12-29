@@ -5,74 +5,49 @@
 	<script src="/lib/ckeditor/ckeditor.js"></script>
 {{> include/page.header.end}}
 
-{{#ifMayView record}}
-{{#ifMayChange record}}
-	{{#if record.emailValidated}}
-	{{else}} 
-		<div class="col-xs-12 overflow-hidden alert-danger">
-			{{#ifIsAdmin}}
-				{{> include/modal.delete title="Verwijder Validatie Noodzaak" action="removeEmailValidationNeeded" field="emailValidated" value="false" label="Weet je zeker dat het email adres valide is?"}} 
-			{{/ifIsAdmin}}
-			Je emailadres is nog niet gecontroleerd. Als het goed is heb je een validatie mail ontvangen met daarin een link om je emailadres te valideren.
-			Zo niet, kijk dan in je spam box of neem contact op met de beheerders <a href="mailto:info@wikivents.nl">info@wikivents.nl</a>
-			Tot die tijd kan je niet deelnemen aan activiteiten, omdat je mogelijk niet bereikbaar bent voor andere leden.
-		</div>	
-	{{/if}} 
-	{{#if record.message}}
-		<div class="col-xs-12 overflow-hidden alert-info">
-			{{#ifIsAdmin}}
-				{{> include/modal.textField value=record.message  name="message" title="Plaats Beheerbericht"  label="Beheerbericht"}}
-			{{/ifIsAdmin}}
-			{{> include/modal.delete title="Verwijder Bericht" action="removeMessage" field="message" value="removeMessage" label="Dit bericht van de beheerders verwijderen?"}}
-			{{record.message}} 
+<script>
+	$(document).ready(function() {
+		$('.datatable').dataTable( {
+			"language": { "url": "/lib/datatables-i18n/i18n/nl.json" },
+			 "lengthMenu": [[-1, 20, 50, 100], ["Alle", 20, 50, 100]],
+			  "dom": '<"top"f>rt<"bottom"><"clear">'			
+		} );
+	} );
+</script>
+
+{{>user.warnings}}
+<div>
+	{{> user.tabs mainTab=true}}
+	<div class="tab-content">
+		<div class="tab-pane active" role="tabpanel" id="mainTab">
+			{{>user.all}}
 		</div>
-	{{else}}	
-		{{#ifIsAdmin}}
-			<div class="col-xs-12 overflow-hidden alert-info">
-				{{> include/modal.textField value=record.message  name="message" title="Plaats Beheerbericht"  label="Beheerbericht"}}
-			</div>		 
-		{{/ifIsAdmin}}
-	{{/if}}	
+		<div class="tab-pane" role="tabpanel" id="eventsTab">
+		    <h1>Activiteiten waar {{record.username}} heen gaat</h1>
+			{{> include/embedded.event.list list=record.futureEvents tableid="eventsTabbed"}}
+		</div>
+		<div class="tab-pane" role="tabpanel" id="pastEventsTab">
+		    <h1>Activiteiten waar {{record.username}} heen is gegaan</h1>
+			{{> include/embedded.event.list list=record.pastEvents tableid="pastEventsTabbed"}}
+		</div>
+		<div class="tab-pane" role="tabpanel" id="interestsTab">
+			{{> user.interests}}
+		</div>
+		<div class="tab-pane" role="tabpanel" id="karmaTab">
+			{{> user.karma}}
+		</div>
+		
+{{#ifMayChange record}} 
+		<div class="tab-pane" role="tabpanel" id="modifyTab">
+			{{> user.modify}}
+		</div>
 {{/ifMayChange}}
-
-<div class="col-xs-12 col-md-3 col-lg-2 overflow-hidden">
-	{{> user.details}}
-</div>	 
-
-<div class="col-xs-12 col-md-9 col-lg-10 overflow-hidden">
-{{#if record.karmaNeutral}}
-<h1 style="color:orange;">Karma neutraal: (Identiteit nog niet gecontroleerd)</h1>
-<p style="color:red;">
-De Karma van deze gebruiker staat op neutraal. 
-Meestal is dat een teken dat deze gebruiker zich nieuw heeft geregistreerd.
-Waarschijnlijk is het email adres of de identiteit van deze gebruiker nog niet gevalideerd. 
-Deze controle enige tijd kan kosten.
-Deze gebruiker mag nog niet deelnemen aan activiteiten, een email verzenden of profielen van andere gebruikers zien, om misbruik te voorkomen.
-Mocht je toch vragen hebben, neem dan gerust contact op met <a href="mailto:info@wikivents.nl">info@wikivents.nl</a>.  
-</p>  
+{{#if call.user.isAdmin}}
+		<div class="tab-pane" role="tabpanel" id="adminTab">
+			{{> user.admin}}
+		</div>
 {{/if}}
-
-{{#if record.karmaNegative}}
-<h1 style="color:red;">Karma negatief: verdachte omstandigheden</h1>
-<p style="color:red;">
-Van deze gebruiker is door de beheerders aangegeven dat er verdachte omstandigheden zijn.
-Dit kan zijn omdat er meldingen van ongewenst gedrag zijn gekomen van andere gebruikers.
-Het kan ook zijn dat er andere verdachte omstandigheden zijn, zoals het gebruik van anonieme Tor IP netwerken, verdachte email adressen, ongewenste afbeelding en dergelijke.
-Het kan zijn dat er sprake is van een misverstand, maar enige voorzichtigheid is geboden. 
-Deze gebruiker is voorlopig geblokkeerd tot er meer duidelijkheid is.
-Mocht je vragen hebben hierover, neem dan gerust contact op met <a href="mailto:info@wikivents.nl">info@wikivents.nl</a>,
-of <a href="mailto:meldpunt@wikivents.nl">meldpunt@wikivents.nl</a>.  
-</p>  
-{{/if}}
-
-
-	{{> user.description}}
-	{{> user.events}}
-</div>	 
-
-{{else}}
-	<span style="color:red;">Je identiteit is nog niet gevalideerd. Daarom mag je alleen je eigen profielfoto zien. Neem contact op met <a href="mailto.info@wikivents.nl">info@wikivents.nl</a> om je identiteit te valideren.</span>
-{{/ifMayView}}
-
+	</div>
+</div>
 
 {{> include/page.footer}}

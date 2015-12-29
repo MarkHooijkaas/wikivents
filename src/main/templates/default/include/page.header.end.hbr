@@ -30,7 +30,10 @@
 			{{/ifAdminMode}}
 		{{else}}
 			{{#ifAmOwner record}}
+				{{#if record.username}}
+				{{else}}
 				<li><a href="{{call.request.requestURI}}?inline-edit=true"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Wijzig</a></li>
+				{{/if}}
 			{{/ifAmOwner}}
 		{{/ifInlineEdit}}
 	{{/ifMayChange}}

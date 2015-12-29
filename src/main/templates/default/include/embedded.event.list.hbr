@@ -1,6 +1,6 @@
 
 {{#if list}}
-  <table id="{{tableid}}" class="display compact" cellspacing="0" width="100%">
+  <table id="{{tableid}}" class="display compact datatable" cellspacing="0" width="100%">
     <thead>
       <tr>
         <th>Datum</th>
