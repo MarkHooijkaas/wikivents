@@ -11,21 +11,6 @@
 			Tot die tijd kan je niet deelnemen aan activiteiten, omdat je mogelijk niet bereikbaar bent voor andere leden.
 		</div>	
 	{{/if}} 
-	{{#if record.message}}
-		<div class="col-xs-12 overflow-hidden alert-info">
-			{{#ifIsAdmin}}
-				{{> include/modal.textField value=record.message  name="message" title="Plaats Beheerbericht"  label="Beheerbericht"}}
-			{{/ifIsAdmin}}
-			{{> include/modal.delete title="Verwijder Bericht" action="removeMessage" field="message" value="removeMessage" label="Dit bericht van de beheerders verwijderen?"}}
-			{{record.message}} 
-		</div>
-	{{else}}	
-		{{#ifIsAdmin}}
-			<div class="col-xs-12 overflow-hidden alert-info">
-				{{> include/modal.textField value=record.message  name="message" title="Plaats Beheerbericht"  label="Beheerbericht"}}
-			</div>		 
-		{{/ifIsAdmin}}
-	{{/if}}	
 {{/ifMayChange}}
 {{else}}
 	<span style="color:red;">Je identiteit is nog niet gevalideerd. Daarom mag je alleen je eigen profielfoto zien. Neem contact op met <a href="mailto.info@wikivents.nl">info@wikivents.nl</a> om je identiteit te valideren.</span>

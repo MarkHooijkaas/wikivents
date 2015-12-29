@@ -45,7 +45,6 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable, H
 	public final WikiventsModel model;
 	public final String username;
 	public final String description;
-	public final String message;
 	public final String email;
 	public final String city;
 	public final String avatarUrl;
@@ -64,7 +63,6 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable, H
 		this.model=model;
 		this.username=schema.username.getString(data);
 		this.description=schema.description.getString(data,null);
-		this.message=schema.message.getString(data,null);
 		this.email=schema.email.getString(data);
 		this.city=schema.city.getString(data);
 		this.avatarUrl=schema.avatarUrl.getString(data,null);
@@ -173,7 +171,6 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable, H
 		public final IntField _crudObjectVersion = new IntField("_crudObjectVersion");
 		public final StringField username = new StringField("username"); 
 		public final StringField description= new StringField("description"); 
-		public final StringField message = new StringField("message"); 
 		public final StringField email    = new StringField("email"); 
 		public final StringField city = new StringField("city"); 
 		public final StringField avatarUrl= new StringField("avatarUrl"); 

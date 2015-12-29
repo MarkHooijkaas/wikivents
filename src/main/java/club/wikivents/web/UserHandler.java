@@ -207,11 +207,6 @@ public class UserHandler extends WikiventsActionHandler<User> {
 			table.updateField(u, schema.emailValidated, true);
 	}
 
-	public void handleRemoveMessage(WikiventsCall call, User u) {
-		//String message=call.request.getParameter("message");
-		table.updateField(u, schema.message, "");
-	}
-
 	public void handleChangePassword(WikiventsCall call, User u) {
 		String newPassword= call.request.getParameter("newPassword");
 		String checkNewPassword= call.request.getParameter("checkNewPassword");
