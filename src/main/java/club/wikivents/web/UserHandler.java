@@ -220,7 +220,7 @@ public class UserHandler extends WikiventsActionHandler<User> {
 	}
 	
 	public void handleAddRecommendation(WikiventsCall call, User user) { 
-		if (! user.isRecommendedBy(call.user))
+		if (! user.isRecommendedBy(call.user) && !(call.user==user))
 			model.users.addSequenceItem(user, schema.recommendations, new UserItem(model, call.user));
 	}
 	public void handleRemoveRecommendation(WikiventsCall call, User user) {
