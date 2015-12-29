@@ -1,0 +1,11 @@
+<ul class="nav nav-tabs" id="navTabs">
+	<li role="presentation" class="active"><a role="tab" data-toggle="tab" data-target="#welcomeTab">Welkom</a></li>
+	<li role="presentation"><a role="tab" data-toggle="tab" data-target="#newTab"    >Nieuwe Activiteiten</a></li>
+{{#ifLoggedIn}}
+	<li role="presentation"><a role="tab" data-toggle="tab" data-target="#myTab">Mijn activiteiten</a></li>
+{{/ifLoggedIn}}
+	<li role="presentation" class="pull-right"><a role="tab" data-toggle="tab" data-target="#helpTab"     >Help</a></li>
+{{#if call.user.isAdmin}}
+	<li role="presentation" class="pull-right"><a role="tab" data-toggle="tab" data-target="#adminTab"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Beheer</a></li>
+{{/if}}
+</ul>

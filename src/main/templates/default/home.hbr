@@ -2,50 +2,58 @@
 	<script src="/lib/datatables/media/js/jquery.dataTables.min.js"></script>
 {{> include/page.header.end}}
 
+{{#if showTabs}}
 <script>
 	$(document).ready(function() {
-		$('#events').dataTable( {
+		$('#newEvents').dataTable( {
 			"language": { "url": "/lib/datatables-i18n/i18n/nl.json" },
-			 "lengthMenu": [[-1, 20, 50, 100], ["Alle", 20, 50, 100]],
-			  //"order": [[ 4, "asc" ]],
-			  "dom": '<"top"f>rt<"bottom"><"clear">'
+			"lengthMenu": [[-1, 20, 50, 100], ["Alle", 20, 50, 100]],
+			{{#ifLoggedIn}}
+				"order": [[ 8, "desc" ]],
+			{{else}}
+				"order": [[ 7, "desc" ]],
+			{{/ifLoggedIn}}
+			"dom": '<"top"f>rt<"bottom"><"clear">'			
+		} );
+	} );
+	$(document).ready(function() {
+		$('#myEvents').dataTable( {
+			"language": { "url": "/lib/datatables-i18n/i18n/nl.json" },
+			"lengthMenu": [[-1, 20, 50, 100], ["Alle", 20, 50, 100]],
+			"dom": '<"top"f>rt<"bottom"><"clear">'			
 		} );
 	} );
 </script>
 
-<img style="max-height:100%; max-width:100%;" src="/images/Wikivents_logo.png"/>
-
-<h1>Welkom op de <a href="https://nl.wikipedia.org/wiki/Wiki" target="_blank"	>Wiki</a> van <a href="/event/*.future">Events</a></h1>
-{{#if call.user.trusted}}
-	<p>Wikivents is een activiteitensite met events voor <a href="/user/*">de leden</a> maar ook georganiseerd door <a href="/user/*">de leden</a> zelf.</p>
-{{else}}
-	<p>Wikivents is een activiteitensite met events voor de leden maar ook georganiseerd door de leden zelf.</p>
+<div>
+	{{> home.tabs mainTab=true}}
+	<div class="tab-content">
+		<div class="tab-pane active" role="tabpanel" id="welcomeTab">
+			{{>home.welcome}}
+		</div>
+		<div class="tab-pane" role="tabpanel" id="newTab">
+		    <h1>Nieuwste activiteiten</h1>
+			{{> include/embedded.event.list list=call.model.futureEvents tableid="newEvents"}}
+		</div>
+		
+{{#ifLoggedIn}}
+		<div class="tab-pane" role="tabpanel" id="myTab">
+		    <h1>Mijn activiteiten</h1>
+			{{> include/embedded.event.list list=call.user.futureEvents tableid="myEvents"}}
+		</div>
+{{/ifLoggedIn}}
+{{#if call.user.isAdmin}}
+		<div class="tab-pane" role="tabpanel" id="adminTab">
+			TODO
+		</div>
 {{/if}}
-
-Een wikivent kan van alles zijn. 
-Je kan bijvoorbeeld denken aan:
-<ul>
-	<li>gezellig borrelen in een caf&eacute;;</li> 
-	<li>met een groepje mensen ergens eten;</li>
-	<li>een spelletjesavond bij iemand thuis of in een cafe;</li> 
-	<li>een potje beachvolleybal of een andere sport;</li> 
-	<li>een feestje al dan niet met een thema, verkleed, of met dansen;</li> 
-	<li>met een groep mensen naar een festival of een concert;</li>
-	<li>samen naar de film;</li> 
-	<li>en alles wat je zelf verder nog verzint!</li>
-</ul>
-<p>	 
-Iedereen kan een wikivent organiseren!
-Je drukt bij het activiteitenscherm op de knop om een nieuw wikivent te maken, vult een titel, omschrijving en een aantal details in, en de wikivent is aangemaakt.
-Vervolgens kan iedereen die dat leuk vindt zich opgeven door op de "Aanmelden" knop te drukken, zo lang er nog plaats is.
-Is er geen plaats meer, dan is er standaard een reservelijst, waar je op komt.
-</p>
-
-
-<h2>Komende activiteiten</h2>
-Hieronder zie je een lijst met wikivents die de komende tijd gepland staan.
-
-{{> include/embedded.event.list list=model.futureEvents tableid="events"}}
-
+		<div class="tab-pane" role="tabpanel" id="helpTab">
+			{{> help.text}}
+		</div>
+	</div>
+</div>
+{{else}}
+{{> home.welcome}}
+{{/if}}
 
 {{> include/page.footer }}

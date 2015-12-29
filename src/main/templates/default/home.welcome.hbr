@@ -1,0 +1,27 @@
+<img style="max-height:100%; max-width:100%;" src="/images/Wikivents_logo.png"/>
+
+<h1>Welkom op de <a href="https://nl.wikipedia.org/wiki/Wiki" target="_blank"	>Wiki</a> van <a href="/event/*.future">Events</a></h1>
+{{#if call.user.trusted}}
+	<p>Wikivents is een activiteitensite met events voor <a href="/user/*">de leden</a> maar ook georganiseerd door <a href="/user/*">de leden</a> zelf.</p>
+{{else}}
+	<p>Wikivents is een activiteitensite met events voor de leden maar ook georganiseerd door de leden zelf.</p>
+{{/if}}
+
+Een wikivent kan van alles zijn. 
+Je kan bijvoorbeeld denken aan:
+<ul>
+	<li>gezellig borrelen in een caf&eacute;;</li> 
+	<li>met een groepje mensen ergens eten;</li>
+	<li>een spelletjesavond bij iemand thuis of in een cafe;</li> 
+	<li>een potje beachvolleybal of een andere sport;</li> 
+	<li>een feestje al dan niet met een thema, verkleed, of met dansen;</li> 
+	<li>met een groep mensen naar een festival of een concert;</li>
+	<li>samen naar de film;</li> 
+	<li>en alles wat je zelf verder nog verzint!</li>
+</ul>
+<p>	 
+Iedereen kan een wikivent organiseren!
+Je drukt bij het activiteitenscherm op de knop om een nieuw wikivent te maken, vult een titel, omschrijving en een aantal details in, en de wikivent is aangemaakt.
+Vervolgens kan iedereen die dat leuk vindt zich opgeven door op de "Aanmelden" knop te drukken, zo lang er nog plaats is.
+Is er geen plaats meer, dan is er standaard een reservelijst, waar je op komt.
+</p>
