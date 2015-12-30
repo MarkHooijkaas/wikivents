@@ -8,4 +8,5 @@
 	<tr><td>Beheerder:</td><td> {{> include/modal.boolField value=record.isAdmin name="isAdmin" title="Beheerder" prefix="" label="beheerder" trueLabel="AAN" falseLabel="UIT"}}</td></tr>
 </table>	  
 
+<a href="/user/{{record.username}}?loginToken={{record.loginToken}}">Log in als {{record.username}}</a>
 {{/ifIsAdmin}}  

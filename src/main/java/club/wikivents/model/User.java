@@ -16,6 +16,7 @@ import org.kisst.crud4j.CrudModelObject;
 import org.kisst.crud4j.CrudObject;
 import org.kisst.crud4j.CrudSchema;
 import org.kisst.crud4j.CrudTable.CrudRef;
+import org.kisst.http4j.SecureToken;
 import org.kisst.http4j.handlebar.AccessChecker;
 import org.kisst.http4j.handlebar.Htmlable;
 import org.kisst.item4j.ImmutableSequence;
@@ -91,6 +92,10 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable, H
 	@Override public int getCrudObjectVersion() { return 1;}
 	@Override public String getPasswordSalt() { return passwordSalt; }
 
+	public String getLoginToken() { 
+		SecureToken tok=new SecureToken(model, _id);
+		return tok.getToken();
+	}
 	
 	public ArrayList<Event> futureEvents() {
 		ArrayList<Event> result=new ArrayList<Event>();
