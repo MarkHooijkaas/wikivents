@@ -219,12 +219,15 @@ public class UserHandler extends WikiventsActionHandler<User> {
 		}
 	}
 	
+	@NeedsNoAuthorization
 	public void handleAddRecommendation(WikiventsCall call, User user) { 
 		if (! user.isRecommendedBy(call.user) && !(call.user==user))
 			model.users.addSequenceItem(user, schema.recommendations, new UserItem(model, call.user));
 	}
+	@NeedsNoAuthorization
 	public void handleRemoveRecommendation(WikiventsCall call, User user) {
-		model.users.removeSequenceItem(user, schema.recommendations, user.findRecommendation(call.user._id));
+		if (user.isRecommendedBy(call.user))
+			model.users.removeSequenceItem(user, schema.recommendations, user.findRecommendation(call.user._id));
 	}
 
 	
