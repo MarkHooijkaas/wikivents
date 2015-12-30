@@ -22,8 +22,10 @@
 		<li role="presentation" class="active"><a role="tab" data-toggle="tab" data-target="#mainTab">Info</a></li>
 		<li role="presentation"><a role="tab" data-toggle="tab" data-target="#eventsTab"    >Gepland</a></li>	
 		<li role="presentation"><a role="tab" data-toggle="tab" data-target="#pastEventsTab">Geweest</a></li>	
+{{#if call.user.maySeeUsers}}
 		<li role="presentation"><a role="tab" data-toggle="tab" data-target="#participantsTab"    >Ge&iuml;nteresseerden {{record.members.size}}</a></li>
 		<li role="presentation"><a role="tab" data-toggle="tab" data-target="#commentsTab">Reacties {{record.comments.size}}</a></li>
+{{/if}}
 	{{#if call.user.isAdmin}}
 		<li role="presentation" class="pull-right"><a role="tab" data-toggle="tab" data-target="#adminTab"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Beheer</a></li>
 	{{/if}}

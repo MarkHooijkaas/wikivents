@@ -5,6 +5,9 @@
 	<script src="/lib/ckeditor/ckeditor.js"></script>
 {{> include/page.header.end}}
 
+{{>user.warnings}}
+
+{{#ifMayView record}}
 <script>
 	$(document).ready(function() {
 		$('.datatable').dataTable( {
@@ -15,7 +18,6 @@
 	} );
 </script>
 
-{{>user.warnings}}
 <div>
 	{{> user.tabs mainTab=true}}
 	<div class="tab-content">
@@ -49,5 +51,11 @@
 {{/if}}
 	</div>
 </div>
+
+{{else}}
+	<span style="color:red;">Je identiteit is nog niet gevalideerd. Daarom mag je alleen je eigen profielfoto zien. Neem contact op met <a href="mailto.info@wikivents.nl">info@wikivents.nl</a> om je identiteit te valideren.</span>
+{{/ifMayView}}
+
+
 
 {{> include/page.footer}}
