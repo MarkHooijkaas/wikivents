@@ -2,17 +2,6 @@
 	<script src="/lib/datatables/media/js/jquery.dataTables.min.js"></script>
 {{> include/page.header.end}}
 
-<script>
-	$(document).ready(function() {
-		$('#grouplist').dataTable( {
-			"language": { "url": "/lib/datatables-i18n/i18n/nl.json" },
-			 "lengthMenu": [[-1, 20, 50, 100], ["Alle", 20, 50, 100]],
-			  "dom": '<"top"f>rt<"bottom"><"clear">',
-			  //"aaSorting": [[2, "asc" ]],
-		} );
-	} );
-</script>
-
 Hieronder zie je een lijst aan thema's.
 Bij een thema horen activiteiten, maar ook een groep mensen die interesse hebben in dat thema.
 Een thema kan over een bepaalde categorie activiteiten gaan zoals film, sport of dansen, maar ook voor een regelmatig terugkerende activiteit, zoals een pubquiz of een eetgroep.
@@ -25,42 +14,6 @@ Een activiteit kan ook bij meerdere thema's passen.
 Heb je een creatief idee voor een leuk thema, <a href="/theme/!create">maak dan een nieuw thema</a>
 {{/ifLoggedIn}}
 
-{{#if list}}
-  <table id="grouplist" class="display compact" cellspacing="0" width="100%">
-    <thead>
-      <tr>
-        <th>Thema</th>
-        <th>Aantal Leden</th>
-        <th>Aangemaakt op</th>
-        <th>Update</th>
-{{#ifAdminMode}}
-        <th>Beheerders</th>
-        <th>Del</th>
-{{/ifAdminMode}}
-      </tr>
-    </thead>
-    <tbody>
-		
-{{#each list}} 
-	  <tr>
-        <td><a href="/theme/:{{_id}}">{{title}}</a></td>
-        <td>{{members.size}}</td>
-        <td data-order="{{creationDate}}">{{dateFormat creationDate "eee d MMM yyyy"}}</td>
-        <td data-order="{{modificationDate}}">{{dateFormat modificationDate "eee d MMM yyyy"}}</td>
-{{#ifAdminMode}}
-        <td>{{&join owners "<br/>"}}</td>
-        <td>
-			{{> include/modal.delete action="delete" field="ActionHandlerId" value=record._id label="Weet je zeker dat je deze interesse wil verwijderen?"}} 
-		</td>
-{{/ifAdminMode}}
-      
-      </tr>
-{{/each}}
-    </tbody>
-  </table>
- 
-{{else}}
-Nog geen thema's
-{{/if}}
+{{> embedded.group.list}}
   
 {{> include/page.footer}}

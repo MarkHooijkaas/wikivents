@@ -13,10 +13,12 @@
 	} );
 </script>
 
-<h1>Zoeken naar {{tekst}}</h1>
-
 <h2>Activiteiten met de tekst: {{text}}</h2>
 {{> include/embedded.event.list list=events tableid="events"}}
+
+<h2>Themas met de tekst: {{text}}</h2>
+{{> embedded.group.list list=themes tableid="groups"}}
+
 
 {{#if call.user.maySeeProfile}}
 <h2>Gebruikers met de tekst: {{text}}</h2>
