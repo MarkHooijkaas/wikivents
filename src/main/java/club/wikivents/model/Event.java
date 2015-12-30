@@ -130,7 +130,7 @@ public class Event extends CrudObject implements Comparable<Event>, AccessChecke
 	@Override public boolean mayBeChangedBy(User user) { return user!=null && (user.isAdmin || hasOrganizer(user)); }
 	@Override public boolean mayBeViewedBy(User user) { return true; }
 	
-	public boolean hasGuest(User user) { return guests.hasItem(Guest.key,user._id); }
+	public boolean hasGuest(User user) { return user!=null && guests.hasItem(Guest.key,user._id); }
 	public Guest findGuest(String id) { return guests.findItemOrNull(Guest.key, id); }
 
 

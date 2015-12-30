@@ -29,7 +29,7 @@ public class WikiventsHelpers extends UserHelpers<User> {
 		return options.inverse();
 	}
 	public CharSequence ifAmGuest(Event e, final Options options) throws IOException { 
-		if (e.hasGuest((User) getUserOrNull(options))) 
+		if (e.hasGuest(getUserOrNull(options))) 
 			return options.fn();
 		return options.inverse();
 	}
