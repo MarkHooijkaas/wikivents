@@ -221,7 +221,7 @@ public class UserHandler extends WikiventsActionHandler<User> {
 	
 	@NeedsNoAuthorization
 	public void handleAddRecommendation(WikiventsCall call, User user) { 
-		if (! user.isRecommendedBy(call.user) && !(call.user==user))
+		if (call.user.mayRecommend(user))
 			model.users.addSequenceItem(user, schema.recommendations, new UserItem(model, call.user));
 	}
 	@NeedsNoAuthorization

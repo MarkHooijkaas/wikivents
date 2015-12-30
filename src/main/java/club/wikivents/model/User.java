@@ -237,6 +237,13 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable, H
 	public boolean maySeeProfile() { return karma()>0; }
 	public boolean maySeePicture() { return karma()>0; }
 	public boolean mayRecommend() { return karma()>=20; }
+	public boolean mayRecommend(User other) { 
+		if (other==null) return false;
+		if (! mayRecommend()) return false;
+		if (other.isRecommendedBy(this)) return false;
+		return ! this._id.equals(other._id);
+	}
+
 	
 	/*
 	public String getNotifications() throws IOException { 
