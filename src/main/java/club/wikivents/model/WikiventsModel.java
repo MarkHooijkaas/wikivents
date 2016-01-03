@@ -2,12 +2,11 @@ package club.wikivents.model;
 
 import java.time.LocalDate;
 
-import org.kisst.crud4j.CrudModel;
-import org.kisst.crud4j.CrudTable;
-import org.kisst.crud4j.StorageOption;
-
 import club.wikivents.web.WikiventsSite;
 import org.kisst.http4j.SecureToken;
+import org.kisst.pko4j.CrudModel;
+import org.kisst.pko4j.CrudTable;
+import org.kisst.pko4j.StorageOption;
 
 public class WikiventsModel extends CrudModel implements SecureToken.SaltFactory {
 	public final WikiventsSite site;

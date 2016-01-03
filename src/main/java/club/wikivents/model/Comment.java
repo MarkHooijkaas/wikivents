@@ -2,11 +2,11 @@ package club.wikivents.model;
 
 import java.time.Instant;
 
-import org.kisst.crud4j.CrudModelObject;
 import org.kisst.http4j.handlebar.AccessChecker;
 import org.kisst.item4j.ReflectSchema;
 import org.kisst.item4j.struct.ReflectStruct;
 import org.kisst.item4j.struct.Struct;
+import org.kisst.pko4j.CrudModelObject;
 
 public  class Comment extends ReflectStruct implements CrudModelObject, AccessChecker<User>{
 	public final User.Ref user;

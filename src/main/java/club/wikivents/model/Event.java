@@ -2,12 +2,12 @@ package club.wikivents.model;
 
 import java.util.StringJoiner;
 
-import org.kisst.crud4j.CrudTable.CrudRef;
 import org.kisst.http4j.handlebar.AccessChecker;
 import org.kisst.item4j.ImmutableSequence;
 import org.kisst.item4j.struct.MultiStruct;
 import org.kisst.item4j.struct.SingleItemStruct;
 import org.kisst.item4j.struct.Struct;
+import org.kisst.pko4j.CrudTable.CrudRef;
 
 import com.github.jknack.handlebars.Handlebars.SafeString;
 

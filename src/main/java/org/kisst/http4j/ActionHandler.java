@@ -1,6 +1,6 @@
 package org.kisst.http4j;
 
-import org.kisst.crud4j.CrudObject;
+import org.kisst.pko4j.CrudObject;
 import org.kisst.util.CallInfo;
 import org.kisst.util.ReflectionUtil;
 import org.kisst.util.StringUtil;

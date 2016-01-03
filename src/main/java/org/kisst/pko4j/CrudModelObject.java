@@ -1,4 +1,4 @@
-package org.kisst.crud4j;
+package org.kisst.pko4j;
 
 public interface CrudModelObject {
 

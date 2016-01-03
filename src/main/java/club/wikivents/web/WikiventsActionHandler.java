@@ -1,10 +1,10 @@
 package club.wikivents.web;
 
-import org.kisst.crud4j.CrudObject;
-import org.kisst.crud4j.CrudTable;
 import org.kisst.http4j.ActionHandler;
 import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.handlebar.AccessChecker;
+import org.kisst.pko4j.CrudObject;
+import org.kisst.pko4j.CrudTable;
 import org.kisst.util.CallInfo;
 
 import club.wikivents.model.Event;

@@ -1,9 +1,9 @@
 package club.wikivents.model;
 
-import org.kisst.crud4j.CrudObject;
-import org.kisst.crud4j.CrudSchema;
 import org.kisst.item4j.ImmutableSequence;
 import org.kisst.item4j.struct.Struct;
+import org.kisst.pko4j.CrudObject;
+import org.kisst.pko4j.CrudSchema;
 
 public class GroupData extends CrudObject {
 	public static final Schema schema=new Schema();

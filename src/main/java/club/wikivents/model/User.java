@@ -12,14 +12,14 @@ import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import org.kisst.crud4j.CrudModelObject;
-import org.kisst.crud4j.CrudTable.CrudRef;
 import org.kisst.http4j.SecureToken;
 import org.kisst.http4j.handlebar.AccessChecker;
 import org.kisst.http4j.handlebar.Htmlable;
 import org.kisst.item4j.Item;
 import org.kisst.item4j.Type;
 import org.kisst.item4j.struct.Struct;
+import org.kisst.pko4j.CrudModelObject;
+import org.kisst.pko4j.CrudTable.CrudRef;
 import org.kisst.util.PasswordEncryption;
 import org.kisst.util.PasswordEncryption.HasPasswordSalt;
 

@@ -3,8 +3,6 @@ package club.wikivents.model;
 import java.util.ArrayList;
 import java.util.StringJoiner;
 
-import org.kisst.crud4j.CrudModelObject;
-import org.kisst.crud4j.CrudTable.CrudRef;
 import org.kisst.http4j.handlebar.AccessChecker;
 import org.kisst.item4j.ImmutableSequence;
 import org.kisst.item4j.Item;
@@ -12,6 +10,8 @@ import org.kisst.item4j.Type;
 import org.kisst.item4j.struct.MultiStruct;
 import org.kisst.item4j.struct.SingleItemStruct;
 import org.kisst.item4j.struct.Struct;
+import org.kisst.pko4j.CrudModelObject;
+import org.kisst.pko4j.CrudTable.CrudRef;
 
 public class Group extends GroupData implements AccessChecker<User> {
 

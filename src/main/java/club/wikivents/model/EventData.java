@@ -3,10 +3,10 @@ package club.wikivents.model;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import org.kisst.crud4j.CrudObject;
-import org.kisst.crud4j.CrudSchema;
 import org.kisst.item4j.ImmutableSequence;
 import org.kisst.item4j.struct.Struct;
+import org.kisst.pko4j.CrudObject;
+import org.kisst.pko4j.CrudSchema;
 
 public class EventData extends CrudObject {
 	public static final Schema schema=new Schema();

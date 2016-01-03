@@ -1,4 +1,4 @@
-package org.kisst.crud4j;
+package org.kisst.pko4j;
 
 import org.kisst.item4j.seq.TypedSequence;
 import org.kisst.item4j.struct.Struct;
