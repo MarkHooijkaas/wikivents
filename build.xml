@@ -53,11 +53,12 @@
 		<jar jarfile="${projectname}-${project.version}.jar"  basedir="${builddir}/classes" includes="**" excludes="test/**">
 			<manifest>
 				<attribute name="Implementation-Vendor" value="org.kisst"/>
-				<attribute name="Implementation-Title" value="Wikivents"/>
+				<attribute name="Implementation-Title" value="${projectname}"/>
 				<attribute name="Implementation-Version" value="${project.version}"/> 
 				<attribute name="Class-Path" value="${manifest.classpath}"/>
 				<attribute name="Main-Class" value="club.wikivents.Runner"/>
 			</manifest>
+			<zipfileset dir="../hooi4j/build/classes" />
 			<zipfileset dir="src/main/templates" prefix="templates"/>
 			<zipfileset dir="." includes="version.properties"/>
 	    </jar>
@@ -67,11 +68,12 @@
 		<jar jarfile="${projectname}-full-${project.version}.jar"  basedir="${builddir}/classes" includes="**" excludes="test/**">
 			<manifest>
 				<attribute name="Implementation-Vendor" value="org.kisst"/>
-				<attribute name="Implementation-Title" value="Wikivents"/>
+				<attribute name="Implementation-Title" value="${projectname}"/>
 				<attribute name="Implementation-Version" value="${project.version}"/> 
 				<attribute name="Class-Path" value="${manifest.classpath}"/>
 				<attribute name="Main-Class" value="club.wikivents.Runner"/>
 			</manifest>
+			<zipfileset dir="../hooi4j/build/classes" />
 			<zipfileset dir="src/main/resources"/>
 			<zipfileset dir="src/main/templates" prefix="templates"/>
 			<zipfileset dir="." includes="version.properties"/>
@@ -80,17 +82,17 @@
 
 	
 	<target name="libs" description="creates a zip file for all lib files" depends="init">
-		<zip destfile="${builddir}/wikivents-${project.version}-libs.zip" >
+		<zip destfile="${builddir}/${projectname}-${project.version}-libs.zip" >
 			<zipfileset dir="." includes="lib/*"/>
 		</zip>
 	</target>
 	<target name="dist" description="creates a zip file for distribution" depends="jar">
-		<zip destfile="${builddir}/wikivents-${project.version}-full.zip" >
+		<zip destfile="${builddir}/${projectname}-${project.version}-full.zip" >
 			<fileset dir="." includes="COPYING"/>
-			<zipfileset dir="." includes="wikivents*.jar"/>
+			<zipfileset dir="." includes="${projectname}*.jar"/>
 			<zipfileset dir="lib" prefix="lib" includes="*.jar"/>
 			<fileset dir="." includes=".gitignore" defaultexcludes="false"/>
-			<zipfileset dir="config" prefix="config" includes="wikivents.properties"/>
+			<zipfileset dir="config" prefix="config" includes="${projectname}.properties"/>
 			<zipfileset dir="config" prefix="config" includes="log4j.properties"/>
 		</zip>
 	</target>
