@@ -13,17 +13,12 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import org.kisst.crud4j.CrudModelObject;
-import org.kisst.crud4j.CrudObject;
-import org.kisst.crud4j.CrudSchema;
 import org.kisst.crud4j.CrudTable.CrudRef;
 import org.kisst.http4j.SecureToken;
 import org.kisst.http4j.handlebar.AccessChecker;
 import org.kisst.http4j.handlebar.Htmlable;
-import org.kisst.item4j.ImmutableSequence;
 import org.kisst.item4j.Item;
 import org.kisst.item4j.Type;
-import org.kisst.item4j.struct.MultiStruct;
-import org.kisst.item4j.struct.SingleItemStruct;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.util.PasswordEncryption;
 import org.kisst.util.PasswordEncryption.HasPasswordSalt;
@@ -33,7 +28,9 @@ import org.kisst.util.PasswordEncryption.HasPasswordSalt;
 //import com.sun.javafx.collections.MappingChange.Map;
 
 
-public class User extends CrudObject implements AccessChecker<User>, Htmlable, HasPasswordSalt {
+public class User extends UserData implements AccessChecker<User>, Htmlable, HasPasswordSalt {
+	public User(WikiventsModel model, Struct data) { super(model, data); }
+
 	public final static InternetAddress systemMailAddress;
 	static {
 		try {
@@ -42,53 +39,8 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable, H
 		catch (UnsupportedEncodingException e) { throw new RuntimeException(e);}
 	}
 
-	
-	public final WikiventsModel model;
-	public final String username;
-	public final String description;
-	public final String email;
-	public final String city;
-	public final String avatarUrl;
-	public final String passwordResetToken;
-	public final String passwordSalt;
-	public final String encryptedPassword;
-	public final boolean isAdmin;
-	public final boolean emailValidated;
-	public final boolean blocked;
-	//public final boolean identityValidated;
-	public final ImmutableSequence<UserItem> recommendations;
 
-	public User(WikiventsModel model, Struct data) {
-		super(model.users, data);
-		int dataversion = getCrudObjectVersionOf(data);
-		this.model=model;
-		this.username=schema.username.getString(data);
-		this.description=schema.description.getString(data,null);
-		this.email=schema.email.getString(data);
-		this.city=schema.city.getString(data);
-		this.avatarUrl=schema.avatarUrl.getString(data,null);
-		this.passwordResetToken=schema.passwordResetToken.getString(data,null);
-		this.passwordSalt=schema.passwordSalt.getString(data);
-		this.encryptedPassword=schema.encryptedPassword.getString(data);
-		this.isAdmin=schema.isAdmin.getBoolean(data,false);
-		this.emailValidated=schema.emailValidated.getBoolean(data,false);
-		this.blocked=schema.blocked.getBoolean(data,false);
-		boolean defaultValue = dataversion==0;
-		//this.identityValidated=schema.identityValidated.getBoolean(data,defaultValue);
-		boolean identityValidated =  Item.asBoolean(data.getDirectFieldValue("identityValidated",defaultValue));
-		if (identityValidated)
-			this.recommendations=startingRecommendation(model);
-		else
-			this.recommendations=schema.recommendations.getSequenceOrEmpty(model, data);
-	}
-	private ImmutableSequence<UserItem> startingRecommendation(WikiventsModel model2) {
-		MultiStruct data=new MultiStruct(
-			new SingleItemStruct(UserItem.schema.date.name, ""+this.creationDate),
-			new SingleItemStruct(UserItem.schema.user.name, "55bd0486a1e0df4a250cd3eb")
-		);
-		UserItem item=new UserItem(model, data);
-		return ImmutableSequence.of(UserItem.class, item);
-	}
+
 	@Override public int getCrudObjectVersion() { return 1;}
 	@Override public String getPasswordSalt() { return passwordSalt; }
 
@@ -167,26 +119,6 @@ public class User extends CrudObject implements AccessChecker<User>, Htmlable, H
 				return "unknown";
 			return u.username; 
 		}
-	}
-	
-	public static final Schema schema=new Schema();
-	public static final class Schema extends CrudSchema<User> {
-		private Schema() { super(User.class); }
-		public final IdField _id = new IdField();
-		public final IntField _crudObjectVersion = new IntField("_crudObjectVersion");
-		public final StringField username = new StringField("username"); 
-		public final StringField description= new StringField("description"); 
-		public final StringField email    = new StringField("email"); 
-		public final StringField city = new StringField("city"); 
-		public final StringField avatarUrl= new StringField("avatarUrl"); 
-		public final StringField passwordResetToken = new StringField("passwordResetToken"); 
-		public final StringField passwordSalt = new StringField("passwordSalt"); 
-		public final StringField encryptedPassword = new StringField("encryptedPassword"); 
-		public final BooleanField isAdmin = new BooleanField("isAdmin");
-		public final BooleanField emailValidated = new BooleanField("emailValidated");
-		public final BooleanField blocked = new BooleanField("blocked");
-		//public final BooleanField identityValidated = new BooleanField("identityValidated");
-		public final SequenceField<UserItem> recommendations= new SequenceField<UserItem>(UserItem.schema,"recommendations");
 	}
 	
 	@Override public boolean mayBeViewedBy(User user) {
