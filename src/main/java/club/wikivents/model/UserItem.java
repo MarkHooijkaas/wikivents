@@ -7,9 +7,9 @@ import org.kisst.item4j.ImmutableSequence;
 import org.kisst.item4j.ReflectSchema;
 import org.kisst.item4j.struct.ReflectStruct;
 import org.kisst.item4j.struct.Struct;
-import org.kisst.pko4j.CrudModelObject;
+import org.kisst.pko4j.PkoModel.MyObject;
 
-public class UserItem extends ReflectStruct implements CrudModelObject, AccessChecker<User> {
+public class UserItem extends ReflectStruct implements MyObject, AccessChecker<User> {
 	public final User.Ref user;
 	public final Instant date;
 	public final String comment;

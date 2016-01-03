@@ -6,9 +6,9 @@ import org.kisst.http4j.handlebar.AccessChecker;
 import org.kisst.item4j.ReflectSchema;
 import org.kisst.item4j.struct.ReflectStruct;
 import org.kisst.item4j.struct.Struct;
-import org.kisst.pko4j.CrudModelObject;
+import org.kisst.pko4j.PkoModel;
 
-public  class Comment extends ReflectStruct implements CrudModelObject, AccessChecker<User>{
+public  class Comment extends ReflectStruct implements PkoModel.MyObject, AccessChecker<User>{
 	public final User.Ref user;
 	public final Instant date;
 	public final String comment;

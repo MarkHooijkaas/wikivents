@@ -5,16 +5,16 @@ import java.util.Iterator;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 import org.kisst.item4j.Schema;
-import org.kisst.pko4j.CrudObject;
-import org.kisst.pko4j.CrudSchema;
-import org.kisst.pko4j.CrudModel.OrderedIndex;
+import org.kisst.pko4j.PkoObject;
+import org.kisst.pko4j.PkoSchema;
+import org.kisst.pko4j.PkoModel.OrderedIndex;
 
-public class MemoryOrderedIndex<T extends CrudObject> extends AbstractKeyedIndex<T> implements OrderedIndex<T> {
+public class MemoryOrderedIndex<T extends PkoObject> extends AbstractKeyedIndex<T> implements OrderedIndex<T> {
 	private final ConcurrentSkipListMap<String, T> map=new ConcurrentSkipListMap<String,T>();
 	private final boolean ignoreCase;
 	private final FieldList fields;
 
-	public MemoryOrderedIndex(CrudSchema<T> schema, boolean ignoreCase, Schema.Field<?> ... fields) { 
+	public MemoryOrderedIndex(PkoSchema<T> schema, boolean ignoreCase, Schema.Field<?> ... fields) { 
 		super(schema);
 		this.ignoreCase=ignoreCase;
 		this.fields=new FieldList(fields);

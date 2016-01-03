@@ -3,19 +3,19 @@ package club.wikivents.web;
 import org.kisst.http4j.ActionHandler;
 import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.handlebar.AccessChecker;
-import org.kisst.pko4j.CrudObject;
-import org.kisst.pko4j.CrudTable;
+import org.kisst.pko4j.PkoObject;
+import org.kisst.pko4j.PkoTable;
 import org.kisst.util.CallInfo;
 
 import club.wikivents.model.Event;
 import club.wikivents.model.User;
 import club.wikivents.model.WikiventsModel;
 
-public abstract class WikiventsActionHandler<T extends CrudObject & AccessChecker<User>> extends ActionHandler<WikiventsCall, T>{
+public abstract class WikiventsActionHandler<T extends PkoObject & AccessChecker<User>> extends ActionHandler<WikiventsCall, T>{
 	public final WikiventsModel model;
 	public final WikiventsSite site;
-	public final CrudTable<T> table;
-	public WikiventsActionHandler(WikiventsSite site, CrudTable<T> table) {
+	public final PkoTable<T> table;
+	public WikiventsActionHandler(WikiventsSite site, PkoTable<T> table) {
 		super(WikiventsCall.class, (Class<T>) table.getElementClass());
 		this.site=site;
 		this.model=site.model;

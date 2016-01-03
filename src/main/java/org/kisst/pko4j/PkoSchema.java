@@ -8,13 +8,13 @@ import org.kisst.item4j.Type;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.util.ReflectionUtil;
 
-public class CrudSchema<T extends CrudObject> extends ReflectSchema<T> {
-	public CrudSchema(Class<T> cls) { 
+public class PkoSchema<T extends PkoObject> extends ReflectSchema<T> {
+	public PkoSchema(Class<T> cls) { 
 		super(cls); 
 	}
 	
 	@SuppressWarnings("unchecked")
-	public T createObject(CrudModel model, Struct doc) { 
+	public T createObject(PkoModel model, Struct doc) { 
 		Constructor<?> cons=ReflectionUtil.getConstructor(getJavaClass(), new Class<?>[]{ model.getClass(), Struct.class} );
 		return (T) ReflectionUtil.createObject(cons, new Object[]{model, doc} );
 	}

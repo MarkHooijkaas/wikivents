@@ -18,8 +18,8 @@ import org.kisst.http4j.handlebar.Htmlable;
 import org.kisst.item4j.Item;
 import org.kisst.item4j.Type;
 import org.kisst.item4j.struct.Struct;
-import org.kisst.pko4j.CrudModelObject;
-import org.kisst.pko4j.CrudTable.CrudRef;
+import org.kisst.pko4j.PkoModel.MyObject;
+import org.kisst.pko4j.PkoTable.KeyRef;
 import org.kisst.util.PasswordEncryption;
 import org.kisst.util.PasswordEncryption.HasPasswordSalt;
 
@@ -41,7 +41,7 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 
 
 
-	@Override public int getCrudObjectVersion() { return 1;}
+	@Override public int getPkoVersion() { return 1;}
 	@Override public String getPasswordSalt() { return passwordSalt; }
 
 	public String getLoginToken() { 
@@ -97,7 +97,7 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 
 	
 	
-	public static class Ref extends CrudRef<User> implements CrudModelObject, Htmlable {
+	public static class Ref extends KeyRef<User> implements MyObject, Htmlable {
 		public static final Type<User.Ref> type = new Type.Java<User.Ref>(User.Ref.class, null); // XXX TODO: parser is null 
 		public static class Field extends Schema.BasicField<User.Ref> {
 			public Field(String name) { super(User.Ref.type, name); }

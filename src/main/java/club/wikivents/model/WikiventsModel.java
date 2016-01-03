@@ -4,11 +4,11 @@ import java.time.LocalDate;
 
 import club.wikivents.web.WikiventsSite;
 import org.kisst.http4j.SecureToken;
-import org.kisst.pko4j.CrudModel;
-import org.kisst.pko4j.CrudTable;
+import org.kisst.pko4j.PkoModel;
+import org.kisst.pko4j.PkoTable;
 import org.kisst.pko4j.StorageOption;
 
-public class WikiventsModel extends CrudModel implements SecureToken.SaltFactory {
+public class WikiventsModel extends PkoModel implements SecureToken.SaltFactory {
 	public final WikiventsSite site;
 
 	public WikiventsModel(WikiventsSite site, StorageOption ... storage){ 
@@ -17,9 +17,9 @@ public class WikiventsModel extends CrudModel implements SecureToken.SaltFactory
 		initModel();
 	}
 
-	public final CrudTable<User>  users  = new CrudTable<>(this, User.schema);
-	public final CrudTable<Event> events = new CrudTable<>(this, Event.schema);
-	public final CrudTable<Group> groups = new CrudTable<>(this, Group.schema);
+	public final PkoTable<User>  users  = new PkoTable<>(this, User.schema);
+	public final PkoTable<Event> events = new PkoTable<>(this, Event.schema);
+	public final PkoTable<Group> groups = new PkoTable<>(this, Group.schema);
 
 	public final UniqueIndex<User> usernameIndex = getUniqueIndex(User.class, User.schema.username);
 	public final UniqueIndex<User> emailIndex    = getUniqueIndex(User.class, User.schema.email);

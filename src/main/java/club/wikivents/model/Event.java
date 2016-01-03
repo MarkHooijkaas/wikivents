@@ -7,7 +7,7 @@ import org.kisst.item4j.ImmutableSequence;
 import org.kisst.item4j.struct.MultiStruct;
 import org.kisst.item4j.struct.SingleItemStruct;
 import org.kisst.item4j.struct.Struct;
-import org.kisst.pko4j.CrudTable.CrudRef;
+import org.kisst.pko4j.PkoTable.KeyRef;
 
 import com.github.jknack.handlebars.Handlebars.SafeString;
 
@@ -29,7 +29,7 @@ public class Event extends EventData implements Comparable<Event>, AccessChecker
 	}   
 	public String organizerNames() {
 		StringJoiner sj = new StringJoiner(", ");
-		for (CrudRef<User> r : organizers)
+		for (KeyRef<User> r : organizers)
 			sj.add(r.get().username);
 		return sj.toString();
 	}

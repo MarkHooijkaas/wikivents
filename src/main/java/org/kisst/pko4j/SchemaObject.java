@@ -9,7 +9,8 @@ import org.kisst.item4j.struct.Struct;
 import org.kisst.item4j.struct.StructHelper;
 import org.kisst.util.ReflectionUtil;
 
-public abstract class SchemaObject implements Struct, CrudModelObject {
+// TODO: this class may be moved to hooi4j
+public abstract class SchemaObject implements Struct, PkoModel.MyObject {
 	public final Schema schema;
 	public <T extends SchemaObject> SchemaObject(Schema schema) { this.schema=schema; }
 
@@ -18,13 +19,13 @@ public abstract class SchemaObject implements Struct, CrudModelObject {
 	@Override public Object getDirectFieldValue(String name) { return ReflectionUtil.getFieldValueOrUnknownField(this, name); }
 	
 	@SuppressWarnings("unchecked")
-	public <T extends SchemaObject> T modified(CrudModel model, Struct modifiedFields) {
+	public <T extends SchemaObject> T modified(PkoModel model, Struct modifiedFields) {
 		Constructor<?> cons=ReflectionUtil.getConstructor(this.getClass(), new Class<?>[]{ model.getClass(), Struct.class} );
 		return (T) ReflectionUtil.createObject(cons, new Object[] {model, new MultiStruct(modifiedFields, this)});
 		//return (T) schema.createObject(model, new MultiStruct(newObject, this));
 	}
 	
-	public <T extends SchemaObject> T modified(CrudModel model, Schema.Field<?> field, Object value) {
+	public <T extends SchemaObject> T modified(PkoModel model, Schema.Field<?> field, Object value) {
 		return modified(model, new SingleItemStruct(field.getName(), value));
 	}
 }

@@ -5,18 +5,18 @@ import java.time.Instant;
 import org.bson.types.ObjectId;
 import org.kisst.item4j.Item;
 import org.kisst.item4j.struct.Struct;
-import org.kisst.pko4j.CrudTable.CrudRef;
+import org.kisst.pko4j.PkoTable.KeyRef;
 
-public abstract class CrudObject extends SchemaObject {
-	public final CrudTable<?> table;
-	public final int _crudObjectVersion;
+public abstract class PkoObject extends SchemaObject {
+	public final PkoTable<?> table;
+	public final int _pkoVersion;
 	public final String _id;
 	public final Instant creationDate;
 	public final Instant modificationDate;
-	public <T extends CrudObject> CrudObject(CrudTable<T> table, Struct data) {
+	public <T extends PkoObject> PkoObject(PkoTable<T> table, Struct data) {
 		super(table.schema);
 		this.table=table;
-		this._crudObjectVersion=getCrudObjectVersion();
+		this._pkoVersion=getPkoVersionOf(data);
 		this._id=createUniqueKey(data);
 		this.creationDate=new ObjectId(_id).getDate().toInstant();
 		this.modificationDate=(Instant) data.getDirectFieldValue("savedModificationDate", Instant.now());
@@ -32,10 +32,10 @@ public abstract class CrudObject extends SchemaObject {
 	protected String uniqueKey() { return new ObjectId().toHexString();}
 
 	@SuppressWarnings("unchecked")
-	public<T extends CrudObject> CrudRef<T> getRef() { return (CrudRef<T>) table.createRef(_id);}
+	public<T extends PkoObject> KeyRef<T> getRef() { return (KeyRef<T>) table.createRef(_id);}
 	
-	public int getCrudObjectVersion() { return 0;}
-	public int getCrudObjectVersionOf(Struct data) { return Integer.parseInt(""+data.getDirectFieldValue("_crudObjectVersion", "0"));}
+	public int getPkoVersion() { return 0;}
+	public int getPkoVersionOf(Struct data) { return Integer.parseInt(""+data.getDirectFieldValue("_crudObjectVersion", "0"));}
 
 	public String readBlob(String path) { return table.storage.readBlob(_id, path); }
 	public void writeBlob(String path, String blob) { table.storage.writeBlob(_id, path, blob); }

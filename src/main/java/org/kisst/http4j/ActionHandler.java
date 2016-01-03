@@ -1,6 +1,6 @@
 package org.kisst.http4j;
 
-import org.kisst.pko4j.CrudObject;
+import org.kisst.pko4j.PkoObject;
 import org.kisst.util.CallInfo;
 import org.kisst.util.ReflectionUtil;
 import org.kisst.util.StringUtil;
@@ -33,7 +33,7 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 	public ActionHandler(Class<C> callClass, Class<T> recordClass) {
 		this.extralongsignature= new Class<?>[] { callClass, recordClass, String.class };
 		this.fullsignature= new Class<?>[] { callClass, recordClass };
-		this.fullsignature2= new Class<?>[] { callClass, CrudObject.class};
+		this.fullsignature2= new Class<?>[] { callClass, PkoObject.class};
 		this.shortsignature= new Class<?>[] { callClass };
 	}
 

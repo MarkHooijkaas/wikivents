@@ -5,13 +5,13 @@ import org.kisst.item4j.Item;
 import org.kisst.item4j.struct.MultiStruct;
 import org.kisst.item4j.struct.SingleItemStruct;
 import org.kisst.item4j.struct.Struct;
-import org.kisst.pko4j.CrudObject;
-import org.kisst.pko4j.CrudSchema;
+import org.kisst.pko4j.PkoObject;
+import org.kisst.pko4j.PkoSchema;
 
 
-public class UserData extends CrudObject {
+public class UserData extends PkoObject {
 	public static final Schema schema=new Schema();
-	public static final class Schema extends CrudSchema<User> {
+	public static final class Schema extends PkoSchema<User> {
 		private Schema() { super(User.class); }
 		public final IdField _id = new IdField();
 		public final IntField _crudObjectVersion = new IntField("_crudObjectVersion");
@@ -61,7 +61,7 @@ public class UserData extends CrudObject {
 		this.recommendations=startingRecommendation(data);
 	}
 	private ImmutableSequence<UserItem> startingRecommendation(Struct data) {
-		int dataversion = getCrudObjectVersionOf(data);
+		int dataversion = getPkoVersionOf(data);
 		boolean defaultValue = dataversion==0;
 		boolean identityValidated =  Item.asBoolean(data.getDirectFieldValue("identityValidated",defaultValue));
 		if (! identityValidated)

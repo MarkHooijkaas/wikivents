@@ -6,8 +6,8 @@ import java.util.List;
 import org.kisst.item4j.HasName;
 import org.kisst.item4j.Item;
 import org.kisst.item4j.struct.Struct;
-import org.kisst.pko4j.CrudObject;
-import org.kisst.pko4j.CrudModel.UniqueIndex;
+import org.kisst.pko4j.PkoObject;
+import org.kisst.pko4j.PkoModel.UniqueIndex;
 import org.kisst.util.ReflectionUtil;
 
 public class FormData  implements Struct{
@@ -77,8 +77,8 @@ public class FormData  implements Struct{
 		return null;
 	}
 
-	// TODO: this dependency on CrudTable should not be in this package
-	public class UniqueKeyIndexValidator<T extends CrudObject> implements Validator {
+	// TODO: this dependency on KeyTable should not be in this package
+	public class UniqueKeyIndexValidator<T extends PkoObject> implements Validator {
 		private final UniqueIndex<T> index;
 
 		public UniqueKeyIndexValidator(UniqueIndex<T> index) { this.index=index; }

@@ -2,7 +2,7 @@ package org.kisst.pko4j.impl;
 
 import org.bson.codecs.configuration.CodecRegistry;
 import org.kisst.item4j.struct.StructProps;
-import org.kisst.pko4j.CrudTable.CrudRef;
+import org.kisst.pko4j.PkoTable.KeyRef;
 
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -27,6 +27,6 @@ public class MongoDb {
 	public void printEncoder() {
 		MongoClientOptions options = mongoClient.getMongoClientOptions();
 		CodecRegistry reg = options.getCodecRegistry();
-		System.out.println(reg.get(CrudRef.class));
+		System.out.println(reg.get(KeyRef.class));
 	}
 }

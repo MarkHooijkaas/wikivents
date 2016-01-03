@@ -2,12 +2,12 @@ package club.wikivents.model;
 
 import org.kisst.item4j.ImmutableSequence;
 import org.kisst.item4j.struct.Struct;
-import org.kisst.pko4j.CrudObject;
-import org.kisst.pko4j.CrudSchema;
+import org.kisst.pko4j.PkoObject;
+import org.kisst.pko4j.PkoSchema;
 
-public class GroupData extends CrudObject {
+public class GroupData extends PkoObject {
 	public static final Schema schema=new Schema();
-	public static final class Schema extends CrudSchema<Group> {
+	public static final class Schema extends PkoSchema<Group> {
 		private Schema() { super(Group.class); }
 		public IdField getKeyField() { return _id; }
 		public final IdField _id = new IdField();

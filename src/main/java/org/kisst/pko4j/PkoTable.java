@@ -14,11 +14,11 @@ import org.kisst.util.ArrayUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
-	public static final Logger logger = LoggerFactory.getLogger(CrudTable.class);
+public class PkoTable<T extends PkoObject> implements TypedSequence<T> {
+	public static final Logger logger = LoggerFactory.getLogger(PkoTable.class);
 	
-	protected final CrudSchema<T> schema;
-	protected final CrudModel model;
+	protected final PkoSchema<T> schema;
+	protected final PkoModel model;
 	private final String name;
 	final StructStorage storage;
 	private final MemoryUniqueIndex<T> cache;
@@ -26,13 +26,13 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 
 	private boolean alwaysCheckId=true;
 	@SuppressWarnings("unchecked")
-	public CrudTable(CrudModel model, CrudSchema<T> schema) { 
+	public PkoTable(PkoModel model, PkoSchema<T> schema) { 
 		this.model=model;
 		this.schema=schema;
 		this.name=schema.getJavaClass().getSimpleName();
 		this.storage=model.getStorage(schema.getJavaClass());
 		if (storage.useCache()) {
-			cache=new MemoryUniqueIndex<T>(schema, false, new CrudSchema.IdField());
+			cache=new MemoryUniqueIndex<T>(schema, false, new PkoSchema.IdField());
 			this.indices=(ChangeHandler<T>[]) ArrayUtil.join(cache,model.getIndices(schema.getJavaClass()));
 		}
 		else {
@@ -41,7 +41,7 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 
 		}
 	}
-	// This can not be done in the constructor, because then the CrudObjects will have a null table
+	// This can not be done in the constructor, because then the KeyObjects will have a null table
 	public void initcache() { 
 		if (cache==null) 
 			return;
@@ -56,7 +56,7 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 		}
 	}
 	public void close() { storage.close(); }
-	public CrudSchema<T> getSchema() { return schema; }
+	public PkoSchema<T> getSchema() { return schema; }
 	public String getName() { return name; }
 	public String getKey(T obj) { return obj._id; }
 
@@ -123,10 +123,10 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 	}
 
 	
-	public static class CrudRef<TT extends CrudObject> {
-		public final CrudTable<TT> table;
+	public static class KeyRef<TT extends PkoObject> {
+		public final PkoTable<TT> table;
 		public final String _id;
-		protected CrudRef(CrudTable<TT> table, String _id) { 
+		protected KeyRef(PkoTable<TT> table, String _id) { 
 			this.table=table; 
 			this._id=_id; 
 		}
@@ -138,9 +138,9 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 				return false;
 			if (obj==this)
 				return true;
-			if (! (obj instanceof CrudRef))
+			if (! (obj instanceof KeyRef))
 				return false;
-			CrudRef<?> ref=(CrudRef<?>) obj;
+			KeyRef<?> ref=(KeyRef<?>) obj;
 			if (this.table!=ref.table)
 				return false;
 			return this._id.equals(ref._id);
@@ -149,7 +149,7 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 	}
 
 	
-	public CrudRef<T> createRef(String key) { return new CrudRef<T>(this,key); }
+	public KeyRef<T> createRef(String key) { return new KeyRef<T>(this,key); }
 
 	private void checkSameId(T oldValue, T newValue) {
 		if (! alwaysCheckId)
@@ -184,13 +184,13 @@ public class CrudTable<T extends CrudObject> implements TypedSequence<T> {
 			return "Change("+oldId+","+newId+")"; 
 		} 
 	}
-	public interface ChangeHandler<TT extends CrudObject> {
-		public boolean allow(CrudTable<TT>.Change change); 
-		public void commit(CrudTable<TT>.Change change); 
-		public void rollback(CrudTable<TT>.Change change); 
+	public interface ChangeHandler<TT extends PkoObject> {
+		public boolean allow(PkoTable<TT>.Change change); 
+		public void commit(PkoTable<TT>.Change change); 
+		public void rollback(PkoTable<TT>.Change change); 
 	}
 
-	private final static Logger changeLogger = LoggerFactory.getLogger(CrudTable.Change.class);
+	private final static Logger changeLogger = LoggerFactory.getLogger(PkoTable.Change.class);
 	
 	private boolean executeChange(Change change) {
 		changeLogger.info("applying {}", change);

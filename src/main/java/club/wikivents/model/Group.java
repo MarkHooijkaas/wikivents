@@ -10,8 +10,8 @@ import org.kisst.item4j.Type;
 import org.kisst.item4j.struct.MultiStruct;
 import org.kisst.item4j.struct.SingleItemStruct;
 import org.kisst.item4j.struct.Struct;
-import org.kisst.pko4j.CrudModelObject;
-import org.kisst.pko4j.CrudTable.CrudRef;
+import org.kisst.pko4j.PkoModel;
+import org.kisst.pko4j.PkoTable.KeyRef;
 
 public class Group extends GroupData implements AccessChecker<User> {
 
@@ -24,7 +24,7 @@ public class Group extends GroupData implements AccessChecker<User> {
 		));
 	}
 
-	public static class Ref extends CrudRef<Group> implements CrudModelObject {
+	public static class Ref extends KeyRef<Group> implements PkoModel.MyObject {
 		public static final Type<Group.Ref> type = new Type.Java<Group.Ref>(Group.Ref.class, null); // XXX TODO: parser is null 
 		public static class Field extends Schema.BasicField<Group.Ref> {
 			public Field(String name) { super(Group.Ref.type, name); }
@@ -37,7 +37,7 @@ public class Group extends GroupData implements AccessChecker<User> {
 	
 	public String ownerNames() {
 		StringJoiner sj = new StringJoiner(", ");
-		for (CrudRef<User> r : owners)
+		for (KeyRef<User> r : owners)
 			sj.add(r.get().username);
 		return sj.toString();
 	}
