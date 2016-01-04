@@ -15,5 +15,5 @@
 	<h2>Details</h2>
 	{{>event.details}}
 	{{>event.groups}}
-	
+	{{>event.participants}}	
 </div>

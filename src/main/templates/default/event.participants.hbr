@@ -1,6 +1,5 @@
 {{#ifLoggedIn}}
-
-<div class="col-xs-12 col-sm-6 panel panel-default overflow-hidden">
+<div>
 <h2>{{#if record.idea}}Ge&iuml;nteresseerden {{record.guestCount}}{{else}}Deelnemers {{record.guestCount}}/{{record.max}}{{/if}}
 	{{> include/modal.lockField value=record.guestsAllowed name="guestsAllowed" label="Deelname"}}
 </h2> 
@@ -35,7 +34,7 @@
 {{/ifAmGuest}}
 </div>
 
-<div class="col-xs-12 col-sm-6 panel panel-default overflow-hidden">
+<div>
 {{#if record.backupGuests}}
 <h2>Reservelijst</h2>
 {{#each record.backupGuests}}
@@ -75,5 +74,4 @@
 {{/if}}
 {{/ifAmGuest}}
 </div>
-	
 {{/ifLoggedIn}}
