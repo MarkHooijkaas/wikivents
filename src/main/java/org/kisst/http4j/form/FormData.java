@@ -7,7 +7,6 @@ import org.kisst.item4j.HasName;
 import org.kisst.item4j.Item;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.pko4j.PkoObject;
-import org.kisst.pko4j.PkoModel;
 import org.kisst.pko4j.PkoModel.UniqueIndex;
 import org.kisst.util.ReflectionUtil;
 
