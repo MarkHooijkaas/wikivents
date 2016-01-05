@@ -1,0 +1,41 @@
+
+<div id="{{action}}Modal{{id}}" class="modal fade" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title" id="{{action}}Title{{id}}">{{title}}</h4>
+			</div>
+			<div class="modal-body" id="{{action}}Content{{id}}">
+				{{message}}
+			</div>
+			<div class="modal-footer">
+				<form role="form" method="POST" id="{{action}}Form{{id}}">
+					<input type="hidden" name="action" value="{{action}}"/>
+					<input type="hidden" name="{{field}}" id="{{action}}Value{{id}}" value=""/>
+					<button type="submit" class="btn btn-success">{{okButton}}</button>
+        		    <a class="btn btn-default btn-danger" id="{{action}}Cancel{{id}}" data-dismiss="modal" data-backdrop="false">Annuleer</a>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	$(document).ready(function(){
+		$(".confirm-{{action}}{{id}}").click(function(){
+			var title=$(this).attr("data-title");
+			var message=$(this).attr("data-message");
+			var id=$(this).attr("data-id");
+			if (title)
+				$("#{{action}}Title{{id}}").html(title);
+			if (message)
+				$("#{{action}}Content{{id}}").html(message);
+			$("#{{action}}Value{{id}}").attr("value",id);
+			$('#{{action}}Modal{{id}}').modal('show');
+	    });
+		$("#{{action}}Cancel{{id}}").click(function(){
+			$('#{{action}}Modal{{id}}').modal('hide');
+	    });
+	});
+</script>
+

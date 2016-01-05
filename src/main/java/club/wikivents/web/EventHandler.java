@@ -96,7 +96,7 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 	}
 	@NeedsNoAuthorization
 	public void handleRemoveGuest(WikiventsCall call, Event event) {
-		String userId=call.request.getParameter("userId");
+		String userId=call.request.getParameter("guest");
 		if (call.user._id.equals(userId) || call.user.isAdmin)
 			table.removeSequenceItem(event, schema.guests, event.findGuest(userId));
 	}

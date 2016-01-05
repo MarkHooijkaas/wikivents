@@ -1,5 +1,13 @@
 </head>
 <body{{#if model.site.props.development}} style="background-color:lightgrey;"{{/if}}>
+<script>
+	$(document).ready(function(){
+		$(".modal").modal('hide').on('hidden.bs.modal',function(){ 
+			$('body').removeClass('modal-open');
+			$('.modal-backdrop').remove();
+	    });
+	});
+</script>
 
 <nav class="navbar navbar-default">
   <div class="container-fluid">

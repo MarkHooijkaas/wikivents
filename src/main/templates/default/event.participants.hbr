@@ -1,4 +1,6 @@
 {{#ifLoggedIn}}
+
+
 <div>
 <h2>{{#if record.idea}}Ge&iuml;nteresseerden {{record.guestCount}}{{else}}Deelnemers {{record.guestCount}}/{{record.max}}{{/if}}
 	{{> include/modal.lockField value=record.guestsAllowed name="guestsAllowed" label="Deelname"}}
@@ -6,7 +8,9 @@
 {{#each record.allowedGuests}}
 	{{#if call.user.trusted}}{{&priv user.link}}{{else}}{{&user.get0.usernameLink}}{{/if}}
 	{{#ifMayChange this}}
-		{{> include/modal.delete title=user.get0.username action="removeGuest" field="userId" value=user._id label="Weet je zeker dat je je deelname wil annuleren?"}} 
+		<a 	class="confirm-removeGuest" data-id="{{user._id}}" data-title="Afmelden {{user.get0.username}}">
+			<span class="glyphicon glyphicon-trash" aria-hidden="true" style="cursor:pointer;"></span>
+		</a>
 	{{/ifMayChange}}
 	<br/>
 {{/each}}
@@ -40,7 +44,9 @@
 {{#each record.backupGuests}}
 	{{#if user.get0.trusted}}{{&priv user.link}}{{else}}{{&user.get0.usernameLink}}{{/if}}
 	{{#ifMayChange this}}
-		{{> include/modal.delete title=user.get0.username action="removeGuest" field="userId" value=user._id label="Weet je zeker dat je je deelname wil annuleren?"}} 
+		<a 	class="confirm-removeGuest" data-id="{{user._id}}" data-title="Afmelden {{user.get0.username}}">
+			<span class="glyphicon glyphicon-trash" aria-hidden="true" style="cursor:pointer;"></span>
+		</a>
 	{{/ifMayChange}}
 	<br/>
 {{/each}}

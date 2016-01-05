@@ -3,7 +3,11 @@
 {{#ifInlineEdit record}}
 <script src="/lib/webshim-1.15.10/js-webshim/minified/polyfiller.js"></script>
 {{/ifInlineEdit}}
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
 {{> include/page.header.end}}
+{{> dialog.confirm.action action="removeGuest" field="guest" message="Weet je zeker dat je je wilt afmelden?" okButton="Afmelden"}}
 
 {{#ifInlineEdit record}}
 	<script>webshim.polyfill('forms forms-ext');</script>
