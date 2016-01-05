@@ -1,5 +1,14 @@
 package club.wikivents.model;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.StringJoiner;
 
 import org.kisst.http4j.handlebar.AccessChecker;
@@ -96,5 +105,56 @@ public class Event extends EventData implements Comparable<Event>, AccessChecker
 			if (id.equals(com.id()))
 				return com;
 		return null;
+	}
+	
+	public String urlify(String s) {
+		return s.toLowerCase().replaceAll("\\s+", "-").replaceAll("[^-a-zA-Z0-9]", "").replaceAll("\\-\\-+", "-");
+	}
+	public String urlEncode(String s) {
+		try {
+			return URLEncoder.encode(s,"UTF-8");
+		} 
+		catch (UnsupportedEncodingException e) { throw new RuntimeException(e); }
+	}
+	
+	private static Locale localeNl=new Locale("nl");
+	private static ZoneId CET = ZoneId.of("CET");
+	private static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd", localeNl);
+	//private static DateTimeFormatter googleTimeFormatter = DateTimeFormatter.ofPattern("HHmmss", localeNl);
+	public String formatGoogleDate(LocalDate date, LocalTime time) {
+		if (time==null)
+			return dateFormatter.format(date);
+		LocalDateTime ldt=LocalDateTime.of(date, time);
+		Instant inst = ldt.atZone(CET).toInstant();
+		return inst.toString().replaceAll(":", "").replaceAll("-", "");
+	}
+	
+	public LocalTime calcEndTime() {
+		if (time==null)
+			return null;
+		if (endTime!=null)
+			return endTime;
+		return time.plusHours(1);
+	}
+	
+	public LocalDate calcEndDate() {
+		if (time==null)
+			return date;
+		if (calcEndTime().isAfter(time))
+			return date;
+		return date.plusDays(1);
+	}
+	
+	public String googleCalendarUrl() {
+		return "http://www.google.com/calendar/event?"
+			+"action=TEMPLATE"
+			+"&text="+urlEncode(title)
+			+"&dates="+formatGoogleDate(date,time)+"%2f"+formatGoogleDate(calcEndDate(),calcEndTime())
+			+"&details="+urlEncode("http://wikivents.nl/event/:"+_id)
+			+"&location="+urlEncode(city)+",+"+urlEncode(location)
+			+"&trp=false"
+			//+"&ctz=CET"
+			//+"&sprop="+urlEncode("website:http://wikivents.nl/event/:"+_id)
+		;
 	}
 }
