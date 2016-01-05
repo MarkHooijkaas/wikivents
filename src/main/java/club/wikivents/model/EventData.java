@@ -8,9 +8,9 @@ import org.kisst.item4j.struct.Struct;
 import org.kisst.pko4j.PkoObject;
 import org.kisst.pko4j.PkoSchema;
 
-public class EventData extends PkoObject {
+public class EventData extends PkoObject<WikiventsModel> {
 	public static final Schema schema=new Schema();
-	public static final class Schema extends PkoSchema<Event> {
+	public static final class Schema extends PkoSchema<WikiventsModel,Event> {
 		private Schema() { super(Event.class); }
 		public IdField getKeyField() { return _id; }
 		public final IdField _id = new IdField();
@@ -59,7 +59,7 @@ public class EventData extends PkoObject {
 	public final ImmutableSequence<Comment> comments;
 	
 	public EventData(WikiventsModel model, Struct data) {
-		super(model.events, data);
+		super(model, model.events, data);
 		this.title=schema.title.getString(data);
 		this.description=schema.description.getString(data);
 		this.guestInfo=schema.guestInfo.getString(data, null);

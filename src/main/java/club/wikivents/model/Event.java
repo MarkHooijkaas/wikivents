@@ -38,7 +38,7 @@ public class Event extends EventData implements Comparable<Event>, AccessChecker
 	}   
 	public String organizerNames() {
 		StringJoiner sj = new StringJoiner(", ");
-		for (KeyRef<User> r : organizers)
+		for (KeyRef<WikiventsModel,User> r : organizers)
 			sj.add(r.get().username);
 		return sj.toString();
 	}

@@ -97,7 +97,7 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 
 	
 	
-	public static class Ref extends KeyRef<User> implements MyObject, Htmlable {
+	public static class Ref extends KeyRef<WikiventsModel,User> implements MyObject, Htmlable {
 		public static final Type<User.Ref> type = new Type.Java<User.Ref>(User.Ref.class, null); // XXX TODO: parser is null 
 		public static class Field extends Schema.BasicField<User.Ref> {
 			public Field(String name) { super(User.Ref.type, name); }

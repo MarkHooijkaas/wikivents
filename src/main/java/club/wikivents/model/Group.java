@@ -24,7 +24,7 @@ public class Group extends GroupData implements AccessChecker<User> {
 		));
 	}
 
-	public static class Ref extends KeyRef<Group> implements PkoModel.MyObject {
+	public static class Ref extends KeyRef<WikiventsModel,Group> implements PkoModel.MyObject {
 		public static final Type<Group.Ref> type = new Type.Java<Group.Ref>(Group.Ref.class, null); // XXX TODO: parser is null 
 		public static class Field extends Schema.BasicField<Group.Ref> {
 			public Field(String name) { super(Group.Ref.type, name); }
@@ -37,7 +37,7 @@ public class Group extends GroupData implements AccessChecker<User> {
 	
 	public String ownerNames() {
 		StringJoiner sj = new StringJoiner(", ");
-		for (KeyRef<User> r : owners)
+		for (KeyRef<WikiventsModel,User> r : owners)
 			sj.add(r.get().username);
 		return sj.toString();
 	}

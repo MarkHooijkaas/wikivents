@@ -7,6 +7,7 @@ import org.kisst.item4j.HasName;
 import org.kisst.item4j.Item;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.pko4j.PkoObject;
+import org.kisst.pko4j.PkoModel;
 import org.kisst.pko4j.PkoModel.UniqueIndex;
 import org.kisst.util.ReflectionUtil;
 
@@ -78,7 +79,7 @@ public class FormData  implements Struct{
 	}
 
 	// TODO: this dependency on KeyTable should not be in this package
-	public class UniqueKeyIndexValidator<T extends PkoObject> implements Validator {
+	public class UniqueKeyIndexValidator<MT extends PkoModel, T extends PkoObject<MT>> implements Validator {
 		private final UniqueIndex<T> index;
 
 		public UniqueKeyIndexValidator(UniqueIndex<T> index) { this.index=index; }

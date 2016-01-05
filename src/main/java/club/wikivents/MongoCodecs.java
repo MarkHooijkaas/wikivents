@@ -35,7 +35,7 @@ public class MongoCodecs {
 			writer.writeString(t.toString());  
 		}
 		@Override public Class<KeyRef> getEncoderClass() { return KeyRef.class; }
-		@Override public KeyRef<?> decode(BsonReader reader, DecoderContext dc) {
+		@Override public KeyRef<?,?> decode(BsonReader reader, DecoderContext dc) {
 			String json = reader.readString();
 			return model.users.createRef(json);
 		}

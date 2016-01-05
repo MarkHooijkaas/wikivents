@@ -4,12 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.jgit.api.Git;
-import org.kisst.item4j.struct.HashStruct;
-import org.kisst.item4j.struct.MultiStruct;
-import org.kisst.item4j.struct.StructProps;
 import org.kisst.pko4j.impl.FileStorage;
-import org.kisst.pko4j.impl.MongoDb;
-import org.kisst.pko4j.impl.MongoStorage;
 import org.kisst.pko4j.index.MemoryOrderedIndex;
 import org.kisst.pko4j.index.MemoryUniqueIndex;
 import org.kisst.props4j.Props;
@@ -33,13 +28,14 @@ public class WikiventsModels {
 			new FileStorage(User.class, props, git),
 			new FileStorage(Event.class, props, git),
 			new FileStorage(Group.class, props, git),
-			new MemoryUniqueIndex<User>(User.schema, true, User.schema.username),
-			new MemoryUniqueIndex<User>(User.schema, true, User.schema.email),
+			new MemoryUniqueIndex<WikiventsModel, User>(User.schema, true, User.schema.username),
+			new MemoryUniqueIndex<WikiventsModel, User>(User.schema, true, User.schema.email),
 			new MemoryOrderedIndex<>(Event.schema, false, Event.schema.date, Event.schema._id),
 			new MemoryOrderedIndex<>(Event.schema, false, Event.schema._id)
 		);
 	}
 
+	/*
 	public static WikiventsModel createMongoModel(WikiventsSite site, Props props) {
 		HashStruct defaults= new HashStruct();
 		defaults.put("mongodb", "wikivents");
@@ -48,15 +44,15 @@ public class WikiventsModels {
 			new MongoStorage(User.schema, props, db),
 			new MongoStorage(Event.schema, props, db),
 			new MongoStorage(Group.schema, props, db),
-			new MemoryUniqueIndex<User>(User.schema, true, User.schema.username),
-			new MemoryUniqueIndex<User>(User.schema, true, User.schema.email),
+			new MemoryUniqueIndex<WikiventsModel, User>(User.schema, true, User.schema.username),
+			new MemoryUniqueIndex<WikiventsModel, User>(User.schema, true, User.schema.email),
 			new MemoryOrderedIndex<>(Event.schema, false, Event.schema.date, Event.schema._id),
 			new MemoryOrderedIndex<>(Event.schema, false, Event.schema._id)
 		);
 		MongoCodecs.setModel(model);
 		return model;
 	}
-	
+	*/
 	public static WikiventsModel createModel(WikiventsSite site, Props props) {
 		String storage = props.getString("storage", "file");
 		if ("file".equals(storage))

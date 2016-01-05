@@ -24,6 +24,7 @@ import org.kisst.util.StringUtil;
 
 import club.wikivents.model.User;
 import club.wikivents.model.UserItem;
+import club.wikivents.model.WikiventsModel;
 import net.tanesha.recaptcha.ReCaptchaImpl;
 import net.tanesha.recaptcha.ReCaptchaResponse;
 
@@ -241,8 +242,8 @@ public class UserHandler extends WikiventsActionHandler<User> {
 	}
 	public class RegisterForm extends HttpFormData {
 		public RegisterForm(WikiventsCall call) { super(call, call.getTheme().userRegister);
-			this.username = new InputField(schema.username, new UniqueKeyIndexValidator<User>(call.model.usernameIndex) );
-			this.email    = new InputField(schema.email, this::validateEmail, new UniqueKeyIndexValidator<User>(call.model.emailIndex) );
+			this.username = new InputField(schema.username, new UniqueKeyIndexValidator<WikiventsModel,User>(call.model.usernameIndex) );
+			this.email    = new InputField(schema.email, this::validateEmail, new UniqueKeyIndexValidator<WikiventsModel,User>(call.model.emailIndex) );
 		}
 		public final InputField username;
 		public final InputField email;

@@ -17,9 +17,9 @@ public class WikiventsModel extends PkoModel implements SecureToken.SaltFactory 
 		initModel();
 	}
 
-	public final PkoTable<User>  users  = new PkoTable<>(this, User.schema);
-	public final PkoTable<Event> events = new PkoTable<>(this, Event.schema);
-	public final PkoTable<Group> groups = new PkoTable<>(this, Group.schema);
+	public final PkoTable<WikiventsModel,User>  users  = new PkoTable<>(this, User.schema);
+	public final PkoTable<WikiventsModel,Event> events = new PkoTable<>(this, Event.schema);
+	public final PkoTable<WikiventsModel,Group> groups = new PkoTable<>(this, Group.schema);
 
 	public final UniqueIndex<User> usernameIndex = getUniqueIndex(User.class, User.schema.username);
 	public final UniqueIndex<User> emailIndex    = getUniqueIndex(User.class, User.schema.email);

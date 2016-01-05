@@ -9,9 +9,9 @@ import org.kisst.pko4j.PkoObject;
 import org.kisst.pko4j.PkoSchema;
 
 
-public class UserData extends PkoObject {
+public class UserData extends PkoObject<WikiventsModel> {
 	public static final Schema schema=new Schema();
-	public static final class Schema extends PkoSchema<User> {
+	public static final class Schema extends PkoSchema<WikiventsModel, User> {
 		private Schema() { super(User.class); }
 		public final IdField _id = new IdField();
 		public final IntField _crudObjectVersion = new IntField("_crudObjectVersion");
@@ -45,7 +45,7 @@ public class UserData extends PkoObject {
 	public final ImmutableSequence<UserItem> recommendations;
 
 	public UserData(WikiventsModel model, Struct data) {
-		super(model.users, data);
+		super(model, model.users, data);
 		this.model=model;
 		this.username=schema.username.getString(data);
 		this.description=schema.description.getString(data,null);
