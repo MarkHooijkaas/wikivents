@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="src" path="hooi4j"/>
+	<classpathentry kind="src" path="pko4j"/>
 	<classpathentry kind="src" path="src/test/java"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.13.jar"/>
 	<classpathentry kind="lib" path="lib/compiler-0.9.0.jar"/>
@@ -24,7 +26,7 @@
 	<classpathentry kind="lib" path="lib/jackson-annotations-2.6.3.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-core-2.6.3.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-databind-2.6.3.jar"/>
-	<classpathentry kind="lib" path="/hooi4j/build/classes"/>
-	<classpathentry kind="lib" path="/pko4j/build/classes"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/hooi4j"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/pko4j"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

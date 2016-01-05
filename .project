@@ -14,4 +14,16 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>hooi4j</name>
+			<type>2</type>
+			<location>/Users/mark/workspace/hooi4j/src/main/java</location>
+		</link>
+		<link>
+			<name>pko4j</name>
+			<type>2</type>
+			<location>/Users/mark/workspace/pko4j/src/main/java</location>
+		</link>
+	</linkedResources>
 </projectDescription>
