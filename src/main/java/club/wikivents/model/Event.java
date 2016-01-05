@@ -111,6 +111,7 @@ public class Event extends EventData implements Comparable<Event>, AccessChecker
 		return s.toLowerCase().replaceAll("\\s+", "-").replaceAll("[^-a-zA-Z0-9]", "").replaceAll("\\-\\-+", "-");
 	}
 	public String urlEncode(String s) {
+		if (s==null) return "";
 		try {
 			return URLEncoder.encode(s,"UTF-8");
 		} 
