@@ -11,7 +11,7 @@ import club.wikivents.model.Event;
 import club.wikivents.model.User;
 import club.wikivents.model.WikiventsModel;
 
-public abstract class WikiventsActionHandler<T extends PkoObject<WikiventsModel> & AccessChecker<User>> extends ActionHandler<WikiventsCall, T>{
+public abstract class WikiventsActionHandler<T extends PkoObject<WikiventsModel,T> & AccessChecker<User>> extends ActionHandler<WikiventsCall, T>{
 	public final WikiventsModel model;
 	public final WikiventsSite site;
 	public final PkoTable<WikiventsModel, T> table;

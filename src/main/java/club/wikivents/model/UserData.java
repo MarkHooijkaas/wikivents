@@ -9,7 +9,7 @@ import org.kisst.pko4j.PkoObject;
 import org.kisst.pko4j.PkoSchema;
 
 
-public class UserData extends PkoObject<WikiventsModel> {
+public class UserData extends PkoObject<WikiventsModel, User> {
 	public static final Schema schema=new Schema();
 	public static final class Schema extends PkoSchema<WikiventsModel, User> {
 		private Schema() { super(User.class); }

@@ -79,7 +79,7 @@ public class FormData  implements Struct{
 	}
 
 	// TODO: this dependency on KeyTable should not be in this package
-	public class UniqueKeyIndexValidator<MT extends PkoModel, T extends PkoObject<MT>> implements Validator {
+	public class UniqueKeyIndexValidator<MT extends PkoModel, T extends PkoObject<MT,T>> implements Validator {
 		private final UniqueIndex<T> index;
 
 		public UniqueKeyIndexValidator(UniqueIndex<T> index) { this.index=index; }

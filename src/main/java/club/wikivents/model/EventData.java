@@ -8,7 +8,7 @@ import org.kisst.item4j.struct.Struct;
 import org.kisst.pko4j.PkoObject;
 import org.kisst.pko4j.PkoSchema;
 
-public class EventData extends PkoObject<WikiventsModel> {
+public class EventData extends PkoObject<WikiventsModel, Event> {
 	public static final Schema schema=new Schema();
 	public static final class Schema extends PkoSchema<WikiventsModel,Event> {
 		private Schema() { super(Event.class); }

@@ -20,7 +20,7 @@ public class EventCommands {
 			return user.mayParticipate() && ! event.hasGuest(guest);
 		}
 		@Override public Event apply() {
-			return (Event) event.changeField(Event.schema.guests, event.guests.growTail(new Guest(model, guest)));
+			return event.changeField(Event.schema.guests, event.guests.growTail(new Guest(model, guest)));
 		}
 	}
 
@@ -34,7 +34,7 @@ public class EventCommands {
 		@Override public Event apply() {
 			Guest g = event.findGuest(guest._id);
 			if (g!=null)
-				return (Event) event.changeField(Event.schema.guests, event.guests.removeItem(g));
+				return event.changeField(Event.schema.guests, event.guests.removeItem(g));
 			return event;
 		}
 	}

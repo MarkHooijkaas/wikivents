@@ -5,7 +5,7 @@ import org.kisst.item4j.struct.Struct;
 import org.kisst.pko4j.PkoObject;
 import org.kisst.pko4j.PkoSchema;
 
-public class GroupData extends PkoObject<WikiventsModel> {
+public class GroupData extends PkoObject<WikiventsModel, Group> {
 	public static final Schema schema=new Schema();
 	public static final class Schema extends PkoSchema<WikiventsModel,Group> {
 		private Schema() { super(Group.class); }
