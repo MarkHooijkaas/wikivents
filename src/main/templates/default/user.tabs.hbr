@@ -1,8 +1,8 @@
 <ul class="nav nav-tabs" id="navTabs">
 	<li role="presentation" {{#if mainTab}}class="active"{{/if}}><a role="tab" data-toggle="tab" data-target="#mainTab">{{record.username}}</a></li>
-	<li role="presentation"><a role="tab" data-toggle="tab" data-target="#eventsTab"    >Gaat naar</a></li>
-	<li role="presentation"><a role="tab" data-toggle="tab" data-target="#pastEventsTab">Ging naar</a></li>
-	<li role="presentation"><a role="tab" data-toggle="tab" data-target="#interestsTab" >Interesses</a></li>
+	<li role="presentation"><a role="tab" data-toggle="tab" data-target="#eventsTab"    >Gaat naar {{record.futureEvents.size}}</a></li>
+	<li role="presentation"><a role="tab" data-toggle="tab" data-target="#pastEventsTab">Ging naar {{record.pastEvents.size}}</a></li>
+	<li role="presentation"><a role="tab" data-toggle="tab" data-target="#interestsTab" >Interesses {{record.groups.size}}</a></li>
 	<li role="presentation"><a role="tab" data-toggle="tab" data-target="#karmaTab"     >Karma</a></li>
 {{#if call.user.isAdmin}}
 	<li role="presentation" class="pull-right"><a role="tab" data-toggle="tab" data-target="#adminTab"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Beheer</a></li>
