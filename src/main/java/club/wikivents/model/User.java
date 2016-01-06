@@ -40,8 +40,9 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 	}
 
 
+	public static int getCurrentPkoVersion() { return 1;}
 
-	@Override public int getPkoVersion() { return 1;}
+	@Override public int getPkoVersion() { return getCurrentPkoVersion();}
 	@Override public String getPasswordSalt() { return passwordSalt; }
 
 	public String getLoginToken() { 
