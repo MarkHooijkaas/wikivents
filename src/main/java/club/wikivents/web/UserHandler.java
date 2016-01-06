@@ -23,6 +23,7 @@ import org.kisst.util.PasswordEncryption;
 import org.kisst.util.StringUtil;
 
 import club.wikivents.model.User;
+import club.wikivents.model.UserCommands.RemoveRecommendationCommand;
 import club.wikivents.model.UserItem;
 import club.wikivents.model.WikiventsModel;
 import net.tanesha.recaptcha.ReCaptchaImpl;
@@ -232,6 +233,10 @@ public class UserHandler extends WikiventsActionHandler<User> {
 			model.users.removeSequenceItem(user, schema.recommendations, user.findRecommendation(call.user._id));
 	}
 
+	public RemoveRecommendationCommand createRemoveRecommendationCommand(WikiventsCall call, User record) {
+		String recommenderId=call.request.getParameter("recommender");
+		return new RemoveRecommendationCommand(record, recommenderId);
+	}
 	
 	public static class Form extends HttpFormData {
 		public Form(WikiventsCall call, Struct data) { super(call, call.getTheme().userEdit, data); }

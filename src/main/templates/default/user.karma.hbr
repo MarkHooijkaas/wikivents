@@ -45,9 +45,6 @@ Je kan iedereen aanbevelen als je hem of haar persoonlijk kent, en het idee hebt
 {{/ifEquals}}
 <h2>Aanbevelingen</h2>
 {{#each record.recommendations}}
-	{{#ifAdminMode}}
-		{{> include/modal.delete title=user.get0.username action="removeRecommendation" field="userId" value=user._id label="Weet je zeker dat je deze aanbeveling wilt verwijderen?"}} 
-	{{/ifAdminMode}}
 	{{&priv user.link}}
 	{{#ifMayChange this}}
 		{{> include/modal.delete title=user.get0.username action="removeRecommendation" field="userId" value=user._id label="Weet je zeker dat je deze aanbeveling wilt verwijderen?"}} 

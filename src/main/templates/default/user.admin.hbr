@@ -9,4 +9,16 @@
 </table>	  
 
 <a href="/user/{{record.username}}?loginToken={{record.loginToken}}">Log in als {{record.username}}</a>
+
+{{> dialog.confirm.action command="RemoveRecommendation" id="" field="recommender" message="Weet je zeker dat je deze aanbeveling wilt verwijderen?" okButton="Verwijderen"}}
+
+<h2>Aanbevelingen</h2>
+{{#each record.recommendations}}
+	<a 	class="confirmRemoveRecommendation" data-id="{{user._id}}" data-title="Aanbeveling van {{user.get0.username}}">
+		<span class="glyphicon glyphicon-trash" aria-hidden="true" style="cursor:pointer;"></span>
+	</a>
+	{{&priv user.link}}
+	<br/>
+{{/each}}
+
 {{/ifIsAdmin}}  

@@ -46,6 +46,8 @@ public abstract class WikiventsActionHandler<T extends PkoObject<WikiventsModel,
 	@Override protected void handleCommand(String cmdName, WikiventsCall call, T record) {
 		CallInfo.instance.get().action=cmdName;
 		Method method = ReflectionUtil.getMethod(this.getClass(), "create"+cmdName+"Command", fullsignature);
+		if (method==null)
+			throw new RuntimeException("Unknown commandName "+cmdName);
 		@SuppressWarnings("unchecked")
 		Command<T> cmd = (Command<T>) ReflectionUtil.invoke(this, method, new Object[]{ call, record});
 		if (cmd==null)
