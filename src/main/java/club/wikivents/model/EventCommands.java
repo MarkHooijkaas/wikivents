@@ -1,25 +1,27 @@
 package club.wikivents.model;
 
+import org.kisst.item4j.HasName;
+
 public class EventCommands {
-	public static abstract class EventCommand extends WikiventsModel.Command<Event> {
-		public EventCommand(WikiventsModel model, Event event) { super(model,event); }
+	public static abstract class Command extends WikiventsCommands.Command<Event> {
+		public Command(Event record) { super(record); }
 		public boolean mayBeDoneBy(User user) { return user.isAdmin || record.hasOrganizer(user); }
 	}
 	
-	public static class AddGuestCommand extends EventCommand {
+	public static class AddGuestCommand extends Command {
 		public final User guest;
-		public AddGuestCommand(WikiventsModel model, Event event, User guest) { super(model, event); this.guest=guest; }
+		public AddGuestCommand(Event event, User guest) { super(event); this.guest=guest; }
 		@Override public boolean mayBeDoneBy(User user) { 
 			return user.mayParticipate() && ! record.hasGuest(guest);
 		}
 		@Override public Event apply() {
-			return record.changeField(Event.schema.guests, record.guests.growTail(new Guest(model, guest)));
+			return record.changeField(Event.schema.guests, record.guests.growTail(new Guest(guest)));
 		}
 	}
 
-	public static class RemoveGuestCommand extends EventCommand {
+	public static class RemoveGuestCommand extends Command {
 		public final User guest;
-		public RemoveGuestCommand(WikiventsModel model, Event event, User guest) { super(model, event); this.guest=guest; }
+		public RemoveGuestCommand(Event event, User guest) { super(event); this.guest=guest; }
 		@Override public boolean mayBeDoneBy(User user) { 
 			return user.mayParticipate() && record.hasGuest(guest);
 		}
@@ -29,5 +31,12 @@ public class EventCommands {
 				return record.changeField(Event.schema.guests, record.guests.removeItem(g));
 			return record;
 		}
+	}
+	
+	public static class ChangeFieldCommand extends WikiventsCommands.ChangeFieldCommand<Event> {
+		public ChangeFieldCommand(Event record, HasName field, String value) {
+			super(record, field, value);
+		}
+		@Override public boolean mayBeDoneBy(User user) { return user.isAdmin || record.hasOrganizer(user);}
 	}
 }

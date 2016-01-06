@@ -42,6 +42,15 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 		new Form(call,event).showForm();
 	}
 
+	public AddGuestCommand createAddGuestCommand(WikiventsCall call, Event event) {
+		return new AddGuestCommand(event, call.user);
+	}
+	public RemoveGuestCommand createRemoveGuestCommand(WikiventsCall call, Event event) {
+		String guestId=call.request.getParameter("guest");
+		Guest guest = event.findGuest(guestId);
+		return new RemoveGuestCommand(event, guest.user.get0());
+	}
+	
 	public void handleEdit(WikiventsCall call, Event oldRecord) {
 		Form formdata = new Form(call,(Struct) null);
 		if (formdata.isValid()) 
@@ -89,28 +98,6 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 		Comment com=event.findComment(commentId);
 		if (com.mayBeChangedBy(call.user))
 			table.removeSequenceItem(event, schema.comments, com);
-	}
-
-	public AddGuestCommand createAddGuestCommand(WikiventsCall call, Event event) {
-		return new AddGuestCommand(call.model, event, call.user);
-	}
-	public RemoveGuestCommand createRemoveGuestCommand(WikiventsCall call, Event event) {
-		String guestId=call.request.getParameter("guest");
-		Guest guest = event.findGuest(guestId);
-		return new RemoveGuestCommand(call.model, event, guest.user.get0());
-	}
-
-	@NeedsNoAuthorization
-	public void handleAddGuest(WikiventsCall call, Event event) {
-		AddGuestCommand cmd = createAddGuestCommand(call, event);
-		if (cmd.mayBeDoneBy(call.user))
-			table.update(event, cmd.apply());
-	}
-	@NeedsNoAuthorization
-	public void handleRemoveGuest(WikiventsCall call, Event event) {
-		RemoveGuestCommand cmd = createRemoveGuestCommand(call, event);
-		if (cmd.mayBeDoneBy(call.user))
-			table.update(event, cmd.apply());
 	}
 
 	public void handleAddOrganizer(WikiventsCall call, Event event) {

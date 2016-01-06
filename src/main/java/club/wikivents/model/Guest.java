@@ -28,8 +28,8 @@ public class Guest extends ReflectStruct implements MyObject, AccessChecker<User
 		this.user= schema.user.getRef(model, data);
 		this.date = schema.date.getInstantOrNow(data);
 	}
-	public Guest(WikiventsModel model, User u) {
-		this.user=new User.Ref(model, u._id);
+	public Guest(User u) {
+		this.user=new User.Ref(u.model, u._id);
 		this.date=Instant.now();
 	}
 	

@@ -12,8 +12,10 @@ import org.kisst.util.ReflectionUtil;
 
 import club.wikivents.model.Event;
 import club.wikivents.model.User;
+import club.wikivents.model.WikiventsCommands;
 import club.wikivents.model.WikiventsModel;
-import club.wikivents.model.WikiventsModel.Command;
+import club.wikivents.model.WikiventsCommands.ChangeFieldCommand;
+import club.wikivents.model.WikiventsCommands.Command;
 
 public abstract class WikiventsActionHandler<T extends PkoObject<WikiventsModel,T> & AccessChecker<User>> extends ActionHandler<WikiventsCall, T>{
 	public final WikiventsModel model;
@@ -45,7 +47,7 @@ public abstract class WikiventsActionHandler<T extends PkoObject<WikiventsModel,
 		CallInfo.instance.get().action=cmdName;
 		Method method = ReflectionUtil.getMethod(this.getClass(), "create"+cmdName+"Command", fullsignature);
 		@SuppressWarnings("unchecked")
-		WikiventsModel.Command<T> cmd = (Command<T>) ReflectionUtil.invoke(this, method, new Object[]{ call, record});
+		Command<T> cmd = (Command<T>) ReflectionUtil.invoke(this, method, new Object[]{ call, record});
 		if (cmd==null)
 			throw new RuntimeException("Unknown command "+cmdName);
 		if (cmd.mayBeDoneBy(call.user)) {
@@ -77,6 +79,12 @@ public abstract class WikiventsActionHandler<T extends PkoObject<WikiventsModel,
 			logValue=logValue.substring(0, 7)+"...";
 		CallInfo.instance.get().action="handleChangeField "+field+" to "+logValue;
 		table.updateField(oldRecord, table.getSchema().getField(field), value);
+	}
+	
+	public ChangeFieldCommand<T> createChangeFieldCommand(WikiventsCall call, T record) {
+		String fieldName=call.request.getParameter("field");
+		String value=call.request.getParameter("value");
+		return new WikiventsCommands.ChangeFieldCommand<T>(record, table.schema.getField(fieldName), value);
 	}
 	
 	@NeedsNoAuthorization
