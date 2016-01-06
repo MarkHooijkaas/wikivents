@@ -30,7 +30,7 @@ public class Group extends GroupData implements AccessChecker<User> {
 		public static final Type<Group.Ref> type = new Type.Java<Group.Ref>(Group.Ref.class, null); // XXX TODO: parser is null 
 		public static class Field extends Schema.BasicField<Group.Ref> {
 			public Field(String name) { super(Group.Ref.type, name); }
-			public Ref getRef(WikiventsModel model, Struct data) { return (Ref) model.groups.createRef(Item.asString(data.getDirectFieldValue(name)));}
+			public Ref getRef(WikiventsModel model, Struct data) { return (Ref) model.groups.findRef(Item.asString(data.getDirectFieldValue(name)));}
 		}
 		private Ref(WikiventsModel model, String _id) { super(model.groups, _id); }
 	}

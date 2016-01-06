@@ -73,7 +73,7 @@ public class GroupHandler extends WikiventsActionHandler<Group> {
 	public void handleRemoveMember(WikiventsCall call,Group gr) {
 		String userId=call.request.getParameter("userId");
 		if (call.user._id.equals(userId) || call.user.isAdmin)
-			table.removeSequenceItem(gr, schema.members, (User.Ref) model.users.createRef(userId));
+			table.removeSequenceItem(gr, schema.members, (User.Ref) model.users.findRef(userId));
 	}
 	
 	public void handleAddOwner(WikiventsCall call, Group gr) {

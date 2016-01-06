@@ -103,7 +103,7 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 		public static final Type<User.Ref> type = new Type.Java<User.Ref>(User.Ref.class, null); // XXX TODO: parser is null 
 		public static class Field extends Schema.BasicField<User.Ref> {
 			public Field(String name) { super(User.Ref.type, name); }
-			public Ref getRef(WikiventsModel model, Struct data) { return (Ref) model.users.createRef(Item.asString(data.getDirectFieldValue(name)));}
+			public Ref getRef(WikiventsModel model, Struct data) { return (Ref) model.users.findRef(Item.asString(data.getDirectFieldValue(name)));}
 		}
 
 		private Ref(WikiventsModel model, String _id) { super(model.users, _id); }
