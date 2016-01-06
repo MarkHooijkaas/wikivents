@@ -45,7 +45,7 @@ public class UserData extends PkoObject<WikiventsModel, User> {
 	public final ImmutableSequence<UserItem> recommendations;
 
 	public UserData(WikiventsModel model, Struct data) {
-		super(model, model.users, data);
+		super(model.users, data);
 		this.model=model;
 		this.username=schema.username.getString(data);
 		this.description=schema.description.getString(data,null);

@@ -27,7 +27,7 @@ public class GroupData extends PkoObject<WikiventsModel, Group> {
 	public final ImmutableSequence<Comment> comments;
 
 	public GroupData(WikiventsModel model, Struct data) {
-		super(model, model.groups, data);
+		super(model.groups, data);
 		this.model=model;
 		this.title=schema.title.getString(data);
 		this.description=schema.description.getString(data);

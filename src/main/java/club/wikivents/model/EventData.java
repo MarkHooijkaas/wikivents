@@ -59,7 +59,7 @@ public class EventData extends PkoObject<WikiventsModel, Event> {
 	public final ImmutableSequence<Comment> comments;
 	
 	public EventData(WikiventsModel model, Struct data) {
-		super(model, model.events, data);
+		super(model.events, data);
 		this.title=schema.title.getString(data);
 		this.description=schema.description.getString(data);
 		this.guestInfo=schema.guestInfo.getString(data, null);
