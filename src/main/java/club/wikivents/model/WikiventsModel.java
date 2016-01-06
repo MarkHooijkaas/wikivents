@@ -6,6 +6,8 @@ import org.kisst.http4j.SecureToken;
 import org.kisst.pko4j.PkoModel;
 import org.kisst.pko4j.PkoTable;
 import org.kisst.pko4j.StorageOption;
+import org.kisst.pko4j.index.MemoryOrderedIndex;
+import org.kisst.pko4j.index.MemoryUniqueIndex;
 
 import club.wikivents.web.WikiventsSite;
 
@@ -18,15 +20,16 @@ public class WikiventsModel extends PkoModel implements SecureToken.SaltFactory 
 		initModel();
 	}
 
+	public final UniqueIndex<User> usernameIndex = new MemoryUniqueIndex<>(User.schema, true, User.schema.username);
+	public final UniqueIndex<User> emailIndex    = new MemoryUniqueIndex<>(User.schema, true, User.schema.email);
+
+	public final OrderedIndex<Event> allEvents    = new MemoryOrderedIndex<>(Event.schema, false, Event.schema.date, Event.schema._id);
+	public final OrderedIndex<Event> newestEvents = new MemoryOrderedIndex<>(Event.schema, false, Event.schema._id);
+
 	public final PkoTable<WikiventsModel,User>  users  = new PkoTable<>(this, User.schema);
 	public final PkoTable<WikiventsModel,Event> events = new PkoTable<>(this, Event.schema);
 	public final PkoTable<WikiventsModel,Group> groups = new PkoTable<>(this, Group.schema);
 
-	public final UniqueIndex<User> usernameIndex = getUniqueIndex(User.class, User.schema.username);
-	public final UniqueIndex<User> emailIndex    = getUniqueIndex(User.class, User.schema.email);
-
-	public final OrderedIndex<Event> allEvents    = getOrderedIndex(Event.class, Event.schema.date, Event.schema._id);
-	public final OrderedIndex<Event> newestEvents = getOrderedIndex(Event.class, Event.schema._id);
 
 	public Iterable<Event> futureEvents() { return allEvents.tailList(LocalDate.now().toString());}
 	public Iterable<Event> pastEvents() { return allEvents.headList(LocalDate.now().plusDays(1).toString());}

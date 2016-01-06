@@ -5,8 +5,6 @@ import java.io.IOException;
 
 import org.eclipse.jgit.api.Git;
 import org.kisst.pko4j.impl.FileStorage;
-import org.kisst.pko4j.index.MemoryOrderedIndex;
-import org.kisst.pko4j.index.MemoryUniqueIndex;
 import org.kisst.props4j.Props;
 
 import club.wikivents.model.Event;
@@ -27,11 +25,7 @@ public class WikiventsModels {
 		return new WikiventsModel(site,
 			new FileStorage(User.class, props, git),
 			new FileStorage(Event.class, props, git),
-			new FileStorage(Group.class, props, git),
-			new MemoryUniqueIndex<WikiventsModel, User>(User.schema, true, User.schema.username),
-			new MemoryUniqueIndex<WikiventsModel, User>(User.schema, true, User.schema.email),
-			new MemoryOrderedIndex<>(Event.schema, false, Event.schema.date, Event.schema._id),
-			new MemoryOrderedIndex<>(Event.schema, false, Event.schema._id)
+			new FileStorage(Group.class, props, git)
 		);
 	}
 
