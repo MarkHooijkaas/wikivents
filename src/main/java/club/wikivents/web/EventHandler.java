@@ -106,7 +106,7 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 		if (newOrganizer==null)
 			call.sendError(500, "no organizer");
 		else if (! event.hasOrganizer(newOrganizer) && event.hasGuest(newOrganizer))
-			table.addSequenceItem(event, schema.organizers, new User.Ref(model, newOrganizer._id));
+			table.addSequenceItem(event, schema.organizers, newOrganizer.getRef());
 	}
 	public void handleRemoveOrganizer(WikiventsCall call, Event event) {
 		String id=call.request.getParameter("userId");
@@ -114,7 +114,7 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 		if (user==null)
 			call.sendError(500, "no organizer");
 		else if (event.organizers.size()>1) // never remove the last organizer
-			table.removeSequenceItem(event, schema.organizers, new User.Ref(model, user._id));
+			table.removeSequenceItem(event, schema.organizers, user.getRef());
 	}
 
 	public void handleAddGroup(WikiventsCall call, Event event) {
@@ -123,7 +123,7 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 		if (gr==null)
 			call.sendError(500, "no such group");
 		else if (! event.hasGroup(gr))
-			table.addSequenceItem(event, schema.groups, new Group.Ref(model, gr._id));
+			table.addSequenceItem(event, schema.groups, gr.getRef());
 	}
 	public void handleRemoveGroup(WikiventsCall call, Event event) {
 		String id=call.request.getParameter("groupId");
@@ -131,7 +131,7 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 		if (gr==null)
 			call.sendError(500, "no such group");
 		else
-			table.removeSequenceItem(event, schema.groups, new Group.Ref(model, gr._id));
+			table.removeSequenceItem(event, schema.groups, gr.getRef());
 	}
 	
 	public class Form extends HttpFormData {

@@ -25,7 +25,7 @@ public  class Comment extends ReflectStruct implements PkoModel.MyObject, Access
 	public String id() { return user._id+date.toEpochMilli(); }
 	
 	public Comment(User u, String comment) {
-		this.user=new User.Ref(u.model, u._id);
+		this.user=u.getRef();
 		this.date=Instant.now();
 		this.comment=comment;
 		//this.hidden=false;

@@ -34,7 +34,7 @@ public class EventData extends PkoObject<WikiventsModel, Event> {
 		public final StringField guestInfo = new StringField("guestInfo"); 
 		public final SequenceField<Guest> guests= new SequenceField<Guest>(Guest.schema,"guests"); 
 		public final SequenceField<Comment> comments= new SequenceField<Comment>(Comment.schema,"comments");
-		public final SequenceField<Group.Ref> groups = new SequenceField<Group.Ref>(Group.Ref.type,"groups");
+		public final SequenceField<Group.Ref> groups = new SequenceField<>(Group.Ref.type,"groups");
 	}
 	
 	public final String title;

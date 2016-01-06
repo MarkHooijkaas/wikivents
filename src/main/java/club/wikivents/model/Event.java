@@ -25,7 +25,7 @@ public class Event extends EventData implements Comparable<Event>, AccessChecker
 	public Event(WikiventsModel model, Struct data) { super(model, data); }
 	public Event(WikiventsModel model, User org, Struct data) {
 		this(model, new MultiStruct(
-			new SingleItemStruct(schema.organizers.name, ImmutableSequence.of(User.Ref.class, new User.Ref(model, org._id))),
+			new SingleItemStruct(schema.organizers.name, ImmutableSequence.of(User.Ref.class, org.getRef())),
 			new SingleItemStruct(schema.guests.name, ImmutableSequence.of(Guest.class, new Guest(model, org))),
 			data
 		));
@@ -89,7 +89,7 @@ public class Event extends EventData implements Comparable<Event>, AccessChecker
 	public boolean hasGroup(Group gr) {
 		if (groups==null || gr==null)
 			return false;
-		for (Group.Ref r: groups) {
+		for (KeyRef<WikiventsModel,Group> r: groups) {
 			if (r._id.equals(gr._id)) 
 				return true;
 		}

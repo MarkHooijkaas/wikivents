@@ -18,21 +18,22 @@ public class Group extends GroupData implements AccessChecker<User> {
 	public Group(WikiventsModel model, Struct data) { super(model, data); }
 	public Group(WikiventsModel model, User org, Struct data) {
 		this(model, new MultiStruct(
-			new SingleItemStruct(schema.owners.name, ImmutableSequence.of(User.Ref.class, new User.Ref(model, org._id))),
-			new SingleItemStruct(schema.members.name, ImmutableSequence.of(User.Ref.class, new User.Ref(model, org._id))),
+			new SingleItemStruct(schema.owners.name, ImmutableSequence.of(User.Ref.class, org.getRef())),
+			new SingleItemStruct(schema.members.name, ImmutableSequence.of(User.Ref.class, org.getRef())),
 			data
 		));
 	}
 
+	@Override protected Ref createRef() { return new Ref(model, _id); }
+	@Override public Ref getRef() { return (Ref) super.getRef(); }
 	public static class Ref extends KeyRef<WikiventsModel,Group> implements PkoModel.MyObject {
 		public static final Type<Group.Ref> type = new Type.Java<Group.Ref>(Group.Ref.class, null); // XXX TODO: parser is null 
 		public static class Field extends Schema.BasicField<Group.Ref> {
 			public Field(String name) { super(Group.Ref.type, name); }
-			public Ref getRef(WikiventsModel model, Struct data) { return new Group.Ref(model, Item.asString(data.getDirectFieldValue(name)));}
+			public Ref getRef(WikiventsModel model, Struct data) { return (Ref) model.groups.createRef(Item.asString(data.getDirectFieldValue(name)));}
 		}
-		public Ref(WikiventsModel model, String _id) { super(model.groups, _id); }
+		private Ref(WikiventsModel model, String _id) { super(model.groups, _id); }
 	}
-
 	
 	
 	public String ownerNames() {

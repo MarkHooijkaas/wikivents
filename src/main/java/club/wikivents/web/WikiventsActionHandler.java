@@ -96,7 +96,7 @@ public abstract class WikiventsActionHandler<T extends PkoObject<WikiventsModel,
 		if (event!=null)
 			CallInfo.instance.get().data=event.title;
 		if (! event.isLikedBy(call.user))
-			model.events.addSequenceItem(event, Event.schema.likes, new User.Ref(model, call.user._id));
+			model.events.addSequenceItem(event, Event.schema.likes, call.user.getRef());
 	}
 	@NeedsNoAuthorization
 	public void handleRemoveLike(WikiventsCall call) {
@@ -104,7 +104,7 @@ public abstract class WikiventsActionHandler<T extends PkoObject<WikiventsModel,
 		Event event=model.events.read(id);
 		if (event!=null)
 			CallInfo.instance.get().data=event.title;
-		User.Ref ref = new User.Ref(model, call.user._id);
+		User.Ref ref = call.user.getRef();
 		model.events.removeSequenceItem(event, Event.schema.likes, ref);
 	}
 	

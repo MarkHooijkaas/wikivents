@@ -29,7 +29,7 @@ public class UserItem extends ReflectStruct implements MyObject, AccessChecker<U
 	}
 	public UserItem(WikiventsModel model, User u) { this(model, u, null); }
 	public UserItem(WikiventsModel model, User u, String comment) {
-		this.user=new User.Ref(model, u._id);
+		this.user=u.getRef();
 		this.date=Instant.now();
 		this.comment=comment;
 	}

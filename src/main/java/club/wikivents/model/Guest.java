@@ -29,7 +29,7 @@ public class Guest extends ReflectStruct implements MyObject, AccessChecker<User
 		this.date = schema.date.getInstantOrNow(data);
 	}
 	public Guest(User u) {
-		this.user=new User.Ref(u.model, u._id);
+		this.user=u.getRef();
 		this.date=Instant.now();
 	}
 	

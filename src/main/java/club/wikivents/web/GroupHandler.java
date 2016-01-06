@@ -67,13 +67,13 @@ public class GroupHandler extends WikiventsActionHandler<Group> {
 	@NeedsNoAuthorization
 	public void handleAddMember(WikiventsCall call, Group gr) {
 		if (!gr.hasMember(call.user))
-			table.addSequenceItem(gr, schema.members, new User.Ref(model, call.user._id));
+			table.addSequenceItem(gr, schema.members, call.user.getRef());
 	}
 	@NeedsNoAuthorization
 	public void handleRemoveMember(WikiventsCall call,Group gr) {
 		String userId=call.request.getParameter("userId");
 		if (call.user._id.equals(userId) || call.user.isAdmin)
-			table.removeSequenceItem(gr, schema.members, new User.Ref(model, userId));
+			table.removeSequenceItem(gr, schema.members, (User.Ref) model.users.createRef(userId));
 	}
 	
 	public void handleAddOwner(WikiventsCall call, Group gr) {
@@ -82,7 +82,7 @@ public class GroupHandler extends WikiventsActionHandler<Group> {
 		if (newOwner==null)
 			call.sendError(500, "no owner");
 		else if (! gr.hasOwner(newOwner))
-			table.addSequenceItem(gr, schema.owners, new User.Ref(model, newOwner._id));
+			table.addSequenceItem(gr, schema.owners, newOwner.getRef());
 	}
 	public void handleRemoveOwner(WikiventsCall call, Group gr) {
 		String id=call.request.getParameter("userId");
@@ -90,7 +90,7 @@ public class GroupHandler extends WikiventsActionHandler<Group> {
 		if (user==null)
 			call.sendError(500, "no owner");
 		else if (gr.owners.size()>1) // never remove the last organizer
-			table.removeSequenceItem(gr, schema.owners, new User.Ref(model, user._id));
+			table.removeSequenceItem(gr, schema.owners, user.getRef());
 	}
 	
 	public void handleRemoveComment(WikiventsCall call, Group gr) {
