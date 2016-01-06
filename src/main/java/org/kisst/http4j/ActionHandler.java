@@ -1,15 +1,15 @@
 package org.kisst.http4j;
 
-import org.kisst.pko4j.PkoObject;
-import org.kisst.util.CallInfo;
-import org.kisst.util.ReflectionUtil;
-import org.kisst.util.StringUtil;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.Method;
+
+import org.kisst.pko4j.PkoObject;
+import org.kisst.util.CallInfo;
+import org.kisst.util.ReflectionUtil;
+import org.kisst.util.StringUtil;
 
 /*
  * will call the following methods:
@@ -27,7 +27,7 @@ import java.lang.reflect.Method;
  */
 public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHandler {
 	private final Class<?>[] extralongsignature;
-	private final Class<?>[] fullsignature;
+	protected final Class<?>[] fullsignature;
 	private final Class<?>[] fullsignature2;
 	private final Class<?>[] shortsignature;
 	public ActionHandler(Class<C> callClass, Class<T> recordClass) {
@@ -101,6 +101,7 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 		String  id2 = call.request.getParameter("ActionHandlerId");
 		if (id2!=null)
 			id=id2;
+		String cmdName = call.request.getParameter("command");
 		String action = call.request.getParameter("action");
 		T record=null;
 		if (id!=null && id.trim().length()>0 && ! id.equals("NONE")) {
@@ -116,13 +117,22 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 					throw new IllegalArgumentException("Could not find "+id);
 			}
 		}
-		if (action==null)
+		if (cmdName!=null) {
+			handleCommand(cmdName, call, record);
+			return;
+		}
+		if (action==null) {
 			call.throwUnauthorized("No action specified");
+		}
 		String methodName="handle"+StringUtil.capitalize(action);
 		invoke(methodName, call, record, null);	
 		//System.out.println(call.response.getStatus());
 		if (!call.isAjax() && ! call.response.isCommitted()) 
 			call.redirect(call.getLocalUrl());
+	}
+
+	protected void handleCommand(String cmdName, C call, T record) {
+		// TODO: make generic, but now is overridden in subclass 
 	}
 
 	private void invoke(String methodName, C call, T record, String subpath) {

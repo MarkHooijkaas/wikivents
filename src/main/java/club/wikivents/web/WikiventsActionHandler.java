@@ -1,15 +1,19 @@
 package club.wikivents.web;
 
+import java.lang.reflect.Method;
+
 import org.kisst.http4j.ActionHandler;
 import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.handlebar.AccessChecker;
 import org.kisst.pko4j.PkoObject;
 import org.kisst.pko4j.PkoTable;
 import org.kisst.util.CallInfo;
+import org.kisst.util.ReflectionUtil;
 
 import club.wikivents.model.Event;
 import club.wikivents.model.User;
 import club.wikivents.model.WikiventsModel;
+import club.wikivents.model.WikiventsModel.Command;
 
 public abstract class WikiventsActionHandler<T extends PkoObject<WikiventsModel,T> & AccessChecker<User>> extends ActionHandler<WikiventsCall, T>{
 	public final WikiventsModel model;
@@ -37,6 +41,24 @@ public abstract class WikiventsActionHandler<T extends PkoObject<WikiventsModel,
 			call.throwUnauthorized("User "+call.user.username+" is not authorized to call viewing method "+methodName);
 	}
 	
+	@Override protected void handleCommand(String cmdName, WikiventsCall call, T record) {
+		CallInfo.instance.get().action=cmdName;
+		Method method = ReflectionUtil.getMethod(this.getClass(), "create"+cmdName+"Command", fullsignature);
+		@SuppressWarnings("unchecked")
+		WikiventsModel.Command<T> cmd = (Command<T>) ReflectionUtil.invoke(this, method, new Object[]{ call, record});
+		if (cmd==null)
+			throw new RuntimeException("Unknown command "+cmdName);
+		if (cmd.mayBeDoneBy(call.user)) {
+			//System.out.println("Applying "+cmd);
+			T newRecord=cmd.apply();
+			if (newRecord!=record)
+				table.update(record, newRecord);
+		}
+		else
+			System.out.println("Not Allowed "+cmd);
+		if (!call.isAjax() && ! call.response.isCommitted()) 
+			call.redirect(call.getLocalUrl());
+	}
 
 	@Override protected T findRecord(String id) {
 		if (id.startsWith(":"))

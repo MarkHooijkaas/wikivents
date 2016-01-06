@@ -35,5 +35,6 @@ public class Guest extends ReflectStruct implements MyObject, AccessChecker<User
 	
 	@Override public boolean mayBeChangedBy(User user) { return user!=null && this.user._id.equals(user._id); }
 	@Override public boolean mayBeViewedBy(User user) { return user!=null; }
+	@Override public String toString() { return "Guest("+user.name()+")"; }
 
 }

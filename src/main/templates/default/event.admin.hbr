@@ -4,10 +4,10 @@
 	{{> include/modal.lockField value=record.guestsAllowed name="guestsAllowed" label="Deelname"}}
 </h2> 
 
-{{> dialog.confirm.action action="removeGuest" id="Admin" field="guest" okButton="Verwijderen"}}
+{{> dialog.confirm.action command="RemoveGuest" id="Admin" field="guest" okButton="Verwijderen"}}
 
 {{#each record.allowedGuests}}
-	<a class="confirm-removeGuestAdmin" data-id="{{user._id}}" data-title="Afmelden {{user.get0.username}}" data-message="Weet je zeker dat je {{user.get0.username}} wilt verwijderen ?">
+	<a class="confirmRemoveGuestAdmin" data-id="{{user._id}}" data-title="Afmelden {{user.get0.username}}" data-message="Weet je zeker dat je {{user.get0.username}} wilt verwijderen ?">
 		<span class="glyphicon glyphicon-trash" aria-hidden="true" style="cursor:pointer;"></span>
 	</a>
 	{{&user.link}}
@@ -20,7 +20,7 @@
 	{{> include/modal.lockField value=record.backupGuestsAllowed name="backupGuestsAllowed" label="Reservelijst"}}
 </h2>
 {{#each record.backupGuests}}
-	<a class="confirm-removeGuestAdmin" data-id="{{user._id}}" data-title="Afmelden {{user.get0.username}}" data-message="Weet je zeker dat je {{user.get0.username}} wilt verwijderen van de reservelijst?">
+	<a class="confirmRemoveGuestAdmin" data-id="{{user._id}}" data-title="Afmelden {{user.get0.username}}" data-message="Weet je zeker dat je {{user.get0.username}} wilt verwijderen van de reservelijst?">
 		<span class="glyphicon glyphicon-trash" aria-hidden="true" style="cursor:pointer;"></span>
 	</a>
 	{{&user.link}}

@@ -8,7 +8,7 @@
 {{#each record.allowedGuests}}
 	{{#if call.user.trusted}}{{&priv user.link}}{{else}}{{&user.get0.usernameLink}}{{/if}}
 	{{#ifMayChange this}}
-		<a 	class="confirm-removeGuest" data-id="{{user._id}}" data-title="Afmelden {{user.get0.username}}">
+		<a 	class="confirmRemoveGuest" data-id="{{user._id}}" data-title="Afmelden {{user.get0.username}}">
 			<span class="glyphicon glyphicon-trash" aria-hidden="true" style="cursor:pointer;"></span>
 		</a>
 	{{/ifMayChange}}
@@ -27,7 +27,7 @@
 {{#if user.mayParticipate}}
 	{{#if record.allowNewGuest}}
 	  	<form role="form" method="POST" >
-	  		<input type="hidden" name="action" value="addGuest"/>				
+	  		<input type="hidden" name="command" value="AddGuest"/>				
 	  		<input type="hidden" name="userId" value="{{record._id}}"/>				
 			<button type="submit" class="btn btn-default">{{#if record.idea}}Ik ben ge&iuml;nteresseerd{{else}}Ik wil ook deelnemen{{/if}}</button>
 	 	</form>
@@ -44,7 +44,7 @@
 {{#each record.backupGuests}}
 	{{#if user.get0.trusted}}{{&priv user.link}}{{else}}{{&user.get0.usernameLink}}{{/if}}
 	{{#ifMayChange this}}
-		<a 	class="confirm-removeGuest" data-id="{{user._id}}" data-title="Afmelden {{user.get0.username}}">
+		<a 	class="confirmRemoveGuest" data-id="{{user._id}}" data-title="Afmelden {{user.get0.username}}">
 			<span class="glyphicon glyphicon-trash" aria-hidden="true" style="cursor:pointer;"></span>
 		</a>
 	{{/ifMayChange}}
@@ -67,7 +67,7 @@
 	{{else}}
 		{{#if record.allowNewBackupGuest}}
 		  	<form role="form" method="POST">
-		  		<input type="hidden" name="action" value="addGuest"/>				
+		  		<input type="hidden" name="command" value="AddGuest"/>				
 		  		<input type="hidden" name="userId" value="{{record._id}}"/>				
 				<button type="submit" class="btn btn-default">Ik wil op de reservelijst</button>
 		 	</form>

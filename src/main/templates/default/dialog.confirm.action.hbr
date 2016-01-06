@@ -1,20 +1,20 @@
 
-<div id="{{action}}Modal{{id}}" class="modal fade" role="dialog">
+<div id="{{command}}Modal{{id}}" class="modal fade" role="dialog">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title" id="{{action}}Title{{id}}">{{title}}</h4>
+				<h4 class="modal-title" id="{{command}}Title{{id}}">{{title}}</h4>
 			</div>
-			<div class="modal-body" id="{{action}}Content{{id}}">
+			<div class="modal-body" id="{{command}}Content{{id}}">
 				{{message}}
 			</div>
 			<div class="modal-footer">
-				<form role="form" method="POST" id="{{action}}Form{{id}}">
-					<input type="hidden" name="action" value="{{action}}"/>
-					<input type="hidden" name="{{field}}" id="{{action}}Value{{id}}" value=""/>
+				<form role="form" method="POST" id="{{command}}Form{{id}}">
+					<input type="hidden" name="command" value="{{command}}"/>
+					<input type="hidden" name="{{field}}" id="{{command}}Value{{id}}" value=""/>
 					<button type="submit" class="btn btn-success">{{okButton}}</button>
-        		    <a class="btn btn-default btn-danger" id="{{action}}Cancel{{id}}" data-dismiss="modal" data-backdrop="false">Annuleer</a>
+        		    <a class="btn btn-default btn-danger" id="{{command}}Cancel{{id}}" data-dismiss="modal" data-backdrop="false">Annuleer</a>
 				</form>
 			</div>
 		</div>
@@ -22,19 +22,19 @@
 </div>
 <script>
 	$(document).ready(function(){
-		$(".confirm-{{action}}{{id}}").click(function(){
+		$(".confirm{{command}}{{id}}").click(function(){
 			var title=$(this).attr("data-title");
 			var message=$(this).attr("data-message");
 			var id=$(this).attr("data-id");
 			if (title)
-				$("#{{action}}Title{{id}}").html(title);
+				$("#{{command}}Title{{id}}").html(title);
 			if (message)
-				$("#{{action}}Content{{id}}").html(message);
-			$("#{{action}}Value{{id}}").attr("value",id);
-			$('#{{action}}Modal{{id}}').modal('show');
+				$("#{{command}}Content{{id}}").html(message);
+			$("#{{command}}Value{{id}}").attr("value",id);
+			$('#{{command}}Modal{{id}}').modal('show');
 	    });
-		$("#{{action}}Cancel{{id}}").click(function(){
-			$('#{{action}}Modal{{id}}').modal('hide');
+		$("#{{command}}Cancel{{id}}").click(function(){
+			$('#{{command}}Modal{{id}}').modal('hide');
 	    });
 	});
 </script>

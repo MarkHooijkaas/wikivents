@@ -7,6 +7,8 @@ import org.kisst.util.CallInfo;
 
 import club.wikivents.model.Comment;
 import club.wikivents.model.Event;
+import club.wikivents.model.EventCommands.AddGuestCommand;
+import club.wikivents.model.EventCommands.RemoveGuestCommand;
 import club.wikivents.model.Group;
 import club.wikivents.model.Guest;
 import club.wikivents.model.User;
@@ -89,16 +91,26 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 			table.removeSequenceItem(event, schema.comments, com);
 	}
 
+	public AddGuestCommand createAddGuestCommand(WikiventsCall call, Event event) {
+		return new AddGuestCommand(call.model, event, call.user);
+	}
+	public RemoveGuestCommand createRemoveGuestCommand(WikiventsCall call, Event event) {
+		String guestId=call.request.getParameter("guest");
+		Guest guest = event.findGuest(guestId);
+		return new RemoveGuestCommand(call.model, event, guest.user.get0());
+	}
+
 	@NeedsNoAuthorization
 	public void handleAddGuest(WikiventsCall call, Event event) {
-		if (call.user.mayParticipate() && ! event.hasGuest(call.user))
-			table.addSequenceItem(event, schema.guests, new Guest(model, call.user));
+		AddGuestCommand cmd = createAddGuestCommand(call, event);
+		if (cmd.mayBeDoneBy(call.user))
+			table.update(event, cmd.apply());
 	}
 	@NeedsNoAuthorization
 	public void handleRemoveGuest(WikiventsCall call, Event event) {
-		String userId=call.request.getParameter("guest");
-		if (call.user._id.equals(userId) || call.user.isAdmin)
-			table.removeSequenceItem(event, schema.guests, event.findGuest(userId));
+		RemoveGuestCommand cmd = createRemoveGuestCommand(call, event);
+		if (cmd.mayBeDoneBy(call.user))
+			table.update(event, cmd.apply());
 	}
 
 	public void handleAddOrganizer(WikiventsCall call, Event event) {

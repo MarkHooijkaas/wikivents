@@ -4,7 +4,9 @@ import java.time.LocalDate;
 
 import club.wikivents.web.WikiventsSite;
 import org.kisst.http4j.SecureToken;
+import org.kisst.pko4j.PkoCommand;
 import org.kisst.pko4j.PkoModel;
+import org.kisst.pko4j.PkoObject;
 import org.kisst.pko4j.PkoTable;
 import org.kisst.pko4j.StorageOption;
 
@@ -36,4 +38,15 @@ public class WikiventsModel extends PkoModel implements SecureToken.SaltFactory 
 			return null;
 		return u.passwordSalt;
 	}
+	
+	public static abstract class Command<T extends PkoObject<WikiventsModel, T>> implements PkoCommand<T> {
+		public final WikiventsModel model;
+		public final T record;
+		public Command(WikiventsModel model, T record) { this.model=model; this.record=record;}
+		public boolean mayBeDoneBy(User user) { return user.isAdmin; }
+		@Override public void otherActions(boolean rerun) {}
+		@Override public T target() {return record;}
+		@Override public String toString() {return this.getClass().getSimpleName()+"("+record._id+")";}
+	}
+
 }
