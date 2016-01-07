@@ -15,11 +15,7 @@ import javax.mail.internet.MimeMessage;
 import org.kisst.http4j.SecureToken;
 import org.kisst.http4j.handlebar.AccessChecker;
 import org.kisst.http4j.handlebar.Htmlable;
-import org.kisst.item4j.Item;
-import org.kisst.item4j.Type;
 import org.kisst.item4j.struct.Struct;
-import org.kisst.pko4j.PkoModel.MyObject;
-import org.kisst.pko4j.PkoTable.KeyRef;
 import org.kisst.util.PasswordEncryption;
 import org.kisst.util.PasswordEncryption.HasPasswordSalt;
 
@@ -46,13 +42,13 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 	@Override public String getPasswordSalt() { return passwordSalt; }
 
 	public String getLoginToken() { 
-		SecureToken tok=new SecureToken(model, _id);
+		SecureToken tok=new SecureToken(table.model, _id);
 		return tok.getToken();
 	}
 	
 	public ArrayList<Event> futureEvents() {
 		ArrayList<Event> result=new ArrayList<Event>();
-		for (Event e: model.futureEvents()) {
+		for (Event e: table.model.futureEvents()) {
 			if (e.hasGuest(this) || e.hasOrganizer(this))
 				result.add(e);
 		}
@@ -60,7 +56,7 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 	}
 	public ArrayList<Event> pastEvents() {
 		ArrayList<Event> result=new ArrayList<Event>();
-		for (Event e: model.pastEvents()) {
+		for (Event e: table.model.pastEvents()) {
 			if (e.hasGuest(this) || e.hasOrganizer(this))
 				result.add(e);
 		}
@@ -69,7 +65,7 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 
 	public ArrayList<Group> groups() {
 		ArrayList<Group> result=new ArrayList<Group>();
-		for (Group gr: model.groups) {
+		for (Group gr: table.model.groups) {
 			if (gr.hasMember(this) || gr.hasOwner(this))
 				result.add(gr);
 		}
@@ -96,33 +92,6 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 		return "<a href=\"/user/"+username+"\" data-toggle=\"tooltip\" title=\""+username+"\">"+img+"</a>"; 
 	} 
 
-	
-	@Override protected Ref createRef() { return new Ref(model, _id); }
-	@Override public Ref getRef() { return (Ref) super.getRef(); }
-	public static class Ref extends KeyRef<WikiventsModel,User> implements MyObject, Htmlable {
-		public static final Type<User.Ref> type = new Type.Java<User.Ref>(User.Ref.class, null); // XXX TODO: parser is null 
-		public static class Field extends Schema.BasicField<User.Ref> {
-			public Field(String name) { super(User.Ref.type, name); }
-			public Ref getRef(WikiventsModel model, Struct data) { return (Ref) model.users.findRef(Item.asString(data.getDirectFieldValue(name)));}
-		}
-
-		private Ref(WikiventsModel model, String _id) { super(model.users, _id); }
-		@Override public String getHtmlString() { return link(); }
-		public String link() { 
-			User u=get0();
-			if (u==null)
-				return "unknown";
-			return u.link();
-		} 
-		public String name() {
-			 // TODO: this will be inefficient if database not in memory
-			User u=get0();
-			if (u==null)
-				return "unknown";
-			return u.username; 
-		}
-	}
-	
 	@Override public boolean mayBeViewedBy(User user) {
 		if (user==null) return false;
 		if (_id.equals(user._id))	return true;
@@ -219,7 +188,7 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 	}
 	public void sendMailFrom(InternetAddress from, String subject, String message, boolean copyToSender) {
 		try {
-			final MimeMessage msg = model.site.emailer.createMessage();
+			final MimeMessage msg = table.model.site.emailer.createMessage();
 			if (from==systemMailAddress)
 				msg.setFrom(from);
 			else {
@@ -235,7 +204,7 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 				msg.setContent(message, "text/html; charset=utf-8");
 			else
 				msg.setText(message, "utf-8");
-			model.site.emailer.send(msg);
+			table.model.site.emailer.send(msg);
 		} 
 		catch (MessagingException e) { throw new RuntimeException(e); } 
 		catch (UnsupportedEncodingException e) { throw new RuntimeException(e); }

@@ -4,8 +4,12 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import org.kisst.item4j.ImmutableSequence;
+import org.kisst.item4j.Item;
+import org.kisst.item4j.Type;
 import org.kisst.item4j.struct.Struct;
+import org.kisst.pko4j.PkoModel;
 import org.kisst.pko4j.PkoObject;
+import org.kisst.pko4j.PkoRef;
 import org.kisst.pko4j.PkoSchema;
 
 public class EventData extends PkoObject<WikiventsModel, Event> {
@@ -82,5 +86,15 @@ public class EventData extends PkoObject<WikiventsModel, Event> {
 		this.groups=schema.groups.getSequenceOrEmpty(model, data);
 	}
 	
+	@Override public Ref getRef() { return Ref.of(table.model,_id); }
+	public static class Ref extends PkoRef<WikiventsModel,Event> implements PkoModel.MyObject {
+		static public Ref of(WikiventsModel model, String key) { return new Ref(model, key); }
+		public static final Type<Event.Ref> type = new Type.Java<Event.Ref>(Event.Ref.class, null); // XXX TODO: parser is null 
+		public static class Field extends Schema.BasicField<Event.Ref> {
+			public Field(String name) { super(Event.Ref.type, name); }
+			public Ref getRef(WikiventsModel model, Struct data) { return of(model, Item.asString(data.getDirectFieldValue(name)));}
+		}
+		private Ref(WikiventsModel model, String _id) { super(model.events, _id); }
+	}
 
 }

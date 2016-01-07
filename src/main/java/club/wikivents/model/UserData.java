@@ -1,11 +1,15 @@
 package club.wikivents.model;
 
+import org.kisst.http4j.handlebar.Htmlable;
 import org.kisst.item4j.ImmutableSequence;
 import org.kisst.item4j.Item;
+import org.kisst.item4j.Type;
 import org.kisst.item4j.struct.MultiStruct;
 import org.kisst.item4j.struct.SingleItemStruct;
 import org.kisst.item4j.struct.Struct;
+import org.kisst.pko4j.PkoModel.MyObject;
 import org.kisst.pko4j.PkoObject;
+import org.kisst.pko4j.PkoRef;
 import org.kisst.pko4j.PkoSchema;
 
 
@@ -27,10 +31,9 @@ public class UserData extends PkoObject<WikiventsModel, User> {
 		public final BooleanField emailValidated = new BooleanField("emailValidated");
 		public final BooleanField blocked = new BooleanField("blocked");
 		//public final BooleanField identityValidated = new BooleanField("identityValidated");
-		public final SequenceField<UserItem> recommendations= new SequenceField<UserItem>(UserItem.schema,"recommendations");
+		public final SequenceField<UserItem> recommendations= new SequenceField<>(UserItem.schema,"recommendations");
 	}
 	
-	public final WikiventsModel model;
 	public final String username;
 	public final String description;
 	public final String email;
@@ -46,7 +49,6 @@ public class UserData extends PkoObject<WikiventsModel, User> {
 
 	public UserData(WikiventsModel model, Struct data) {
 		super(model.users, data);
-		this.model=model;
 		this.username=schema.username.getString(data);
 		this.description=schema.description.getString(data,null);
 		this.email=schema.email.getString(data);
@@ -65,12 +67,38 @@ public class UserData extends PkoObject<WikiventsModel, User> {
 		boolean defaultValue = dataversion==0;
 		boolean identityValidated =  Item.asBoolean(data.getDirectFieldValue("identityValidated",defaultValue));
 		if (! identityValidated)
-			return schema.recommendations.getSequenceOrEmpty(model, data);
+			return schema.recommendations.getSequenceOrEmpty(table.model, data);
 		MultiStruct data2=new MultiStruct(
 			new SingleItemStruct(UserItem.schema.date.name, ""+this.creationDate),
 			new SingleItemStruct(UserItem.schema.user.name, "55bd0486a1e0df4a250cd3eb")
 		);
-		UserItem item=new UserItem(model, data2);
+		UserItem item=new UserItem(table.model, data2);
 		return ImmutableSequence.of(UserItem.class, item);
 	}	
+	
+	@Override public Ref getRef() { return Ref.of(table.model,_id); }
+	public static class Ref extends PkoRef<WikiventsModel,User> implements MyObject, Htmlable {
+		static public Ref of(WikiventsModel model, String key) { return new Ref(model, key); }
+		public static final Type<User.Ref> type = new Type.Java<User.Ref>(User.Ref.class, null); // XXX TODO: parser is null 
+		public static class Field extends Schema.BasicField<User.Ref> {
+			public Field(String name) { super(User.Ref.type, name); }
+			public Ref getRef(WikiventsModel model, Struct data) { return of(model,Item.asString(data.getDirectFieldValue(name)));}
+		}
+
+		private Ref(WikiventsModel model, String _id) { super(model.users, _id); }
+		@Override public String getHtmlString() { return link(); }
+		public String link() { 
+			User u=get0();
+			if (u==null)
+				return "unknown";
+			return u.link();
+		} 
+		public String name() {
+			User u=get0();
+			if (u==null)
+				return "unknown";
+			return u.username; 
+		}
+	}
+
 }

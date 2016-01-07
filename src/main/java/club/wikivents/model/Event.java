@@ -16,7 +16,6 @@ import org.kisst.item4j.ImmutableSequence;
 import org.kisst.item4j.struct.MultiStruct;
 import org.kisst.item4j.struct.SingleItemStruct;
 import org.kisst.item4j.struct.Struct;
-import org.kisst.pko4j.PkoTable.KeyRef;
 
 import com.github.jknack.handlebars.Handlebars.SafeString;
 
@@ -38,7 +37,7 @@ public class Event extends EventData implements Comparable<Event>, AccessChecker
 	}   
 	public String organizerNames() {
 		StringJoiner sj = new StringJoiner(", ");
-		for (KeyRef<WikiventsModel,User> r : organizers)
+		for (User.Ref r : organizers)
 			sj.add(r.get().username);
 		return sj.toString();
 	}
@@ -89,7 +88,7 @@ public class Event extends EventData implements Comparable<Event>, AccessChecker
 	public boolean hasGroup(Group gr) {
 		if (groups==null || gr==null)
 			return false;
-		for (KeyRef<WikiventsModel,Group> r: groups) {
+		for (Group.Ref r: groups) {
 			if (r._id.equals(gr._id)) 
 				return true;
 		}
