@@ -120,7 +120,7 @@ public class HttpCall {
 		//System.out.println("redirect to "+url+ " from "+getLocalUrl());
 		try {
 			if (!response.isCommitted()) {
-				response.reset();
+				response.resetBuffer();
 				response.sendRedirect(url);
 			}
 			else
