@@ -11,8 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.eclipse.jetty.server.Request;
 import org.kisst.http4j.HttpServer.HttpException;
 import org.kisst.util.CallInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class HttpCall {
+	final static Logger logger=LoggerFactory.getLogger(HttpCall.class);
+
 	public final Request baseRequest;
 	public final HttpServletRequest request;
 	public final HttpServletResponse response;
@@ -115,7 +119,12 @@ public class HttpCall {
 	public void redirect(String url) {
 		//System.out.println("redirect to "+url+ " from "+getLocalUrl());
 		try {
-			response.sendRedirect(url);
+			if (!response.isCommitted()) {
+				response.reset();
+				response.sendRedirect(url);
+			}
+			else
+				logger.error("Could not redirect already committed call to url "+url+" from call "+this);
 		}
 		catch (IOException e) { throw new RuntimeException(e);}
 	}

@@ -1,6 +1,7 @@
 package org.kisst.http4j;
 
 import org.eclipse.jetty.http.HttpVersion;
+import org.eclipse.jetty.io.EofException;
 import org.eclipse.jetty.server.*;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
@@ -153,10 +154,10 @@ public class HttpServer extends AbstractHandler {
         catch (PageRedirectedException e) { logger.info("redirect to {} from {}",e.url, request.getRequestURI()); }
         catch (UnauthorizedException e) {
         	try {
-        		System.out.println("UNAUTH");
+        		response.resetBuffer();
 				response.sendError(403, e.getMessage());
 			}
-        	catch (IOException e1) { e.printStackTrace(); }
+        	catch (IOException e1) { logger.error("IO exception when redirecting Unauthorized call",e); }
         }
 		catch (Exception e) {
     		System.out.println("GENERAL");
@@ -182,8 +183,12 @@ public class HttpServer extends AbstractHandler {
 			}
         }
 		finally {
-			try { response.flushBuffer();} 
-			catch (IOException e) { throw new RuntimeException(e); }
+			try { 
+				if (!response.isCommitted())
+					response.flushBuffer();
+			} 
+			catch (EofException e) { logger.error("EOF error during FlushBuffer "+e); }
+			catch (IOException e) { logger.error("IO error during FlushBuffer ",e); }
 		}
 	}
 	
