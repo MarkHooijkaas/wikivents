@@ -1,6 +1,0 @@
-{{#ifInlineEdit record}}
-<form role="form" method="GET" action="" class="btn">
-  <input type="hidden" name="view" value="edit"/>
-  <button type="submit" class="btn btn-default">Wijzig alle gegevens</button>
-</form>
-{{/ifInlineEdit}}
