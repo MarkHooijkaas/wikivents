@@ -94,7 +94,7 @@ public class WikiventsSite implements HttpCallHandler {
 				logger.warn("User {} unauthorized to call {}", call==null? null : call.user, httpcall.getLocalUrl());
 			else
 				logger.error("Error when handling "+httpcall.request.getRequestURL(), e);
-			TemplateData context = new TemplateData(httpcall);
+			TemplateData context = new TemplateData(call);
 			context.add("exception", e);
 			CompiledTemplate templ = this.defaultTheme.error;
 			if (e instanceof BlockedUserException)
