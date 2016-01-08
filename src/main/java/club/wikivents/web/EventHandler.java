@@ -109,7 +109,6 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 		if (com.mayBeChangedBy(call.user))
 			table.update(event,	event.removeSequenceItem(schema.comments, com));
 	}
-	//public void handleChangeField(WikiventsCall call, Event oldRecord) { super.handleChangeField(call, oldRecord);}
 
 	public void handleAddOrganizer(WikiventsCall call, Event event) {
 		String username=call.request.getParameter("newOrganizer");

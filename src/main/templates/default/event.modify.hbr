@@ -1,10 +1,14 @@
-<h2>Wijzig Details</h2>
-{{> event.details edit=true}}
+<div class="col-xs-12 col-sm-5 col-md-4 col-lg-4">
+	<h2>Wijzig Details</h2>
+	{{> event.details edit=true}}
 	{{> include/show.booleanField value=record.idea  name="idea" label="Wikidee" title="Wikidee" trueLabel="WIKIDEE" falseLabel="DEFINITIEF"}}
 	{{> include/show.booleanField value=record.cancelled  name="cancelled" label="Geannuleeerd" title="annul" trueLabel="GEANNULLEERD" falseLabel="GAAT-DOOR"}}
 	{{> include/show.booleanField value=record.guestsAllowed  name="guestsAllowed" label="inschrijving" title="inschr" trueLabel="OPEN" falseLabel="DICHT"}}
 	{{> include/show.booleanField value=record.backupGuestsAllowed  name="backupGuestsAllowed" label="reservelijst" title="reserve" trueLabel="OPEN" falseLabel="DICHT"}}
+	{{>event.modify.groups}}
+</div>
 
+<div class="col-xs-12 col-sm-7 col-md-8 col-lg-8 panel panel-default overflow-hidden">
 {{#partial "emptyTemplate"}}
 	<p>Plaats hier informatie die alleen voor de deelnemers aan je activiteit bedoeld is. Denk met name aan:</p>
 
@@ -21,7 +25,8 @@
 	Als je dit wilt voorkomen kan je de activiteit (of alleen de reservelijst) dicht zetten voor nieuwe aanmeldingen, of kan je beter gevoelige informatie in een mail naar iedereen sturen.</p>
 {{/partial}}
 
-{{> include/show.textAreaField label="Wijzig informatie voor deelnemers" name="guestInfo" prefix="" value=record.guestInfo}}
+{{> include/show.textAreaField label="informatie voor deelnemers" name="guestInfo" prefix="" value=record.guestInfo}}
 {{#partial "emptyTemplate"}}{{/partial}}
-{{> include/show.textAreaField label="Wijzig omschrijving" name="description" prefix="" value=record.description}}
+{{> include/show.textAreaField label="omschrijving" name="description" prefix="" value=record.description}}
+</div>
 	
