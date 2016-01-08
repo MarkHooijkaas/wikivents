@@ -34,7 +34,7 @@ public class Group extends GroupData implements AccessChecker<User> {
 		if (members==null || user==null)
 			return false;
 		for (User.Ref r: members)
-			if (r._id.equals(user._id)) 
+			if (r.refersTo(user)) 
 				return true;
 		return false;
 	}
@@ -43,7 +43,7 @@ public class Group extends GroupData implements AccessChecker<User> {
 		if (owners==null || user==null)
 			return false;
 		for (User.Ref r: owners) {
-			if (r._id.equals(user._id)) 
+			if (r.refersTo(user)) 
 				return true;
 		}
 		return false;
@@ -60,7 +60,7 @@ public class Group extends GroupData implements AccessChecker<User> {
 	
 	public ArrayList<Event> futureEvents() {
 		ArrayList<Event> result=new ArrayList<Event>();
-		for (Event e: table.model.futureEvents()) {
+		for (Event e: model.futureEvents()) {
 			if (e.hasGroup(this))
 				result.add(e);
 		}
@@ -68,7 +68,7 @@ public class Group extends GroupData implements AccessChecker<User> {
 	}
 	public ArrayList<Event> pastEvents() {
 		ArrayList<Event> result=new ArrayList<Event>();
-		for (Event e: table.model.pastEvents()) {
+		for (Event e: model.pastEvents()) {
 			if (e.hasGroup(this))
 				result.add(e);
 		}

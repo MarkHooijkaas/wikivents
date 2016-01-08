@@ -6,10 +6,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.Method;
 
-import org.kisst.pko4j.PkoObject;
+import org.kisst.pko4j.BasicPkoObject;
 import org.kisst.util.CallInfo;
 import org.kisst.util.ReflectionUtil;
 import org.kisst.util.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /*
  * will call the following methods:
@@ -26,6 +28,9 @@ import org.kisst.util.StringUtil;
  * 		/<path>/<id>[action=addGuest]  handleAddGuest
  */
 public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHandler {
+	public static final Logger logger = LoggerFactory.getLogger(ActionHandler.class);
+	public static final Logger httpPostLogger = LoggerFactory.getLogger("http.POST");
+
 	private final Class<?>[] extralongsignature;
 	protected final Class<?>[] fullsignature;
 	private final Class<?>[] fullsignature2;
@@ -33,7 +38,7 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 	public ActionHandler(Class<C> callClass, Class<T> recordClass) {
 		this.extralongsignature= new Class<?>[] { callClass, recordClass, String.class };
 		this.fullsignature= new Class<?>[] { callClass, recordClass };
-		this.fullsignature2= new Class<?>[] { callClass, PkoObject.class};
+		this.fullsignature2= new Class<?>[] { callClass, BasicPkoObject.class};
 		this.shortsignature= new Class<?>[] { callClass };
 	}
 
@@ -98,6 +103,8 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 		invoke(methodName, call, record, subpath);
 	}
 	private void handlePost(C call, String id) {
+		if (httpPostLogger.isInfoEnabled())
+			httpPostLogger.info(call.toString());
 		String  id2 = call.request.getParameter("ActionHandlerId");
 		if (id2!=null)
 			id=id2;
@@ -118,6 +125,8 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 			}
 		}
 		if (cmdName!=null) {
+			//if (httpPostLogger.isInfoEnabled())
+			//	httpPostLogger.info("invoking command "+cmdName+", rec="+record);
 			handleCommand(cmdName, call, record);
 			return;
 		}
@@ -125,6 +134,8 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 			call.throwUnauthorized("No action specified");
 		}
 		String methodName="handle"+StringUtil.capitalize(action);
+		//if (httpPostLogger.isInfoEnabled()) 
+		//	httpPostLogger.info("invoking method "+methodName+", rec="+record);
 		invoke(methodName, call, record, null);	
 		//System.out.println(call.response.getStatus());
 		if (!call.isAjax() && ! call.response.isCommitted()) 
@@ -136,7 +147,6 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 	}
 
 	private void invoke(String methodName, C call, T record, String subpath) {
-		//System.out.println("id="+id+", method="+methodName+", rec="+record);
 		CallInfo.instance.get().action=methodName;
 		Method method=null;
 		boolean extralong=false;
@@ -153,8 +163,10 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 			method = ReflectionUtil.getMethod(this.getClass(), methodName, shortsignature);
 			record=null;
 		}
-		if (method==null)
-			throw new RuntimeException("Unknown method "+methodName);
+		if (method==null) {
+			logger.error("Unknown method "+methodName);
+			return;
+		}
 		NeedsNoAuthentication ann = method.getAnnotation(NeedsNoAuthentication.class);
 		if (ann==null) { 
 			call.ensureUser();

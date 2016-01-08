@@ -76,6 +76,12 @@ public class WikiventsCall extends HttpCall {
 			return (WikiventsCall) httpcall;
 		return new WikiventsCall(httpcall,model);
 	}
+	@Override public String toString(){
+		if (user==null)
+			return toString("anonymous, ");
+		return toString("user="+user.username); 
+	}
+
 	
 	public void setRememberedUserName(String value) { setNamedCookieValue("rememberUserName", value, 365*24*3600); }
 	public String getRememberedUserName() { return getNamedCookieValue("rememberUserName", null); }

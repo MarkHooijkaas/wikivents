@@ -14,21 +14,21 @@ import club.wikivents.web.WikiventsSite;
 public class WikiventsModel extends PkoModel implements SecureToken.SaltFactory {
 	public final WikiventsSite site;
 
-	public WikiventsModel(WikiventsSite site, StorageOption ... storage){ 
+	public WikiventsModel(WikiventsSite site, StorageOption<?> ... storage){ 
 		super(storage);
 		this.site=site;
 		initModel();
 	}
 
-	public final UniqueIndex<WikiventsModel, User> usernameIndex = new UniqueIndex<>(User.schema, true, User.schema.username);
-	public final UniqueIndex<WikiventsModel, User> emailIndex    = new UniqueIndex<>(User.schema, true, User.schema.email);
+	public final UniqueIndex<User> usernameIndex = new UniqueIndex<>(User.class, true, usr -> usr.username);
+	public final UniqueIndex<User> emailIndex    = new UniqueIndex<>(User.class, true, usr -> usr.email);
 
-	public final OrderedIndex<WikiventsModel, Event> allEvents    = new OrderedIndex<>(Event.schema, false, Event.schema.date, Event.schema._id);
-	public final OrderedIndex<WikiventsModel, Event> newestEvents = new OrderedIndex<>(Event.schema, false, Event.schema._id);
+	public final OrderedIndex<Event> allEvents    = new OrderedIndex<>(Event.class, evt -> evt.date+""+evt.getKey());
+	public final OrderedIndex<Event> newestEvents = new OrderedIndex<>(Event.class, evt -> evt.getKey());
 
-	public final PkoTable<WikiventsModel,User>  users  = new PkoTable<>(this, User.schema);
-	public final PkoTable<WikiventsModel,Event> events = new PkoTable<>(this, Event.schema);
-	public final PkoTable<WikiventsModel,Group> groups = new PkoTable<>(this, Group.schema);
+	public final PkoTable<User>  users  = new PkoTable<>(this, User.class);
+	public final PkoTable<Event> events = new PkoTable<>(this, Event.class);
+	public final PkoTable<Group> groups = new PkoTable<>(this, Group.class);
 
 
 	public Iterable<Event> futureEvents() { return allEvents.tailList(LocalDate.now().toString());}

@@ -27,14 +27,14 @@
 		
 {{#each list}} 
 	  <tr>
-        <td><a href="/theme/:{{_id}}">{{title}}</a></td>
+        <td><a href="/theme/:{{key}}">{{title}}</a></td>
         <td>{{this.members.size}}</td>
         <td data-order="{{creationDate}}">{{dateFormat creationDate "eee d MMM yyyy"}}</td>
         <td data-order="{{modificationDate}}">{{dateFormat modificationDate "eee d MMM yyyy"}}</td>
 {{#ifAdminMode}}
         <td>{{&join owners "<br/>"}}</td>
         <td>
-			{{> include/modal.delete action="delete" field="ActionHandlerId" value=record._id label="Weet je zeker dat je deze interesse wil verwijderen?"}} 
+			{{> include/modal.delete action="delete" field="ActionHandlerId" value=record.key label="Weet je zeker dat je deze interesse wil verwijderen?"}} 
 		</td>
 {{/ifAdminMode}}
       

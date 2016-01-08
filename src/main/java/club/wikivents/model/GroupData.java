@@ -4,14 +4,15 @@ import org.kisst.item4j.ImmutableSequence;
 import org.kisst.item4j.Item;
 import org.kisst.item4j.Type;
 import org.kisst.item4j.struct.Struct;
+import org.kisst.pko4j.BasicPkoObject;
 import org.kisst.pko4j.PkoModel;
-import org.kisst.pko4j.PkoObject;
 import org.kisst.pko4j.PkoRef;
 import org.kisst.pko4j.PkoSchema;
 
-public class GroupData extends PkoObject<WikiventsModel, Group> {
+public class GroupData extends BasicPkoObject<WikiventsModel, Group> {
+	@Override public Iterable<String> fieldNames() { return schema.fieldNames(); }
 	public static final Schema schema=new Schema();
-	public static final class Schema extends PkoSchema<WikiventsModel,Group> {
+	public static final class Schema extends PkoSchema<Group> {
 		private Schema() { super(Group.class); }
 		public IdField getKeyField() { return _id; }
 		public final IdField _id = new IdField();
@@ -22,7 +23,7 @@ public class GroupData extends PkoObject<WikiventsModel, Group> {
 		public final SequenceField<User.Ref> members= new SequenceField<>(User.Ref.type,"members"); 
 		public final SequenceField<Comment> comments= new SequenceField<>(Comment.schema,"comments");
 	}
-
+	
 	public final String title;
 	public final String description;
 	public final ImmutableSequence<User.Ref> owners;
@@ -30,7 +31,7 @@ public class GroupData extends PkoObject<WikiventsModel, Group> {
 	public final ImmutableSequence<Comment> comments;
 
 	public GroupData(WikiventsModel model, Struct data) {
-		super(model.groups, data);
+		super(model, model.groups, data);
 		this.title=schema.title.getString(data);
 		this.description=schema.description.getString(data);
 		this.owners=schema.owners.getSequenceOrEmpty(model, data);
@@ -39,8 +40,8 @@ public class GroupData extends PkoObject<WikiventsModel, Group> {
 		
 	}
 
-	@Override public Ref getRef() { return Ref.of(table.model,_id); }
-	public static class Ref extends PkoRef<WikiventsModel,Group> implements PkoModel.MyObject {
+	@Override public Ref getRef() { return Ref.of(model,_id); }
+	public static class Ref extends PkoRef<Group> implements PkoModel.MyObject {
 		static public Ref of(WikiventsModel model, String key) { return new Ref(model, key); }
 		public static final Type<Group.Ref> type = new Type.Java<Group.Ref>(Group.Ref.class, null); // XXX TODO: parser is null 
 		public static class Field extends Schema.BasicField<Group.Ref> {

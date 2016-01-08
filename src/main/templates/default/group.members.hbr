@@ -4,8 +4,8 @@
 
 {{#each record.members}}
 	{{#if call.user.trusted}}{{&priv link}}{{else}}{{&get0.usernameLink}}{{/if}}
-	{{#ifEquals this._id user._id}}
-		{{> include/modal.delete title=get0.username action="removeMember" field="userId" value=_id label="Weet je zeker dat je je wilt afmelden voor dit thema?"}} 
+	{{#ifEquals this.key user.key}}
+		{{> include/modal.delete title=get0.username action="removeMember" field="userId" value=key label="Weet je zeker dat je je wilt afmelden voor dit thema?"}} 
 	{{/ifEquals}}
 	<br/>
 {{/each}}
@@ -22,7 +22,7 @@
 {{#if user.emailValidated}}
   	<form role="form" method="POST" >
   		<input type="hidden" name="action" value="addMember"/>				
-  		<input type="hidden" name="userId" value="{{record._id}}"/>				
+  		<input type="hidden" name="userId" value="{{record.key}}"/>				
 		<button type="submit" class="btn btn-default">Ik ben ge&iuml;nteresseerd in dit thema</button>
  	</form>
 {{else}}

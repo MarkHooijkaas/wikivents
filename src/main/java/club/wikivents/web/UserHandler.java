@@ -25,7 +25,6 @@ import org.kisst.util.StringUtil;
 import club.wikivents.model.User;
 import club.wikivents.model.UserCommands.RemoveRecommendationCommand;
 import club.wikivents.model.UserItem;
-import club.wikivents.model.WikiventsModel;
 import net.tanesha.recaptcha.ReCaptchaImpl;
 import net.tanesha.recaptcha.ReCaptchaResponse;
 
@@ -69,7 +68,7 @@ public class UserHandler extends WikiventsActionHandler<User> {
 	public void handleEdit(WikiventsCall call, User oldRecord) {
 		Form formdata = new Form(call,null);
 		if (formdata.isValid()) 
-			model.users.updateFields(oldRecord, formdata.record);
+			table.update(oldRecord, oldRecord.changeFields(formdata.record));
 		formdata.handle();
 	}
 
@@ -80,7 +79,7 @@ public class UserHandler extends WikiventsActionHandler<User> {
 		if (token!=null && token.equals(u.passwordSalt)) {
 			if (call.user==null && ! u.emailValidated)
 				call.setUserCookie(u);
-			call.model.users.updateField(u, schema.emailValidated, true);
+			table.update(u, u.changeField(schema.emailValidated, true));
 		}
 		call.redirect("/user/"+u.username);
 	}
@@ -181,10 +180,10 @@ public class UserHandler extends WikiventsActionHandler<User> {
 	private void changePassword(User user, String newPassword) {
 		String salt = PasswordEncryption.generateSalt();
 		String pw = PasswordEncryption.encryptPassword(newPassword, salt);
-		model.users.updateFields(user, new HashStruct()
+		table.update(user, user.changeFields(new HashStruct()
 			.add(schema.passwordSalt,  salt)
 			.add(schema.encryptedPassword, pw)
-		);
+		));
 	}
 	
 	@NeedsNoAuthentication
@@ -207,7 +206,7 @@ public class UserHandler extends WikiventsActionHandler<User> {
 
 	public void handleRemoveEmailValidationNeeded(WikiventsCall call, User u) {
 		if (call.user.isAdmin)
-			table.updateField(u, schema.emailValidated, true);
+			table.update(u, u.changeField(schema.emailValidated, true));
 	}
 
 	public void handleChangePassword(WikiventsCall call, User u) {
@@ -225,12 +224,12 @@ public class UserHandler extends WikiventsActionHandler<User> {
 	@NeedsNoAuthorization
 	public void handleAddRecommendation(WikiventsCall call, User user) { 
 		if (call.user.mayRecommend(user))
-			model.users.addSequenceItem(user, schema.recommendations, new UserItem(model, call.user));
+			table.update(user, user.addSequenceItem(schema.recommendations, new UserItem(model, call.user)));
 	}
 	@NeedsNoAuthorization
 	public void handleRemoveRecommendation(WikiventsCall call, User user) {
 		if (user.isRecommendedBy(call.user))
-			model.users.removeSequenceItem(user, schema.recommendations, user.findRecommendation(call.user._id));
+			table.update(user, user.removeSequenceItem(schema.recommendations, user.findRecommendation(call.user._id)));
 	}
 
 	public RemoveRecommendationCommand createRemoveRecommendationCommand(WikiventsCall call, User record) {
@@ -248,8 +247,8 @@ public class UserHandler extends WikiventsActionHandler<User> {
 	}
 	public class RegisterForm extends HttpFormData {
 		public RegisterForm(WikiventsCall call) { super(call, call.getTheme().userRegister);
-			this.username = new InputField(schema.username, new UniqueKeyIndexValidator<WikiventsModel,User>(call.model.usernameIndex) );
-			this.email    = new InputField(schema.email, this::validateEmail, new UniqueKeyIndexValidator<WikiventsModel,User>(call.model.emailIndex) );
+			this.username = new InputField(schema.username, new UniqueKeyIndexValidator<User>(call.model.usernameIndex) );
+			this.email    = new InputField(schema.email, this::validateEmail, new UniqueKeyIndexValidator<User>(call.model.emailIndex) );
 		}
 		public final InputField username;
 		public final InputField email;
@@ -294,7 +293,7 @@ public class UserHandler extends WikiventsActionHandler<User> {
 			}
 			//writer.println("New file " + fileName + " created at " + path);
 			//LOGGER.log(Level.INFO, "File{0}being uploaded to {1}", 
-			table.updateField(u, schema.avatarUrl, "/user/:"+u._id+"/uploaded/"+fileName);
+			table.update(u, u.changeField(schema.avatarUrl, "/user/:"+u._id+"/uploaded/"+fileName));
 		} 
 		catch (IOException e) { throw new RuntimeException(e); }
 		catch (ServletException e) { throw new RuntimeException(e); }

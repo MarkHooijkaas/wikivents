@@ -5,23 +5,27 @@ import java.lang.reflect.Method;
 import org.kisst.http4j.ActionHandler;
 import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.handlebar.AccessChecker;
-import org.kisst.pko4j.PkoObject;
+import org.kisst.pko4j.BasicPkoObject;
 import org.kisst.pko4j.PkoTable;
 import org.kisst.util.CallInfo;
 import org.kisst.util.ReflectionUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import club.wikivents.model.Event;
 import club.wikivents.model.User;
 import club.wikivents.model.WikiventsCommands;
-import club.wikivents.model.WikiventsModel;
 import club.wikivents.model.WikiventsCommands.ChangeFieldCommand;
 import club.wikivents.model.WikiventsCommands.Command;
+import club.wikivents.model.WikiventsModel;
 
-public abstract class WikiventsActionHandler<T extends PkoObject<WikiventsModel,T> & AccessChecker<User>> extends ActionHandler<WikiventsCall, T>{
+public abstract class WikiventsActionHandler<T extends BasicPkoObject<WikiventsModel,T> & AccessChecker<User>> extends ActionHandler<WikiventsCall, T>{
+	public static final Logger logger = LoggerFactory.getLogger(WikiventsActionHandler.class);
+
 	public final WikiventsModel model;
 	public final WikiventsSite site;
-	public final PkoTable<WikiventsModel, T> table;
-	public WikiventsActionHandler(WikiventsSite site, PkoTable<WikiventsModel, T> table) {
+	public final PkoTable<T> table;
+	public WikiventsActionHandler(WikiventsSite site, PkoTable<T> table) {
 		super(WikiventsCall.class, (Class<T>) table.getElementClass());
 		this.site=site;
 		this.model=site.model;
@@ -51,15 +55,17 @@ public abstract class WikiventsActionHandler<T extends PkoObject<WikiventsModel,
 		@SuppressWarnings("unchecked")
 		Command<T> cmd = (Command<T>) ReflectionUtil.invoke(this, method, new Object[]{ call, record});
 		if (cmd==null)
-			throw new RuntimeException("Unknown command "+cmdName);
-		if (cmd.mayBeDoneBy(call.user)) {
-			//System.out.println("Applying "+cmd);
-			T newRecord=cmd.apply();
-			if (newRecord!=record)
-				table.update(record, newRecord);
+			logger.error("Unknown or invalid command "+cmdName);
+		else {
+			if (cmd.mayBeDoneBy(call.user)) {
+				//System.out.println("Applying "+cmd);
+				T newRecord=cmd.apply();
+				if (newRecord!=record)
+					table.update(record, newRecord);
+			}
+			else
+				System.out.println("Not Allowed "+cmd);
 		}
-		else
-			System.out.println("Not Allowed "+cmd);
 		if (!call.isAjax() && ! call.response.isCommitted()) 
 			call.redirect(call.getLocalUrl());
 	}
@@ -72,21 +78,21 @@ public abstract class WikiventsActionHandler<T extends PkoObject<WikiventsModel,
 	
 
 	public void handleChangeField(WikiventsCall call, T oldRecord) {
-		String field=call.request.getParameter("field");
+		String fieldName=call.request.getParameter("field");
 		String value=call.request.getParameter("value");
-		if (field==null || ! oldRecord.fieldMayBeChangedBy(field, call.user))
+		if (fieldName==null || ! oldRecord.fieldMayBeChangedBy(fieldName, call.user))
 			return;
 		String logValue=value;
 		if (logValue.length()>10)
 			logValue=logValue.substring(0, 7)+"...";
-		CallInfo.instance.get().action="handleChangeField "+field+" to "+logValue;
-		table.updateField(oldRecord, table.getSchema().getField(field), value);
+		CallInfo.instance.get().action="handleChangeField "+fieldName+" to "+logValue;
+		table.update(oldRecord, oldRecord.changeField(fieldName, value));
 	}
 	
 	public ChangeFieldCommand<T> createChangeFieldCommand(WikiventsCall call, T record) {
 		String fieldName=call.request.getParameter("field");
 		String value=call.request.getParameter("value");
-		return new WikiventsCommands.ChangeFieldCommand<T>(record, table.schema.getField(fieldName), value);
+		return new WikiventsCommands.ChangeFieldCommand<T>(record, fieldName, value);
 	}
 	
 	@NeedsNoAuthorization
@@ -96,7 +102,7 @@ public abstract class WikiventsActionHandler<T extends PkoObject<WikiventsModel,
 		if (event!=null)
 			CallInfo.instance.get().data=event.title;
 		if (! event.isLikedBy(call.user))
-			model.events.addSequenceItem(event, Event.schema.likes, call.user.getRef());
+			model.events.update(event, event.addSequenceItem(Event.schema.likes, call.user.getRef()));
 	}
 	@NeedsNoAuthorization
 	public void handleRemoveLike(WikiventsCall call) {
@@ -105,7 +111,7 @@ public abstract class WikiventsActionHandler<T extends PkoObject<WikiventsModel,
 		if (event!=null)
 			CallInfo.instance.get().data=event.title;
 		User.Ref ref = call.user.getRef();
-		model.events.removeSequenceItem(event, Event.schema.likes, ref);
+		model.events.update(event, event.removeSequenceItem(Event.schema.likes, ref));
 	}
 	
 }

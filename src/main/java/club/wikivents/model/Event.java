@@ -68,7 +68,7 @@ public class Event extends EventData implements Comparable<Event>, AccessChecker
 	public Guest findGuest(String id) { return guests.findItemOrNull(Guest.key, id); }
 
 
-	private static ImmutableSequence.StringExpression userRefKey=(ref) -> {return ((User.Ref) ref)._id; };
+	private static ImmutableSequence.StringExpression userRefKey=(ref) -> {return ((User.Ref) ref).getKey(); };
 
 	public boolean isLikedBy(User user) { return likes.hasItem(userRefKey, user._id); }
 
@@ -79,7 +79,7 @@ public class Event extends EventData implements Comparable<Event>, AccessChecker
 		if (organizers==null || user==null)
 			return false;
 		for (User.Ref r: organizers) {
-			if (r._id.equals(user._id)) 
+			if (r.refersTo(user)) 
 				return true;
 		}
 		return false;
@@ -89,7 +89,7 @@ public class Event extends EventData implements Comparable<Event>, AccessChecker
 		if (groups==null || gr==null)
 			return false;
 		for (Group.Ref r: groups) {
-			if (r._id.equals(gr._id)) 
+			if (r.refersTo(gr)) 
 				return true;
 		}
 		return false;

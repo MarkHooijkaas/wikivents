@@ -10,7 +10,7 @@ import org.kisst.item4j.struct.Struct;
 import org.kisst.pko4j.PkoModel.MyObject;
 
 public class Guest extends ReflectStruct implements MyObject, AccessChecker<User> {
-	public static ImmutableSequence.StringExpression key=(guest) -> {return ((Guest) guest).user._id; };
+	public static ImmutableSequence.StringExpression key=(guest) -> {return ((Guest) guest).user.getKey(); };
 
 	
 	public final User.Ref user;
@@ -33,7 +33,7 @@ public class Guest extends ReflectStruct implements MyObject, AccessChecker<User
 		this.date=Instant.now();
 	}
 	
-	@Override public boolean mayBeChangedBy(User user) { return user!=null && this.user._id.equals(user._id); }
+	@Override public boolean mayBeChangedBy(User user) { return user!=null && this.user.refersTo(user); }
 	@Override public boolean mayBeViewedBy(User user) { return user!=null; }
 	@Override public String toString() { return "Guest("+user.name()+")"; }
 

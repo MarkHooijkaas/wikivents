@@ -7,15 +7,16 @@ import org.kisst.item4j.Type;
 import org.kisst.item4j.struct.MultiStruct;
 import org.kisst.item4j.struct.SingleItemStruct;
 import org.kisst.item4j.struct.Struct;
+import org.kisst.pko4j.BasicPkoObject;
 import org.kisst.pko4j.PkoModel.MyObject;
-import org.kisst.pko4j.PkoObject;
 import org.kisst.pko4j.PkoRef;
 import org.kisst.pko4j.PkoSchema;
 
 
-public class UserData extends PkoObject<WikiventsModel, User> {
+public class UserData extends BasicPkoObject<WikiventsModel, User> {
+	@Override public Iterable<String> fieldNames() { return schema.fieldNames(); }
 	public static final Schema schema=new Schema();
-	public static final class Schema extends PkoSchema<WikiventsModel, User> {
+	public static final class Schema extends PkoSchema<User> {
 		private Schema() { super(User.class); }
 		public final IdField _id = new IdField();
 		public final IntField _crudObjectVersion = new IntField("_crudObjectVersion");
@@ -48,7 +49,7 @@ public class UserData extends PkoObject<WikiventsModel, User> {
 	public final ImmutableSequence<UserItem> recommendations;
 
 	public UserData(WikiventsModel model, Struct data) {
-		super(model.users, data);
+		super(model, model.users, data);
 		this.username=schema.username.getString(data);
 		this.description=schema.description.getString(data,null);
 		this.email=schema.email.getString(data);
@@ -72,12 +73,12 @@ public class UserData extends PkoObject<WikiventsModel, User> {
 			new SingleItemStruct(UserItem.schema.date.name, ""+this.creationDate),
 			new SingleItemStruct(UserItem.schema.user.name, "55bd0486a1e0df4a250cd3eb")
 		);
-		UserItem item=new UserItem(table.model, data2);
+		UserItem item=new UserItem(model, data2);
 		return ImmutableSequence.of(UserItem.class, item);
 	}	
 	
-	@Override public Ref getRef() { return Ref.of(table.model,_id); }
-	public static class Ref extends PkoRef<WikiventsModel,User> implements MyObject, Htmlable {
+	@Override public Ref getRef() { return Ref.of(model,_id); }
+	public static class Ref extends PkoRef<User> implements MyObject, Htmlable {
 		static public Ref of(WikiventsModel model, String key) { return new Ref(model, key); }
 		public static final Type<User.Ref> type = new Type.Java<User.Ref>(User.Ref.class, null); // XXX TODO: parser is null 
 		public static class Field extends Schema.BasicField<User.Ref> {

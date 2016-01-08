@@ -34,9 +34,9 @@ public class UserItem extends ReflectStruct implements MyObject, AccessChecker<U
 		this.comment=comment;
 	}
 	
-	@Override public boolean mayBeChangedBy(User user) { return user!=null && this.user!=null && this.user._id.equals(user._id); }
+	@Override public boolean mayBeChangedBy(User user) { return user!=null && this.user!=null && this.user.getKey().equals(user.getKey()); }
 	@Override public boolean mayBeViewedBy(User user) { return user!=null; }
 	
-	public static ImmutableSequence.StringExpression key=(obj) -> { return ((UserItem) obj).user._id; };
+	public static ImmutableSequence.StringExpression key=(obj) -> { return ((UserItem) obj).user.getKey(); };
 
 }

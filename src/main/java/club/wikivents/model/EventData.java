@@ -7,16 +7,15 @@ import org.kisst.item4j.ImmutableSequence;
 import org.kisst.item4j.Item;
 import org.kisst.item4j.Type;
 import org.kisst.item4j.struct.Struct;
-import org.kisst.pko4j.PkoModel;
-import org.kisst.pko4j.PkoObject;
+import org.kisst.pko4j.BasicPkoObject;
 import org.kisst.pko4j.PkoRef;
 import org.kisst.pko4j.PkoSchema;
 
-public class EventData extends PkoObject<WikiventsModel, Event> {
+public class EventData extends BasicPkoObject<WikiventsModel, Event> {
+	@Override public Iterable<String> fieldNames() { return schema.fieldNames(); }
 	public static final Schema schema=new Schema();
-	public static final class Schema extends PkoSchema<WikiventsModel,Event> {
+	public static final class Schema extends PkoSchema<Event> {
 		private Schema() { super(Event.class); }
-		public IdField getKeyField() { return _id; }
 		public final IdField _id = new IdField();
 		public final IntField _crudObjectVersion = new IntField("_crudObjectVersion");
 		public final StringField title = new StringField("title"); 
@@ -63,7 +62,7 @@ public class EventData extends PkoObject<WikiventsModel, Event> {
 	public final ImmutableSequence<Comment> comments;
 	
 	public EventData(WikiventsModel model, Struct data) {
-		super(model.events, data);
+		super(model, model.events, data);
 		this.title=schema.title.getString(data);
 		this.description=schema.description.getString(data);
 		this.guestInfo=schema.guestInfo.getString(data, null);
@@ -86,8 +85,8 @@ public class EventData extends PkoObject<WikiventsModel, Event> {
 		this.groups=schema.groups.getSequenceOrEmpty(model, data);
 	}
 	
-	@Override public Ref getRef() { return Ref.of(table.model,_id); }
-	public static class Ref extends PkoRef<WikiventsModel,Event> implements PkoModel.MyObject {
+	@Override public Ref getRef() { return Ref.of(model,_id); }
+	public static class Ref extends PkoRef<Event> {
 		static public Ref of(WikiventsModel model, String key) { return new Ref(model, key); }
 		public static final Type<Event.Ref> type = new Type.Java<Event.Ref>(Event.Ref.class, null); // XXX TODO: parser is null 
 		public static class Field extends Schema.BasicField<Event.Ref> {
@@ -96,5 +95,4 @@ public class EventData extends PkoObject<WikiventsModel, Event> {
 		}
 		private Ref(WikiventsModel model, String _id) { super(model.events, _id); }
 	}
-
 }

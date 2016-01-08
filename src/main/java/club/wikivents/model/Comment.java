@@ -22,7 +22,7 @@ public  class Comment extends ReflectStruct implements PkoModel.MyObject, Access
 		public final StringField comment = new StringField("comment"); 
 		//public final BooleanField hidden = new BooleanField("hidden"); 
 	}
-	public String id() { return user._id+date.toEpochMilli(); }
+	public String id() { return user.getKey()+date.toEpochMilli(); }
 	
 	public Comment(User u, String comment) {
 		this.user=u.getRef();
@@ -38,6 +38,6 @@ public  class Comment extends ReflectStruct implements PkoModel.MyObject, Access
 		//this.hidden= schema.hidden.getBoolean(data,false);
 	}
 
-	@Override public boolean mayBeViewedBy(User user) { return user!=null; }
-	@Override public boolean mayBeChangedBy(User user) { return user.isAdmin || user._id.equals(this.user._id); }
+	@Override public boolean mayBeViewedBy(User actor) { return actor!=null; }
+	@Override public boolean mayBeChangedBy(User actor) { return actor.isAdmin || (this.user.refersTo(actor)); }
 }

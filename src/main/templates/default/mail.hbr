@@ -1,5 +1,5 @@
 <div style="border-style:double; padding:0px 20px">
-<p>Dit bericht is gestuurd door wikivents gebruiker <a href="https://wikivents.nl/user/:{{call.user._id}}">{{call.user.username}}</a> via de website <a href="https://wikivents.nl">wikivents.nl</a>.
+<p>Dit bericht is gestuurd door wikivents gebruiker <a href="https://wikivents.nl/user/:{{call.user.key}}">{{call.user.username}}</a> via de website <a href="https://wikivents.nl">wikivents.nl</a>.
 {{#if to.trusted}}Je kan gewoon antwoorden op deze mail in je normale mailprogramma waarin je dit nu leest.
 </p>
 <p><i><b>Mocht je niet gediend zijn van dit bericht dan kan je beter niet reageren</b> (anders wordt namelijk je email adres zichtbaar als afzender adres).

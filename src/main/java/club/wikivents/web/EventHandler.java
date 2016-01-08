@@ -4,6 +4,8 @@ import org.kisst.http4j.form.HttpFormData;
 import org.kisst.http4j.handlebar.TemplateEngine.CompiledTemplate;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.util.CallInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import club.wikivents.model.Comment;
 import club.wikivents.model.Event;
@@ -14,6 +16,8 @@ import club.wikivents.model.Guest;
 import club.wikivents.model.User;
 
 public class EventHandler extends WikiventsActionHandler<Event> {
+	public static final Logger logger = LoggerFactory.getLogger(EventHandler.class);
+
 	public final Event.Schema schema;
 
 
@@ -48,13 +52,17 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 	public RemoveGuestCommand createRemoveGuestCommand(WikiventsCall call, Event event) {
 		String guestId=call.request.getParameter("guest");
 		Guest guest = event.findGuest(guestId);
-		return new RemoveGuestCommand(event, guest.user.get0());
+		if (guest==null) {
+			logger.warn("Could not find guest with id "+guestId);
+			return null;
+		}
+		return new RemoveGuestCommand(event, guest.user.get());
 	}
 	
-	public void handleEdit(WikiventsCall call, Event oldRecord) {
+	public void handleEdit(WikiventsCall call, Event event) {
 		Form formdata = new Form(call,(Struct) null);
 		if (formdata.isValid()) 
-			table.updateFields(oldRecord, formdata.record);
+			table.update(event, event.changeFields(formdata.record));
 		formdata.handle();
 	}
 	public void viewCreate(WikiventsCall call) {
@@ -88,7 +96,9 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 	public void handleAddComment(WikiventsCall call, Event event) {
 		String text=call.request.getParameter("comment");
 		if (call.user.mayComment())
-			table.addSequenceItem(event, schema.comments, new Comment(call.user,text));
+			table.update(event,
+				event.addSequenceItem(schema.comments, new Comment(call.user,text))
+			);
 	}
 	@NeedsNoAuthorization
 	public void handleRemoveComment(WikiventsCall call, Event event) {
@@ -97,8 +107,9 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 			return;
 		Comment com=event.findComment(commentId);
 		if (com.mayBeChangedBy(call.user))
-			table.removeSequenceItem(event, schema.comments, com);
+			table.update(event,	event.removeSequenceItem(schema.comments, com));
 	}
+	//public void handleChangeField(WikiventsCall call, Event oldRecord) { super.handleChangeField(call, oldRecord);}
 
 	public void handleAddOrganizer(WikiventsCall call, Event event) {
 		String username=call.request.getParameter("newOrganizer");
@@ -106,7 +117,7 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 		if (newOrganizer==null)
 			call.sendError(500, "no organizer");
 		else if (! event.hasOrganizer(newOrganizer) && event.hasGuest(newOrganizer))
-			table.addSequenceItem(event, schema.organizers, newOrganizer.getRef());
+			table.update(event, event.addSequenceItem(schema.organizers, newOrganizer.getRef()));
 	}
 	public void handleRemoveOrganizer(WikiventsCall call, Event event) {
 		String id=call.request.getParameter("userId");
@@ -114,7 +125,7 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 		if (user==null)
 			call.sendError(500, "no organizer");
 		else if (event.organizers.size()>1) // never remove the last organizer
-			table.removeSequenceItem(event, schema.organizers, user.getRef());
+			table.update(event, event.removeSequenceItem(schema.organizers, user.getRef()));
 	}
 
 	public void handleAddGroup(WikiventsCall call, Event event) {
@@ -123,7 +134,7 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 		if (gr==null)
 			call.sendError(500, "no such group");
 		else if (! event.hasGroup(gr))
-			table.addSequenceItem(event, schema.groups, gr.getRef());
+			table.update(event, event.addSequenceItem(schema.groups, gr.getRef()));
 	}
 	public void handleRemoveGroup(WikiventsCall call, Event event) {
 		String id=call.request.getParameter("groupId");
@@ -131,7 +142,7 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 		if (gr==null)
 			call.sendError(500, "no such group");
 		else
-			table.removeSequenceItem(event, schema.groups, gr.getRef());
+			table.update(event, event.removeSequenceItem(schema.groups, gr.getRef()));
 	}
 	
 	public class Form extends HttpFormData {

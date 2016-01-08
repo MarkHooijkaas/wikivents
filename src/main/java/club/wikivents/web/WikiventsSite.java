@@ -103,7 +103,6 @@ public class WikiventsSite implements HttpCallHandler {
 		}
 	}
 
-	public void close() { model.close(); }
 	public WikiventsTheme getTheme(String themeName) { return themes.get(themeName); }
 
 	public String captchaHtml() {

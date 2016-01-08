@@ -36,7 +36,7 @@ Je kan iedereen aanbevelen als je hem of haar persoonlijk kent, en het idee hebt
 {{#if  call.user.mayRecommend}}
   	<form role="form" method="POST" >
   		<input type="hidden" name="action" value="addRecommendation"/>				
-  		<input type="hidden" name="userId" value="{{record._id}}"/>				
+  		<input type="hidden" name="userId" value="{{record.key}}"/>				
 		<button type="submit" class="btn btn-default">Beveel {{record.username}} aan</button>
  	</form>
 {{else}}
@@ -47,7 +47,7 @@ Je kan iedereen aanbevelen als je hem of haar persoonlijk kent, en het idee hebt
 {{#each record.recommendations}}
 	{{&priv user.link}}
 	{{#ifMayChange this}}
-		{{> include/modal.delete title=user.get0.username action="removeRecommendation" field="userId" value=user._id label="Weet je zeker dat je deze aanbeveling wilt verwijderen?"}} 
+		{{> include/modal.delete title=user.get0.username action="removeRecommendation" field="userId" value=user.key label="Weet je zeker dat je deze aanbeveling wilt verwijderen?"}} 
 	{{/ifMayChange}}
 	<br/>
 {{/each}}

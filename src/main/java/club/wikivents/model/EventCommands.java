@@ -35,7 +35,7 @@ public class EventCommands {
 	
 	public static class ChangeFieldCommand extends WikiventsCommands.ChangeFieldCommand<Event> {
 		public ChangeFieldCommand(Event record, HasName field, String value) {
-			super(record, field, value);
+			super(record, field.getName(), value);
 		}
 		@Override public boolean mayBeDoneBy(User user) { return user.isAdmin || record.hasOrganizer(user);}
 	}

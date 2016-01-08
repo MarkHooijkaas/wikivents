@@ -10,7 +10,7 @@ public class UserCommands {
 	
 	public static class ChangeFieldCommand extends WikiventsCommands.ChangeFieldCommand<User> {
 		public ChangeFieldCommand(User record, HasName field, String value) {
-			super(record, field, value);
+			super(record, field.getName(), value);
 		}
 		@Override public boolean mayBeDoneBy(User user) { return user.isAdmin || record==user;}
 	}

@@ -14,7 +14,7 @@
 
 <h2>Aanbevelingen</h2>
 {{#each record.recommendations}}
-	<a 	class="confirmRemoveRecommendation" data-id="{{user._id}}" data-title="Aanbeveling van {{user.get0.username}}">
+	<a 	class="confirmRemoveRecommendation" data-id="{{user.key}}" data-title="Aanbeveling van {{user.get0.username}}">
 		<span class="glyphicon glyphicon-trash" aria-hidden="true" style="cursor:pointer;"></span>
 	</a>
 	{{&priv user.link}}

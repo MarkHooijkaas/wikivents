@@ -9,7 +9,7 @@
 			{{#each record.organizers}}
 				{{#if call.user.trusted}}{{&priv get0.link}}{{else}}{{&get0.usernameLink}}{{/if}}
 				{{#if edit}}
-					{{> include/modal.delete action="removeOrganizer" title=get0.username field="userId" value=_id label="Weet je zeker dat je deze organisator wil verwijderen?"}} 
+					{{> include/modal.delete action="removeOrganizer" title=get0.username field="userId" value=key label="Weet je zeker dat je deze organisator wil verwijderen?"}} 
 				{{/if}}
 				<br/>
 			{{/each}}

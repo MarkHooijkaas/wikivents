@@ -29,7 +29,6 @@ public class Runner {
 	public void run() {
 		server.startListening();
 		server.join();
-		site.close();
 	}
 
 	public static void main(String[] args) {

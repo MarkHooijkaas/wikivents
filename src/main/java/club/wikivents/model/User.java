@@ -42,13 +42,13 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 	@Override public String getPasswordSalt() { return passwordSalt; }
 
 	public String getLoginToken() { 
-		SecureToken tok=new SecureToken(table.model, _id);
+		SecureToken tok=new SecureToken(model, _id);
 		return tok.getToken();
 	}
 	
 	public ArrayList<Event> futureEvents() {
 		ArrayList<Event> result=new ArrayList<Event>();
-		for (Event e: table.model.futureEvents()) {
+		for (Event e: model.futureEvents()) {
 			if (e.hasGuest(this) || e.hasOrganizer(this))
 				result.add(e);
 		}
@@ -56,7 +56,7 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 	}
 	public ArrayList<Event> pastEvents() {
 		ArrayList<Event> result=new ArrayList<Event>();
-		for (Event e: table.model.pastEvents()) {
+		for (Event e: model.pastEvents()) {
 			if (e.hasGuest(this) || e.hasOrganizer(this))
 				result.add(e);
 		}
@@ -65,7 +65,7 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 
 	public ArrayList<Group> groups() {
 		ArrayList<Group> result=new ArrayList<Group>();
-		for (Group gr: table.model.groups) {
+		for (Group gr: model.groups) {
 			if (gr.hasMember(this) || gr.hasOwner(this))
 				result.add(gr);
 		}
@@ -188,7 +188,7 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 	}
 	public void sendMailFrom(InternetAddress from, String subject, String message, boolean copyToSender) {
 		try {
-			final MimeMessage msg = table.model.site.emailer.createMessage();
+			final MimeMessage msg = model.site.emailer.createMessage();
 			if (from==systemMailAddress)
 				msg.setFrom(from);
 			else {
@@ -204,7 +204,7 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 				msg.setContent(message, "text/html; charset=utf-8");
 			else
 				msg.setText(message, "utf-8");
-			table.model.site.emailer.send(msg);
+			model.site.emailer.send(msg);
 		} 
 		catch (MessagingException e) { throw new RuntimeException(e); } 
 		catch (UnsupportedEncodingException e) { throw new RuntimeException(e); }

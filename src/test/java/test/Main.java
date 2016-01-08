@@ -45,7 +45,6 @@ public class Main {
 		//model.users.create(new User(doc));
 		//debug("Added user");
 
-		model.close();
 		debug("done");
 	}
 

@@ -32,6 +32,24 @@ public class HttpCall {
 	public boolean isPost() { return "POST".equals(request.getMethod()); }
 	public boolean isAjax() { return "true".equals(request.getParameter("ajax")); }
 	
+	@Override public String toString(){ return toString(null); }
+	public String toString(String extra){
+		StringBuilder result=new StringBuilder(request.getMethod());
+		result.append("(");
+		result.append(getLocalUrl());
+		if (extra!=null)
+			result.append(", "+extra);
+		if (isPost()) {
+			Enumeration<String> names = request.getParameterNames();
+			while (names.hasMoreElements()) {
+				String name=names.nextElement();
+				result.append(", "+name+"="+request.getParameter(name));
+			}
+		}
+		result.append(")");
+		return result.toString();
+	}
+	
 	public String getTopUrl() {
 		String url=request.getScheme()+"://"+request.getServerName();
 		url+=":"+request.getServerPort();
