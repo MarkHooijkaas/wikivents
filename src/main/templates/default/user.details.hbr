@@ -13,6 +13,7 @@
 <br><br>
 {{record.city}}
 <br><br>
+{{#if call.user.maySendMail}}
 {{#if record.emailValidated}}
 <form role="form" method="POST" action="/sendMessage">
 	<input type="hidden" name="to" value="{{record.username}}"/>
@@ -21,6 +22,7 @@
 </form>
 {{else}}
 <div class="alert-danger">Het is nog niet mogelijk om email naar deze gebruiker te sturen</div>
+{{/if}}
 {{/if}}
 
 <br><br>
