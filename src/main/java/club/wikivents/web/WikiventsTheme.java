@@ -19,7 +19,6 @@ public class WikiventsTheme extends TemplateTheme {
 		WikiventsHelpers h = new WikiventsHelpers();
 		handlebar.registerHelper("ifMayChange", h.new IfMayChangeHelper()); 
 		handlebar.registerHelper("ifMayView",   h.new IfMayViewHelper());
-		handlebar.registerHelper("ifInlineEdit",   h.new IfInlineEditHelper());
 		handlebar.registerHelpers(h);
 
 		// TODO: the methods in h2 should also be in h, but are not recognized

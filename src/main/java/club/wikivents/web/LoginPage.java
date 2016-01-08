@@ -73,7 +73,7 @@ public class LoginPage extends WikiventsThing {
 		User user=findUser(username);
 		if (user!=null) {
 			String token = new SecureToken(call.model, user._id).getToken();
-			String url= call.getTopUrl()+"/user/"+user.username+"?inline-edit=true&loginToken="+token;
+			String url= call.getTopUrl()+"/user/"+user.username+"?loginToken="+token;
 			TemplateData context=call.createTemplateData();
 			context.add("url", url);
 			String message = call.getTheme().userForgotPassword.toString(context);

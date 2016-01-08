@@ -1,7 +1,7 @@
 	{{> include/modal.begin prefix="" id=name}}
 		{{#block "helpText"}}
 		{{/block}}
-		<form role="form" method="POST" id="changeField{{name}}Form" action="{{call.request.requestURI}}?inline-edit=true">
+		<form role="form" method="POST" id="changeField{{name}}Form" action="{{call.request.requestURI}}">
 			<input type="hidden" name="action" value="changeField"/>
 			<input type="hidden" name="field" value="{{name}}"/>
 			<label for="">{{label}}: </label>

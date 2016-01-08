@@ -304,7 +304,7 @@ public class UserHandler extends WikiventsActionHandler<User> {
 			} 
 			catch (IOException e) { throw new RuntimeException(e); }
 		}
-		call.redirect("/user/"+u.username+"?inline-edit=true");
+		call.redirect("/user/"+u.username);
 	}
 
 	private String getFileName(final Part part) {

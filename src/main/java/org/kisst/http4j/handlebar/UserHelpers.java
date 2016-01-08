@@ -82,29 +82,6 @@ public class UserHelpers<T> {
 		}
 	}
 
-	public class IfInlineEditHelper implements Helper<Object> {
-		@SuppressWarnings({ "unchecked" })
-		@Override public CharSequence apply(final Object obj, final Options options) throws IOException {
-			boolean editMode=false;
-			if (obj instanceof AccessChecker) {
-				T user =getUserOrNull(options);
-				HttpCall call = getCallOrNull(options);
-				if (call==null)
-					editMode=false;
-				else if ( "true".equals(call.request.getParameter("inline-edit")))
-					editMode=true;
-				else if ( "true".equals(call.request.getParameter("admin-mode")))
-					editMode=true;
-				if (editMode)
-					editMode= ((AccessChecker<T>)obj).mayBeChangedBy(user);
-			}
-			if (editMode) 
-				return options.fn();
-			else
-				return options.inverse();
-		}
-	}
-
 	public class IfMayViewHelper implements Helper<Object> {
 		@SuppressWarnings({ "unchecked" })
 		@Override public CharSequence apply(final Object obj, final Options options) throws IOException {
