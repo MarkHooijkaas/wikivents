@@ -61,8 +61,8 @@ public class ResourceHandler implements HttpCallHandler {
 
 			writeContent(call, resource);
 		}
-		catch (IOException e) { throw new RuntimeException(e);}
-
+		catch (IOException e) { logger.error("Resource handling error "+e.getMessage()+" while handling "+call);} // don't log stacktrace
+		catch (RuntimeException e) { logger.error("Resource handling error "+e.getMessage()+" while handling "+call);} // don't log stacktrace
 	}
 
 	private boolean setCacheHeaders(HttpCall call, String fileName, long lastModified) {
