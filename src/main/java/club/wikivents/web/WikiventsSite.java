@@ -60,6 +60,7 @@ public class WikiventsSite implements HttpCallHandler {
 		public final HttpCallHandler defaultHandler =new ResourceHandler(null, resourceDir);
 	}
 	public WikiventsSite(Props props) {
+		logger.warn("Starting Wikivents site"); // TODO: should not be warning
 		this.props=props;
 		//for (Event e:model.newestEvents)
 		//	System.out.println(e._id+"\t"+e.creationDate());
