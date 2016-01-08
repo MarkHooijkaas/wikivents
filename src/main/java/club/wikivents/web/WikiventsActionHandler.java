@@ -58,13 +58,12 @@ public abstract class WikiventsActionHandler<T extends BasicPkoObject<WikiventsM
 			logger.error("Unknown or invalid command "+cmdName);
 		else {
 			if (cmd.mayBeDoneBy(call.user)) {
-				//System.out.println("Applying "+cmd);
 				T newRecord=cmd.apply();
 				if (newRecord!=record)
 					table.update(record, newRecord);
 			}
 			else
-				System.out.println("Not Allowed "+cmd);
+				logger.error(cmdName+" not allowed for user "+call.user);
 		}
 		if (!call.isAjax() && ! call.response.isCommitted()) 
 			call.redirect(call.getLocalUrl());
