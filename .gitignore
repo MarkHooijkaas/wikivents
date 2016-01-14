@@ -9,6 +9,7 @@ data/
 src/resources/images/
 /data/
 config/local.properties
+.DS_Store
 
 ### Maven template
 target/
