@@ -42,7 +42,7 @@ public class GroupData extends BasicPkoObject<WikiventsModel, Group> {
 
 	@Override public Ref getRef() { return Ref.of(model,_id); }
 	public static class Ref extends PkoRef<Group> implements PkoModel.MyObject {
-		static public Ref of(WikiventsModel model, String key) { return new Ref(model, key); }
+		static public Ref of(WikiventsModel model, String key) { return key==null ? null : new Ref(model, key); }
 		public static final Type<Group.Ref> type = new Type.Java<Group.Ref>(Group.Ref.class, null); // XXX TODO: parser is null 
 		public static class Field extends Schema.BasicField<Group.Ref> {
 			public Field(String name) { super(Group.Ref.type, name); }

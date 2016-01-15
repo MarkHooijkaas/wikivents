@@ -79,7 +79,8 @@ public class UserData extends BasicPkoObject<WikiventsModel, User> {
 	
 	@Override public Ref getRef() { return Ref.of(model,_id); }
 	public static class Ref extends PkoRef<User> implements MyObject, Htmlable {
-		static public Ref of(WikiventsModel model, String key) { return new Ref(model, key); }
+		// TODO: think of structural solution for refs with a null key
+		static public Ref of(WikiventsModel model, String key) { return key==null ? null : new Ref(model, key); }
 		public static final Type<User.Ref> type = new Type.Java<User.Ref>(User.Ref.class, null); // XXX TODO: parser is null 
 		public static class Field extends Schema.BasicField<User.Ref> {
 			public Field(String name) { super(User.Ref.type, name); }

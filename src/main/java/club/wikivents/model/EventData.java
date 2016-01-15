@@ -87,7 +87,7 @@ public class EventData extends BasicPkoObject<WikiventsModel, Event> {
 	
 	@Override public Ref getRef() { return Ref.of(model,_id); }
 	public static class Ref extends PkoRef<Event> {
-		static public Ref of(WikiventsModel model, String key) { return new Ref(model, key); }
+		static public Ref of(WikiventsModel model, String key) { return key==null ? null : new Ref(model, key); }
 		public static final Type<Event.Ref> type = new Type.Java<Event.Ref>(Event.Ref.class, null); // XXX TODO: parser is null 
 		public static class Field extends Schema.BasicField<Event.Ref> {
 			public Field(String name) { super(Event.Ref.type, name); }
