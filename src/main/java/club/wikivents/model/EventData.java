@@ -95,4 +95,5 @@ public class EventData extends BasicPkoObject<WikiventsModel, Event> {
 		}
 		private Ref(WikiventsModel model, String _id) { super(model.events, _id); }
 	}
+	@Override public String getName() { return title; }
 }

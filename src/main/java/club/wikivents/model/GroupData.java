@@ -50,4 +50,5 @@ public class GroupData extends BasicPkoObject<WikiventsModel, Group> {
 		}
 		private Ref(WikiventsModel model, String _id) { super(model.groups, _id); }
 	}
+	@Override public String getName() { return title; }
 }

@@ -102,5 +102,5 @@ public class UserData extends BasicPkoObject<WikiventsModel, User> {
 			return u.username; 
 		}
 	}
-
+	@Override public String getName() { return username; }
 }
