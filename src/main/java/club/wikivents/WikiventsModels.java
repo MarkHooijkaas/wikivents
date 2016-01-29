@@ -1,10 +1,9 @@
 package club.wikivents;
 
 import java.io.File;
-import java.io.IOException;
 
-import org.eclipse.jgit.api.Git;
 import org.kisst.pko4j.impl.FileStorage;
+import org.kisst.pko4j.impl.GitStorage;
 import org.kisst.props4j.Props;
 
 import club.wikivents.model.Event;
@@ -16,12 +15,11 @@ import club.wikivents.web.WikiventsSite;
 public class WikiventsModels {
 
 	private static WikiventsModel createFileModel(WikiventsSite site, Props props) {
-		Git git=null;
-		try {
-			if (props.getBoolean("useGit",false))
-				git = Git.open(new File(props.getString("datadir", "data")));
+		GitStorage git=null;
+		if (props.getBoolean("useGit",false)) {
+			File datadir = new File(props.getString("datadir", "data"));
+			git=new GitStorage(datadir);
 		}
-		catch (IOException e) { throw new RuntimeException(e);}
 		return new WikiventsModel(site,
 			new FileStorage<User>(User.schema, props, git),
 			new FileStorage<Event>(Event.schema, props, git),
