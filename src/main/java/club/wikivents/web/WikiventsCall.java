@@ -67,9 +67,10 @@ public class WikiventsCall extends HttpCall {
 		this.call=this;
 		this.authenticated=(user!=null);
 		if (user!=null)
-			callinfo.user=user.username+" ("+request.getRemoteAddr()+")";
+			callinfo.user=user.username;
 		else
-			callinfo.user=request.getRemoteAddr();
+			callinfo.user="anonymous";
+		callinfo.ip=request.getRemoteAddr();
 	}	
 	public static WikiventsCall of(HttpCall httpcall, WikiventsModel model) {
 		if (httpcall instanceof WikiventsCall)
