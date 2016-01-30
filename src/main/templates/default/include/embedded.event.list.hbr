@@ -28,7 +28,7 @@
 		
 {{#each list}} 
 	  <tr{{#if cancelled}} style="color: grey;"{{/if}}>
-        <td data-order="{{#if date}}{{date}}{{else}}9999 {{creationDate}}{{/if}} {{time}}">{{dateShortFormat date}}</td>
+        <td data-order="{{#if date}}{{date}}{{else}}{{#if cancelled}}9999{{else}}9998{{/if}} {{creationDate}}{{/if}} {{time}}">{{dateShortFormat date}}</td>
         <td>{{time}}</td>
         <td><a href="/event/:{{key}}" {{#if cancelled}} style="color: grey;"{{/if}}>{{#if idea}}<span style="color:grey;">WIKIDEE</span><br>{{/if}}{{#if cancelled}}GEANNULEERD<br>{{/if}}{{title}}</a></td>
         <td>{{city}}</td>
