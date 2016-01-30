@@ -3,7 +3,6 @@ package club.wikivents.model;
 import org.kisst.http4j.handlebar.Htmlable;
 import org.kisst.item4j.ImmutableSequence;
 import org.kisst.item4j.Item;
-import org.kisst.item4j.Type;
 import org.kisst.item4j.struct.MultiStruct;
 import org.kisst.item4j.struct.SingleItemStruct;
 import org.kisst.item4j.struct.Struct;
@@ -32,7 +31,7 @@ public class UserData extends BasicPkoObject<WikiventsModel, User> {
 		public final BooleanField emailValidated = new BooleanField("emailValidated");
 		public final BooleanField blocked = new BooleanField("blocked");
 		//public final BooleanField identityValidated = new BooleanField("identityValidated");
-		public final SequenceField<UserItem> recommendations= new SequenceField<>(UserItem.schema,"recommendations");
+		public final SequenceField<UserItem> recommendations= new SequenceField<>(UserItem.class,"recommendations");
 	}
 	
 	public final String username;
@@ -81,9 +80,8 @@ public class UserData extends BasicPkoObject<WikiventsModel, User> {
 	public static class Ref extends PkoRef<User> implements MyObject, Htmlable {
 		// TODO: think of structural solution for refs with a null key
 		static public Ref of(WikiventsModel model, String key) { return key==null ? null : new Ref(model, key); }
-		public static final Type<User.Ref> type = new Type.Java<User.Ref>(User.Ref.class, null); // XXX TODO: parser is null 
 		public static class Field extends Schema.BasicField<User.Ref> {
-			public Field(String name) { super(User.Ref.type, name); }
+			public Field(String name) { super(User.Ref.class, name); }
 			public Ref getRef(WikiventsModel model, Struct data) { return of(model,Item.asString(data.getDirectFieldValue(name)));}
 		}
 

@@ -5,11 +5,12 @@ import java.time.LocalTime;
 
 import org.kisst.item4j.ImmutableSequence;
 import org.kisst.item4j.Item;
-import org.kisst.item4j.Type;
 import org.kisst.item4j.struct.Struct;
+import org.kisst.item4j.struct.StructProps;
 import org.kisst.pko4j.BasicPkoObject;
 import org.kisst.pko4j.PkoRef;
 import org.kisst.pko4j.PkoSchema;
+import org.kisst.props4j.Props;
 
 public class EventData extends BasicPkoObject<WikiventsModel, Event> {
 	@Override public Iterable<String> fieldNames() { return schema.fieldNames(); }
@@ -20,8 +21,8 @@ public class EventData extends BasicPkoObject<WikiventsModel, Event> {
 		public final IntField _crudObjectVersion = new IntField("_crudObjectVersion");
 		public final StringField title = new StringField("title"); 
 		public final StringField imageUrl = new StringField("imageUrl"); 
-		public final SequenceField<User.Ref> organizers = new SequenceField<User.Ref>(User.Ref.type,"organizers");
-		public final SequenceField<User.Ref> likes = new SequenceField<User.Ref>(User.Ref.type,"likes");
+		public final SequenceField<User.Ref> organizers = new SequenceField<User.Ref>(User.Ref.class,"organizers");
+		public final SequenceField<User.Ref> likes = new SequenceField<User.Ref>(User.Ref.class,"likes");
 		public final IntField max = new IntField("max"); 
 		public final BooleanField guestsAllowed = new BooleanField("guestsAllowed");
 		public final BooleanField backupGuestsAllowed = new BooleanField("backupGuestsAllowed");
@@ -35,9 +36,9 @@ public class EventData extends BasicPkoObject<WikiventsModel, Event> {
 		public final StringField cost = new StringField("cost"); 
 		public final StringField description = new StringField("description"); 
 		public final StringField guestInfo = new StringField("guestInfo"); 
-		public final SequenceField<Guest> guests= new SequenceField<Guest>(Guest.schema,"guests"); 
-		public final SequenceField<Comment> comments= new SequenceField<Comment>(Comment.schema,"comments");
-		public final SequenceField<Group.Ref> groups = new SequenceField<>(Group.Ref.type,"groups");
+		public final SequenceField<Guest> guests= new SequenceField<Guest>(Guest.class,"guests"); 
+		public final SequenceField<Comment> comments= new SequenceField<Comment>(Comment.class,"comments");
+		public final SequenceField<Group.Ref> groups = new SequenceField<>(Group.Ref.class,"groups");
 	}
 	
 	public final String title;
@@ -88,12 +89,12 @@ public class EventData extends BasicPkoObject<WikiventsModel, Event> {
 	@Override public Ref getRef() { return Ref.of(model,_id); }
 	public static class Ref extends PkoRef<Event> {
 		static public Ref of(WikiventsModel model, String key) { return key==null ? null : new Ref(model, key); }
-		public static final Type<Event.Ref> type = new Type.Java<Event.Ref>(Event.Ref.class, null); // XXX TODO: parser is null 
 		public static class Field extends Schema.BasicField<Event.Ref> {
-			public Field(String name) { super(Event.Ref.type, name); }
+			public Field(String name) { super(Event.Ref.class, name); }
 			public Ref getRef(WikiventsModel model, Struct data) { return of(model, Item.asString(data.getDirectFieldValue(name)));}
 		}
 		private Ref(WikiventsModel model, String _id) { super(model.events, _id); }
 	}
 	@Override public String getName() { return title; }
+
 }
