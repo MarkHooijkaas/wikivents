@@ -20,7 +20,7 @@
 {{/if}}
 {{/ifAmGuest}}
 {{#if call.user.maySeeUsers}}
-		<li role="presentation"><a role="tab" data-toggle="tab" data-target="#participantsTab"    >Deelnemers {{record.guestCount}}/{{record.max}}</a></li>
+		<li role="presentation"><a role="tab" data-toggle="tab" data-target="#participantsTab"    >Deelnemers {{record.guestCount}}</a></li>
 		<li role="presentation"><a role="tab" data-toggle="tab" data-target="#commentsTab">Reacties {{record.comments.size}}</a></li>
 {{/if}}
 	{{#if call.user.isAdmin}}

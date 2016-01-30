@@ -1,6 +1,6 @@
 <div class="col-xs-12 col-sm-6 panel panel-default overflow-hidden">
 
-<h2>{{#if record.idea}}Ge&iuml;nteresseerden {{record.guestCount}}{{else}}Deelnemers {{record.guestCount}}/{{record.max}}{{/if}}
+<h2>{{#if record.idea}}Ge&iuml;nteresseerden{{else}}Deelnemers{{/if}} {{record.guestCount}}
 	{{> include/modal.lockField value=record.guestsAllowed name="guestsAllowed" label="Deelname"}}
 </h2> 
 

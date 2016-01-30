@@ -31,9 +31,12 @@ public class Event extends EventData implements Comparable<Event>, AccessChecker
 	}
 
 	public String guestCount() {
-		if (guests==null)
-			return "0";
-		return guests.size()<=max ? guests.size()+"" : max+"+"+(guests.size()-max); 
+		String result="0";
+		if (guests!=null)
+		result= guests.size()<=max ? guests.size()+"" : max+"+"+(guests.size()-max); 
+		if (max<9999 || !idea)
+			result+="/"+max;
+		return result;
 	}   
 	public String organizerNames() {
 		StringJoiner sj = new StringJoiner(", ");
