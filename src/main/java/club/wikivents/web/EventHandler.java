@@ -1,5 +1,6 @@
 package club.wikivents.web;
 
+import org.kisst.http4j.HttpRequestStruct;
 import org.kisst.http4j.form.HttpFormData;
 import org.kisst.http4j.handlebar.TemplateEngine.CompiledTemplate;
 import org.kisst.item4j.struct.Struct;
@@ -89,6 +90,12 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 	public void handleDelete(WikiventsCall call, Event event) {
 		if (call.user.isAdmin)
 			table.delete(event);
+	}
+
+	public void handleAddPoll(WikiventsCall call, Event event) {
+		table.update(event,
+			event.addSequenceItem(schema.polls, event.new Poll(new HttpRequestStruct(call)))
+		);
 	}
 
 	

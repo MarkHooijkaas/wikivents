@@ -5,14 +5,16 @@ import java.time.LocalTime;
 
 import org.kisst.item4j.ImmutableSequence;
 import org.kisst.item4j.Item;
+import org.kisst.item4j.struct.ReflectStruct;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.item4j.struct.StructProps;
 import org.kisst.pko4j.BasicPkoObject;
 import org.kisst.pko4j.PkoRef;
 import org.kisst.pko4j.PkoSchema;
+import org.kisst.pko4j.PkoModel.MyObject;
 import org.kisst.props4j.Props;
 
-public class EventData extends BasicPkoObject<WikiventsModel, Event> {
+public class EventData extends BasicPkoObject<WikiventsModel, Event> implements Item.Factory {
 	@Override public Iterable<String> fieldNames() { return schema.fieldNames(); }
 	public static final Schema schema=new Schema();
 	public static final class Schema extends PkoSchema<Event> {
@@ -39,6 +41,7 @@ public class EventData extends BasicPkoObject<WikiventsModel, Event> {
 		public final SequenceField<Guest> guests= new SequenceField<Guest>(Guest.class,"guests"); 
 		public final SequenceField<Comment> comments= new SequenceField<Comment>(Comment.class,"comments");
 		public final SequenceField<Group.Ref> groups = new SequenceField<>(Group.Ref.class,"groups");
+		public final SequenceField<Poll> polls = new SequenceField<>(Poll.class,"polls");
 	}
 	
 	public final String title;
@@ -61,6 +64,7 @@ public class EventData extends BasicPkoObject<WikiventsModel, Event> {
 	public final ImmutableSequence<Group.Ref> groups;
 	public final ImmutableSequence<Guest> guests;
 	public final ImmutableSequence<Comment> comments;
+	public final ImmutableSequence<Poll> polls;
 	
 	public EventData(WikiventsModel model, Struct data) {
 		super(model, model.events, data);
@@ -84,6 +88,7 @@ public class EventData extends BasicPkoObject<WikiventsModel, Event> {
 		this.guests=schema.guests.getSequenceOrEmpty(model, data);
 		this.comments=schema.comments.getSequenceOrEmpty(model, data);
 		this.groups=schema.groups.getSequenceOrEmpty(model, data);
+		this.polls=schema.polls.getSequenceOrEmpty(this, data);
 	}
 	
 	@Override public Ref getRef() { return Ref.of(model,_id); }
@@ -97,4 +102,46 @@ public class EventData extends BasicPkoObject<WikiventsModel, Event> {
 	}
 	@Override public String getName() { return title; }
 
+	public class Poll extends ReflectStruct implements MyObject {
+		public final String title;
+		public final String description;
+		public final ImmutableSequence<Option> options;
+		public Poll(Struct data) {
+			Props props=StructProps.of(data);
+			this.title=props.getString("title");
+			this.description=props.getString("description");
+			this.options=props.getTypedSequenceOrEmpty(model, Option.class, "options");
+		}
+		
+		public class Option {
+			public final String title;
+			public final String description;
+			public final ImmutableSequence<Answer> answers;
+			public Option(Struct data) {
+				Props props=StructProps.of(data);
+				this.title=props.getString("title");
+				this.description=props.getString("description");
+				this.answers=props.getTypedSequenceOrEmpty(model, Answer.class, "answers");
+			}
+
+			public class Answer {
+				public final User.Ref user;
+				public final PollAnswer possible;
+				public final String comment;
+				public Answer(Struct data) {
+					Props props=StructProps.of(data);
+					this.comment=props.getString("title",null);
+					this.user=null;
+					this.possible=PollAnswer.valueOf(props.getString("possible"));
+				}
+			}
+		}
+	}
+	enum PollAnswer { YES, NO, MAYBE }
+
+	@Override public Object construct(Class<?> cls, Object data) {
+		if (Poll.class==cls && data instanceof Struct)
+			return this.new Poll((Struct)data);
+		return model.construct(cls, data);
+	};
 }

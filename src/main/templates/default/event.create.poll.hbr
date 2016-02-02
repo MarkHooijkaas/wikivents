@@ -1,0 +1,26 @@
+
+
+<a data-toggle="modal" data-target="#addPollModal" class="btn btn-primary">Maak een poll</a>
+
+<form role="form" method="POST" id="createPoll" class="form-horizontal">
+<input type="hidden" name="action" value="addPoll"/>
+{{#partial "modalBody"}}
+<div>
+	<div class="form-group form-group-required">
+		<label for="title"  class="control-label">Titel:</label>
+		<div>
+			<input type="text" class="form-control" id="addPollTitle" name="title" required>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="" class="control-label">Omschrijving</label>
+	    <div>
+			<textarea type="{{type}}" class="form-control" id="addPollDescription" name="description" rows="5"></textarea>
+			<script>CKEDITOR.replace( 'addPollDescription' );</script>
+		</div>
+	</div>
+</div>
+{{/partial}}
+
+{{>include/modal id="addPoll" title="Maak een nieuwe Poll"}}
+</form>

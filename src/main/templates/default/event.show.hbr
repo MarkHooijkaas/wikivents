@@ -23,6 +23,9 @@
 		<li role="presentation"><a role="tab" data-toggle="tab" data-target="#participantsTab"    >Deelnemers {{record.guestCount}}</a></li>
 		<li role="presentation"><a role="tab" data-toggle="tab" data-target="#commentsTab">Reacties {{record.comments.size}}</a></li>
 {{/if}}
+{{#each record.polls}}
+		<li role="presentation"><a role="tab" data-toggle="tab" data-target="#pollTab"    >Poll: {{title}}</a></li>
+{{/each}}
 	{{#if call.user.isAdmin}}
 		<li role="presentation" class="pull-right"><a role="tab" data-toggle="tab" data-target="#adminTab"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Beheer</a></li>
 	{{/if}}
@@ -46,6 +49,12 @@
 		<div class="tab-pane" role="tabpanel" id="commentsTab">
 			{{> include/show.comments}}
 		</div>
+{{#each record.polls}}
+		<div class="tab-pane" role="tabpanel" id="pollTab">
+			<h1>{{title}}</h1>
+			{{&description}}
+		</div>
+{{/each}}
 {{#ifMayChange record}} 
 		<div class="tab-pane" role="tabpanel" id="modifyTab">
 			{{> event.modify}}

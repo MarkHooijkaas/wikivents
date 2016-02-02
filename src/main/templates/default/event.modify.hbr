@@ -6,6 +6,9 @@
 	{{> include/show.booleanField value=record.guestsAllowed  name="guestsAllowed" label="inschrijving" title="inschr" trueLabel="OPEN" falseLabel="DICHT"}}
 	{{> include/show.booleanField value=record.backupGuestsAllowed  name="backupGuestsAllowed" label="reservelijst" title="reserve" trueLabel="OPEN" falseLabel="DICHT"}}
 	{{>event.modify.groups}}
+{{#if false}}
+	{{>event.create.poll}}
+{{/if}}
 </div>
 
 <div class="col-xs-12 col-sm-7 col-md-8 col-lg-8 panel panel-default overflow-hidden">

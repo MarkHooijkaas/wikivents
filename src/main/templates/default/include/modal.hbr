@@ -9,7 +9,7 @@
 				{{#block "modalBody"}}{{/block}}			
 			</div>
 			<div class="modal-footer">
-				<button type="submit" class="btn btn-default btn-success">{{#if submitTitle}}{{submitTitle}}{{else}}Wijzig{{/if}}</button>
+				<button type="submit" class="btn btn-default btn-success">{{#if submitTitle}}{{submitTitle}}{{else}}{{title}}{{/if}}</button>
 				<!--<a class="btn btn-default btn-danger" href="{{#if cancelUrl}}{{cancelUrl}}{{else}}{{request.getRequestURI}}{{/if}}">Annuleer</a>-->
 				<a class="btn btn-default btn-danger" data-dismiss="modal">Annuleer</a>
 			</div>
