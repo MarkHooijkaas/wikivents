@@ -9,9 +9,9 @@
         <th>plaats</th>
         <th>locatie</th>
         <th>deelnemers</th>
-{{#ifLoggedIn}}
+{{#if call.user.maySeeUsers}}
         <th>Organisator</th>
-{{/ifLoggedIn}}
+{{/if}}
         <th>kosten</th>
         <th>geplaatst op</th>
         <th>Update</th>
@@ -34,9 +34,9 @@
         <td>{{city}}</td>
         <td>{{location}}</td>
         <td data-order="{{guests.size}}">{{#if idea}}{{guests.size}}{{else}}{{guestCount}}{{/if}}</td>
-{{#ifLoggedIn}}
+{{#if call.user.maySeeUsers}}
         <td>{{#if user.trusted}}{{&join organizers "<br/>"}}{{else}}{{#each organizers}}{{&get0.usernameLink}} {{/each}}{{/if}}</td>
-{{/ifLoggedIn}}
+{{/if}}
         <td>{{cost}}</td>
         <td data-order="{{creationDate}}">{{dateShortFormat creationDate}}</td>
         <td data-order="{{modificationDate}}">{{dateShortFormat modificationDate}}</td>

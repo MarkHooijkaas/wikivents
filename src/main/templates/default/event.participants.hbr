@@ -1,10 +1,10 @@
-{{#ifLoggedIn}}
 
 
 <div>
 <h2>{{#if record.idea}}Ge&iuml;nteresseerden{{else}}Deelnemers{{/if}} {{record.guestCount}}
 	{{> include/modal.lockField value=record.guestsAllowed name="guestsAllowed" label="Deelname"}}
 </h2> 
+{{#if call.user.maySeeUsers}}
 {{#each record.allowedGuests}}
 	{{#if call.user.trusted}}{{&priv user.link}}{{else}}{{&user.get0.usernameLink}}{{/if}}
 	{{#ifMayChange this}}
@@ -79,5 +79,7 @@
 	<span class="alert-danger">Deelname is pas mogelijk bij een groen Karma</span>
 {{/if}}
 {{/ifAmGuest}}
+{{else}}
+	<span class="alert-danger">Deelnemen en deelnemers zien is pas mogelijk bij een groen Karma</span>
+{{/if}}
 </div>
-{{/ifLoggedIn}}
