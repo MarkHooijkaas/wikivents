@@ -1,0 +1,29 @@
+{{#if call.user.maySeeUsers}}
+<div> 
+<h2>Historie</h2> 	
+<table class="table table-hover" id="historyTable">
+    <thead>
+      <tr>
+        <th>Datum/Tijd</th>
+        <th>Gebruiker</th>
+        <th>Actie</th>
+		{{#if call.user.isAdmin}}<th>IP</th>{{/if}}
+      </tr>
+    </thead>
+    <tbody id="historyBody">
+	{{#each record.history}}
+		<tr>
+			<td>
+				<span class="commentTime">{{dateFormat time "eee d MMM HH:mm:ss"}}</span>
+			</td>
+			<td><a href="/user/{{user}}">{{user}}</a></td>
+			<td>{{comment}}</td>
+			{{#if call.user.isAdmin}}<td>{{email}}</td>{{/if}}
+		</tr>
+	{{/each}}
+    </tbody>
+</table>
+</div>
+
+
+{{/if}}

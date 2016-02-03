@@ -25,6 +25,7 @@
 {{#if call.user.maySeeUsers}}
 		<li role="presentation"><a role="tab" data-toggle="tab" data-target="#participantsTab"    >Ge&iuml;nteresseerden {{record.members.size}}</a></li>
 		<li role="presentation"><a role="tab" data-toggle="tab" data-target="#commentsTab">Reacties {{record.comments.size}}</a></li>
+		<li role="presentation"><a role="tab" data-toggle="tab" data-target="#historyTab">Historie</a></li>
 {{/if}}
 	{{#if call.user.isAdmin}}
 		<li role="presentation" class="pull-right"><a role="tab" data-toggle="tab" data-target="#adminTab"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Beheer</a></li>
@@ -53,6 +54,8 @@
 		<div class="tab-pane" role="tabpanel" id="commentsTab">
 			{{> include/show.comments}}
 		</div>
+		<div class="tab-pane" role="tabpanel" id="historyTab">
+		</div>
 {{#ifMayChange record}} 
 		<div class="tab-pane" role="tabpanel" id="modifyTab">
 			{{> group.modify}}
@@ -66,5 +69,12 @@
 	</div>
 </div>
 
+<script>
+	$(document).ready(function() {
+		$(document).on('shown.bs.tab', 'a[data-target="#historyTab"]', function (e) {
+    		$('#historyTab').load("?view=history");
+		});
+	} );
+</script>
 
 {{> include/page.footer}}

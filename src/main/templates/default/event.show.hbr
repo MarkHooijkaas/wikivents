@@ -1,5 +1,6 @@
 {{> include/page.header.begin pagetitle=record.title}}
 <script src="/lib/ckeditor/ckeditor.js"></script>
+<script src="/lib/datatables/media/js/jquery.dataTables.min.js"></script>
 {{#ifMayChange record}}
 <script src="/lib/webshim-1.15.10/js-webshim/minified/polyfiller.js"></script>
 {{/ifMayChange}}
@@ -22,6 +23,7 @@
 {{#if call.user.maySeeUsers}}
 		<li role="presentation"><a role="tab" data-toggle="tab" data-target="#participantsTab"    >Deelnemers {{record.guestCount}}</a></li>
 		<li role="presentation"><a role="tab" data-toggle="tab" data-target="#commentsTab">Reacties {{record.comments.size}}</a></li>
+		<li role="presentation"><a role="tab" data-toggle="tab" data-target="#historyTab">Historie</a></li>
 {{/if}}
 {{#each record.polls}}
 		<li role="presentation"><a role="tab" data-toggle="tab" data-target="#pollTab"    >Poll: {{title}}</a></li>
@@ -49,6 +51,8 @@
 		<div class="tab-pane" role="tabpanel" id="commentsTab">
 			{{> include/show.comments}}
 		</div>
+		<div class="tab-pane" role="tabpanel" id="historyTab">
+		</div>
 {{#each record.polls}}
 		<div class="tab-pane" role="tabpanel" id="pollTab">
 			<h1>{{title}}</h1>
@@ -67,6 +71,14 @@
 {{/if}}
 	</div>
 </div>
+
+<script>
+	$(document).ready(function() {
+		$(document).on('shown.bs.tab', 'a[data-target="#historyTab"]', function (e) {
+    		$('#historyTab').load("?view=history");
+		});
+	} );
+</script>
 
   
 {{> include/page.footer}}

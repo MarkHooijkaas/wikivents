@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import org.kisst.http4j.ActionHandler;
 import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.handlebar.AccessChecker;
+import org.kisst.http4j.handlebar.TemplateEngine.CompiledTemplate;
 import org.kisst.pko4j.BasicPkoObject;
 import org.kisst.pko4j.PkoTable;
 import org.kisst.util.CallInfo;
@@ -25,11 +26,15 @@ public abstract class WikiventsActionHandler<T extends BasicPkoObject<WikiventsM
 	public final WikiventsModel model;
 	public final WikiventsSite site;
 	public final PkoTable<T> table;
+
+	private final CompiledTemplate historyTemplate;
+
 	public WikiventsActionHandler(WikiventsSite site, PkoTable<T> table) {
 		super(WikiventsCall.class, (Class<T>) table.getElementClass());
 		this.site=site;
 		this.model=site.model;
 		this.table=table;
+		historyTemplate= model.site.defaultTheme.template("include/show.history");
 	}
 	
 	@Override public void handle(HttpCall httpcall, String subPath) {
@@ -37,6 +42,11 @@ public abstract class WikiventsActionHandler<T extends BasicPkoObject<WikiventsM
 		handleCall(call, subPath);
 	}
 
+	@NeedsNoAuthentication
+	public void viewHistory(WikiventsCall call, T record) {
+		call.output(historyTemplate, record);
+	}
+	
 
 	@Override protected void checkChangeAccess(WikiventsCall call, String methodName, T record) {
 		if (! record.mayBeChangedBy(call.user))

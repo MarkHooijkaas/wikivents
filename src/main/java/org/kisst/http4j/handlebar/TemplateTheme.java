@@ -21,7 +21,7 @@ public class TemplateTheme {
 
 	//public TemplateTheme add(String name, CompiledTemplate templ) { map.put(name, templ); return this;}
 	//public TemplateTheme add(String name) { map.put(name, engine.compileTemplate(prefix+name)); return this;}
-	protected CompiledTemplate template(String name) {
+	public CompiledTemplate template(String name) {
 		CompiledTemplate templ = engine.compileTemplate(prefix+name);
 		map.put(name, templ);
 		return templ;

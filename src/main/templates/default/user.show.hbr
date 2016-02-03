@@ -38,7 +38,8 @@
 		<div class="tab-pane" role="tabpanel" id="karmaTab">
 			{{> user.karma}}
 		</div>
-		
+		<div class="tab-pane" role="tabpanel" id="historyTab">
+		</div>
 {{#ifMayChange record}} 
 		<div class="tab-pane" role="tabpanel" id="modifyTab">
 			{{> user.modify}}
@@ -56,6 +57,13 @@
 	<span style="color:red;">Je identiteit is nog niet gevalideerd. Daarom mag je alleen je eigen profielfoto zien. Neem contact op met <a href="mailto.info@wikivents.nl">info@wikivents.nl</a> om je identiteit te valideren.</span>
 {{/ifMayView}}
 
+<script>
+	$(document).ready(function() {
+		$(document).on('shown.bs.tab', 'a[data-target="#historyTab"]', function (e) {
+    		$('#historyTab').load("?view=history");
+		});
+	} );
+</script>
 
 
 {{> include/page.footer}}

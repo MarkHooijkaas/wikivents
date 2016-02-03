@@ -4,6 +4,7 @@
 	<li role="presentation"><a role="tab" data-toggle="tab" data-target="#pastEventsTab">Ging naar {{record.pastEvents.size}}</a></li>
 	<li role="presentation"><a role="tab" data-toggle="tab" data-target="#interestsTab" >Interesses {{record.groups.size}}</a></li>
 	<li role="presentation"><a role="tab" data-toggle="tab" data-target="#karmaTab"     >Karma {{record.recommendations.size}}</a></li>
+	<li role="presentation"><a role="tab" data-toggle="tab" data-target="#historyTab">Historie</a></li>
 {{#if call.user.isAdmin}}
 	<li role="presentation" class="pull-right"><a role="tab" data-toggle="tab" data-target="#adminTab"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Beheer</a></li>
 {{/if}}
