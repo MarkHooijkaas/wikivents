@@ -55,6 +55,7 @@
 			{{> include/show.comments}}
 		</div>
 		<div class="tab-pane" role="tabpanel" id="historyTab">
+			<h2>Historie van {{record.name}} wordt geladen</h2>
 		</div>
 {{#ifMayChange record}} 
 		<div class="tab-pane" role="tabpanel" id="modifyTab">

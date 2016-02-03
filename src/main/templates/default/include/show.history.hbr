@@ -1,6 +1,6 @@
 {{#if call.user.maySeeUsers}}
 <div> 
-<h2>Historie</h2> 	
+<h2>Historie van {{record.name}}</h2> 	
 <table class="table table-hover" id="historyTable">
     <thead>
       <tr>
