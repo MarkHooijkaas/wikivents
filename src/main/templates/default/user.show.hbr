@@ -38,9 +38,9 @@
 		<div class="tab-pane" role="tabpanel" id="karmaTab">
 			{{> user.karma}}
 		</div>
+{{#ifMayChange record}} 
 		<div class="tab-pane" role="tabpanel" id="historyTab">
 		</div>
-{{#ifMayChange record}} 
 		<div class="tab-pane" role="tabpanel" id="modifyTab">
 			{{> user.modify}}
 		</div>

@@ -42,7 +42,6 @@ public abstract class WikiventsActionHandler<T extends BasicPkoObject<WikiventsM
 		handleCall(call, subPath);
 	}
 
-	@NeedsNoAuthentication
 	public void viewHistory(WikiventsCall call, T record) {
 		call.output(historyTemplate, record);
 	}

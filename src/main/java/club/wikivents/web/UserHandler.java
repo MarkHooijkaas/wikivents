@@ -61,6 +61,13 @@ public class UserHandler extends WikiventsActionHandler<User> {
 		uploads.handle(call, user._id+"/"+subpath);
 	}
 
+	@Override public void viewHistory(WikiventsCall call, User record) {
+		if (record.mayBeChangedBy(call.user))
+			super.viewHistory(call, record);
+		else
+			call.throwUnauthorized("Not authorized to view history of other user");
+	}
+
 	
 	public void viewEdit(WikiventsCall call, User u) {
 		new Form(call,u).showForm();
