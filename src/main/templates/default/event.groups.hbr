@@ -8,6 +8,6 @@
 {{/ifEquals}}
 
 {{#each record.groups}}
-	<a href="/theme/:{{key}}">{{get0.title}}</a>
+	<a href="{{get0.url}}">{{get0.title}}</a>
 	<br/>
 {{/each}}

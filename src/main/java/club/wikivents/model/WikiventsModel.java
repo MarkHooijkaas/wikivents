@@ -22,6 +22,8 @@ public class WikiventsModel extends PkoModel implements SecureToken.SaltFactory 
 
 	public final UniqueIndex<User> usernameIndex = new UniqueIndex<>(User.class, true, usr -> usr.username);
 	public final UniqueIndex<User> emailIndex    = new UniqueIndex<>(User.class, true, usr -> usr.email);
+	public final UniqueIndex<Group> groupUrlIndex = new UniqueIndex<>(Group.class, true, grp -> grp.urlName);
+	public final UniqueIndex<Event> eventUrlIndex = new UniqueIndex<>(Event.class, true, evt -> evt.getUrlPart());
 
 	public final OrderedIndex<Event> allEvents    = new OrderedIndex<>(Event.class, evt -> evt.date+""+evt.getKey());
 	public final OrderedIndex<Event> newestEvents = new OrderedIndex<>(Event.class, evt -> evt.getKey());

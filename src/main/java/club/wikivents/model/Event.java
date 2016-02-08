@@ -120,6 +120,14 @@ public class Event extends EventData implements Comparable<Event>, AccessChecker
 		catch (UnsupportedEncodingException e) { throw new RuntimeException(e); }
 	}
 	
+	private static final DateTimeFormatter dateUrlFormat=DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	public String getUrlPart() { 
+		if (date==null)
+			return "wikidee-"+urlName;
+		return date.format(dateUrlFormat)+"-"+urlName; 
+	}
+	public String getUrl() { return "/event/"+ getUrlPart() + (date==null? "?id="+_id : "");}
+
 	private static Locale localeNl=new Locale("nl");
 	private static ZoneId CET = ZoneId.of("CET");
 	private static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd", localeNl);

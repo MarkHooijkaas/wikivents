@@ -31,18 +31,7 @@ import net.tanesha.recaptcha.ReCaptchaResponse;
 public class UserHandler extends WikiventsActionHandler<User> {
 	private final ResourceHandler uploads = new ResourceHandler(null, new File("data/uploads/"));
 	public final User.Schema schema;
-	public UserHandler(WikiventsSite site) { super(site, site.model.users); this.schema=User.schema; }
-
-	@Override protected User findRecord(String id) {
-		User result;
-		if (id.startsWith(":"))
-			result= model.users.read(id.substring(1));
-		else
-			result= model.usernameIndex.get(id);
-		if (result!=null)
-			CallInfo.instance.get().data=result.username;
-		return result;
-	}
+	public UserHandler(WikiventsSite site) { super(site, site.model.users, site.model.usernameIndex); this.schema=User.schema; }
 
 	public void listAll(WikiventsCall call) {
 		call.output(call.getTheme().userList, model.users);

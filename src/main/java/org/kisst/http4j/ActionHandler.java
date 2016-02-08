@@ -95,7 +95,7 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 					}
 					methodName += StringUtil.capitalize(view2);
 				}
-				record=findRecord(id);
+				record=findRecord(call, id);
 				if (record==null)
 					throw new IllegalArgumentException("Could not find "+id);
 			}
@@ -119,7 +119,7 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 //					throw new IllegalArgumentException("Conflicting actions "+oldAction+" and "+action);
 			}
 			else {
-				record=findRecord(id);
+				record=findRecord(call,id);
 				if (record==null )
 					throw new IllegalArgumentException("Could not find "+id);
 			}
@@ -189,7 +189,7 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 	}
 
 	
-	abstract protected T findRecord(String id);
+	abstract protected T findRecord(C call, String id);
 
 	@Target(ElementType.METHOD) @Retention(RetentionPolicy.RUNTIME) 
 	public @interface NeedsNoAuthentication { }

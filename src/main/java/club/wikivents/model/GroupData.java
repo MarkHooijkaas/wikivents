@@ -7,6 +7,7 @@ import org.kisst.pko4j.BasicPkoObject;
 import org.kisst.pko4j.PkoModel;
 import org.kisst.pko4j.PkoRef;
 import org.kisst.pko4j.PkoSchema;
+import org.kisst.util.StringUtil;
 
 public class GroupData extends BasicPkoObject<WikiventsModel, Group> {
 	@Override public Iterable<String> fieldNames() { return schema.fieldNames(); }
@@ -16,7 +17,8 @@ public class GroupData extends BasicPkoObject<WikiventsModel, Group> {
 		public IdField getKeyField() { return _id; }
 		public final IdField _id = new IdField();
 		public final IntField _crudObjectVersion = new IntField("_crudObjectVersion");
-		public final StringField title = new StringField("title"); 
+		public final StringField title = new StringField("title");
+		public final StringField urlName = new StringField("urlName"); 
 		public final StringField description = new StringField("description"); 
 		public final SequenceField<User.Ref> owners = new SequenceField<>(User.Ref.class,"owners");
 		public final SequenceField<User.Ref> members= new SequenceField<>(User.Ref.class,"members"); 
@@ -24,6 +26,7 @@ public class GroupData extends BasicPkoObject<WikiventsModel, Group> {
 	}
 	
 	public final String title;
+	public final String urlName;
 	public final String description;
 	public final ImmutableSequence<User.Ref> owners;
 	public final ImmutableSequence<User.Ref> members;
@@ -32,6 +35,11 @@ public class GroupData extends BasicPkoObject<WikiventsModel, Group> {
 	public GroupData(WikiventsModel model, Struct data) {
 		super(model, model.groups, data);
 		this.title=schema.title.getString(data);
+		String url=schema.urlName.getString(data);
+		if (url==null)
+			this.urlName=StringUtil.urlify(title).toLowerCase();
+		else
+			this.urlName=url;
 		this.description=schema.description.getString(data);
 		this.owners=schema.owners.getSequenceOrEmpty(model, data);
 		this.members=schema.members.getSequenceOrEmpty(model, data);

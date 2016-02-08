@@ -43,8 +43,10 @@ public class WikiventsSite implements HttpCallHandler {
 		public final HttpCallHandler home=new TemplatePage(WikiventsSite.this, "home");
 		public final HttpCallHandler help=new TemplatePage(WikiventsSite.this, "help");
 		public final HttpCallHandler user=new UserHandler(WikiventsSite.this);
+		public final HttpCallHandler gebruiker=user;
 		public final HttpCallHandler event=new EventHandler(WikiventsSite.this);
 		public final HttpCallHandler theme=new GroupHandler(WikiventsSite.this);
+		public final HttpCallHandler thema=theme;
 		public final HttpCallHandler login  = loginPage::handleLogin;
 		public final HttpCallHandler forgotPassword = loginPage::handleForgotPassword;
 		public final HttpCallHandler logout = new LogoutPage(WikiventsSite.this);

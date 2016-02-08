@@ -8,6 +8,7 @@ import org.kisst.http4j.handlebar.AccessChecker;
 import org.kisst.http4j.handlebar.TemplateEngine.CompiledTemplate;
 import org.kisst.pko4j.BasicPkoObject;
 import org.kisst.pko4j.PkoTable;
+import org.kisst.pko4j.index.UniqueIndex;
 import org.kisst.util.CallInfo;
 import org.kisst.util.ReflectionUtil;
 import org.slf4j.Logger;
@@ -26,14 +27,17 @@ public abstract class WikiventsActionHandler<T extends BasicPkoObject<WikiventsM
 	public final WikiventsModel model;
 	public final WikiventsSite site;
 	public final PkoTable<T> table;
+	private final UniqueIndex<T> index;
 
 	private final CompiledTemplate historyTemplate;
 
-	public WikiventsActionHandler(WikiventsSite site, PkoTable<T> table) {
+
+	public WikiventsActionHandler(WikiventsSite site, PkoTable<T> table, UniqueIndex<T> index) {
 		super(WikiventsCall.class, (Class<T>) table.getElementClass());
 		this.site=site;
 		this.model=site.model;
 		this.table=table;
+		this.index=index;
 		historyTemplate= model.site.defaultTheme.template("include/show.history");
 	}
 	
@@ -78,12 +82,22 @@ public abstract class WikiventsActionHandler<T extends BasicPkoObject<WikiventsM
 			call.redirect(call.getLocalUrl());
 	}
 
-	@Override protected T findRecord(String id) {
+	@Override protected T findRecord(WikiventsCall call, String id) {
+		T result;
 		if (id.startsWith(":"))
-			id=id.substring(1);
-		return table.read(id);
+			result= table.read(id.substring(1));
+		else {
+			result= index.get(id);
+			if (result==null) {
+				id=call.request.getParameter("id");
+				if (id!=null)
+					result= table.read(id);
+			}
+		}
+		if (result!=null)
+			CallInfo.instance.get().data=result.getName();
+		return result;
 	}
-	
 
 	public void handleChangeField(WikiventsCall call, T oldRecord) {
 		String fieldName=call.request.getParameter("field");

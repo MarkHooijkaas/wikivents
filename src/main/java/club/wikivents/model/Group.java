@@ -20,6 +20,7 @@ public class Group extends GroupData implements AccessChecker<User> {
 		));
 	}
 
+	public String getUrl() { return "/thema/"+urlName; }
 	public String ownerNames() {
 		StringJoiner sj = new StringJoiner(", ");
 		for (User.Ref r : owners)

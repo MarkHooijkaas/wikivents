@@ -9,10 +9,11 @@ import org.kisst.item4j.struct.ReflectStruct;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.item4j.struct.StructProps;
 import org.kisst.pko4j.BasicPkoObject;
+import org.kisst.pko4j.PkoModel.MyObject;
 import org.kisst.pko4j.PkoRef;
 import org.kisst.pko4j.PkoSchema;
-import org.kisst.pko4j.PkoModel.MyObject;
 import org.kisst.props4j.Props;
+import org.kisst.util.StringUtil;
 
 public class EventData extends BasicPkoObject<WikiventsModel, Event> implements Item.Factory {
 	@Override public Iterable<String> fieldNames() { return schema.fieldNames(); }
@@ -22,6 +23,7 @@ public class EventData extends BasicPkoObject<WikiventsModel, Event> implements 
 		public final IdField _id = new IdField();
 		public final IntField _crudObjectVersion = new IntField("_crudObjectVersion");
 		public final StringField title = new StringField("title"); 
+		public final StringField urlName= new StringField("urlName"); 
 		public final StringField imageUrl = new StringField("imageUrl"); 
 		public final SequenceField<User.Ref> organizers = new SequenceField<User.Ref>(User.Ref.class,"organizers");
 		public final SequenceField<User.Ref> likes = new SequenceField<User.Ref>(User.Ref.class,"likes");
@@ -45,6 +47,7 @@ public class EventData extends BasicPkoObject<WikiventsModel, Event> implements 
 	}
 	
 	public final String title;
+	public final String urlName;
 	public final String city;
 	public final String location;
 	public final String cost;
@@ -69,6 +72,11 @@ public class EventData extends BasicPkoObject<WikiventsModel, Event> implements 
 	public EventData(WikiventsModel model, Struct data) {
 		super(model, model.events, data);
 		this.title=schema.title.getString(data);
+		String urlName=schema.urlName.getString(data);
+		if (urlName==null)
+			this.urlName=StringUtil.urlify(title).toLowerCase();
+		else
+			this.urlName=urlName;
 		this.description=schema.description.getString(data);
 		this.guestInfo=schema.guestInfo.getString(data, null);
 		this.imageUrl=schema.imageUrl.getString(data);
@@ -100,6 +108,7 @@ public class EventData extends BasicPkoObject<WikiventsModel, Event> implements 
 		}
 		private Ref(WikiventsModel model, String _id) { super(model.events, _id); }
 	}
+	
 	@Override public String getName() { return title; }
 
 	public class Poll extends ReflectStruct implements MyObject {

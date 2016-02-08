@@ -1,6 +1,6 @@
 <h2>Wijzig details</h2>
 
-{{> include/show.ajaxField value=record.title name="title" type=""  label="Titel" edit=true}}
+{{> include/show.ajaxField value=record.title name="title" type=""   label="Titel" edit=true}}
 
 <div class="row">
 	<div class="col-xs-3"><label>Beheerder(s)</label></div>

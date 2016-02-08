@@ -1,4 +1,8 @@
 
+<h2>Wijzig details</h2>
+{{> include/show.ajaxField value=record.urlName name="urlName" type="" label="URL" edit=true}}
+
+
 <h2>Verwijder Ge&iuml;nteresseerden</h2> 
 {{#each record.members}}
 	{{> include/modal.delete title=this.get0.username action="removeMember" field="userId" value=this.key label="Weet je zeker dat je deze geinteresseerde wilt verwijderen?"}} 

@@ -40,6 +40,7 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 
 	@Override public int getPkoVersion() { return getCurrentPkoVersion();}
 	@Override public String getPasswordSalt() { return passwordSalt; }
+	public String getUrl() { return "/gebruiker/"+username;}
 
 	public String getLoginToken() { 
 		SecureToken tok=new SecureToken(model, _id);

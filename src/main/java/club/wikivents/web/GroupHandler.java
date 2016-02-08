@@ -2,7 +2,6 @@ package club.wikivents.web;
 
 import org.kisst.http4j.form.HttpFormData;
 import org.kisst.item4j.struct.Struct;
-import org.kisst.util.CallInfo;
 
 import club.wikivents.model.Comment;
 import club.wikivents.model.Group;
@@ -11,15 +10,7 @@ import club.wikivents.model.User;
 public class GroupHandler extends WikiventsActionHandler<Group> {
 	public final Group.Schema schema;
 
-	public GroupHandler(WikiventsSite site) { super(site, site.model.groups); this.schema=Group.schema;	}
-
-	@Override protected Group findRecord(String id) {
-		Group result=super.findRecord(id);
-		if (result!=null)
-			CallInfo.instance.get().data=result.title;
-		return result;
-	}
-
+	public GroupHandler(WikiventsSite site) { super(site, site.model.groups, site.model.groupUrlIndex); this.schema=Group.schema;	}
 
 	@NeedsNoAuthentication
 	public void listAll(WikiventsCall call) { call.output(call.getTheme().groupList, call.model.groups); }

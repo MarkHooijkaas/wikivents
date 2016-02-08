@@ -27,7 +27,7 @@
 		
 {{#each list}} 
 	  <tr>
-        <td><a href="/theme/:{{key}}">{{title}}</a></td>
+        <td><a href="{{url}}">{{title}}</a></td>
         <td>{{this.members.size}}</td>
         <td data-order="{{creationDate}}">{{dateFormat creationDate "eee d MMM yyyy"}}</td>
         <td data-order="{{modificationDate}}">{{dateFormat modificationDate "eee d MMM yyyy"}}</td>

@@ -4,6 +4,6 @@
 	{{#ifMayChange record}}
 		{{> include/modal.delete title=user.get0.username action="removeGroup" field="groupId" value=key label="Weet je zeker dat je deze interesse wilt verwijderen?"}} 
 	{{/ifMayChange}}
-	<a href="/theme/:{{key}}">{{title}}</a>
+	<a href="{{url}}">{{title}}</a>
 	<br/>
 {{/each}}

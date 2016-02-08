@@ -22,15 +22,7 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 	public final Event.Schema schema;
 
 
-	public EventHandler(WikiventsSite site) { super(site, site.model.events); this.schema=Event.schema; }
-
-	@Override protected Event findRecord(String id) {
-		Event result=super.findRecord(id);
-		if (result!=null)
-			CallInfo.instance.get().data=result.title;
-		return result;
-	}
-
+	public EventHandler(WikiventsSite site) { super(site, site.model.events, site.model.eventUrlIndex); this.schema=Event.schema; }
 
 	@NeedsNoAuthentication
 	public void listAll(WikiventsCall call) { call.output(call.getTheme().eventList, call.model.events); }
