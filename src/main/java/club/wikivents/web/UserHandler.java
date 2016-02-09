@@ -158,7 +158,8 @@ public class UserHandler extends WikiventsActionHandler<User> {
 			));
 			CallInfo.instance.get().data=u.username;
 			model.users.create(u);
-			String url= call.getTopUrl()+"/user/"+u.username+"?view=validateEmail&token="+u.passwordSalt;
+			//String token = new SecureToken(call.model, u._id).getToken();
+			String url= call.getTopUrl()+"/user/"+u.username+"?view=validateEmail&token="+u.passwordSalt;//+"&loginToken="+token;
 			TemplateData context=call.createTemplateData();
 			context.add("user", u);
 			context.add("url", url);

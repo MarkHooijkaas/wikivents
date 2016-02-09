@@ -49,7 +49,7 @@
 {{#ifUrlEndsWith "login|register"}}
 {{else}}
 <p>
-<a class="btn btn-default btn-success" href="/user/!register">Registreer je bij Wikivents om gezellig mee te kunnen doen</a>
+<a class="btn btn-default btn-success" href="/user/!register">Registreer je voor gratis lidmaatschap</a>
 of
 <a class="btn btn-default btn-success" href="/login">login als je al lid bent</a>
 </p>

@@ -34,7 +34,16 @@ Excuses voor de overlast.
 		});
 	 }); 
 </script>
-
+<h1>Registreren bij Wikivents</h1>
+<p>
+Leuk dat je lid wilt worden van wikivents.
+Aan het lidmaatschap zijn geen kosten verbonden.
+Na het inschrijven krijg je een automatische email om te controleren of je email adres correct werkt.
+Ook zullen de beheerders controleren of alles er goed uit ziet voordat je account goed gekeurd wordt.
+De beheerders nemen daarvoor soms even persoonlijk contact met je op, ook om je te verwelkomen als nieuw lid.
+Als je account goedgekeurd is kan je deelnemen aan de activiteiten en ook zelf actviteiten organiseren.
+We proberen dat zo snel mogelijk te doen, en willen op deze manier een prettige en veilige site kunnen bieden voor iedereen.
+</p>
 
 <form role="form" method="POST" action="/user/!register" id="registerUser" class="form-horizontal">
 	<input type="hidden" name="action" value="register"/>
