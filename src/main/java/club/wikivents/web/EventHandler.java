@@ -59,7 +59,14 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 		formdata.handle();
 	}
 	public void viewCreate(WikiventsCall call) {
-		new Form(call).showForm();
+		Event toClone=null;
+		String clone=call.request.getParameter("clone");
+		if (clone!=null) 
+			toClone=model.events.readOrNull(clone);
+		if (toClone==null)
+			new Form(call).showForm();
+		else
+			new Form(call,toClone).showForm();
 	}
 	public void viewCreateIdea(WikiventsCall call) {
 		new Form(call, call.getTheme().eventCreateIdea).showForm();

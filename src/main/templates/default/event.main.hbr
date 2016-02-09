@@ -4,11 +4,10 @@
 
 
 <div class="col-xs-12 col-sm-5 col-md-4 col-lg-4">
-{{#if record.date}}
-<a href="{{record.googleCalendarUrl}}" target="_blank" rel="nofollow">Toevoegen aan Google Calendar</a>
+
+	<h2>Details</h2>
+	{{>event.details}}
 <br>
-<br>
-{{/if}}
 {{#if call.user.maySeeProfile}}
 	{{> include/like.button event=record}} {{record.likes.size}} likes: 
 	{{#each record.likes}} 
@@ -17,8 +16,11 @@
 
 	<br>
 {{/if}}
-	<h2>Details</h2>
-	{{>event.details}}
+	{{#if record.date}}
+<a href="{{record.googleCalendarUrl}}" target="_blank" rel="nofollow">Toevoegen aan Google Calendar</a>
+<br>
+{{/if}}
+<a href="/event/!create?clone={{record._id}}">Kloon deze activiteit</a>
 	{{>event.groups}}
 	{{>event.participants}}	
 </div>
