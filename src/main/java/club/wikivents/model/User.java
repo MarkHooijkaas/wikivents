@@ -193,7 +193,7 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 			if (from==systemMailAddress)
 				msg.setFrom(from);
 			else {
-				msg.setFrom(new InternetAddress("info@wikivents.nl","Wikivents gebruiker "+from.getPersonal()));
+				msg.setFrom(new InternetAddress("info@wikivents.nl","Wikivents: namens gebruiker "+from.getPersonal()));
 				if (this.trusted())
 					msg.setReplyTo(new InternetAddress[] {from});
 			}
