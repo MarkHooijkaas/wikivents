@@ -2,7 +2,6 @@
 
 <div>
 <h2>{{#if record.idea}}Ge&iuml;nteresseerden{{else}}Deelnemers{{/if}} {{record.guestCount}}
-	{{> include/modal.lockField value=record.guestsAllowed name="guestsAllowed" label="Deelname"}}
 </h2> 
 {{#if call.user.maySeeUsers}}
 {{#each record.allowedGuests}}
