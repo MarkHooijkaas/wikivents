@@ -6,7 +6,6 @@ import org.kisst.http4j.ActionHandler;
 import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.handlebar.AccessChecker;
 import org.kisst.http4j.handlebar.TemplateEngine.CompiledTemplate;
-import org.kisst.pko4j.BasicPkoObject;
 import org.kisst.pko4j.PkoTable;
 import org.kisst.pko4j.index.UniqueIndex;
 import org.kisst.util.CallInfo;
@@ -20,8 +19,9 @@ import club.wikivents.model.WikiventsCommands;
 import club.wikivents.model.WikiventsCommands.ChangeFieldCommand;
 import club.wikivents.model.WikiventsCommands.Command;
 import club.wikivents.model.WikiventsModel;
+import club.wikivents.model.WikiventsObject;
 
-public abstract class WikiventsActionHandler<T extends BasicPkoObject<WikiventsModel,T> & AccessChecker<User>> extends ActionHandler<WikiventsCall, T>{
+public abstract class WikiventsActionHandler<T extends WikiventsObject<T> & AccessChecker<User> & HasUrl> extends ActionHandler<WikiventsCall, T>{
 	public static final Logger logger = LoggerFactory.getLogger(WikiventsActionHandler.class);
 
 	public final WikiventsModel model;
@@ -108,7 +108,15 @@ public abstract class WikiventsActionHandler<T extends BasicPkoObject<WikiventsM
 		if (logValue.length()>10)
 			logValue=logValue.substring(0, 7)+"...";
 		CallInfo.instance.get().action="handleChangeField "+fieldName+" to "+logValue;
-		table.update(oldRecord, oldRecord.changeField(fieldName, value));
+		T newRecord = oldRecord.changeField(fieldName, value);
+		table.update(oldRecord, newRecord);
+		String oldUrl=oldRecord.getUrl();
+		String newUrl=newRecord.getUrl();
+		if (!oldUrl.equals(newUrl)) {
+			call.response.setHeader("AJAX_REDIRECT", newUrl); //call.redirect(newUrl);
+			System.out.println("REDIRECT "+oldUrl+" --> "+newUrl);
+		}
+
 	}
 	
 	public ChangeFieldCommand<T> createChangeFieldCommand(WikiventsCall call, T record) {

@@ -8,14 +8,13 @@ import org.kisst.item4j.Item;
 import org.kisst.item4j.struct.ReflectStruct;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.item4j.struct.StructProps;
-import org.kisst.pko4j.BasicPkoObject;
 import org.kisst.pko4j.PkoModel.MyObject;
 import org.kisst.pko4j.PkoRef;
 import org.kisst.pko4j.PkoSchema;
 import org.kisst.props4j.Props;
 import org.kisst.util.StringUtil;
 
-public class EventData extends BasicPkoObject<WikiventsModel, Event> implements Item.Factory {
+public abstract class EventData extends WikiventsObject<Event> implements Item.Factory {
 	@Override public Iterable<String> fieldNames() { return schema.fieldNames(); }
 	public static final Schema schema=new Schema();
 	public static final class Schema extends PkoSchema<Event> {

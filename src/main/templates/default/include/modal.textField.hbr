@@ -3,6 +3,7 @@
 	<form role="form" method="POST" id="changeField{{name}}Form" action="">
 		<input type="hidden" name="action" value="changeField"/>
 		<input type="hidden" name="field" value="{{name}}"/>
+		<input type="hidden" name="ajax" value="true"/>
 		<label for="">{{label}}: </label><input type="text" name="value" value="{{value}}">
 		<a id="{{name}}Button" class="btn btn-default btn-success">Wijzig {{label}}</a>
 		<br/>
@@ -14,7 +15,12 @@
 			$.ajax({
 				type: "POST",
 				data: $(this).closest('form').serialize(),
-				success: function(data, status, xhr){ location.reload(true); },
+				success: function(data, status, xhr){ 
+					if (xhr.getResponseHeader('AJAX_REDIRECT'))
+						location.assign(xhr.getResponseHeader('AJAX_REDIRECT'));
+					else
+						location.reload(true); 
+				},
 				error: function(xhr,status,error){ $("#{{name}}Message").html(error); }
 			});
 	    });

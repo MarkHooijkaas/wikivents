@@ -157,7 +157,7 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 			else
 				extralong=true;
 			if (method==null)
-				method = ReflectionUtil.getMethod(this.getClass(), methodName, fullsignature2);
+				method = ReflectionUtil.getFirstCompatibleMethod(this.getClass(), methodName, fullsignature2);
 		}
 		if (method==null) {
 			method = ReflectionUtil.getMethod(this.getClass(), methodName, shortsignature);

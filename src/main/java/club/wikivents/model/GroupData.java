@@ -3,13 +3,12 @@ package club.wikivents.model;
 import org.kisst.item4j.ImmutableSequence;
 import org.kisst.item4j.Item;
 import org.kisst.item4j.struct.Struct;
-import org.kisst.pko4j.BasicPkoObject;
 import org.kisst.pko4j.PkoModel;
 import org.kisst.pko4j.PkoRef;
 import org.kisst.pko4j.PkoSchema;
 import org.kisst.util.StringUtil;
 
-public class GroupData extends BasicPkoObject<WikiventsModel, Group> {
+public abstract class GroupData extends WikiventsObject<Group> {
 	@Override public Iterable<String> fieldNames() { return schema.fieldNames(); }
 	public static final Schema schema=new Schema();
 	public static final class Schema extends PkoSchema<Group> {

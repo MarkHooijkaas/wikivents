@@ -6,13 +6,12 @@ import org.kisst.item4j.Item;
 import org.kisst.item4j.struct.MultiStruct;
 import org.kisst.item4j.struct.SingleItemStruct;
 import org.kisst.item4j.struct.Struct;
-import org.kisst.pko4j.BasicPkoObject;
 import org.kisst.pko4j.PkoModel.MyObject;
 import org.kisst.pko4j.PkoRef;
 import org.kisst.pko4j.PkoSchema;
 
 
-public class UserData extends BasicPkoObject<WikiventsModel, User> {
+public abstract class UserData extends WikiventsObject<User> {
 	@Override public Iterable<String> fieldNames() { return schema.fieldNames(); }
 	public static final Schema schema=new Schema();
 	public static final class Schema extends PkoSchema<User> {

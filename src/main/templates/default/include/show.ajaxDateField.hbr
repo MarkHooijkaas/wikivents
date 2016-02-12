@@ -8,6 +8,7 @@
 			<form role="form" method="POST" id="{{name}}Form">
 				<input type="hidden" name="action" value="changeField"/>
 				<input type="hidden" name="field" value="{{name}}"/>
+				<input type="hidden" name="ajax" value="true"/>
 				<label for="">{{label}}: </label>
 			    <input class="form-control" type="date" id="mydatepicker2" name="value" value="{{value}}" >
 				<a id="{{name}}Button" class="btn btn-default btn-success">Wijzig {{label}}</a>
@@ -20,7 +21,12 @@
 			$.ajax({
 				type: "POST",
 				data: $(this).closest('form').serialize(),
-				success: function(data, status, xhr){ location.reload(true); },
+				success: function(data, status, xhr){ 
+					if (xhr.getResponseHeader('AJAX_REDIRECT'))
+						location.assign(xhr.getResponseHeader('AJAX_REDIRECT'));
+					else
+						location.reload(true); 
+				},
 				error: function(xhr,status,error){ $("#{{name}}Message").html(error); }
 			});
 	    });
