@@ -149,10 +149,8 @@ public class UserHandler extends WikiventsActionHandler<User> {
 			String pw = PasswordEncryption.encryptPassword(formdata.password.value, salt);
 			User u = new User(call.model,new MultiStruct(
 				new HashStruct()
-					.add(schema._crudObjectVersion,  User.getCurrentPkoVersion()) // TODO: ugly hack, needs refactoring 
 					.add(schema.passwordSalt,  salt)
 					.add(schema.encryptedPassword, pw)
-					//.add(schema.identityValidated, "false")
 					.add(schema.isAdmin, "false")
 				,formdata.record 
 			));

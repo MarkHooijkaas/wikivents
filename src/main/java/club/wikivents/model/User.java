@@ -3,9 +3,9 @@ package club.wikivents.model;
 //import java.io.FileInputStream;
 //import java.io.IOException;
 //import java.io.InputStream;
+
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-//import java.util.Iterator;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -19,13 +19,16 @@ import org.kisst.item4j.struct.Struct;
 import org.kisst.util.PasswordEncryption;
 import org.kisst.util.PasswordEncryption.HasPasswordSalt;
 
+//import java.util.Iterator;
+
 //import com.fasterxml.jackson.core.JsonFactory;
 //import com.fasterxml.jackson.databind.ObjectMapper;
 //import com.sun.javafx.collections.MappingChange.Map;
 
 
 public class User extends UserData implements AccessChecker<User>, Htmlable, HasPasswordSalt {
-	public User(WikiventsModel model, Struct data) { super(model, data); }
+	public User(WikiventsModel model, Struct data, int version) { super(model, data, version); }
+	public User(WikiventsModel model, Struct data) { super(model, data, schema.getCurrentVersion()); }
 
 	public final static InternetAddress systemMailAddress;
 	static {
@@ -35,10 +38,6 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 		catch (UnsupportedEncodingException e) { throw new RuntimeException(e);}
 	}
 
-
-	public static int getCurrentPkoVersion() { return 1;}
-
-	@Override public int getPkoVersion() { return getCurrentPkoVersion();}
 	@Override public String getPasswordSalt() { return passwordSalt; }
 	public String getUrl() { return "/gebruiker/"+username;}
 

@@ -16,8 +16,8 @@ public abstract class UserData extends WikiventsObject<User> {
 	public static final Schema schema=new Schema();
 	public static final class Schema extends PkoSchema<User> {
 		private Schema() { super(User.class); }
+		@Override public int getCurrentVersion() { return 1; }
 		public final IdField _id = new IdField();
-		public final IntField _crudObjectVersion = new IntField("_crudObjectVersion");
 		public final StringField username = new StringField("username"); 
 		public final StringField description= new StringField("description"); 
 		public final StringField email    = new StringField("email"); 
@@ -29,7 +29,6 @@ public abstract class UserData extends WikiventsObject<User> {
 		public final BooleanField isAdmin = new BooleanField("isAdmin");
 		public final BooleanField emailValidated = new BooleanField("emailValidated");
 		public final BooleanField blocked = new BooleanField("blocked");
-		//public final BooleanField identityValidated = new BooleanField("identityValidated");
 		public final SequenceField<UserItem> recommendations= new SequenceField<>(UserItem.class,"recommendations");
 	}
 	
@@ -46,7 +45,7 @@ public abstract class UserData extends WikiventsObject<User> {
 	public final boolean blocked;
 	public final ImmutableSequence<UserItem> recommendations;
 
-	public UserData(WikiventsModel model, Struct data) {
+	protected UserData(WikiventsModel model, Struct data, int version) {
 		super(model, model.users, data);
 		this.username=schema.username.getString(data);
 		this.description=schema.description.getString(data,null);
@@ -59,11 +58,10 @@ public abstract class UserData extends WikiventsObject<User> {
 		this.isAdmin=schema.isAdmin.getBoolean(data,false);
 		this.emailValidated=schema.emailValidated.getBoolean(data,false);
 		this.blocked=schema.blocked.getBoolean(data,false);
-		this.recommendations=startingRecommendation(data);
+		this.recommendations=startingRecommendation(data, version);
 	}
-	private ImmutableSequence<UserItem> startingRecommendation(Struct data) {
-		int dataversion = getPkoVersionOf(data);
-		boolean defaultValue = dataversion==0;
+	private ImmutableSequence<UserItem> startingRecommendation(Struct data, int version) {
+		boolean defaultValue = version==0;
 		boolean identityValidated =  Item.asBoolean(data.getDirectFieldValue("identityValidated",defaultValue));
 		if (! identityValidated)
 			return schema.recommendations.getSequenceOrEmpty(table.model, data);
