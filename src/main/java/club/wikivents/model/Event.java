@@ -30,6 +30,11 @@ public class Event extends EventData implements Comparable<Event>, AccessChecker
 		));
 	}
 
+	public String dateKey() { 
+		if (this.date==null) 
+			return this.cancelled ? "0000-01-01" : "9999-12-31";
+		return date+"";
+	}
 	public String guestCount() {
 		String result="0";
 		if (guests!=null)
