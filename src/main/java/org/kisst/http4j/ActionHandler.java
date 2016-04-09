@@ -33,7 +33,7 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 
 	private final Class<?>[] extralongsignature;
 	protected final Class<?>[] fullsignature;
-	private final Class<?>[] fullsignature2;
+	protected final Class<?>[] fullsignature2;
 	private final Class<?>[] shortsignature;
 	public ActionHandler(Class<C> callClass, Class<T> recordClass) {
 		this.extralongsignature= new Class<?>[] { callClass, recordClass, String.class };

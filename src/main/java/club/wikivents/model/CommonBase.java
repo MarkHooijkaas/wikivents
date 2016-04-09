@@ -15,6 +15,7 @@ import org.kisst.props4j.Props;
 import org.kisst.util.StringUtil;
 
 public abstract class CommonBase<T extends CommonBase<T>> extends WikiventsObject<T> implements Item.Factory{
+	public static Schema<Event> commonSchema=new Schema<>(Event.class); //TODO: have a schema with a neutral class
 	public static class Schema<T extends PkoObject> extends PkoSchema<T> {
 		protected Schema(Class<T> cls) { super(cls); }
 		public final IdField _id = new IdField();
@@ -38,6 +39,13 @@ public abstract class CommonBase<T extends CommonBase<T>> extends WikiventsObjec
 	public final ImmutableSequence<Comment> comments;
 	public final ImmutableSequence<Poll> polls;
 	
+	public static class OldEventSchema<T extends PkoObject> extends PkoSchema<T> {
+		private OldEventSchema(Class<T> cls) { super(cls); }
+		private final SequenceField<Guest> guests= new SequenceField<Guest>(Guest.class,"guests");
+		public final SequenceField<User.Ref> organizers = new SequenceField<User.Ref>(User.Ref.class,"organizers");
+	}
+	private static OldEventSchema<Event> oldEventSchema = new OldEventSchema<Event>(Event.class);
+	
 	public CommonBase(Schema<T> schema, WikiventsModel model, PkoTable<T> table, Struct data) {
 		super(model, table, data);
 		this.title=schema.title.getString(data);
@@ -47,8 +55,22 @@ public abstract class CommonBase<T extends CommonBase<T>> extends WikiventsObjec
 		else
 			this.urlName=urlName;
 		this.description=schema.description.getString(data);
-		this.owners=schema.owners.getSequenceOrEmpty(model, data);
-		this.members=schema.members.getSequenceOrEmpty(model, data);
+		
+		if (schema.owners.fieldExists(data))
+			this.owners=schema.owners.getSequenceOrEmpty(model, data);
+		else
+			this.owners=oldEventSchema.organizers.getSequenceOrEmpty(model, data);
+		
+		if (schema.members.fieldExists(data))
+			this.members=schema.members.getSequenceOrEmpty(model, data);
+		else {
+			ImmutableSequence<Guest> guests = oldEventSchema.guests.getSequenceOrEmpty(model, data);
+			User.Ref[] arr=new User.Ref[guests.size()];
+			int i=0;
+			for (Guest g: guests)
+				arr[i++]=g.user;
+			this.members=ImmutableSequence.of(User.Ref.class, arr);
+		}
 		this.likes=schema.likes.getSequenceOrEmpty(model, data);
 		this.comments=schema.comments.getSequenceOrEmpty(model, data);
 		this.polls=schema.polls.getSequenceOrEmpty(this, data);

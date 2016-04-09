@@ -8,6 +8,8 @@ import club.wikivents.model.Comment;
 import club.wikivents.model.CommonBase;
 import club.wikivents.model.Event;
 import club.wikivents.model.User;
+import club.wikivents.model.CommonBaseCommands.AddMemberCommand;
+import club.wikivents.model.CommonBaseCommands.RemoveMemberCommand;
 
 public class CommonBaseHandler<T extends CommonBase<T> & HasUrl> extends WikiventsActionHandler<T> {
 	public final CommonBase.Schema<T> schema;
@@ -24,15 +26,31 @@ public class CommonBaseHandler<T extends CommonBase<T> & HasUrl> extends Wikiven
 		table.update(rec, rec.addSequenceItem(schema.comments, new Comment(call.user,text)));
 	}
 	
+	@NeedsNoAuthorization
 	public void handleRemoveComment(WikiventsCall call, T rec) {
 		String commentId=call.request.getParameter("commentId");
 		if (rec==null || commentId==null)
 			return;
 		Comment com=rec.findComment(commentId);
-		table.update(rec, rec.removeSequenceItem(schema.comments, com));
+		if (rec.mayBeChangedBy(call.user) || com.user.getKey().equals(call.user._id))
+			table.update(rec, rec.removeSequenceItem(schema.comments, com));
+		else
+			logger.warn("User:"+call.user.username+" not allowed to remove comment "+com);
 	}
 
+
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	public AddMemberCommand<T> createAddMemberCommand(WikiventsCall call, T rec) {
+		return new AddMemberCommand<>(rec, call.user);
+	}
+	public RemoveMemberCommand<T> createRemoveMemberCommand(WikiventsCall call, T rec) {
+		String memberId=call.request.getParameter("member");
+		User member = model.users.read(memberId);
+		return new RemoveMemberCommand<>(rec, member);
+	}
+
+	
 	@NeedsNoAuthorization
 	public void handleAddMember(WikiventsCall call, T rec) {
 		if (!rec.hasMember(call.user))
@@ -60,7 +78,7 @@ public class CommonBaseHandler<T extends CommonBase<T> & HasUrl> extends Wikiven
 		User user=model.users.read(id);
 		if (user==null)
 			call.sendError(500, "no owner");
-		else if (rec.owners.size()>1) // never remove the last organizer
+		else if (rec.owners.size()>1) // never remove the last owner
 			table.update(rec, rec.removeSequenceItem(schema.owners, user.getRef()));
 	}
 	
@@ -85,5 +103,12 @@ public class CommonBaseHandler<T extends CommonBase<T> & HasUrl> extends Wikiven
 		model.events.update(event, event.removeSequenceItem(Event.schema.likes, ref));
 	}
 
+	/*
+	public void handleAddPoll(WikiventsCall call, Event event) {
+		table.update(event,
+			event.addSequenceItem(schema.polls, event.new Poll(new HttpRequestStruct(call)))
+		);
+	}
+	*/
 }
 

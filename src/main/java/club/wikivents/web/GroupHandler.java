@@ -80,7 +80,7 @@ public class GroupHandler extends WikiventsActionHandler<Group> {
 		User user=model.users.read(id);
 		if (user==null)
 			call.sendError(500, "no owner");
-		else if (gr.owners.size()>1) // never remove the last organizer
+		else if (gr.owners.size()>1) // never remove the last owner
 			table.update(gr, gr.removeSequenceItem(schema.owners, user.getRef()));
 	}
 	

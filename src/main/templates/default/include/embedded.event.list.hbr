@@ -33,9 +33,9 @@
         <td><a href="{{url}}" {{#if cancelled}} style="color: grey;"{{/if}}>{{#if idea}}<span style="color:grey;">WIKIDEE</span><br>{{/if}}{{#if cancelled}}GEANNULEERD<br>{{/if}}{{title}}</a></td>
         <td>{{city}}</td>
         <td>{{location}}</td>
-        <td data-order="{{guests.size}}">{{#if idea}}{{guests.size}}{{else}}{{guestCount}}{{/if}}</td>
+        <td data-order="{{members.size}}">{{#if idea}}{{members.size}}{{else}}{{memberCount}}{{/if}}</td>
 {{#if call.user.maySeeUsers}}
-        <td>{{#if user.trusted}}{{&join organizers "<br/>"}}{{else}}{{#each organizers}}{{&get0.usernameLink}} {{/each}}{{/if}}</td>
+        <td>{{#if user.trusted}}{{&join owners "<br/>"}}{{else}}{{#each owners}}{{&get0.usernameLink}} {{/each}}{{/if}}</td>
 {{/if}}
         <td>{{cost}}</td>
         <td data-order="{{creationDate}}">{{dateShortFormat creationDate}}</td>

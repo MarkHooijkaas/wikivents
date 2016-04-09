@@ -3,8 +3,8 @@
 	{{> event.details edit=true}}
 	{{> include/show.booleanField value=record.idea  name="idea" label="Wikidee" title="Wikidee" trueLabel="WIKIDEE" falseLabel="DEFINITIEF"}}
 	{{> include/show.booleanField value=record.cancelled  name="cancelled" label="Geannuleeerd" title="annul" trueLabel="GEANNULLEERD" falseLabel="GAAT-DOOR"}}
-	{{> include/show.booleanField value=record.guestsAllowed  name="guestsAllowed" label="inschrijving" title="inschr" trueLabel="OPEN" falseLabel="DICHT"}}
-	{{> include/show.booleanField value=record.backupGuestsAllowed  name="backupGuestsAllowed" label="reservelijst" title="reserve" trueLabel="OPEN" falseLabel="DICHT"}}
+	{{> include/show.booleanField value=record.membersAllowed  name="membersAllowed" label="inschrijving" title="inschr" trueLabel="OPEN" falseLabel="DICHT"}}
+	{{> include/show.booleanField value=record.backupMembersAllowed  name="backupMembersAllowed" label="reservelijst" title="reserve" trueLabel="OPEN" falseLabel="DICHT"}}
 	{{>event.modify.groups}}
 {{#if false}}
 	{{>event.create.poll}}
@@ -28,7 +28,7 @@
 	Als je dit wilt voorkomen kan je de activiteit (of alleen de reservelijst) dicht zetten voor nieuwe aanmeldingen, of kan je beter gevoelige informatie in een mail naar iedereen sturen.</p>
 {{/partial}}
 
-{{> include/show.textAreaField label="informatie voor deelnemers" name="guestInfo" prefix="" value=record.guestInfo}}
+{{> include/show.textAreaField label="informatie voor deelnemers" name="memberInfo" prefix="" value=record.memberInfo}}
 {{#partial "emptyTemplate"}}{{/partial}}
 {{> include/show.textAreaField label="omschrijving" name="description" prefix="" value=record.description}}
 </div>

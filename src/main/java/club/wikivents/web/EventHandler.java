@@ -1,6 +1,5 @@
 package club.wikivents.web;
 
-import org.kisst.http4j.HttpRequestStruct;
 import org.kisst.http4j.form.HttpFormData;
 import org.kisst.http4j.handlebar.TemplateEngine.CompiledTemplate;
 import org.kisst.item4j.struct.Struct;
@@ -8,21 +7,16 @@ import org.kisst.util.CallInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import club.wikivents.model.Comment;
 import club.wikivents.model.Event;
-import club.wikivents.model.EventCommands.AddGuestCommand;
-import club.wikivents.model.EventCommands.RemoveGuestCommand;
 import club.wikivents.model.Group;
-import club.wikivents.model.Guest;
-import club.wikivents.model.User;
 
-public class EventHandler extends WikiventsActionHandler<Event> {
+public class EventHandler extends CommonBaseHandler<Event> {
 	public static final Logger logger = LoggerFactory.getLogger(EventHandler.class);
 
 	public final Event.Schema schema;
 
 
-	public EventHandler(WikiventsSite site) { super(site, site.model.events, site.model.eventUrlIndex); this.schema=Event.schema; }
+	public EventHandler(WikiventsSite site) { super(site, site.model.events, site.model.eventUrlIndex, Event.schema); this.schema=Event.schema; }
 
 	@NeedsNoAuthentication
 	public void listAll(WikiventsCall call) { call.output(call.getTheme().eventList, call.model.events); }
@@ -38,19 +32,7 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 	public void viewEdit(WikiventsCall call, Event event) {
 		new Form(call,event).showForm();
 	}
-
-	public AddGuestCommand createAddGuestCommand(WikiventsCall call, Event event) {
-		return new AddGuestCommand(event, call.user);
-	}
-	public RemoveGuestCommand createRemoveGuestCommand(WikiventsCall call, Event event) {
-		String guestId=call.request.getParameter("guest");
-		Guest guest = event.findGuest(guestId);
-		if (guest==null) {
-			logger.warn("Could not find guest with id "+guestId);
-			return null;
-		}
-		return new RemoveGuestCommand(event, guest.user.get());
-	}
+	
 	
 	public void handleEdit(WikiventsCall call, Event event) {
 		Form formdata = new Form(call,(Struct) null);
@@ -86,52 +68,7 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 		else
 			formdata.handle();
 	}
-	public void handleDelete(WikiventsCall call, Event event) {
-		if (call.user.isAdmin)
-			table.delete(event);
-	}
 
-	public void handleAddPoll(WikiventsCall call, Event event) {
-		table.update(event,
-			event.addSequenceItem(schema.polls, event.new Poll(new HttpRequestStruct(call)))
-		);
-	}
-
-	
-	@NeedsNoAuthorization
-	public void handleAddComment(WikiventsCall call, Event event) {
-		String text=call.request.getParameter("comment");
-		if (call.user.mayComment())
-			table.update(event,
-				event.addSequenceItem(schema.comments, new Comment(call.user,text))
-			);
-	}
-	@NeedsNoAuthorization
-	public void handleRemoveComment(WikiventsCall call, Event event) {
-		String commentId=call.request.getParameter("commentId");
-		if (event==null || commentId==null)
-			return;
-		Comment com=event.findComment(commentId);
-		if (com.mayBeChangedBy(call.user))
-			table.update(event,	event.removeSequenceItem(schema.comments, com));
-	}
-
-	public void handleAddOrganizer(WikiventsCall call, Event event) {
-		String username=call.request.getParameter("newOrganizer");
-		User newOrganizer=model.usernameIndex.get(username);
-		if (newOrganizer==null)
-			call.sendError(500, "no organizer");
-		else if (! event.hasOrganizer(newOrganizer) && event.hasGuest(newOrganizer))
-			table.update(event, event.addSequenceItem(schema.organizers, newOrganizer.getRef()));
-	}
-	public void handleRemoveOrganizer(WikiventsCall call, Event event) {
-		String id=call.request.getParameter("userId");
-		User user=model.users.read(id);
-		if (user==null)
-			call.sendError(500, "no organizer");
-		else if (event.organizers.size()>1) // never remove the last organizer
-			table.update(event, event.removeSequenceItem(schema.organizers, user.getRef()));
-	}
 
 	public void handleAddGroup(WikiventsCall call, Event event) {
 		String id=call.request.getParameter("groupId");
@@ -155,19 +92,19 @@ public class EventHandler extends WikiventsActionHandler<Event> {
 		public Form(WikiventsCall call, CompiledTemplate theme) { super(call, theme); }
 		public Form(WikiventsCall call) { this(call, call.getTheme().eventEdit); }
 
-		public final InputField organizer=new InputField("organizer", ((WikiventsCall) call).user._id);
+		public final InputField owner=new InputField("owner", ((WikiventsCall) call).user._id);
 		public final InputField title = new InputField(schema.title);
 		public final InputField imageUrl = new InputField(schema.imageUrl);
 		public final InputField date= new InputField(schema.date);
 		public final InputField time = new InputField(schema.time);
 		public final InputField endTime = new InputField(schema.endTime);
 		public final InputField max = new InputField(schema.max);
-		public final InputField guestsAllowed = new InputField(schema.guestsAllowed);
-		public final InputField backupGuestsAllowed= new InputField(schema.backupGuestsAllowed);
+		public final InputField membersAllowed = new InputField(schema.membersAllowed);
+		public final InputField backupMembersAllowed= new InputField(schema.backupMembersAllowed);
 		public final InputField city = new InputField(schema.city);
 		public final InputField location = new InputField(schema.location);
 		public final InputField cost = new InputField(schema.cost);
-		public final InputField guestInfo = new InputField(schema.guestInfo);
+		public final InputField memberInfo = new InputField(schema.memberInfo);
 		public final InputField description= new InputField(schema.description);
 		public final InputField idea= new InputField(schema.idea);
 	}

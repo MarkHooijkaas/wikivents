@@ -24,8 +24,8 @@ public class Event extends EventData implements Comparable<Event>, AccessChecker
 	public Event(WikiventsModel model, Struct data) { super(model, data); }
 	public Event(WikiventsModel model, User org, Struct data) {
 		this(model, new MultiStruct(
-			new SingleItemStruct(schema.organizers.name, ImmutableSequence.of(User.Ref.class, org.getRef())),
-			new SingleItemStruct(schema.guests.name, ImmutableSequence.of(Guest.class, new Guest(org))),
+			new SingleItemStruct(schema.owners.name, ImmutableSequence.of(User.Ref.class, org.getRef())),
+			new SingleItemStruct(schema.members.name, ImmutableSequence.of(Guest.class, new Guest(org))),
 			data
 		));
 	}
@@ -35,45 +35,44 @@ public class Event extends EventData implements Comparable<Event>, AccessChecker
 			return this.cancelled ? "0000-01-01" : "9999-12-31";
 		return date+"";
 	}
-	public String guestCount() {
+	public String memberCount() {
 		String result="0";
-		if (guests!=null)
-		result= guests.size()<=max ? guests.size()+"" : max+"+"+(guests.size()-max); 
+		if (members!=null)
+		result= members.size()<=max ? members.size()+"" : max+"+"+(members.size()-max); 
 		if (max<9999 || !idea)
 			result+="/"+max;
 		return result;
 	}   
-	public String organizerNames() {
+	public String ownerNames() {
 		StringJoiner sj = new StringJoiner(", ");
-		for (User.Ref r : organizers)
+		for (User.Ref r : owners)
 			sj.add(r.get().username);
 		return sj.toString();
 	}
-	public SafeString organizerLinks() {
+	public SafeString ownerLinks() {
 		StringJoiner sj = new StringJoiner("<br/>");
-		for (User.Ref r : organizers)
+		for (User.Ref r : owners)
 			sj.add(r.link());
 		return new SafeString(sj.toString());
 	}
-	public ImmutableSequence<Guest> backupGuests() {
-		if (guests.size()<=max)
+	public ImmutableSequence<User.Ref> backupMembers() {
+		if (members.size()<=max)
 			return null;
-		return guests.subsequence(max);
+		return members.subsequence(max);
 	}
-	public ImmutableSequence<Guest> allowedGuests() {
-		if (guests.size()<=max)
-			return guests;
-		return guests.subsequence(0,max);
+	public ImmutableSequence<User.Ref> allowedMembers() {
+		if (members.size()<=max)
+			return members;
+		return members.subsequence(0,max);
 	}
 	
-	public boolean allowNewGuest() { return guestsAllowed && guests.size()<max && ! cancelled; }
-	public boolean allowNewBackupGuest() { return guestsAllowed && backupGuestsAllowed && ! cancelled; }
+	public boolean allowNewMember() { return membersAllowed && members.size()<max && ! cancelled; }
+	public boolean allowNewBackupMember() { return membersAllowed && backupMembersAllowed && ! cancelled; }
 	
-	@Override public boolean mayBeChangedBy(User user) { return user!=null && (user.isAdmin || hasOrganizer(user)); }
+	@Override public boolean mayBeChangedBy(User user) { return user!=null && (user.isAdmin || hasOwner(user)); }
 	@Override public boolean mayBeViewedBy(User user) { return true; }
 	
-	public boolean hasGuest(User user) { return user!=null && guests.hasItem(Guest.key,user._id); }
-	public Guest findGuest(String id) { return guests.findItemOrNull(Guest.key, id); }
+	//public Member findMember(String id) { return members.findItemOrNull(Member.key, id); }
 
 
 	private static ImmutableSequence.StringExpression userRefKey=(ref) -> {return ((User.Ref) ref).getKey(); };
@@ -83,10 +82,10 @@ public class Event extends EventData implements Comparable<Event>, AccessChecker
 
 	
 	
-	public boolean hasOrganizer(User user) {
-		if (organizers==null || user==null)
+	public boolean hasOwner(User user) {
+		if (owners==null || user==null)
 			return false;
-		for (User.Ref r: organizers) {
+		for (User.Ref r: owners) {
 			if (r.refersTo(user)) 
 				return true;
 		}

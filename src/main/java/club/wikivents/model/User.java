@@ -49,7 +49,7 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 	public ArrayList<Event> futureEvents() {
 		ArrayList<Event> result=new ArrayList<Event>();
 		for (Event e: model.futureEvents()) {
-			if (e.hasGuest(this) || e.hasOrganizer(this))
+			if (e.hasMember(this) || e.hasOwner(this))
 				result.add(e);
 		}
 		return result;
@@ -57,7 +57,7 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 	public ArrayList<Event> pastEvents() {
 		ArrayList<Event> result=new ArrayList<Event>();
 		for (Event e: model.pastEvents()) {
-			if (e.hasGuest(this) || e.hasOrganizer(this))
+			if (e.hasMember(this) || e.hasOwner(this))
 				result.add(e);
 		}
 		return result;

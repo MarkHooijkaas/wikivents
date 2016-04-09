@@ -3,30 +3,30 @@
 <h2>Wijzig details</h2>
 {{> include/show.ajaxField value=record.urlName name="urlName" type="" label="URL" edit=true}}
 
-<h2>{{#if record.idea}}Ge&iuml;nteresseerden{{else}}Deelnemers{{/if}} {{record.guestCount}}
-	{{> include/modal.lockField value=record.guestsAllowed name="guestsAllowed" label="Deelname"}}
+<h2>{{#if record.idea}}Ge&iuml;nteresseerden{{else}}Deelnemers{{/if}} {{record.memberCount}}
+	{{> include/modal.lockField value=record.membersAllowed name="membersAllowed" label="Deelname"}}
 </h2> 
 
-{{> dialog.confirm.action command="RemoveGuest" id="Admin" field="guest" okButton="Verwijderen"}}
+{{> dialog.confirm.action command="RemoveMember" id="Admin" field="member" okButton="Verwijderen"}}
 
-{{#each record.allowedGuests}}
-	<a class="confirmRemoveGuestAdmin" data-id="{{user.key}}" data-title="Afmelden {{user.get0.username}}" data-message="Weet je zeker dat je {{user.get0.username}} wilt verwijderen ?">
+{{#each record.allowedMembers}}
+	<a class="confirmRemoveMemberAdmin" data-id="{{key}}" data-title="Afmelden {{get0.username}}" data-message="Weet je zeker dat je {{get0.username}} wilt verwijderen ?">
 		<span class="glyphicon glyphicon-trash" aria-hidden="true" style="cursor:pointer;"></span>
 	</a>
-	{{&user.link}}
+	{{&link}}
 	<br/>
 {{/each}}
 </div>
 
 <div class="col-xs-12 col-sm-6 panel panel-default overflow-hidden">
 <h2>Reservelijst
-	{{> include/modal.lockField value=record.backupGuestsAllowed name="backupGuestsAllowed" label="Reservelijst"}}
+	{{> include/modal.lockField value=record.backupMembersAllowed name="backupMembersAllowed" label="Reservelijst"}}
 </h2>
-{{#each record.backupGuests}}
-	<a class="confirmRemoveGuestAdmin" data-id="{{user.key}}" data-title="Afmelden {{user.get0.username}}" data-message="Weet je zeker dat je {{user.get0.username}} wilt verwijderen van de reservelijst?">
+{{#each record.backupMembers}}
+	<a class="confirmRemoveMemberAdmin" data-id="{{key}}" data-title="Afmelden {{get0.username}}" data-message="Weet je zeker dat je {{get0.username}} wilt verwijderen van de reservelijst?">
 		<span class="glyphicon glyphicon-trash" aria-hidden="true" style="cursor:pointer;"></span>
 	</a>
-	{{&user.link}}
+	{{&link}}
 	<br/>
 {{/each}}
 </div>

@@ -12,7 +12,6 @@ public  class Comment extends ReflectStruct implements PkoModel.MyObject, Access
 	public final User.Ref user;
 	public final Instant date;
 	public final String comment;
-	//public final boolean hidden;
 
 	public static final Schema schema=new Schema();
 	public static final class Schema extends ReflectSchema<Comment> {
@@ -20,7 +19,6 @@ public  class Comment extends ReflectStruct implements PkoModel.MyObject, Access
 		public final User.Ref.Field user = new User.Ref.Field("user");  
 		public final InstantField date = new InstantField("date"); 
 		public final StringField comment = new StringField("comment"); 
-		//public final BooleanField hidden = new BooleanField("hidden"); 
 	}
 	public String id() { return user.getKey()+date.toEpochMilli(); }
 	
@@ -28,16 +26,17 @@ public  class Comment extends ReflectStruct implements PkoModel.MyObject, Access
 		this.user=u.getRef();
 		this.date=Instant.now();
 		this.comment=comment;
-		//this.hidden=false;
 	}
 
 	public Comment(WikiventsModel model, Struct data) {
 		this.user= schema.user.getRef(model, data);
 		this.date = schema.date.getInstantOrNow(data);
 		this.comment= schema.comment.getString(data);
-		//this.hidden= schema.hidden.getBoolean(data,false);
 	}
-
+	
+	@Override public String toString() {
+		return "Comment("+user.getKey()+","+comment+")"; 
+	}
 	@Override public boolean mayBeViewedBy(User actor) { return actor!=null; }
 	@Override public boolean mayBeChangedBy(User actor) { return actor.isAdmin || (this.user.refersTo(actor)); }
 }

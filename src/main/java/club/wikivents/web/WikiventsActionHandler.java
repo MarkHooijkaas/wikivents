@@ -61,7 +61,9 @@ public abstract class WikiventsActionHandler<T extends WikiventsObject<T> & Acce
 	
 	@Override protected void handleCommand(String cmdName, WikiventsCall call, T record) {
 		CallInfo.instance.get().action=cmdName;
-		Method method = ReflectionUtil.getMethod(this.getClass(), "create"+cmdName+"Command", fullsignature);
+		Method method = ReflectionUtil.getFirstCompatibleMethod(this.getClass(), "create"+cmdName+"Command", fullsignature);
+		if (method==null)
+			method = ReflectionUtil.getFirstCompatibleMethod(this.getClass(), "create"+cmdName+"Command", fullsignature2); // TODO: check isAssignableFrom logic
 		if (method==null)
 			throw new RuntimeException("Unknown commandName "+cmdName);
 		@SuppressWarnings("unchecked")

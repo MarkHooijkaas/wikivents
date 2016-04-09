@@ -6,7 +6,7 @@
 {{/ifMayChange}}
 
 {{> include/page.header.end}}
-{{> dialog.confirm.action command="RemoveGuest" field="guest" message="Weet je zeker dat je je wilt afmelden?" okButton="Afmelden"}}
+{{> dialog.confirm.action command="RemoveMember" field="member" message="Weet je zeker dat je je wilt afmelden?" okButton="Afmelden"}}
 
 {{#ifMayChange record}}
 	<script>webshim.polyfill('forms forms-ext');</script>
@@ -15,13 +15,13 @@
 <div>
 	<ul class="nav nav-tabs" id="navTabs">
 		<li role="presentation" class="active"><a role="tab" data-toggle="tab" data-target="#mainTab">Info</a></li>
-{{#ifAmGuest record}}
-{{#if record.guestInfo}}
+{{#ifAmMember record}}
+{{#if record.memberInfo}}
 		<li role="presentation"><a role="tab" data-toggle="tab" data-target="#extraInfoTab">Extra Info</a></li>
 {{/if}}
-{{/ifAmGuest}}
+{{/ifAmMember}}
 {{#if call.user.maySeeUsers}}
-		<li role="presentation"><a role="tab" data-toggle="tab" data-target="#participantsTab">Deelnemers {{record.guestCount}}</a></li>
+		<li role="presentation"><a role="tab" data-toggle="tab" data-target="#participantsTab">Deelnemers {{record.memberCount}}</a></li>
 		<li role="presentation"><a role="tab" data-toggle="tab" data-target="#commentsTab">Reacties {{record.comments.size}}</a></li>
 		<li role="presentation"><a role="tab" data-toggle="tab" data-target="#historyTab">Historie</a></li>
 {{/if}}

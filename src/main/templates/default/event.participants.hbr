@@ -1,32 +1,32 @@
 
 
 <div>
-<h2>{{#if record.idea}}Ge&iuml;nteresseerden{{else}}Deelnemers{{/if}} {{record.guestCount}}
+<h2>{{#if record.idea}}Ge&iuml;nteresseerden{{else}}Deelnemers{{/if}} {{record.memberCount}}
 </h2> 
 {{#if call.user.maySeeUsers}}
-{{#each record.allowedGuests}}
-	{{#if call.user.trusted}}{{&priv user.link}}{{else}}{{&user.get0.usernameLink}}{{/if}}
-	{{#ifMayChange this}}
-		<a 	class="confirmRemoveGuest" data-id="{{user.key}}" data-title="Afmelden {{user.get0.username}}">
+{{#each record.allowedMembers}}
+	{{#if call.user.trusted}}{{&priv link}}{{else}}{{&get0.usernameLink}}{{/if}}
+	{{#ifAmOwner this}}
+		<a 	class="confirmRemoveMember" data-id="{{key}}" data-title="Afmelden {{get0.username}}">
 			<span class="glyphicon glyphicon-trash" aria-hidden="true" style="cursor:pointer;"></span>
 		</a>
-	{{/ifMayChange}}
+	{{/ifAmOwner}}
 	<br/>
 {{/each}}
 {{#if call.user.maySendMail}}
 <form role="form" method="POST" action="/sendMessage">
 	<input type="hidden" name="returnTo" value="{{call.localUrl}}"/>
-	<input type="hidden" name="to" value="{{#each record.allowedGuests}}{{user.get0.username}},{{/each}}"/>
+	<input type="hidden" name="to" value="{{#each record.allowedMembers}}{{get0.username}},{{/each}}"/>
 	<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Stuur {{#if record.idea}}Ge&iuml;nteresseerden{{else}}Deelnemers{{/if}} een e-mail</button>
 </form>
 {{/if}}
 
-{{#ifAmGuest record}}
+{{#ifAmMember record}}
 {{else}}
-{{#if user.mayParticipate}}
-	{{#if record.allowNewGuest}}
+{{#if call.user.mayParticipate}}
+	{{#if record.allowNewMember}}
 	  	<form role="form" method="POST" >
-	  		<input type="hidden" name="command" value="AddGuest"/>				
+	  		<input type="hidden" name="command" value="AddMember"/>				
 	  		<input type="hidden" name="userId" value="{{record.key}}"/>				
 			<button type="submit" class="btn btn-default">{{#if record.idea}}Ik ben ge&iuml;nteresseerd{{else}}Ik wil ook deelnemen{{/if}}</button>
 	 	</form>
@@ -34,39 +34,39 @@
 {{else}}
 	<span class="alert-danger">Deelname is pas mogelijk bij een groen Karma</span>
 {{/if}}
-{{/ifAmGuest}}
+{{/ifAmMember}}
 </div>
 
 <div>
-{{#if record.backupGuests}}
+{{#if record.backupMembers}}
 <h2>Reservelijst</h2>
-{{#each record.backupGuests}}
-	{{#if user.get0.trusted}}{{&priv user.link}}{{else}}{{&user.get0.usernameLink}}{{/if}}
-	{{#ifMayChange this}}
-		<a 	class="confirmRemoveGuest" data-id="{{user.key}}" data-title="Afmelden {{user.get0.username}}">
+{{#each record.backupMembers}}
+	{{#if get0.trusted}}{{&priv link}}{{else}}{{&get0.usernameLink}}{{/if}}
+	{{#ifAmOwner this}}
+		<a 	class="confirmRemoveMember" data-id="{{key}}" data-title="Afmelden {{get0.username}}">
 			<span class="glyphicon glyphicon-trash" aria-hidden="true" style="cursor:pointer;"></span>
 		</a>
-	{{/ifMayChange}}
+	{{/ifAmOwner}}
 	<br/>
 {{/each}}
 {{#if call.user.maySendMail}}
 <form role="form" method="POST" action="/sendMessage">
 	<input type="hidden" name="returnTo" value="{{call.localUrl}}"/>
-	<input type="hidden" name="to" value="{{#each record.backupGuests}}{{user.get0.username}},{{/each}}"/>
+	<input type="hidden" name="to" value="{{#each record.backupMembers}}{{get0.username}},{{/each}}"/>
 	<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Stuur Reservelijst een e-mail</button>
 </form>
 {{/if}}
 {{/if}}
 
 
-{{#ifAmGuest record}}
+{{#ifAmMember record}}
 {{else}}
-{{#if user.mayParticipate}}
-	{{#if record.allowNewGuest}}
+{{#if call.user.mayParticipate}}
+	{{#if record.allowNewMember}}
 	{{else}}
-		{{#if record.allowNewBackupGuest}}
+		{{#if record.allowNewBackupMember}}
 		  	<form role="form" method="POST">
-		  		<input type="hidden" name="command" value="AddGuest"/>				
+		  		<input type="hidden" name="command" value="AddMember"/>				
 		  		<input type="hidden" name="userId" value="{{record.key}}"/>				
 				<button type="submit" class="btn btn-default">Ik wil op de reservelijst</button>
 		 	</form>
@@ -77,7 +77,7 @@
 {{else}}
 	<span class="alert-danger">Deelname is pas mogelijk bij een groen Karma</span>
 {{/if}}
-{{/ifAmGuest}}
+{{/ifAmMember}}
 {{else}}
 	<span class="alert-danger">Deelnemen en deelnemers zien is pas mogelijk bij een groen Karma</span>
 {{/if}}
