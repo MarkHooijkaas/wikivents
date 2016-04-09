@@ -13,7 +13,6 @@ import org.kisst.util.ReflectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import club.wikivents.model.Event;
 import club.wikivents.model.User;
 import club.wikivents.model.WikiventsCommands;
 import club.wikivents.model.WikiventsCommands.ChangeFieldCommand;
@@ -125,23 +124,8 @@ public abstract class WikiventsActionHandler<T extends WikiventsObject<T> & Acce
 		return new WikiventsCommands.ChangeFieldCommand<T>(record, fieldName, value);
 	}
 	
-	@NeedsNoAuthorization
-	public void handleAddLike(WikiventsCall call) {
-		String id=call.request.getParameter("eventId");
-		Event event=model.events.read(id);
-		if (event!=null)
-			CallInfo.instance.get().data=event.title;
-		if (! event.isLikedBy(call.user))
-			model.events.update(event, event.addSequenceItem(Event.schema.likes, call.user.getRef()));
+	public void handleDelete(WikiventsCall call, T rec) {
+		if (call.user.isAdmin)
+			table.delete(rec);
 	}
-	@NeedsNoAuthorization
-	public void handleRemoveLike(WikiventsCall call) {
-		String id=call.request.getParameter("eventId");
-		Event event=model.events.read(id);
-		if (event!=null)
-			CallInfo.instance.get().data=event.title;
-		User.Ref ref = call.user.getRef();
-		model.events.update(event, event.removeSequenceItem(Event.schema.likes, ref));
-	}
-	
 }
