@@ -38,6 +38,7 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 		catch (UnsupportedEncodingException e) { throw new RuntimeException(e);}
 	}
 
+	@Override public String toString() { return "User("+username+")"; }
 	@Override public String getPasswordSalt() { return passwordSalt; }
 	public String getUrl() { return "/gebruiker/"+username;}
 

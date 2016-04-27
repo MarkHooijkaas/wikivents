@@ -26,6 +26,7 @@
     <tbody>
 		
 {{#each list}} 
+{{#ifMayView this}}
 	  <tr>
         <td><a href="{{url}}">{{title}}</a></td>
         <td>{{this.members.size}}</td>
@@ -39,6 +40,7 @@
 {{/ifAdminMode}}
       
       </tr>
+{{/ifMayView}}
 {{/each}}
     </tbody>
   </table>

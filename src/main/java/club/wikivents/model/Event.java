@@ -30,6 +30,18 @@ public class Event extends EventData implements Comparable<Event>, AccessChecker
 		));
 	}
 
+	@Override public boolean hasInvitedUser(User.Ref user) { return super.hasInvitedUser(user) || hasInvitedGroupUser(user); }
+	public boolean hasInvitedGroupUser(User.Ref user) {
+		for (Group.Ref g: groups) {
+			Group grp = g.get0();
+			if (grp!=null && grp.hasOwner(user) || grp.hasMember(user))
+				return true;
+		}
+		return false;
+	}
+	public boolean hasInvitedGroupUser(User user) { return hasInvitedGroupUser(user.getRef());}
+
+	
 	public String dateKey() { 
 		if (this.date==null) 
 			return this.cancelled ? "0000-01-01" : "9999-12-31";
@@ -68,29 +80,9 @@ public class Event extends EventData implements Comparable<Event>, AccessChecker
 	
 	public boolean allowNewMember() { return membersAllowed && members.size()<max && ! cancelled; }
 	public boolean allowNewBackupMember() { return membersAllowed && backupMembersAllowed && ! cancelled; }
-	
-	@Override public boolean mayBeChangedBy(User user) { return user!=null && (user.isAdmin || hasOwner(user)); }
-	@Override public boolean mayBeViewedBy(User user) { return true; }
-	
+		
 	//public Member findMember(String id) { return members.findItemOrNull(Member.key, id); }
 
-
-	private static ImmutableSequence.StringExpression userRefKey=(ref) -> {return ((User.Ref) ref).getKey(); };
-
-	public boolean isLikedBy(User user) { return likes.hasItem(userRefKey, user._id); }
-
-
-	
-	
-	public boolean hasOwner(User user) {
-		if (owners==null || user==null)
-			return false;
-		for (User.Ref r: owners) {
-			if (r.refersTo(user)) 
-				return true;
-		}
-		return false;
-	}
 
 	public boolean hasGroup(Group gr) {
 		if (groups==null || gr==null)

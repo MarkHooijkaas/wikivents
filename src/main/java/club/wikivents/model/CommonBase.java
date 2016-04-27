@@ -22,8 +22,12 @@ public abstract class CommonBase<T extends CommonBase<T>> extends WikiventsObjec
 		public final IntField _crudObjectVersion = new IntField("_crudObjectVersion");
 		public final StringField title = new StringField("title"); 
 		public final StringField urlName= new StringField("urlName"); 
+		public final BooleanField openForAll = new BooleanField("openForAll"); 
+		public final BooleanField visibleForAll = new BooleanField("visibleForAll"); 
 		public final SequenceField<User.Ref> owners = new SequenceField<User.Ref>(User.Ref.class,"owners");
 		public final SequenceField<User.Ref> members= new SequenceField<>(User.Ref.class,"members"); 
+		public final SequenceField<User.Ref> invitedUsers= new SequenceField<>(User.Ref.class,"invitedUsers"); 
+		public final SequenceField<User.Ref> interestedUsers= new SequenceField<>(User.Ref.class,"interestedUsers"); 
 		public final SequenceField<User.Ref> likes = new SequenceField<User.Ref>(User.Ref.class,"likes");
 		public final StringField description = new StringField("description"); 
 		public final SequenceField<Comment> comments= new SequenceField<Comment>(Comment.class,"comments");
@@ -33,8 +37,12 @@ public abstract class CommonBase<T extends CommonBase<T>> extends WikiventsObjec
 	public final String title;
 	public final String urlName;
 	public final String description;
+	public final boolean openForAll;
+	public final boolean visibleForAll;
 	public final ImmutableSequence<User.Ref> owners;
 	public final ImmutableSequence<User.Ref> members;
+	public final ImmutableSequence<User.Ref> invitedUsers;
+	public final ImmutableSequence<User.Ref> interestedUsers;
 	public final ImmutableSequence<User.Ref> likes;
 	public final ImmutableSequence<Comment> comments;
 	public final ImmutableSequence<Poll> polls;
@@ -55,6 +63,8 @@ public abstract class CommonBase<T extends CommonBase<T>> extends WikiventsObjec
 		else
 			this.urlName=urlName;
 		this.description=schema.description.getString(data);
+		this.openForAll=schema.openForAll.getBoolean(data, true);
+		this.visibleForAll=schema.visibleForAll.getBoolean(data, true);
 		
 		if (schema.owners.fieldExists(data))
 			this.owners=schema.owners.getSequenceOrEmpty(model, data);
@@ -71,6 +81,9 @@ public abstract class CommonBase<T extends CommonBase<T>> extends WikiventsObjec
 				arr[i++]=g.user;
 			this.members=ImmutableSequence.of(User.Ref.class, arr);
 		}
+		this.invitedUsers=schema.invitedUsers.getSequenceOrEmpty(model, data);
+		this.interestedUsers=schema.interestedUsers.getSequenceOrEmpty(model, data);
+
 		this.likes=schema.likes.getSequenceOrEmpty(model, data);
 		this.comments=schema.comments.getSequenceOrEmpty(model, data);
 		this.polls=schema.polls.getSequenceOrEmpty(this, data);
@@ -130,28 +143,25 @@ public abstract class CommonBase<T extends CommonBase<T>> extends WikiventsObjec
 			sj.add(r.get().username);
 		return sj.toString();
 	}
-	
+
 	@Override public boolean mayBeChangedBy(User user) { return user!=null && (user.isAdmin || hasOwner(user)); }
-	@Override public boolean mayBeViewedBy(User user) { return true; }
-
-	public boolean hasMember(User user) {
-		if (members==null || user==null)
-			return false;
-		for (User.Ref r: members)
-			if (r.refersTo(user)) 
-				return true;
-		return false;
+	@Override public boolean mayBeViewedBy(User user) { 
+		return visibleForAll || hasOwner(user) || hasMember(user) || hasInvitedUser(user); 
 	}
 
-	public boolean hasOwner(User user) {
-		if (owners==null || user==null)
-			return false;
-		for (User.Ref r: owners) {
-			if (r.refersTo(user)) 
-				return true;
-		}
-		return false;
-	}
+	public boolean hasOwner(User.Ref user) { return owners.contains(user); }
+	public boolean hasMember(User.Ref user) { return members.contains(user); }
+	public boolean hasInvitedUser(User.Ref user) { return invitedUsers.contains(user); }
+	public boolean hasInterestedUser(User.Ref user) { return interestedUsers.contains(user); }
+
+	public final boolean hasOwner(User user) { return hasOwner(user.getRef()); }
+	public final boolean hasMember(User user) { return hasMember(user.getRef()); }
+	public final boolean hasInvitedUser(User user) { return hasInvitedUser(user.getRef()); }
+	public final boolean hasInterestedUser(User user) { return hasInterestedUser(user.getRef()); }
+
+	private static ImmutableSequence.StringExpression userRefKey=(ref) -> {return ((User.Ref) ref).getKey(); };
+	public boolean isLikedBy(User user) { return likes.hasItem(userRefKey, user._id); }
+
 
 	public Comment findComment(String id) { 
 		if (comments==null || id==null)

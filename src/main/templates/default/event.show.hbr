@@ -6,6 +6,8 @@
 {{/ifMayChange}}
 
 {{> include/page.header.end}}
+{{#ifMayView record}}
+
 {{> dialog.confirm.action command="RemoveMember" field="member" message="Weet je zeker dat je je wilt afmelden?" okButton="Afmelden"}}
 
 {{#ifMayChange record}}
@@ -72,6 +74,9 @@
 {{/if}}
 	</div>
 </div>
+
+{{/ifMayView}}
+
 
 <script>
 	$(document).ready(function() {

@@ -98,6 +98,7 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 				record=findRecord(call, id);
 				if (record==null)
 					throw new IllegalArgumentException("Could not find "+id);
+				checkViewAccess(call, methodName, record);
 			}
 		}
 		invoke(methodName, call, record, subpath);

@@ -5,6 +5,9 @@
 	{{> include/show.booleanField value=record.cancelled  name="cancelled" label="Geannuleeerd" title="annul" trueLabel="GEANNULLEERD" falseLabel="GAAT-DOOR"}}
 	{{> include/show.booleanField value=record.membersAllowed  name="membersAllowed" label="inschrijving" title="inschr" trueLabel="OPEN" falseLabel="DICHT"}}
 	{{> include/show.booleanField value=record.backupMembersAllowed  name="backupMembersAllowed" label="reservelijst" title="reserve" trueLabel="OPEN" falseLabel="DICHT"}}
+	{{> include/show.booleanField value=record.openForAll  name="openForAll" label="Openbaar" title="Openbaar" trueLabel="OPENBAAR" falseLabel="BESLOTEN"}}
+	{{> include/show.booleanField value=record.visibleForAll  name="visibleForAll" label="Zichtbaar" title="Zichtbaar" trueLabel="ZICHTBAAR" falseLabel="VERBORGEN"}}
+
 	{{>event.modify.groups}}
 {{#if false}}
 	{{>event.create.poll}}
