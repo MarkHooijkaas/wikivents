@@ -9,6 +9,7 @@
 {{#ifMayView record}}
 
 {{> dialog.confirm.action command="RemoveMember" field="member" message="Weet je zeker dat je je wilt afmelden?" okButton="Afmelden"}}
+{{> dialog.confirm.action command="RemoveInvitation" field="invitedUser" message="Weet je zeker dat je deze uitnodiging wilt verwijderen?" okButton="Verwijderen"}}
 
 {{#ifMayChange record}}
 	<script>webshim.polyfill('forms forms-ext');</script>

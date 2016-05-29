@@ -159,6 +159,7 @@ public abstract class CommonBase<T extends CommonBase<T>> extends WikiventsObjec
 	public final boolean hasInvitedUser(User user) { return hasInvitedUser(user.getRef()); }
 	public final boolean hasInterestedUser(User user) { return hasInterestedUser(user.getRef()); }
 
+
 	private static ImmutableSequence.StringExpression userRefKey=(ref) -> {return ((User.Ref) ref).getKey(); };
 	public boolean isLikedBy(User user) { return likes.hasItem(userRefKey, user._id); }
 

@@ -60,13 +60,14 @@ public abstract class WikiventsActionHandler<T extends WikiventsObject<T> & Acce
 			call.throwUnauthorized("User "+call.user.username+" is not authorized to call viewing method "+methodName);
 	}
 	
-	@Override protected void handleCommand(String cmdName, WikiventsCall call, T record) {
+	@Override protected boolean handleCommand(String cmdName, WikiventsCall call, T record) {
 		CallInfo.instance.get().action=cmdName;
 		Method method = ReflectionUtil.getFirstCompatibleMethod(this.getClass(), "create"+cmdName+"Command", fullsignature);
 		if (method==null)
 			method = ReflectionUtil.getFirstCompatibleMethod(this.getClass(), "create"+cmdName+"Command", fullsignature2); // TODO: check isAssignableFrom logic
 		if (method==null)
-			throw new RuntimeException("Unknown commandName "+cmdName);
+			return false;
+//				throw new RuntimeException("Unknown commandName "+cmdName);
 		@SuppressWarnings("unchecked")
 		Command<T> cmd = (Command<T>) ReflectionUtil.invoke(this, method, new Object[]{ call, record});
 		if (cmd==null)
@@ -82,6 +83,7 @@ public abstract class WikiventsActionHandler<T extends WikiventsObject<T> & Acce
 		}
 		if (!call.isAjax() && ! call.response.isCommitted()) 
 			call.redirect(call.getLocalUrl());
+		return true;
 	}
 
 	@Override protected T findRecord(WikiventsCall call, String id) {

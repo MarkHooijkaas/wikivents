@@ -12,6 +12,7 @@
 			<div class="modal-footer">
 				<form role="form" method="POST" id="{{command}}Form{{id}}">
 					<input type="hidden" name="command" value="{{command}}"/>
+					<input type="hidden" name="action" value="{{command}}"/>
 					<input type="hidden" name="{{field}}" id="{{command}}Value{{id}}" value=""/>
 					<button type="submit" class="btn btn-success">{{okButton}}</button>
         		    <a class="btn btn-default btn-danger" id="{{command}}Cancel{{id}}" data-dismiss="modal" data-backdrop="false">Annuleer</a>

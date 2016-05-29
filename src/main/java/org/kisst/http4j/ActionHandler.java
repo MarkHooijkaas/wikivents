@@ -128,8 +128,8 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 		if (cmdName!=null) {
 			//if (httpPostLogger.isInfoEnabled())
 			//	httpPostLogger.info("invoking command "+cmdName+", rec="+record);
-			handleCommand(cmdName, call, record);
-			return;
+			if (handleCommand(cmdName, call, record))
+				return; // command has been handled
 		}
 		if (action==null) {
 			call.throwUnauthorized("No action specified");
@@ -143,8 +143,9 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 			call.redirect(call.getLocalUrl());
 	}
 
-	protected void handleCommand(String cmdName, C call, T record) {
-		// TODO: make generic, but now is overridden in subclass 
+	protected boolean handleCommand(String cmdName, C call, T record) {
+		// TODO: make generic, but now is overridden in subclass
+		return false;
 	}
 
 	private void invoke(String methodName, C call, T record, String subpath) {

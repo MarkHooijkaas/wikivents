@@ -94,6 +94,7 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 	}
 
 
+	public boolean isOwner(CommonBase<?> obj) { return obj.hasOwner(this); }
 	public boolean isMember(CommonBase<?> obj) { return obj.hasMember(this); }
 	public boolean mayJoin(CommonBase<?> obj) {
 		if (obj==null) return false;

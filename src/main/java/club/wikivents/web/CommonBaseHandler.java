@@ -53,7 +53,7 @@ public class CommonBaseHandler<T extends CommonBase<T> & HasUrl> extends Wikiven
 	
 	@NeedsNoAuthorization
 	public void handleAddMember(WikiventsCall call, T rec) {
-		if (!rec.hasMember(call.user))
+		if (call.user.mayJoin(rec))
 			table.update(rec, rec.addSequenceItem(schema.members, call.user.getRef()));
 	}
 	
@@ -81,7 +81,31 @@ public class CommonBaseHandler<T extends CommonBase<T> & HasUrl> extends Wikiven
 		else if (rec.owners.size()>1) // never remove the last owner
 			table.update(rec, rec.removeSequenceItem(schema.owners, user.getRef()));
 	}
-	
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	public void handleInviteUser(WikiventsCall call, T rec) {
+		String username = call.request.getParameter("invitedUser");
+		User invitedUser = model.usernameIndex.get(username);
+		if (invitedUser == null)
+			call.sendError(500, "no user");
+		else if (!rec.hasInvitedUser(invitedUser))
+			table.update(rec, rec.addSequenceItem(schema.invitedUsers, invitedUser.getRef()));
+	}
+	@NeedsNoAuthorization
+	public void handleRemoveInvitation(WikiventsCall call, T rec) {
+		String id=call.request.getParameter("invitedUser");
+		User user=model.users.readOrNull(id);
+		if (user==null)
+			call.sendError(500, "no user");
+		else {
+			if (call.user.isAdmin || call.user._id.equals(user._id) || call.user.isOwner(rec)) {
+				if (rec.hasInvitedUser(user))
+					table.update(rec, rec.removeSequenceItem(schema.invitedUsers, user.getRef()));
+			}
+			else
+				call.sendError(500, "not authorized");
+		}
+	}
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	@NeedsNoAuthorization
 	public void handleAddLike(WikiventsCall call) {
