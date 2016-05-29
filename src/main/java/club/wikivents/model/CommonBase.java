@@ -2,6 +2,7 @@ package club.wikivents.model;
 
 import java.util.StringJoiner;
 
+import org.kisst.http4j.handlebar.AccessChecker;
 import org.kisst.item4j.ImmutableSequence;
 import org.kisst.item4j.Item;
 import org.kisst.item4j.struct.ReflectStruct;
@@ -14,7 +15,7 @@ import org.kisst.pko4j.PkoTable;
 import org.kisst.props4j.Props;
 import org.kisst.util.StringUtil;
 
-public abstract class CommonBase<T extends CommonBase<T>> extends WikiventsObject<T> implements Item.Factory{
+public abstract class CommonBase<T extends CommonBase<T>> extends WikiventsObject<T> implements Item.Factory {
 	public static Schema<Event> commonSchema=new Schema<>(Event.class); //TODO: have a schema with a neutral class
 	public static class Schema<T extends PkoObject> extends PkoSchema<T> {
 		protected Schema(Class<T> cls) { super(cls); }
@@ -146,9 +147,10 @@ public abstract class CommonBase<T extends CommonBase<T>> extends WikiventsObjec
 
 	@Override public boolean mayBeChangedBy(User user) { return user!=null && (user.isAdmin || hasOwner(user)); }
 	@Override public boolean mayBeViewedBy(User user) { 
-		return (!hidden) || hasOwner(user) || hasMember(user) || mayBeJoinedBy(user);
+		return (!hidden) || hasOwner(user) || hasMember(user) || hasInvitedUser(user);
 	}
 	public boolean mayBeJoinedBy(User user) { return (! invitedOnly) || hasOwner(user) || hasInvitedUser(user); }
+	public boolean needsInviteMechanism() { return hidden || invitedOnly; }
 
 	public boolean hasOwner(User.Ref user) { return owners.contains(user); }
 	public boolean hasMember(User.Ref user) { return members.contains(user); }

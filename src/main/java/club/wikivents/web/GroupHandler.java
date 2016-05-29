@@ -4,13 +4,14 @@ import org.kisst.http4j.form.HttpFormData;
 import org.kisst.item4j.struct.Struct;
 
 import club.wikivents.model.Comment;
+import club.wikivents.model.CommonBase;
 import club.wikivents.model.Group;
 import club.wikivents.model.User;
 
-public class GroupHandler extends WikiventsActionHandler<Group> {
+public class GroupHandler extends CommonBaseHandler<Group> {
 	public final Group.Schema schema;
 
-	public GroupHandler(WikiventsSite site) { super(site, site.model.groups, site.model.groupUrlIndex); this.schema=Group.schema;	}
+	public GroupHandler(WikiventsSite site) { super(site, site.model.groups, site.model.groupUrlIndex, Group.schema); this.schema=Group.schema;	}
 
 	@NeedsNoAuthentication
 	public void listAll(WikiventsCall call) { call.output(call.getTheme().groupList, call.model.groups); }
@@ -99,6 +100,8 @@ public class GroupHandler extends WikiventsActionHandler<Group> {
 		public final InputField owner=new InputField("owner", ((WikiventsCall) call).user._id);
 		public final InputField title = new InputField(Group.schema.title);
 		public final InputField description= new InputField(Group.schema.description);
+		public final InputField invitedOnly = new CheckBoxField(schema.invitedOnly);
+		public final InputField hidden= new CheckBoxField(schema.hidden);
 	}
 }
 

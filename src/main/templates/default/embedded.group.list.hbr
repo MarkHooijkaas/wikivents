@@ -27,7 +27,7 @@
 		
 {{#each list}} 
 {{#ifMayView this}}
-	  <tr>
+	  <tr{{#if hidden}} style="color: blue;"{{/if}}>
         <td><a href="{{url}}">{{title}}</a></td>
         <td>{{this.members.size}}</td>
         <td data-order="{{creationDate}}">{{dateFormat creationDate "eee d MMM yyyy"}}</td>

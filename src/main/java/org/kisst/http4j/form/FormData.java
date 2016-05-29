@@ -73,7 +73,7 @@ public class FormData  implements Struct{
 	}
 
 	public class CheckBoxField extends InputField {
-		public CheckBoxField(HasName field, boolean value) { super(field.getName(), ""+value);}
+		public CheckBoxField(HasName field) { super(field.getName(), "true");}
 		@Override protected Object calcValue() { return record.getDirectFieldValue(name)!=null; }
 	}
 

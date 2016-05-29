@@ -107,8 +107,8 @@ public class EventHandler extends CommonBaseHandler<Event> {
 		public final InputField memberInfo = new InputField(schema.memberInfo);
 		public final InputField description= new InputField(schema.description);
 		public final InputField idea= new InputField(schema.idea);
-		public final InputField invitedOnly = new CheckBoxField(schema.invitedOnly, false);
-		public final InputField hidden= new CheckBoxField(schema.hidden, false);
+		public final InputField invitedOnly = new CheckBoxField(schema.invitedOnly);
+		public final InputField hidden= new CheckBoxField(schema.hidden);
 	}
 }
 

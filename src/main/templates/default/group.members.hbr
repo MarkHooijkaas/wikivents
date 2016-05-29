@@ -19,15 +19,19 @@
 
 {{#ifAmMember record}}
 {{else}}
-{{#if user.emailValidated}}
+{{#ifUser "mayJoin" record}}
   	<form role="form" method="POST" >
-  		<input type="hidden" name="action" value="addMember"/>				
-  		<input type="hidden" name="userId" value="{{record.key}}"/>				
+  		<input type="hidden" name="action" value="addMember"/>
+  		<input type="hidden" name="userId" value="{{record.key}}"/>
 		<button type="submit" class="btn btn-default">Ik ben ge&iuml;nteresseerd in dit thema</button>
  	</form>
 {{else}}
+{{#if user.emailValidated}}
+    Opgeven is niet mogelijk.
+{{else}}
 	<span class="alert-danger">Deelname is pas mogelijk na email validatie</span>
 {{/if}}
+{{/ifUser}}
 {{/ifAmMember}}
 </div>
 
@@ -36,6 +40,42 @@
 {{#each record.owners}}
 	{{& get0.link}}{{else}}<br/>
 {{/each}}
+
+{{#if record.needsInviteMechanism}}
+<h2>Genodigden</h2>
+{{#ifMayChange record}}
+	<form role="form" method="POST">
+			<input type="hidden" name="action" value="inviteUser"/>
+			<button type="submit" class="btn btn-default">+</button>
+			<input type="text" name="invitedUser">
+	</form>
+{{/ifMayChange}}
+
+{{#each record.invitedUsers}}
+	{{#if get0.trusted}}{{&priv link}}{{else}}{{&get0.usernameLink}}{{/if}}
+	{{#ifMayChange this.get0}}
+		<a 	class="confirmRemoveInvitation" data-id="{{key}}" data-title="Verwijderen Uitnodiging van {{get0.username}}">
+			<span class="glyphicon glyphicon-trash" aria-hidden="true" style="cursor:pointer;"></span>
+		</a>
+    {{else}}
+	{{#ifMayChange record}}
+		<a 	class="confirmRemoveInvitation" data-id="{{key}}" data-title="Verwijderen Uitnodiging van {{get0.username}}">
+			<span class="glyphicon glyphicon-trash" aria-hidden="true" style="cursor:pointer;"></span>
+		</a>
+	{{/ifMayChange}}
+	{{/ifMayChange}}
+	<br/>
+{{/each}}
+{{#if call.user.maySendMail}}
+{{#if record.invitedUsers}}
+<form role="form" method="POST" action="/sendMessage">
+	<input type="hidden" name="returnTo" value="{{call.localUrl}}"/>
+	<input type="hidden" name="to" value="{{#each record.invitedUsers}}{{get0.username}},{{/each}}"/>
+	<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Stuur Genodigden een e-mail</button>
+</form>
+{{/if}}
+{{/if}}
+{{/if}}
 </div>
 
 {{/ifLoggedIn}}

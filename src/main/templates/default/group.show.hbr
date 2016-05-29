@@ -3,6 +3,9 @@
 	<script src="/lib/ckeditor/ckeditor.js"></script>
 {{> include/page.header.end}}
 
+{{#ifMayView record}}
+{{> dialog.confirm.action command="RemoveInvitation" field="invitedUser" message="Weet je zeker dat je deze uitnodiging wilt verwijderen?" okButton="Verwijderen"}}
+
 <script>
 	$(document).ready(function() {
 		$('#events').dataTable( {
@@ -77,5 +80,9 @@
 		});
 	} );
 </script>
+
+{{else}}
+Dit thema is niet publiek zichtbaar
+{{/ifMayView}}
 
 {{> include/page.footer}}

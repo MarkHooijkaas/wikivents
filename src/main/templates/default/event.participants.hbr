@@ -91,7 +91,7 @@ Alleen genodigden{{#if record.groups}} (inclusief themaleden){{/if}} kunnen deel
 </div>
 
 <div>
-{{#if record.invitedOnly}}
+{{#if record.needsInviteMechanism}}
 <h2>Genodigden</h2>
 {{#ifMayChange record}}
 	<form role="form" method="POST">

@@ -19,7 +19,7 @@ import org.kisst.item4j.struct.Struct;
 
 import com.github.jknack.handlebars.Handlebars.SafeString;
 
-public class Event extends EventData implements Comparable<Event>, AccessChecker<User> {
+public class Event extends EventData implements Comparable<Event> {
 
 	public Event(WikiventsModel model, Struct data) { super(model, data); }
 	public Event(WikiventsModel model, User org, Struct data) {
@@ -30,7 +30,8 @@ public class Event extends EventData implements Comparable<Event>, AccessChecker
 		));
 	}
 
-	@Override public boolean mayBeJoinedBy(User user) { return super.mayBeJoinedBy(user) || hasInvitedGroupUser(user); }
+	@Override public boolean mayBeViewedBy(User user) { return super.mayBeViewedBy(user) || hasInvitedGroupUser(user);}
+	@Override public boolean mayBeJoinedBy(User user) { return super.mayBeJoinedBy(user) || hasInvitedGroupUser(user);}
 	public boolean hasInvitedGroupUser(User.Ref user) {
 		for (Group.Ref g: groups) {
 			Group grp = g.get0();

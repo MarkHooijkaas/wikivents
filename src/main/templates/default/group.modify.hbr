@@ -1,6 +1,8 @@
 <h2>Wijzig details</h2>
 
 {{> include/show.ajaxField value=record.title name="title" type=""   label="Titel" edit=true}}
+{{> include/show.booleanField value=record.invitedOnly  name="invitedOnly" label="Alleen voor genodigden" title="Alleen voor genodigden" trueLabel="BESLOTEN" falseLabel="OPENBAAR"}}
+{{> include/show.booleanField value=record.hidden  name="hidden" label="Zichtbaarheid" title="Zichtbaarheid" trueLabel="VERBORGEN" falseLabel="ZICHTBAAR"}}
 
 <div class="row">
 	<div class="col-xs-3"><label>Beheerder(s)</label></div>
