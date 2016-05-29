@@ -1,13 +1,3 @@
-{{#if record.idea}}
-<h1>Wikidee</h1>
-Een Wikidee is een idee voor een nieuwe activiteit. 
-Deze activiteit is echter nog niet gepland, maar slechts een idee om te kijken wie dit leuk zou vinden.
-Vaak is bijvoorbeeld de datum nog niet gepland, en zijn ook andere details nog niet ingevuld. 
-Het kan ook zijn dat er nog gezocht wordt naar een organisator.
-Als er genoeg animo is, en de details zijn ingevuld (b.v. na de ge&iuml;nteresseerden gepolst te hebben via datumprikker), dan kan de bedenker er een gewone activiteit van maken.
-Verder werkt een Wikidee hetzelfde als een Wikivent.
-{{/if}}
-
 <div class="panel-body">
 	{{&record.description}}
 </div>

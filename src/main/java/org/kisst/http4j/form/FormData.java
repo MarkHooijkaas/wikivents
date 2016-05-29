@@ -22,6 +22,7 @@ public class FormData  implements Struct{
 	}
 	public Object getDirectFieldValue(String name) {
 		java.lang.reflect.Field fld = ReflectionUtil.getFieldOrNull(this.getClass(), name);
+		System.out.println("form field "+name+": "+fld);
 		if (fld==null)
 			return Struct.UNKNOWN_FIELD;
 		return ((InputField) ReflectionUtil.getFieldValue(this, fld)).value;
@@ -70,6 +71,12 @@ public class FormData  implements Struct{
 			return record.getDirectFieldValue(name);
 		}
 	}
+
+	public class CheckBoxField extends InputField {
+		public CheckBoxField(HasName field, boolean value) { super(field.getName(), ""+value);}
+		@Override protected Object calcValue() { return record.getDirectFieldValue(name)!=null; }
+	}
+
 
 	public String notEmpty(InputField field) {
 		if (field.value==null || field.value.trim().length()==0)

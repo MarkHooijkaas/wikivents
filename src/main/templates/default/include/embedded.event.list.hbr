@@ -28,7 +28,7 @@
 		
 {{#each list}} 
 {{#ifMayView this}}
-	  <tr{{#if cancelled}} style="color: grey;"{{else}}{{#if visibleForAll}}{{else}} style="color: blue;"{{/if}}{{/if}}>
+	  <tr{{#if cancelled}} style="color: grey;"{{else}}{{#if hidden}} style="color: blue;"{{/if}}{{/if}}>
         <td data-order="{{dateKey}} {{time}}">{{dateShortFormat date}}</td>
         <td>{{time}}</td>
         <td><a href="{{url}}" {{#if cancelled}} style="color: grey;"{{/if}}>{{#if idea}}<span style="color:grey;">WIKIDEE</span><br>{{/if}}{{#if cancelled}}GEANNULEERD<br>{{/if}}{{title}}</a></td>

@@ -99,7 +99,7 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 	public boolean mayJoin(CommonBase<?> obj) {
 		if (obj==null) return false;
 		if (obj.hasMember(this)) return false; // TODO: is this correct semantic
-		if (obj.openForAll) return true;
+		if (!obj.invitedOnly) return true;
 		return obj.hasInvitedUser(this);
 	}
 	@Override public boolean mayBeViewedBy(User user) {

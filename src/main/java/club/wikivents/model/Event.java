@@ -25,12 +25,12 @@ public class Event extends EventData implements Comparable<Event>, AccessChecker
 	public Event(WikiventsModel model, User org, Struct data) {
 		this(model, new MultiStruct(
 			new SingleItemStruct(schema.owners.name, ImmutableSequence.of(User.Ref.class, org.getRef())),
-			new SingleItemStruct(schema.members.name, ImmutableSequence.of(Guest.class, new Guest(org))),
+			new SingleItemStruct(schema.members.name, ImmutableSequence.of(User.Ref.class, org.getRef())),
 			data
 		));
 	}
 
-	@Override public boolean hasInvitedUser(User.Ref user) { return super.hasInvitedUser(user) || hasInvitedGroupUser(user); }
+	@Override public boolean mayBeJoinedBy(User user) { return super.mayBeJoinedBy(user) || hasInvitedGroupUser(user); }
 	public boolean hasInvitedGroupUser(User.Ref user) {
 		for (Group.Ref g: groups) {
 			Group grp = g.get0();

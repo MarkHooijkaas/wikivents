@@ -1,8 +1,11 @@
 
 
 <div>
-<h2>{{#if record.idea}}Ge&iuml;nteresseerden{{else}}Deelnemers{{/if}} {{record.memberCount}}
-</h2> 
+<h2>{{#if record.idea}}Ge&iuml;nteresseerden{{else}}Deelnemers{{/if}} {{record.memberCount}}</h2>
+{{#if record.invitedOnly}}
+Alleen genodigden{{#if record.groups}} (inclusief themaleden){{/if}} kunnen deelnemen aan deze activiteit.<br>
+{{/if}}
+
 {{#if call.user.maySeeUsers}}
 {{#each record.allowedMembers}}
 	{{#if call.user.trusted}}{{&priv link}}{{else}}{{&get0.usernameLink}}{{/if}}
@@ -88,8 +91,7 @@
 </div>
 
 <div>
-{{#if record.openForAll}}
-{{else}}
+{{#if record.invitedOnly}}
 <h2>Genodigden</h2>
 {{#ifMayChange record}}
 	<form role="form" method="POST">
@@ -101,7 +103,7 @@
 
 {{#each record.invitedUsers}}
 	{{#if get0.trusted}}{{&priv link}}{{else}}{{&get0.usernameLink}}{{/if}}
-	{{#ifMayChange this}}
+	{{#ifMayChange this.get0}}
 		<a 	class="confirmRemoveInvitation" data-id="{{key}}" data-title="Verwijderen Uitnodiging van {{get0.username}}">
 			<span class="glyphicon glyphicon-trash" aria-hidden="true" style="cursor:pointer;"></span>
 		</a>

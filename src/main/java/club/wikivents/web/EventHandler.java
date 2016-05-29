@@ -56,7 +56,7 @@ public class EventHandler extends CommonBaseHandler<Event> {
 	
 	public void handleCreateIdea(WikiventsCall call) { handleCreate(call); }
 	public void handleCreate(WikiventsCall call) {
-		if (! call.user.trusted())
+			if (! call.user.trusted())
 			throw new RuntimeException("User "+call.user.username+" not trusted to create event "+call.request.getParameter("title") );
 		Form formdata = new Form(call);
 		if (formdata.isValid()) {
@@ -107,6 +107,8 @@ public class EventHandler extends CommonBaseHandler<Event> {
 		public final InputField memberInfo = new InputField(schema.memberInfo);
 		public final InputField description= new InputField(schema.description);
 		public final InputField idea= new InputField(schema.idea);
+		public final InputField invitedOnly = new CheckBoxField(schema.invitedOnly, false);
+		public final InputField hidden= new CheckBoxField(schema.hidden, false);
 	}
 }
 

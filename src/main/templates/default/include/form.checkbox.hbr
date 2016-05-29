@@ -1,0 +1,8 @@
+ <div class="form-group">
+	<label for="{{name}}"  class="control-label col-xs-6 col-sm-1">{{label}}:</label>
+	<div class="col-xs-6 col-sm-5">
+		<input type="checkbox" class="form-control" id="{{name}}" name="{{name}}" value="{{value}}">
+		 <i>{{message}}</i> 
+	</div>
+</div>
+  

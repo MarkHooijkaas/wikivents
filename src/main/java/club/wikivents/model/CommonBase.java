@@ -22,8 +22,8 @@ public abstract class CommonBase<T extends CommonBase<T>> extends WikiventsObjec
 		public final IntField _crudObjectVersion = new IntField("_crudObjectVersion");
 		public final StringField title = new StringField("title"); 
 		public final StringField urlName= new StringField("urlName"); 
-		public final BooleanField openForAll = new BooleanField("openForAll"); 
-		public final BooleanField visibleForAll = new BooleanField("visibleForAll"); 
+		public final BooleanField invitedOnly = new BooleanField("invitedOnly");
+		public final BooleanField hidden = new BooleanField("hidden");
 		public final SequenceField<User.Ref> owners = new SequenceField<User.Ref>(User.Ref.class,"owners");
 		public final SequenceField<User.Ref> members= new SequenceField<>(User.Ref.class,"members"); 
 		public final SequenceField<User.Ref> invitedUsers= new SequenceField<>(User.Ref.class,"invitedUsers"); 
@@ -37,8 +37,8 @@ public abstract class CommonBase<T extends CommonBase<T>> extends WikiventsObjec
 	public final String title;
 	public final String urlName;
 	public final String description;
-	public final boolean openForAll;
-	public final boolean visibleForAll;
+	public final boolean invitedOnly;
+	public final boolean hidden;
 	public final ImmutableSequence<User.Ref> owners;
 	public final ImmutableSequence<User.Ref> members;
 	public final ImmutableSequence<User.Ref> invitedUsers;
@@ -63,14 +63,14 @@ public abstract class CommonBase<T extends CommonBase<T>> extends WikiventsObjec
 		else
 			this.urlName=urlName;
 		this.description=schema.description.getString(data);
-		this.openForAll=schema.openForAll.getBoolean(data, true);
-		this.visibleForAll=schema.visibleForAll.getBoolean(data, true);
+		this.invitedOnly=schema.invitedOnly.getBoolean(data, false);
+		this.hidden=schema.hidden.getBoolean(data, false);
 		
-		if (schema.owners.fieldExists(data))
+			if (schema.owners.fieldExists(data))
 			this.owners=schema.owners.getSequenceOrEmpty(model, data);
 		else
 			this.owners=oldEventSchema.organizers.getSequenceOrEmpty(model, data);
-		
+
 		if (schema.members.fieldExists(data))
 			this.members=schema.members.getSequenceOrEmpty(model, data);
 		else {
@@ -146,8 +146,9 @@ public abstract class CommonBase<T extends CommonBase<T>> extends WikiventsObjec
 
 	@Override public boolean mayBeChangedBy(User user) { return user!=null && (user.isAdmin || hasOwner(user)); }
 	@Override public boolean mayBeViewedBy(User user) { 
-		return visibleForAll || hasOwner(user) || hasMember(user) || hasInvitedUser(user); 
+		return (!hidden) || hasOwner(user) || hasMember(user) || mayBeJoinedBy(user);
 	}
+	public boolean mayBeJoinedBy(User user) { return (! invitedOnly) || hasOwner(user) || hasInvitedUser(user); }
 
 	public boolean hasOwner(User.Ref user) { return owners.contains(user); }
 	public boolean hasMember(User.Ref user) { return members.contains(user); }
@@ -158,7 +159,6 @@ public abstract class CommonBase<T extends CommonBase<T>> extends WikiventsObjec
 	public final boolean hasMember(User user) { return hasMember(user.getRef()); }
 	public final boolean hasInvitedUser(User user) { return hasInvitedUser(user.getRef()); }
 	public final boolean hasInterestedUser(User user) { return hasInterestedUser(user.getRef()); }
-
 
 	private static ImmutableSequence.StringExpression userRefKey=(ref) -> {return ((User.Ref) ref).getKey(); };
 	public boolean isLikedBy(User user) { return likes.hasItem(userRefKey, user._id); }

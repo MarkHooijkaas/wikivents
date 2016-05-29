@@ -40,6 +40,8 @@
 	{{> include/form.text     form.city     label="Plaats" required="true"}}
 	{{> include/form.text     form.location label="Locatie" required="true"}}
 	{{> include/form.text     form.cost     label="Kosten" required="false"}}
+	{{> include/form.checkbox form.invitedOnly    label="Alleen voor genodigden"  value="true" required=""}}
+	{{> include/form.checkbox form.hidden label="Onzichtbaar" value="true" required=""}}
 	{{> include/form.textarea form.description label="Omschrijving" rows=10 required=""}}
 
 	{{> include/form.submitButton submitTitle="Maak activiteit" cancelUrl="/event/*.future"}}
