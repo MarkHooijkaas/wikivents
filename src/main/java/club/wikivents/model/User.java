@@ -91,8 +91,16 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 			img="/favicon.ico";
 		img="<img class=\"link-avatar\" src=\""+img+"\"> ";
 		return "<a href=\"/user/"+username+"\" data-toggle=\"tooltip\" title=\""+username+"\">"+img+"</a>"; 
-	} 
+	}
 
+
+	public boolean isMember(CommonBase<?> obj) { return obj.hasMember(this); }
+	public boolean mayJoin(CommonBase<?> obj) {
+		if (obj==null) return false;
+		if (obj.hasMember(this)) return false; // TODO: is this correct semantic
+		if (obj.openForAll) return true;
+		return obj.hasInvitedUser(this);
+	}
 	@Override public boolean mayBeViewedBy(User user) {
 		if (user==null) return false;
 		if (_id.equals(user._id))	return true;

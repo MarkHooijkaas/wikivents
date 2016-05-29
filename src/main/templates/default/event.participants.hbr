@@ -21,9 +21,7 @@
 </form>
 {{/if}}
 
-{{#ifAmMember record}}
-{{else}}
-{{#if call.user.mayParticipate}}
+{{#ifUser "mayJoin" record}}
 	{{#if record.allowNewMember}}
 	  	<form role="form" method="POST" >
 	  		<input type="hidden" name="command" value="AddMember"/>				
@@ -32,9 +30,15 @@
 	 	</form>
 	{{/if}}
 {{else}}
+{{#ifUser "isMember" record}}
+{{else}}
+{{#if call.user.mayParticipate}}
+    Deelname aan deze activiteit is niet mogelijk
+{{else}}
 	<span class="alert-danger">Deelname is pas mogelijk bij een groen Karma</span>
 {{/if}}
-{{/ifAmMember}}
+{{/ifUser}}
+{{/ifUser}}
 </div>
 
 <div>

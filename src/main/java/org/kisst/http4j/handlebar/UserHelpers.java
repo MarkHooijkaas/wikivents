@@ -1,5 +1,6 @@
 package org.kisst.http4j.handlebar;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -9,6 +10,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import org.kisst.http4j.HttpCall;
+import org.kisst.util.ReflectionUtil;
 
 import com.github.jknack.handlebars.Context;
 import com.github.jknack.handlebars.Helper;
@@ -109,6 +111,16 @@ public class UserHelpers<T> {
 		if (user!=null && obj1.mayBeViewedBy(user))
 			return value==null?null:value.toString();
 		return "***";
+	}
+
+	public CharSequence ifUser(String method,  Object obj, Options options)  throws IOException {
+		T user=getUserOrNull(options);
+		if (user==null || obj==null)
+			return options.inverse();
+		Boolean result= (Boolean) ReflectionUtil.invokeFirstCompatibleMethod(user, method, new Object[] {obj});
+		if (result)
+			return options.fn();
+		return options.inverse();
 	}
 
 	private Locale localeNl=new Locale("nl");
