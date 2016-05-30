@@ -96,12 +96,7 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 
 	public boolean isOwner(CommonBase<?> obj) { return obj.hasOwner(this); }
 	public boolean isMember(CommonBase<?> obj) { return obj.hasMember(this); }
-	public boolean mayJoin(CommonBase<?> obj) {
-		if (obj==null) return false;
-		if (obj.hasMember(this)) return false; // TODO: is this correct semantic
-		if (!obj.invitedOnly) return true;
-		return obj.hasInvitedUser(this);
-	}
+	public boolean mayJoin(CommonBase<?> obj) { return obj.mayBeJoinedBy(this); }
 	@Override public boolean mayBeViewedBy(User user) {
 		if (user==null) return false;
 		if (_id.equals(user._id))	return true;

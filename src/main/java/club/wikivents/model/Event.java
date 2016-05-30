@@ -35,7 +35,7 @@ public class Event extends EventData implements Comparable<Event> {
 	public boolean hasInvitedGroupUser(User.Ref user) {
 		for (Group.Ref g: groups) {
 			Group grp = g.get0();
-			if (grp!=null && grp.hasOwner(user) || grp.hasMember(user))
+			if (grp!=null && grp.hasOwner(user) || grp.hasMember(user) || grp.hasInvitedUser(user))
 				return true;
 		}
 		return false;

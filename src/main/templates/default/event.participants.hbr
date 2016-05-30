@@ -24,6 +24,8 @@ Alleen genodigden{{#if record.groups}} (inclusief themaleden){{/if}} kunnen deel
 </form>
 {{/if}}
 
+{{#ifUser "isMember" record}}
+{{else}}
 {{#ifUser "mayJoin" record}}
 	{{#if record.allowNewMember}}
 	  	<form role="form" method="POST" >
@@ -32,8 +34,6 @@ Alleen genodigden{{#if record.groups}} (inclusief themaleden){{/if}} kunnen deel
 			<button type="submit" class="btn btn-default">{{#if record.idea}}Ik ben ge&iuml;nteresseerd{{else}}Ik wil ook deelnemen{{/if}}</button>
 	 	</form>
 	{{/if}}
-{{else}}
-{{#ifUser "isMember" record}}
 {{else}}
 {{#if call.user.mayParticipate}}
     Deelname aan deze activiteit is niet mogelijk
