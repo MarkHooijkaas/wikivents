@@ -25,14 +25,14 @@ public abstract class EventData extends CommonBase<Event> implements Item.Factor
 		public final StringField city = new StringField("city"); 
 		public final StringField location = new StringField("location"); 
 		public final StringField cost = new StringField("cost"); 
-		public final StringField memberInfo = new StringField("memberInfo"); 
+		public final StringField guestInfo = new StringField("guestInfo");
 		public final SequenceField<Group.Ref> groups = new SequenceField<>(Group.Ref.class,"groups");
 	}
 	
 	public final String city;
 	public final String location;
 	public final String cost;
-	public final String memberInfo;
+	public final String guestInfo;
 	public final String imageUrl;
 	public final LocalDate date;
 	public final LocalTime time;
@@ -46,7 +46,7 @@ public abstract class EventData extends CommonBase<Event> implements Item.Factor
 	
 	public EventData(WikiventsModel model, Struct data) {
 		super(schema, model, model.events, data);
-		this.memberInfo=schema.memberInfo.getString(data, null);
+		this.guestInfo=schema.guestInfo.getString(data, null);
 		this.imageUrl=schema.imageUrl.getString(data);
 		this.city=schema.city.getString(data);
 		this.location=schema.location.getString(data);

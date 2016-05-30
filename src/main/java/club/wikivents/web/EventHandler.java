@@ -104,7 +104,7 @@ public class EventHandler extends CommonBaseHandler<Event> {
 		public final InputField city = new InputField(schema.city);
 		public final InputField location = new InputField(schema.location);
 		public final InputField cost = new InputField(schema.cost);
-		public final InputField memberInfo = new InputField(schema.memberInfo);
+		public final InputField guestInfo = new InputField(schema.guestInfo);
 		public final InputField description= new InputField(schema.description);
 		public final InputField idea= new InputField(schema.idea);
 		public final InputField invitedOnly = new CheckBoxField(schema.invitedOnly);

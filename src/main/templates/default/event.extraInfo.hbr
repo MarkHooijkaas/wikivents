@@ -1,7 +1,7 @@
 <h2>Extra informatie voor deelnemers</h2>
 {{#ifAmMember record}}
-{{#if record.memberInfo}}
-	{{& record.memberInfo}}
+{{#if record.guestInfo}}
+	{{& record.guestInfo}}
 {{else}}
 	Er is geen extra informatie voor deelnemers
 {{/if}}
