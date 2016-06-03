@@ -157,10 +157,10 @@ public abstract class CommonBase<T extends CommonBase<T>> extends WikiventsObjec
 	public boolean hasInvitedUser(User.Ref user) { return invitedUsers.contains(user); }
 	public boolean hasInterestedUser(User.Ref user) { return interestedUsers.contains(user); }
 
-	public final boolean hasOwner(User user) { return hasOwner(user.getRef()); }
-	public final boolean hasMember(User user) { return hasMember(user.getRef()); }
-	public final boolean hasInvitedUser(User user) { return hasInvitedUser(user.getRef()); }
-	public final boolean hasInterestedUser(User user) { return hasInterestedUser(user.getRef()); }
+	public final boolean hasOwner(User user) { return user!=null && hasOwner(user.getRef()); }
+	public final boolean hasMember(User user) { return user!=null && hasMember(user.getRef()); }
+	public final boolean hasInvitedUser(User user) { return user!=null && hasInvitedUser(user.getRef()); }
+	public final boolean hasInterestedUser(User user) { return user!=null && hasInterestedUser(user.getRef()); }
 
 	private static ImmutableSequence.StringExpression userRefKey=(ref) -> {return ((User.Ref) ref).getKey(); };
 	public boolean isLikedBy(User user) { return likes.hasItem(userRefKey, user._id); }
