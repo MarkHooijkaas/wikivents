@@ -40,7 +40,7 @@ public class Event extends EventData implements Comparable<Event> {
 		}
 		return false;
 	}
-	public boolean hasInvitedGroupUser(User user) { return hasInvitedGroupUser(user.getRef());}
+	public boolean hasInvitedGroupUser(User user) { return user!=null && hasInvitedGroupUser(user.getRef());}
 
 	
 	public String dateKey() { 
