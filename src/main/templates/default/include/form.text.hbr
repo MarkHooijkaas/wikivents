@@ -1,8 +1,13 @@
  <div class="form-group {{#if required}}form-group-required{{/if}}">
-	<label for="{{name}}"  class="control-label col-xs-6 col-sm-1">{{label}}:</label>
+	<label for="{{name}}"  class="control-label col-xs-6 col-sm-1">
+	{{#if toggleEdit}}
+		 <span class="glyphicon glyphicon-pencil" aria-hidden="true" style="cursor:pointer;" id="{{name}}Toggle"></span>
+    {{/if}}
+    {{label}}:
+	</label>
 	<div class="col-xs-6 col-sm-5">
 		<input type="{{#if type}}{{type}}{{else}}text{{/if}}" class="form-control" id="{{name}}" name="{{name}}" value="{{value}}" {{#if required}}required{{/if}}>
-		 <i>{{message}}</i> 
+		 <i>{{message}}</i>
 	</div>
 </div>
   
