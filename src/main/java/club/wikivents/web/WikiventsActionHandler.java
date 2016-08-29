@@ -51,13 +51,21 @@ public abstract class WikiventsActionHandler<T extends WikiventsObject<T> & Acce
 	
 
 	@Override protected void checkChangeAccess(WikiventsCall call, String methodName, T record) {
-		if (! record.mayBeChangedBy(call.user))
-			call.throwUnauthorized("User "+call.user.username+" is not authorized to call changing method "+methodName);
+		if (! record.mayBeChangedBy(call.user)) {
+			String username="anonymous";
+			if (call.user!=null)
+				username=call.user.username;
+			call.throwUnauthorized("User " + username + " is not authorized to call changing method " + methodName);
+		}
 	}
 	@Override protected void checkViewAccess(WikiventsCall call, String methodName, T record) {
 		//System.out.println(call.user+" "+record);
-		if (record instanceof AccessChecker && ! record.mayBeViewedBy(call.user))
-			call.throwUnauthorized("User "+call.user.username+" is not authorized to call viewing method "+methodName);
+		if (record instanceof AccessChecker && ! record.mayBeViewedBy(call.user)) {
+			String username="anonymous";
+			if (call.user!=null)
+				username=call.user.username;
+			call.throwUnauthorized("User " + username + " is not authorized to call viewing method " + methodName);
+		}
 	}
 	
 	@Override protected boolean handleCommand(String cmdName, WikiventsCall call, T record) {
