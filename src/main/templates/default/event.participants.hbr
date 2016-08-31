@@ -48,7 +48,7 @@ Alleen genodigden{{#if record.groups}} (inclusief themaleden){{/if}} kunnen deel
 {{#if record.backupMembers}}
 <h2>Reservelijst</h2>
 {{#each record.backupMembers}}
-	{{#if get0.trusted}}{{&priv link}}{{else}}{{&get0.usernameLink}}{{/if}}
+	{{#if call.user.maySeeUsers}}{{&priv link}}{{else}}{{&get0.usernameLink}}{{/if}}
 	{{#ifAmOwner this}}
 		<a 	class="confirmRemoveMember" data-id="{{key}}" data-title="Afmelden {{get0.username}}">
 			<span class="glyphicon glyphicon-trash" aria-hidden="true" style="cursor:pointer;"></span>
@@ -102,7 +102,7 @@ Alleen genodigden{{#if record.groups}} (inclusief themaleden){{/if}} kunnen deel
 {{/ifMayChange}}
 
 {{#each record.invitedUsers}}
-	{{#if get0.trusted}}{{&priv link}}{{else}}{{&get0.usernameLink}}{{/if}}
+	{{#if call.user.maySeeUsers}}{{&priv link}}{{else}}{{&get0.usernameLink}}{{/if}}
 	{{#ifMayChange this.get0}}
 		<a 	class="confirmRemoveInvitation" data-id="{{key}}" data-title="Verwijderen Uitnodiging van {{get0.username}}">
 			<span class="glyphicon glyphicon-trash" aria-hidden="true" style="cursor:pointer;"></span>

@@ -10,7 +10,7 @@
 		<tr>
 			<td>{{#if call.user.maySeeUsers}}{{&priv user.get0.avatarLink}}{{else}}{{user.get0.username}}:{{/if}}</td>
 			<td class="emj3">
-				{{#if call.user.trusted}}{{& user.get0.usernameLink}}: {{/if}}{{comment}}<br>
+				{{#if call.user.maySeeUsers}}{{& user.get0.usernameLink}}: {{/if}}{{comment}}<br>
 				<span class="commentTime">{{dateFormat date "eee d MMM HH:mm:ss"}}</span>
 			</td>
 			<td width="1.5em">

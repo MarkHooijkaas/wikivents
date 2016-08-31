@@ -123,13 +123,12 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 		return true;
 	}
 
-	public boolean trusted() { return (karma()>=10) && emailValidated && ! blocked; }
 	public int karma() {
 		if (blocked)
 			return -100;
 		if (! emailValidated)
 			return -1;
-		int karma=10*recommendations.size();
+		int karma=recommendations.size();
 		if (isAdmin)
 			karma+=100;
 		// karma -= complaints.size()
@@ -150,7 +149,7 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 	public boolean mayOrganize() { return karma()>0; }
 	public boolean maySeeProfile() { return karma()>=0; }
 	public boolean maySeePicture() { return karma()>0; }
-	public boolean mayRecommend() { return karma()>=20; }
+	public boolean mayRecommend() { return karma()>=2; }
 	public boolean mayRecommend(User other) { 
 		if (other==null) return false;
 		if (! mayRecommend()) return false;
@@ -186,8 +185,8 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 	}
 	
 	public void sendMailFrom(User from, String subject, String message, boolean copyToSender) {
-		if (! from.trusted())
-			throw new RuntimeException("User "+from.username+" not trusted to send email to "+this.username+" about "+subject);
+		if (! from.maySendMail())
+			throw new RuntimeException("User "+from.username+" not allowed to send email to "+this.username+" about "+subject);
 		try {
 			sendMailFrom(new InternetAddress(from.email,from.username), subject, message, copyToSender);
 		} 
@@ -200,7 +199,7 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 				msg.setFrom(from);
 			else {
 				msg.setFrom(new InternetAddress("info@wikivents.nl","Wikivents: namens gebruiker "+from.getPersonal()));
-				if (this.trusted())
+				if (this.maySendMail())
 					msg.setReplyTo(new InternetAddress[] {from});
 			}
 			msg.setRecipients(Message.RecipientType.TO, new InternetAddress[] {new InternetAddress(email, username)});

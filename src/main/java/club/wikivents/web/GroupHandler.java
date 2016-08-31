@@ -35,8 +35,8 @@ public class GroupHandler extends CommonBaseHandler<Group> {
 	}
 	
 	public void handleCreate(WikiventsCall call) {
-		if (! call.user.trusted())
-			throw new RuntimeException("User "+call.user.username+" not trusted to create thema "+call.request.getParameter("title") );
+		if (! call.user.mayOrganize())
+			throw new RuntimeException("User "+call.user.username+" not allowed to create thema "+call.request.getParameter("title") );
 		Form formdata = new Form(call);
 		if (formdata.isValid()) {
 			Group t=new Group(call.model,call.user,formdata.record);

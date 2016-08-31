@@ -18,7 +18,7 @@
 {{#ifIsAdmin}}       
         <th>email</th>
         <th>email validated</th>
-        <th>vertrouwd</th>
+        <th>Karma waarde</th>
         <th>profiel</th>
         <th>foto</th>
 {{/ifIsAdmin}}       
@@ -34,7 +34,7 @@
 {{#ifIsAdmin}}       
         <td>{{email}}</td>
         <td>{{emailValidated}}</td>
-        <td>{{trusted}}</td>
+        <td>{{karma}}</td>
         <td>{{#if description}}true{{else}}false{{/if}}</td>
         <td>{{#if avatarUrl}}true{{else}}false{{/if}}</td>
 {{/ifIsAdmin}}       

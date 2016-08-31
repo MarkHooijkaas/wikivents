@@ -9,7 +9,7 @@
 	{{/ifEquals}}
 	<br/>
 {{/each}}
-{{#if call.user.trusted}}
+{{#if call.user.maySendMail}}
 <form role="form" method="POST" action="/sendMessage">
 	<input type="hidden" name="returnTo" value="{{call.localUrl}}"/>
 	<input type="hidden" name="to" value="{{#each record.members}}{{get0.username}},{{/each}}"/>
@@ -52,7 +52,7 @@
 {{/ifMayChange}}
 
 {{#each record.invitedUsers}}
-	{{#if get0.trusted}}{{&priv link}}{{else}}{{&get0.usernameLink}}{{/if}}
+	{{#if get0.maySeeUsers}}{{&priv link}}{{else}}{{&get0.usernameLink}}{{/if}}
 	{{#ifMayChange this.get0}}
 		<a 	class="confirmRemoveInvitation" data-id="{{key}}" data-title="Verwijderen Uitnodiging van {{get0.username}}">
 			<span class="glyphicon glyphicon-trash" aria-hidden="true" style="cursor:pointer;"></span>

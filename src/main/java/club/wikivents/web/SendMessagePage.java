@@ -52,7 +52,7 @@ public class SendMessagePage extends WikiventsPage {
 	@Override public void handle(HttpCall httpcall, String subPath) {
 		WikiventsCall call = WikiventsCall.of(httpcall, model);
 		if (!call.user.maySendMail())
-			throw new RuntimeException("User not trusted to send email");
+			throw new RuntimeException("User not allowed to send email");
 		Form formdata = new Form(call);
 		if (call.isGet()) 
 			formdata.showForm();

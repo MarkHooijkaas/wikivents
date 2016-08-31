@@ -36,7 +36,7 @@
         <td>{{location}}</td>
         <td data-order="{{members.size}}">{{#if idea}}{{members.size}}{{else}}{{memberCount}}{{/if}}</td>
 {{#if call.user.maySeeUsers}}
-        <td>{{#if user.trusted}}{{&join owners "<br/>"}}{{else}}{{#each owners}}{{&get0.usernameLink}} {{/each}}{{/if}}</td>
+        <td>{{#if call.user.maySeeUsers}}{{&join owners "<br/>"}}{{else}}{{#each owners}}{{&get0.usernameLink}} {{/each}}{{/if}}</td>
 {{/if}}
         <td>{{cost}}</td>
         <td data-order="{{creationDate}}">{{dateShortFormat creationDate}}</td>
