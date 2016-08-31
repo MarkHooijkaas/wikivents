@@ -43,7 +43,7 @@ public class SecureToken {
 	public String getToken() { return Base64.encodeBytes((data+":"+timestamp+":"+signature).getBytes()); }
 
 	public boolean isValid(SaltFactory factory, int loginDuration) {
-		if ((System.currentTimeMillis()-timestamp)>(loginDuration*1000))
+		if ((System.currentTimeMillis()-timestamp)/1000>loginDuration)
 			return false;
 		String expectedSignature = calcSignature(data, timestamp, factory.getSalt(this));
 		return signature.equals(expectedSignature);
