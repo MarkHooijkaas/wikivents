@@ -100,7 +100,7 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 	@Override public boolean mayBeViewedBy(User user) {
 		if (user==null) return false;
 		if (_id.equals(user._id))	return true;
-		if (user.trusted()) return true;
+		if (user.maySeeProfile()) return true;
 		return false;		
 	}
 	@Override public boolean mayBeChangedBy(User u) {
@@ -128,7 +128,7 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 		if (blocked)
 			return -100;
 		if (! emailValidated)
-			return 0;
+			return -1;
 		int karma=10*recommendations.size();
 		if (isAdmin)
 			karma+=100;
@@ -142,12 +142,13 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 	public boolean karmaNotPositive() { return karma()<=0; }
 	
 	public boolean canReceiveMail() { return emailValidated && karma()>0; }
-	public boolean maySeeUsers() { return karma()>0; }
+	public boolean maySeeUsers() { return karma()>=0; }
 	public boolean maySeeSender() { return karma()>0; }
 	public boolean maySendMail() { return karma()>0; }
 	public boolean mayComment() { return karma()>0; }
-	public boolean mayParticipate() { return karma()>0; }
-	public boolean maySeeProfile() { return karma()>0; }
+	public boolean mayParticipate() { return karma()>=0; }
+	public boolean mayOrganize() { return karma()>0; }
+	public boolean maySeeProfile() { return karma()>=0; }
 	public boolean maySeePicture() { return karma()>0; }
 	public boolean mayRecommend() { return karma()>=20; }
 	public boolean mayRecommend(User other) { 
@@ -175,7 +176,8 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 	public String karmaIcon() { 
 		int k=karma();
 		if (k>0) return "/images/yin_yang_green.gif";
-		if (k==0) return "/images/yin_yang_grey.png";
+		if (k==0) return "/images/yin-yang-lime.png";
+		if (k==-1) return "/images/yin_yang_grey.png";
 		return "/images/yin_yang_red.png";
 	}
 	

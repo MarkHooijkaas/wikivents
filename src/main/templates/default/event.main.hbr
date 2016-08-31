@@ -17,7 +17,7 @@
 {{#if call.user.maySeeProfile}}
 	{{> include/like.button event=record}} {{record.likes.size}} likes: 
 	{{#each record.likes}} 
-		{{#if call.user.trusted}}{{&priv get0.avatarLink}}{{else}}{{get0.username}}{{/if}}
+		{{#if call.user.maySeeUsers}}{{&priv get0.avatarLink}}{{else}}{{get0.username}}{{/if}}
 	{{/each}}
 
 	<br>

@@ -3,7 +3,7 @@
 <h2>Ge&iuml;nteresseerden</h2> 
 
 {{#each record.members}}
-	{{#if call.user.trusted}}{{&priv link}}{{else}}{{&get0.usernameLink}}{{/if}}
+	{{#if call.user.maySeeUsers}}{{&priv link}}{{else}}{{&get0.usernameLink}}{{/if}}
 	{{#ifEquals this.key user.key}}
 		{{> include/modal.delete title=get0.username action="removeMember" field="userId" value=key label="Weet je zeker dat je je wilt afmelden voor dit thema?"}} 
 	{{/ifEquals}}

@@ -8,7 +8,7 @@ Alleen genodigden{{#if record.groups}} (inclusief themaleden){{/if}} kunnen deel
 
 {{#if call.user.maySeeUsers}}
 {{#each record.allowedMembers}}
-	{{#if call.user.trusted}}{{&priv link}}{{else}}{{&get0.usernameLink}}{{/if}}
+	{{#if call.user.maySeeUsers }}{{&priv link}}{{else}}{{&get0.usernameLink}}{{/if}}
 	{{#ifAmOwner this}}
 		<a 	class="confirmRemoveMember" data-id="{{key}}" data-title="Afmelden {{get0.username}}">
 			<span class="glyphicon glyphicon-trash" aria-hidden="true" style="cursor:pointer;"></span>

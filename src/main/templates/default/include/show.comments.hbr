@@ -8,7 +8,7 @@
     <tbody>
 	{{#each record.comments.reverse}}
 		<tr>
-			<td>{{#if call.user.trusted}}{{&priv user.get0.avatarLink}}{{else}}{{user.get0.username}}:{{/if}}</td>
+			<td>{{#if call.user.maySeeUsers}}{{&priv user.get0.avatarLink}}{{else}}{{user.get0.username}}:{{/if}}</td>
 			<td class="emj3">
 				{{#if call.user.trusted}}{{& user.get0.usernameLink}}: {{/if}}{{comment}}<br>
 				<span class="commentTime">{{dateFormat date "eee d MMM HH:mm:ss"}}</span>

@@ -2,12 +2,12 @@
 	<li {{#ifUrlEndsWith "*.future"}}class="active"{{/ifUrlEndsWith}}><a href="*.future" >komende activiteiten</a></li>
 	<li {{#ifUrlEndsWith "*.past"}}class="active"{{/ifUrlEndsWith}}><a href="*.past"   >oude activiteiten</a></li>
 	<li {{#ifUrlEndsWith "*"}}class="active"{{/ifUrlEndsWith}}><a href="*"        >alle activiteiten</a></li>
-{{#ifLoggedIn}}
+{{#if call.user.mayOrganize}}
 	{{#if user.emailValidated}}
 		<li class="pull-right{{#ifUrlEndsWith "!create"}} active{{/ifUrlEndsWith}}"><a href="!create">Start een activiteit</a></li>
 		<li class="pull-right{{#ifUrlEndsWith "!createIdea"}} active{{/ifUrlEndsWith}}"><a href="!createIdea">Suggereer een Wikidee</a></li>
 	{{else}}
 		<span class="alert-danger">Activiteiten starten is pas mogelijk na email validatie</span>
 	{{/if}}
-{{/ifLoggedIn}}
+{{/if}}
 </ul>
