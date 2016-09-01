@@ -21,7 +21,7 @@ public class CommonBaseCommands<T extends CommonBase<T>> {
 		public final User member;
 		public AddMemberCommand(T record, User member) { super(record); this.member=member; }
 		@Override public boolean mayBeDoneBy(User user) { 
-			return user.mayParticipate() && ! record.hasMember(member);
+			return user.mayParticipate() && ! record.hasMember(member) && user.mayJoin(record);
 		}
 		@Override public T apply() {
 			return record.changeField(CommonBase.commonSchema.members, record.members.growTail(member.getRef()));

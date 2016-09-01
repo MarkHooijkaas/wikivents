@@ -68,6 +68,7 @@ Alleen genodigden{{#if record.groups}} (inclusief themaleden){{/if}} kunnen deel
 
 {{#ifAmMember record}}
 {{else}}
+{{#ifUser "mayJoin" record}}
 {{#if call.user.mayParticipate}}
 	{{#if record.allowNewMember}}
 	{{else}}
@@ -84,6 +85,7 @@ Alleen genodigden{{#if record.groups}} (inclusief themaleden){{/if}} kunnen deel
 {{else}}
 	<span class="alert-danger">Deelname is pas mogelijk bij een groen Karma</span>
 {{/if}}
+{{/ifUser}}
 {{/ifAmMember}}
 {{else}}
 	<span class="alert-danger">Deelnemen en deelnemers zien is pas mogelijk bij een groen Karma</span>
