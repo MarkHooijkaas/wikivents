@@ -10,19 +10,24 @@
 	} );
 </script>
 
+size={{call.model.tags.map.size}}
+
   <table id="grouplist" class="display compact" cellspacing="0" width="100%">
     <thead>
       <tr>
         <th>Thema</th>
         <th>Aantal Leden</th>
+        <th>Aantal Activiteiten</th>
       </tr>
     </thead>
     <tbody>
-		
-{{#each call.model.userTags.sortedKeys}}
+
+
+{{#each call.model.tags}}
 	  <tr{{#if hidden}} style="color: blue;"{{/if}}>
-        <td><a href="/tag/{{this}}">{{this}}</a></td>
-        <td>TODO</td>
+        <td><a href="/tag/{{this.name}}">{{this.name}}</a></td>
+        <td>{{this.users.size}}</td>
+        <td>{{this.events.size}}</td>
       </tr>
 {{/each}}
     </tbody>

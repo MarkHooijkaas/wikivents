@@ -29,15 +29,16 @@ public class WikiventsModel extends PkoModel implements SecureToken.SaltFactory 
 	public final OrderedIndex<Event> allEvents    = new OrderedIndex<>(Event.class, evt -> evt.dateKey()+evt.getKey());
 	public final OrderedIndex<Event> newestEvents = new OrderedIndex<>(Event.class, evt -> evt.getKey());
 
-	public final MultiIndex<Event> eventTags = new MultiIndex<>(Event.class, evt -> evt.tagList());
-	public final MultiIndex<User>  userTags  = new MultiIndex<>(User.class,  usr -> usr.tagList());
+	public final MultiIndex<Event> eventTags = new MultiIndex<>(Event.class, evt -> evt.tagNames());
+	public final MultiIndex<User>  userTags  = new MultiIndex<>(User.class,  usr -> usr.tagNames());
 
+	public final TagRepository tags = new TagRepository(this);
+	public final TagRepository.EventListener eventTagListener = tags.new EventListener();
+	public final TagRepository.UserListener  userTagListener  = tags.new UserListener();
 
 	public final PkoTable<Group> groups = new PkoTable<>(this, Group.class);
 	public final PkoTable<User>  users  = new PkoTable<>(this, User.class);
 	public final PkoTable<Event> events = new PkoTable<>(this, Event.class);
-
-
 
 
 	public Iterable<Event> futureEvents() { return allEvents.tailList(LocalDate.now().toString());}

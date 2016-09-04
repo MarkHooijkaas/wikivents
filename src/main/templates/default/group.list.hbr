@@ -6,7 +6,6 @@ Hieronder zie je een lijst aan thema's ook wel tags genoemd.
 Bij een thema horen activiteiten, maar ook een groep mensen die interesse hebben in dat thema.
 
 <br>
-size={{call.model.userTags.sortedKeys}}
 {{> embedded.group.list}}
   
 {{> include/page.footer}}

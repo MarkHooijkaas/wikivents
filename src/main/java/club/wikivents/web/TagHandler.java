@@ -53,7 +53,7 @@ public class TagHandler extends ActionHandler<WikiventsCall, String> {
 	}
 
 
-	@Override protected String findRecord(WikiventsCall call, String id) { System.out.println("sera"+id);return id; }
+	@Override protected String findRecord(WikiventsCall call, String id) { return id; }
 
 	@Override protected void checkChangeAccess(WikiventsCall call, String methodName, String oldRecord) {}
 
