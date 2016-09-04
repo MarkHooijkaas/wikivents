@@ -19,6 +19,8 @@ import org.kisst.item4j.struct.Struct;
 import org.kisst.util.PasswordEncryption;
 import org.kisst.util.PasswordEncryption.HasPasswordSalt;
 
+import com.github.jknack.handlebars.Handlebars;
+
 //import java.util.Iterator;
 
 //import com.fasterxml.jackson.core.JsonFactory;
@@ -159,7 +161,7 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 
 	public String[] tagNames() { return tags.toLowerCase().split(",");}
 	public Tag[] tagList() { return model.tags.tagList(tags);}
-	public String tagLinks() { return model.tags.tagLinks(tags);}
+	public Handlebars.SafeString tagLinks() { return model.tags.tagLinks(tags);}
 	
 	/*
 	public String getNotifications() throws IOException { 

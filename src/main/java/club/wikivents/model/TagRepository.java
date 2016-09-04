@@ -9,6 +9,8 @@ import org.kisst.item4j.ImmutableSequence;
 import org.kisst.item4j.seq.TypedSequence;
 import org.kisst.pko4j.PkoTable;
 
+import com.github.jknack.handlebars.Handlebars;
+
 public class TagRepository implements Iterable<Tag> {
 	private final ConcurrentHashMap<String,Tag> map = new ConcurrentHashMap<>();
 	private final WikiventsModel model;
@@ -31,14 +33,14 @@ public class TagRepository implements Iterable<Tag> {
 			map.put(tag, new Tag(this,tag));
 	}
 
-	public static String tagLinks(String tags) {
+	public static Handlebars.SafeString tagLinks(String tags) {
 		String sep = "";
 		String result = "";
 		for (String tag : tags.split(",")) {
 			result = result + sep + "<a href=\"/tag/" + tag + "\">" + tag + "</a>";
 			sep = ", ";
 		}
-		return result;
+		return new Handlebars.SafeString(result);
 	}
 
 	public Tag[] tagList(String tags) {
