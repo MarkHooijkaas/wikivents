@@ -33,6 +33,8 @@ public class Event extends EventData implements Comparable<Event> {
 	@Override public boolean mayBeViewedBy(User user) { return super.mayBeViewedBy(user) || hasInvitedGroupUser(user);}
 	@Override public boolean mayBeJoinedBy(User user) { return super.mayBeJoinedBy(user) || hasInvitedGroupUser(user);}
 	public boolean hasInvitedGroupUser(User.Ref user) {
+		if (groups==null)
+			return false;
 		for (Group.Ref g: groups) {
 			Group grp = g.get0();
 			if (grp!=null && grp.hasOwner(user) || grp.hasMember(user) || grp.hasInvitedUser(user))
@@ -42,7 +44,8 @@ public class Event extends EventData implements Comparable<Event> {
 	}
 	public boolean hasInvitedGroupUser(User user) { return user!=null && hasInvitedGroupUser(user.getRef());}
 
-	
+	public String[] tagList() { return tags.toLowerCase().split(",");}
+
 	public String dateKey() { 
 		if (this.date==null) 
 			return this.cancelled ? "0000-01-01" : "9999-12-31";

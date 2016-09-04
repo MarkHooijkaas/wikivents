@@ -26,6 +26,7 @@ public abstract class EventData extends CommonBase<Event> implements Item.Factor
 		public final StringField location = new StringField("location"); 
 		public final StringField cost = new StringField("cost"); 
 		public final StringField guestInfo = new StringField("guestInfo");
+		public final StringField tags = new StringField("tags");
 		public final SequenceField<Group.Ref> groups = new SequenceField<>(Group.Ref.class,"groups");
 	}
 	
@@ -34,6 +35,7 @@ public abstract class EventData extends CommonBase<Event> implements Item.Factor
 	public final String cost;
 	public final String guestInfo;
 	public final String imageUrl;
+	public final String tags;
 	public final LocalDate date;
 	public final LocalTime time;
 	public final LocalTime endTime;
@@ -59,9 +61,31 @@ public abstract class EventData extends CommonBase<Event> implements Item.Factor
 		this.backupMembersAllowed=schema.backupMembersAllowed.getBoolean(data,true);
 		this.cancelled=schema.cancelled.getBoolean(data,false);
 		this.idea=schema.idea.getBoolean(data,false);
-		this.groups=schema.groups.getSequenceOrEmpty(model, data);
+		ImmutableSequence<Group.Ref> tmpgroups = schema.groups.getSequenceOrEmpty(model, data);
+		String tmp = schema.tags.getString(data, null);
+		if (tmp==null) {
+			tmp = findTags(tmpgroups);
+			if (city!=null && city.indexOf("Meerweg")<0)
+				tmpgroups=null;
+		}
+		this.tags=tmp;
+		this.groups=tmpgroups;
 	}
-	
+
+	private String findTags(ImmutableSequence<GroupData.Ref> groups){
+		String result=city;
+		if (result==null)
+			result="";
+		if (result.indexOf("Meerweg")>=0)
+			result="haren,zeilen";
+		for (Group.Ref gr : groups) {
+			Group g = gr.get0();
+			if (g!=null  && ! g.invitedOnly)
+				result+=","+g.urlName;
+		}
+		return result;
+	}
+
 	@Override public Ref getRef() { return Ref.of(model,_id); }
 	public static class Ref extends PkoRef<Event> {
 		static public Ref of(WikiventsModel model, String key) { return key==null ? null : new Ref(model, key); }

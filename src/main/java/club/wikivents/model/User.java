@@ -157,6 +157,7 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 		return ! this._id.equals(other._id);
 	}
 
+	public String[] tagList() { return tags.toLowerCase().split(",");}
 	
 	/*
 	public String getNotifications() throws IOException { 

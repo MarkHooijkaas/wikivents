@@ -7,7 +7,6 @@
 {{/ifEquals}}
 {{/ifEquals}}
 
-{{#each record.groups}}
-	<a href="{{get0.url}}">{{get0.title}}</a>
-	<br/>
+{{#each record.tagList}}
+	<a href="/tag/{{this}}">{{this}}</a><br/>
 {{/each}}

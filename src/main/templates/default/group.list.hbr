@@ -2,18 +2,11 @@
 	<script src="/lib/datatables/media/js/jquery.dataTables.min.js"></script>
 {{> include/page.header.end}}
 
-Hieronder zie je een lijst aan thema's.
+Hieronder zie je een lijst aan thema's ook wel tags genoemd.
 Bij een thema horen activiteiten, maar ook een groep mensen die interesse hebben in dat thema.
-Een thema kan over een bepaalde categorie activiteiten gaan zoals film, sport of dansen, maar ook voor een regelmatig terugkerende activiteit, zoals een pubquiz of een eetgroep.
-Bij een activiteit kan je aangeven bij welk thema deze activiteit past.
-Je krijgt dan een lijst te zien van alle thema's waar je zelf interesse in hebt. 
-Op dit moment kan dat alleen bij het wijzigen van een wikivent en nog niet bij het aanmaken.
-Een activiteit kan ook bij meerdere thema's passen.
-{{#ifLoggedIn}}
-<p>
-Heb je een creatief idee voor een leuk thema, <a href="/theme/!create">maak dan een nieuw thema</a>
-{{/ifLoggedIn}}
 
+<br>
+size={{call.model.userTags.sortedKeys}}
 {{> embedded.group.list}}
   
 {{> include/page.footer}}

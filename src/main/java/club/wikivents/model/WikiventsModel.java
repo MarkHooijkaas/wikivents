@@ -6,6 +6,7 @@ import org.kisst.http4j.SecureToken;
 import org.kisst.pko4j.PkoModel;
 import org.kisst.pko4j.PkoTable;
 import org.kisst.pko4j.StorageOption;
+import org.kisst.pko4j.index.MultiIndex;
 import org.kisst.pko4j.index.OrderedIndex;
 import org.kisst.pko4j.index.UniqueIndex;
 
@@ -28,9 +29,15 @@ public class WikiventsModel extends PkoModel implements SecureToken.SaltFactory 
 	public final OrderedIndex<Event> allEvents    = new OrderedIndex<>(Event.class, evt -> evt.dateKey()+evt.getKey());
 	public final OrderedIndex<Event> newestEvents = new OrderedIndex<>(Event.class, evt -> evt.getKey());
 
+	public final MultiIndex<Event> eventTags = new MultiIndex<>(Event.class, evt -> evt.tagList());
+	public final MultiIndex<User>  userTags  = new MultiIndex<>(User.class,  usr -> usr.tagList());
+
+
+	public final PkoTable<Group> groups = new PkoTable<>(this, Group.class);
 	public final PkoTable<User>  users  = new PkoTable<>(this, User.class);
 	public final PkoTable<Event> events = new PkoTable<>(this, Event.class);
-	public final PkoTable<Group> groups = new PkoTable<>(this, Group.class);
+
+
 
 
 	public Iterable<Event> futureEvents() { return allEvents.tailList(LocalDate.now().toString());}

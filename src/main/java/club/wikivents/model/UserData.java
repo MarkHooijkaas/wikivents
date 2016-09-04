@@ -20,9 +20,10 @@ public abstract class UserData extends WikiventsObject<User> {
 		public final IdField _id = new IdField();
 		public final StringField username = new StringField("username"); 
 		public final StringField description= new StringField("description"); 
-		public final StringField email    = new StringField("email"); 
-		public final StringField city = new StringField("city"); 
-		public final StringField avatarUrl= new StringField("avatarUrl"); 
+		public final StringField email    = new StringField("email");
+		public final StringField city = new StringField("city");
+		public final StringField tags = new StringField("tag");
+		public final StringField avatarUrl= new StringField("avatarUrl");
 		public final StringField passwordResetToken = new StringField("passwordResetToken"); 
 		public final StringField passwordSalt = new StringField("passwordSalt"); 
 		public final StringField encryptedPassword = new StringField("encryptedPassword"); 
@@ -36,6 +37,7 @@ public abstract class UserData extends WikiventsObject<User> {
 	public final String description;
 	public final String email;
 	public final String city;
+	public final String tags;
 	public final String avatarUrl;
 	public final String passwordResetToken;
 	public final String passwordSalt;
@@ -51,6 +53,10 @@ public abstract class UserData extends WikiventsObject<User> {
 		this.description=schema.description.getString(data,null);
 		this.email=schema.email.getString(data);
 		this.city=schema.city.getString(data);
+		String tmp = schema.tags.getString(data, null);
+		if (tmp==null)
+			tmp=findTags(this.getRef());
+		this.tags=tmp;
 		this.avatarUrl=schema.avatarUrl.getString(data,null);
 		this.passwordResetToken=schema.passwordResetToken.getString(data,null);
 		this.passwordSalt=schema.passwordSalt.getString(data);
@@ -60,6 +66,16 @@ public abstract class UserData extends WikiventsObject<User> {
 		this.blocked=schema.blocked.getBoolean(data,false);
 		this.recommendations=startingRecommendation(data, version);
 	}
+
+	private String findTags(Ref user) {
+		String result=city;
+		for (Group g : model.groups) {
+			if (g.hasMember(user) && ! g.invitedOnly)
+				result+=","+g.urlName;
+		}
+		return result;
+	}
+
 	private ImmutableSequence<UserItem> startingRecommendation(Struct data, int version) {
 		boolean defaultValue = version==0;
 		boolean identityValidated =  Item.asBoolean(data.getDirectFieldValue("identityValidated",defaultValue));

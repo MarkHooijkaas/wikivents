@@ -22,7 +22,7 @@ public class SearchPage extends WikiventsPage {
 			text=text.toLowerCase();
 		ArrayList<Event> events=new ArrayList<Event>() ;
 		for (Event e: call.model.allEvents) {
-			if ((e.description+e.title+e.city+e.location).toLowerCase().indexOf(text)>=0) {
+			if ((e.description+e.title+e.city+e.location+e.tags).toLowerCase().indexOf(text)>=0) {
 				events.add(e);
 			}
 		}
@@ -35,7 +35,7 @@ public class SearchPage extends WikiventsPage {
 		if (call.authenticated) {
 			ArrayList<User> users=new ArrayList<User>() ;
 			for (User u: call.model.users) {
-				if ((u.description+u.username+u.city).toLowerCase().indexOf(text)>=0) {
+				if ((u.description+u.username+u.city+u.tags).toLowerCase().indexOf(text)>=0) {
 					users.add(u);
 				}
 			}		

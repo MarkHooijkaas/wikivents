@@ -15,32 +15,15 @@
       <tr>
         <th>Thema</th>
         <th>Aantal Leden</th>
-        <th>Aangemaakt op</th>
-        <th>Update</th>
-{{#ifAdminMode}}
-        <th>Beheerders</th>
-        <th>Del</th>
-{{/ifAdminMode}}
       </tr>
     </thead>
     <tbody>
 		
-{{#each list}} 
-{{#ifMayView this}}
+{{#each call.model.userTags.sortedKeys}}
 	  <tr{{#if hidden}} style="color: blue;"{{/if}}>
-        <td><a href="{{url}}">{{title}}</a></td>
-        <td>{{this.members.size}}</td>
-        <td data-order="{{creationDate}}">{{dateFormat creationDate "eee d MMM yyyy"}}</td>
-        <td data-order="{{modificationDate}}">{{dateFormat modificationDate "eee d MMM yyyy"}}</td>
-{{#ifAdminMode}}
-        <td>{{&join owners "<br/>"}}</td>
-        <td>
-			{{> include/modal.delete action="delete" field="ActionHandlerId" value=record.key label="Weet je zeker dat je deze interesse wil verwijderen?"}} 
-		</td>
-{{/ifAdminMode}}
-      
+        <td><a href="/tag/{{this}}">{{this}}</a></td>
+        <td>TODO</td>
       </tr>
-{{/ifMayView}}
 {{/each}}
     </tbody>
   </table>

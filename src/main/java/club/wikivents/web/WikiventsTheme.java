@@ -11,7 +11,8 @@ import com.github.jknack.handlebars.Handlebars;
 import club.wikivents.model.User;
 
 public class WikiventsTheme extends TemplateTheme {
-	public WikiventsTheme(Props props) { super(createEngine(props)); 
+
+	public WikiventsTheme(Props props) { super(createEngine(props));
 	}
 	private static TemplateEngine createEngine(Props props) {
 		TemplateEngine engine=new TemplateEngine(props);
@@ -37,6 +38,8 @@ public class WikiventsTheme extends TemplateTheme {
 	public final CompiledTemplate sendMessage = template("sendMessage");
 	public final CompiledTemplate error = template("404");
 	public final CompiledTemplate blockedUser = template("blockedUser");
+
+	public final CompiledTemplate tagShow= template("tag.show");
 
 	public final CompiledTemplate userShow = template("user.show");
 	public final CompiledTemplate userEdit = template("user.edit");

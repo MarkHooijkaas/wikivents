@@ -1,0 +1,14 @@
+{{> include/page.header.begin pagetitle=record.username}}
+	<script src="/lib/datatables/media/js/jquery.dataTables.min.js"></script>
+	<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js"></script>
+	<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/localization/messages_nl.js"></script>
+{{> include/page.header.end}}
+
+<h1>Thema: {{tag}}</h1>
+<h2>Activiteiten met thema {{tag}}</h2>
+{{> include/embedded.event.list list=events}}
+
+<h2>Gebruikers met interesse in {{tag}}</h2>
+{{> embedded.user.list list=users}}
+
+{{> include/page.footer}}
