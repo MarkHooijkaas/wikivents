@@ -5,6 +5,7 @@ import java.time.LocalTime;
 
 import org.kisst.item4j.ImmutableSequence;
 import org.kisst.item4j.Item;
+import org.kisst.item4j.SchemaBase;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.pko4j.PkoRef;
 
@@ -73,15 +74,16 @@ public abstract class EventData extends CommonBase<Event> implements Item.Factor
 	}
 
 	private String findTags(ImmutableSequence<GroupData.Ref> groups){
-		String result=city;
-		if (result==null)
-			result="";
+		String result="";
 		if (result.indexOf("Meerweg")>=0)
-			result="haren,zeilen";
+			result="zeilen";
 		for (Group.Ref gr : groups) {
 			Group g = gr.get0();
-			if (g!=null  && ! g.invitedOnly)
-				result+=","+g.urlName;
+			if (g!=null  && ! g.invitedOnly) {
+				if (result.length()>0)
+					result += ",";
+				result +=  g.urlName;
+			}
 		}
 		return result;
 	}

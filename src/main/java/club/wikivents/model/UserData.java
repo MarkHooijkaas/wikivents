@@ -22,7 +22,7 @@ public abstract class UserData extends WikiventsObject<User> {
 		public final StringField description= new StringField("description"); 
 		public final StringField email    = new StringField("email");
 		public final StringField city = new StringField("city");
-		public final StringField tags = new StringField("tag");
+		public final StringField tags = new StringField("tags");
 		public final StringField avatarUrl= new StringField("avatarUrl");
 		public final StringField passwordResetToken = new StringField("passwordResetToken"); 
 		public final StringField passwordSalt = new StringField("passwordSalt"); 
@@ -68,10 +68,13 @@ public abstract class UserData extends WikiventsObject<User> {
 	}
 
 	private String findTags(Ref user) {
-		String result=city;
+		String result="";
 		for (Group g : model.groups) {
-			if (g.hasMember(user) && ! g.invitedOnly)
-				result+=","+g.urlName;
+			if (g.hasMember(user) && ! g.invitedOnly) {
+				if (result.length() > 0)
+					result += ",";
+				result += g.urlName;
+			}
 		}
 		return result;
 	}
