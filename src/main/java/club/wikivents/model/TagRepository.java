@@ -17,30 +17,8 @@ public class TagRepository implements Iterable<Tag> {
 
 	public TagRepository(WikiventsModel model) {
 		this.model = model;
-		loadTags(new File("data/predefined-tags.dat"));
 	}
 
-	private void loadTags(File file) {
-		if (! file.exists())
-			return;
-		String content=FileUtil.loadString(file);
-		for (String line :content.split("\n")){
-			line=line.trim().toLowerCase();
-			if (line.length()>0) {
-				String[] parts = line.split(":");
-				Tag parent=map.get(parts[0]);
-				if (parent==null) {
-					parent = new Tag(this, parts[0]);
-					map.put(parent.name,parent);
-				}
-				for (String tag : parts[1].split(",")) {
-					tag=tag.trim();
-					if (tag.length()>0)
-						map.put(tag,new Tag(this, parent, tag));
-				}
-			}
-		}
-	}
 
 	public ImmutableSequence<User> getUsers(String tag) { return model.userTags.records(tag); }
 	public ImmutableSequence<Event> getEvents(String tag) { return model.eventTags.records(tag); }
@@ -58,46 +36,7 @@ public class TagRepository implements Iterable<Tag> {
 			map.put(tag, new Tag(this,tag));
 	}
 
-	public TreeSet<Tag> orderedByPath() {
-		TreeSet<Tag> result = new TreeSet<>((Tag t1, Tag t2) -> t1.path().compareTo(t2.path()));
-		for (Tag tag:map.values())
-			result.add(tag);
-		return result;
-	}
 
-	public TreeSet<Tag> top() { return children(null);}
-	public TreeSet<Tag> children(Tag parent) {
-		TreeSet<Tag> result = new TreeSet<>((Tag t1, Tag t2) -> t1.name.compareTo(t2.name));
-		for (Tag tag:orderedByPath()) {
-			System.out.println(tag.name+"->"+tag.path());
-			if (tag.parent==parent)
-				result.add(tag);
-		}
-		return result;
-	}
-
-	public Handlebars.SafeString ultree() {
-		StringBuilder result = new StringBuilder();
-		result.append("<ul>");
-		for (Tag child : top())
-			addUltree(result, "\t", child);
-		result.append("</ul>");
-		return new Handlebars.SafeString(result);
-	}
-
-	private void addUltree(StringBuilder result, String indent, Tag tag) {
-		result.append(indent+"<li><a href=\"/tag/"+tag.name+"\">"+tag.name+"</a>");
-		//result.append(", "+tag.getEvents().size()+" activiteiten");
-		//result.append(", "+tag.getUsers().size()+" gebruikers");
-		TreeSet<Tag> set = children(tag);
-		if (set.size()>0){
-			result.append("\n"+indent+"\t<ul>\n");
-			for (Tag child: set)
-				addUltree(result,indent+"\t\t",child);
-			result.append(indent+"\t</ul>\n"+indent);
-		}
-		result.append("</li>\n");
-	}
 
 	public static Handlebars.SafeString tagLinks(String tags) {
 		String sep = "";

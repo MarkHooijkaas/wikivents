@@ -1,9 +1,10 @@
 {{> include/page.header.begin  pagetitle="Thema's"}}
-
+	<script src="/lib/datatables/media/js/jquery.dataTables.min.js"></script>
 {{> include/page.header.end}}
 
-Hieronder zie je een lijst aan thema's ook wel tags genoemd.
-Bij een thema horen activiteiten, maar ook een groep mensen die interesse hebben in dat thema.
+Hieronder zie je een lijst aan tags.
+Een activiteit kan verschillende tags hebben.
+Een gebruiker kan interesse hebben in die specifieke tag.
 
 <br>
 {{> embedded.group.list}}
