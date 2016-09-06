@@ -40,13 +40,13 @@ public class TagHandler extends ActionHandler<WikiventsCall, String> {
 	}
 
 	public void listAll(WikiventsCall call) {
-		call.output(call.getTheme().userList, model.users);
+		call.output(call.getTheme().groupList, model.tags);
 	}
 
 	@NeedsNoAuthorization
 	public void view(WikiventsCall call, String tag) {
 		TemplateData data=new TemplateData(call);
-		data.add("tag", tag);
+		data.add("tag", model.tags.getTag(tag));
 		data.add("users",model.userTags.records(tag));
 		data.add("events",model.eventTags.records(tag));
 		call.output(call.getTheme().tagShow, data);

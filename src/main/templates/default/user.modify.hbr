@@ -35,3 +35,12 @@ Dit geldt helemaal voor organisatoren die mensen bij hun thuis uitnodigen.
 {{else}}
 	Deze gebruiker heeft nog geen profiel informatie opgegeven
 {{/if}}
+
+<h2>Interesses</h2>
+<form role="form" method="POST" style="display:inline;">
+    <input type="hidden" name="action" value="changeField"/>
+    <input type="hidden" name="field" value="tags"/>
+    <input type="hidden" name="ajax" value="false"/>
+    <input type="text"  name="value" class="form-control" id="tagEditInput" value="{{record.tags}}" />
+    <input type="submit" class="btn btn-default" value="Interesses bewaren" />
+</form>

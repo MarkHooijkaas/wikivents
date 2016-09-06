@@ -37,9 +37,3 @@
 	{{> include/modal.end}}
 {{/ifMayChange}}
 
-<h2>Interesses</h2>
-<ul id="userTags">
-{{#each record.tagList}}
-    <li>{{this}}</li>
-{{/each}}
-</ul>

@@ -5,13 +5,15 @@
 	<meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/wikivents.css?1">
-    <link rel="stylesheet" href="/css/colors.css">
+
 	<link rel="stylesheet" href="/lib/datatables/media/css/jquery.dataTables.css">
-	
-	<script src="/lib/jquery/dist/jquery.min.js"></script>
-	<script src="/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/colors.css">
+
+	<script src="//code.jquery.com/jquery-3.1.0.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 	<link rel="apple-touch-icon" href="/favicon.ico">
 	

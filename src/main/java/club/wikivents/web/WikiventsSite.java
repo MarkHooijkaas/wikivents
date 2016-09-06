@@ -44,6 +44,7 @@ public class WikiventsSite implements HttpCallHandler {
 		public final HttpCallHandler help=new TemplatePage(WikiventsSite.this, "help");
 		public final HttpCallHandler user=new UserHandler(WikiventsSite.this);
 		public final HttpCallHandler tag=new TagHandler(WikiventsSite.this);
+		public final HttpCallHandler api=new ApiHandler(WikiventsSite.this);
 		public final HttpCallHandler gebruiker=user;
 		public final HttpCallHandler event=new EventHandler(WikiventsSite.this);
 		public final HttpCallHandler theme=new GroupHandler(WikiventsSite.this);

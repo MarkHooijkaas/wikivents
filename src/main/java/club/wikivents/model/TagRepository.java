@@ -13,10 +13,25 @@ import com.github.jknack.handlebars.Handlebars;
 
 public class TagRepository implements Iterable<Tag> {
 	private final ConcurrentHashMap<String,Tag> map = new ConcurrentHashMap<>();
+	private final ConcurrentHashMap<String,String> related = new ConcurrentHashMap<>();
 	private final WikiventsModel model;
 
 	public TagRepository(WikiventsModel model) {
 		this.model = model;
+		addTag("type:type");
+		addTag("type:zonder-categorie");
+		preloadTags(new File("data/predefined-tags.dat"));
+	}
+
+	private void preloadTags(File file) {
+		if (! file.exists())
+			return;
+		String content=FileUtil.loadString(file);
+		for (String line :content.split("\n")){
+			line=line.trim().toLowerCase();
+			if (line.length()>0)
+				addTag(line);
+		}
 	}
 
 
@@ -28,14 +43,41 @@ public class TagRepository implements Iterable<Tag> {
 			addTag(tag);
 	}
 
-	public void addTag(String tag) {
-		tag=tag.trim().toLowerCase();
-		if (tag.length()==0)
-			return;
-		if (map.get(tag)==null)
-			map.put(tag, new Tag(this,tag));
+	public Tag addTag(String name) {
+		name=name.trim().toLowerCase();
+		if (name.length()==0)
+			return null;
+		int pos=name.lastIndexOf(':');
+		String typeName=null;
+		if (pos>0) {
+			typeName = name.substring(0, pos);
+			name = name.substring(pos + 1);
+		}
+		Tag tag = findTag(name);
+		if (typeName!=null){
+			addType(typeName, tag);
+		}
+		return tag;
 	}
 
+	private void addType(String typeName, Tag tag) {
+		int pos=typeName.indexOf(':');
+		if (pos>0)
+			addType(typeName.substring(0,pos),tag);
+		Tag type=findTag(typeName);
+		tag.addType(typeName);
+		type.addElement(tag.name);
+	}
+
+	public Tag getTag(String name) { return map.get(name); }
+	private Tag findTag(String name) {
+		Tag tag = map.get(name);
+		if (tag == null) {
+			tag = new Tag(this, name);
+			map.put(name, tag);
+		}
+		return tag;
+	}
 
 
 	public static Handlebars.SafeString tagLinks(String tags) {
@@ -53,7 +95,7 @@ public class TagRepository implements Iterable<Tag> {
 		Tag[] result = new Tag[tagNames.length];
 		int i=0;
 		for (String tag : tagNames) {
-			result[i]=map.get(tag);
+			result[i]=map.get(tag.trim());
 			i++;
 		}
 		return result;

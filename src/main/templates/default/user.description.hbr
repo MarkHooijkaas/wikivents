@@ -12,3 +12,8 @@
 	Je identiteit is nog niet gevalideerd. Daarom mag je alleen je eigen profiel beschrijving zien. Neem contact op met <a href="mailto.info@wikivents.nl">info@wikivents.nl</a> om je identiteit te valideren.
 	</p>
 {{/ifMayView}}
+
+<h2>Interesses</h2>
+{{#each record.tagList}}
+<a href="/tag/{{this}}"><button type="button" class="btn btn-default" >{{this.types}}:{{this}}</button></a>
+{{/each}}

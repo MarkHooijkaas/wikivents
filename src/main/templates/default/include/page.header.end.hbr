@@ -23,7 +23,7 @@
    	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
 		<li><a href="/event/*.future"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Activiteiten</a></li>
-		<li><a href="/theme/*"><span class="glyphicon glyphicon-knight" aria-hidden="true"></span> Thema's</a></li>
+		<li><a href="/tag/*"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span> Tags</a></li>
         <li><form class="navbar-form" role="search" action="/search">
         <div class="input-group">
             <input type="text" class="form-control" placeholder="Search" name="text" id="srch-term">

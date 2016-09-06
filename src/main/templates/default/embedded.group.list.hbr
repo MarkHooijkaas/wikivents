@@ -15,19 +15,23 @@
   <table id="grouplist" class="display compact" cellspacing="0" width="100%">
     <thead>
       <tr>
+        <th>Type</th>
         <th>Tag</th>
         <th>Aantal Leden</th>
         <th>Aantal Activiteiten</th>
+        <th>Gerelateerd</th>
       </tr>
     </thead>
     <tbody>
 
 
-{{#each call.model.tags}}
+{{#each list}}
 	  <tr>
+	    <td>{{#each this.typeTags}}{{link}} {{/each}}</td>
         <td><a href="/tag/{{this.name}}">{{this.name}}</a></td>
         <td>{{this.users.size}}</td>
         <td>{{this.events.size}}</td>
+        <td>{{#each this.elementTags}}{{link}} {{/each}}</td>
       </tr>
 {{/each}}
     </tbody>

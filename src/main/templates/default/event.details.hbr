@@ -40,4 +40,5 @@
 	{{> include/show.ajaxField value=record.city     name="city" label="Plaats" postfix=""}}
 	{{> include/show.ajaxField value=record.location name="location" label="Locatie" postfix=""}}
 	{{> include/show.ajaxField value=record.cost     name="cost" label="Kosten" postfix=""}}
+	{{> include/show.ajaxField value=record.tags     name="tags" label="Tags" postfix=""}}
 

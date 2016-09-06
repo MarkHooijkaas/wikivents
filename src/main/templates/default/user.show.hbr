@@ -3,6 +3,20 @@
 	<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js"></script>
 	<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/localization/messages_nl.js"></script>
 	<script src="/lib/ckeditor/ckeditor.js"></script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/bootstrap-tokenfield.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.devbridge-autocomplete/1.2.26/jquery.autocomplete.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/css/bootstrap-tokenfield.min.css"/>
+
+
+<!--
+	<script src=""></script>
+	<link rel="stylesheet" type="text/css" href=""/>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/corejs-typeahead/0.11.1/bloodhound.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>
+
 	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/tag-it/2.0/js/tag-it.js"></script>
 	<script src="https://cdn.jsdelivr.net/bootstrap.tagsinput/0.8.0/bootstrap-tagsinput.js"></script>
@@ -10,6 +24,7 @@
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/tag-it/2.0/css/jquery.tagit.css"/>
 	<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/flick/jquery-ui.css"/>
 	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/bootstrap.tagsinput/0.8.0/bootstrap-tagsinput.css"/>
+	-->
 {{> include/page.header.end}}
 
 {{>user.warnings}}
@@ -22,15 +37,15 @@
 			 "lengthMenu": [[-1, 20, 50, 100], ["Alle", 20, 50, 100]],
 			  "dom": '<"top"f>rt<"bottom"><"clear">'			
 		} );
-    	$('#userTags').tagit({
-    	    availableTags: ["salsa", "dansen", "borrel", "museum", "spelletjes", "zeilen", "poolen"],
-    	    autocomplete: {delay: 0, minLength: 0},
-    	    caseSensitive: false,
-    	    readOnly: {{#ifMayChange record}}false{{else}}true{{/ifMayChange}},
-    	    beforeTagAdded: function(event, ui) {
-                console.log("Added "+ui.tag);
-             }
-    	});
+
+    	$('#tagEditInput').tokenfield({
+          //autocomplete: {
+          //  source: "/api/tags"
+            //autoFocus:true,
+            //delay: 100
+          //}
+          //showAutocompleteOnFocus: true
+        });
 	} );
 </script>
 
