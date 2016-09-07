@@ -1,12 +1,13 @@
 {{#ifEquals record.groups.size 0}}
 {{else}}
 {{#ifEquals record.groups.size 1}}
-<h2>Thema</h2> 
+<h2>Groep</h2>
 {{else}}
-<h2>Thema's</h2> 
+<h2>Groepen</h2>
 {{/ifEquals}}
 {{/ifEquals}}
 
-{{#each record.tagList}}
-	<a href="/tag/{{this}}">{{this}}</a><br/>
+{{#each record.groups}}
+	<a href="{{get0.url}}">{{get0.title}}</a>
+	<br/>
 {{/each}}

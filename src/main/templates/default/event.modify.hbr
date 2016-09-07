@@ -34,5 +34,14 @@
 {{> include/show.textAreaField label="informatie voor deelnemers" name="guestInfo" prefix="" value=record.guestInfo}}
 {{#partial "emptyTemplate"}}{{/partial}}
 {{> include/show.textAreaField label="omschrijving" name="description" prefix="" value=record.description}}
+
+<h2>Tags</h2>
+<form role="form" method="POST">
+    <input type="hidden" name="action" value="changeField"/>
+    <input type="hidden" name="field" value="tags"/>
+    <input type="hidden" name="ajax" value="false"/>
+    <input type="text"  name="value" class="form-control" id="tagEditInput" value="{{record.tags}}" />
+    <input type="submit" class="btn btn-default" value="Tags bewaren" />
+</form>
 </div>
-	
+

@@ -1,7 +1,10 @@
 {{> include/page.header.begin pagetitle=record.title}}
 <script src="/lib/ckeditor/ckeditor.js"></script>
 <script src="/lib/datatables/media/js/jquery.dataTables.min.js"></script>
+
 {{#ifMayChange record}}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/bootstrap-tokenfield.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/css/bootstrap-tokenfield.min.css"/>
 <script src="/lib/webshim-1.15.10/js-webshim/minified/polyfiller.js"></script>
 {{/ifMayChange}}
 
@@ -23,6 +26,7 @@
 		<li role="presentation"><a role="tab" data-toggle="tab" data-target="#extraInfoTab">Extra Info</a></li>
 {{/if}}
 {{/ifAmMember}}
+		<li role="presentation"><a role="tab" data-toggle="tab" data-target="#tagsTab">Tags</a></li>
 {{#if call.user.maySeeUsers}}
 		<li role="presentation"><a role="tab" data-toggle="tab" data-target="#participantsTab">Deelnemers {{record.memberCount}}</a></li>
 		<li role="presentation"><a role="tab" data-toggle="tab" data-target="#commentsTab">Reacties {{record.comments.size}}</a></li>
@@ -39,6 +43,7 @@
 	{{/ifMayChange}}
 	</ul>
 	{{> rememberTabs}}
+
 	<h1>{{record.title}}</h1>
 
 	<div class="tab-content">
@@ -53,6 +58,11 @@
 		</div>
 		<div class="tab-pane" role="tabpanel" id="commentsTab">
 			{{> include/show.comments}}
+		</div>
+		<div class="tab-pane" role="tabpanel" id="tagsTab">
+    	    {{#each record.tagList}}
+            <a href="/tag/{{this}}"><button type="button" class="btn btn-default" >{{this.types}}:{{this}}</button></a>
+            {{/each}}
 		</div>
 		<div class="tab-pane" role="tabpanel" id="historyTab">
 			<h2>Historie van {{record.name}} wordt geladen</h2>
@@ -84,6 +94,7 @@
 		$(document).on('shown.bs.tab', 'a[data-target="#historyTab"]', function (e) {
     		$('#historyTab').load("?view=history");
 		});
+        $('#tagEditInput').tokenfield({});
 	} );
 </script>
 
