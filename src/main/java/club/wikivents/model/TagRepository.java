@@ -18,8 +18,8 @@ public class TagRepository implements Iterable<Tag> {
 
 	public TagRepository(WikiventsModel model) {
 		this.model = model;
-		addTag("type:type");
-		addTag("type:zonder-categorie");
+		addTag("categorie:categorie");
+		addTag("categorie:zonder-categorie");
 		preloadTags(new File("data/predefined-tags.dat"));
 	}
 
@@ -51,7 +51,7 @@ public class TagRepository implements Iterable<Tag> {
 		String typeName=null;
 		if (pos>0) {
 			typeName = name.substring(0, pos);
-			name = name.substring(pos + 1);
+			name = name.substring(pos + 1).trim();
 		}
 		Tag tag = findTag(name);
 		if (typeName!=null){
@@ -69,9 +69,17 @@ public class TagRepository implements Iterable<Tag> {
 		type.addElement(tag.name);
 	}
 
-	public Tag getTag(String name) { return map.get(name); }
+	public Tag getTag(String name) {
+		int pos=name.lastIndexOf(':');
+		if (pos>0)
+			name=name.substring(pos+1);
+		return map.get(name.trim());
+	}
 	private Tag findTag(String name) {
-		Tag tag = map.get(name);
+		int pos=name.lastIndexOf(':');
+		if (pos>0)
+			name=name.substring(pos+1);
+		Tag tag = map.get(name.trim());
 		if (tag == null) {
 			tag = new Tag(this, name);
 			map.put(name, tag);
@@ -95,7 +103,7 @@ public class TagRepository implements Iterable<Tag> {
 		Tag[] result = new Tag[tagNames.length];
 		int i=0;
 		for (String tag : tagNames) {
-			result[i]=map.get(tag.trim());
+			result[i]=getTag(tag);
 			i++;
 		}
 		return result;

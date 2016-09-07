@@ -15,9 +15,9 @@
   <table id="grouplist" class="display compact" cellspacing="0" width="100%">
     <thead>
       <tr>
-        <th>Type</th>
+        <th>Categorie</th>
         <th>Tag</th>
-        <th>Aantal Leden</th>
+        <th>Aantal Geinteresseerde Leden</th>
         <th>Aantal Activiteiten</th>
         <th>Gerelateerd</th>
       </tr>

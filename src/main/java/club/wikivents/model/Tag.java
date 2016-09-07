@@ -33,7 +33,7 @@ public class Tag {
 		if (types.length()>0)
 			return types;
 		if (isType())
-			return "type";
+			return "categorie";
 		return "zonder-categorie";
 	}
 

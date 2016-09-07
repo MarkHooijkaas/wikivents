@@ -1,35 +1,10 @@
 package club.wikivents.web;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
-import javax.servlet.MultipartConfigElement;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Part;
-
-import org.eclipse.jetty.server.Request;
 import org.kisst.http4j.ActionHandler;
 import org.kisst.http4j.HttpCall;
-import org.kisst.http4j.ResourceHandler;
-import org.kisst.http4j.form.HttpFormData;
 import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
-import org.kisst.item4j.struct.HashStruct;
-import org.kisst.item4j.struct.MultiStruct;
-import org.kisst.item4j.struct.Struct;
-import org.kisst.util.CallInfo;
-import org.kisst.util.PasswordEncryption;
-import org.kisst.util.StringUtil;
 
-import club.wikivents.model.User;
-import club.wikivents.model.UserCommands.RemoveRecommendationCommand;
-import club.wikivents.model.UserItem;
 import club.wikivents.model.WikiventsModel;
-import net.tanesha.recaptcha.ReCaptchaImpl;
-import net.tanesha.recaptcha.ReCaptchaResponse;
 
 public class TagHandler extends ActionHandler<WikiventsCall, String> {
 
@@ -39,11 +14,12 @@ public class TagHandler extends ActionHandler<WikiventsCall, String> {
 		this.model=site.model;
 	}
 
+	@NeedsNoAuthentication
 	public void listAll(WikiventsCall call) {
 		call.output(call.getTheme().groupList, model.tags);
 	}
 
-	@NeedsNoAuthorization
+	@NeedsNoAuthentication
 	public void view(WikiventsCall call, String tag) {
 		TemplateData data=new TemplateData(call);
 		data.add("tag", model.tags.getTag(tag));
