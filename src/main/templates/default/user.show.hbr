@@ -1,30 +1,9 @@
-{{> include/page.header.begin pagetitle=record.username}}
-	<script src="/lib/datatables/media/js/jquery.dataTables.min.js"></script>
-	<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js"></script>
-	<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/localization/messages_nl.js"></script>
-	<script src="/lib/ckeditor/ckeditor.js"></script>
+{{#ifMayChange record}}
+    {{> include/page.header pagetitle=record.title datatables=false wysiwyg=true  tageditor=true   dateselector=true  validate=true}}
+{{else}}
+    {{> include/page.header pagetitle=record.title datatables=fals  wysiwyg=false tageditor=false dateselector=false validate=false}}
+{{/ifMayChange}}
 
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/bootstrap-tokenfield.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.devbridge-autocomplete/1.2.26/jquery.autocomplete.js"></script>
-
-	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/css/bootstrap-tokenfield.min.css"/>
-
-
-<!--
-	<script src=""></script>
-	<link rel="stylesheet" type="text/css" href=""/>
-
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/corejs-typeahead/0.11.1/bloodhound.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>
-
-	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/tag-it/2.0/js/tag-it.js"></script>
-	<script src="https://cdn.jsdelivr.net/bootstrap.tagsinput/0.8.0/bootstrap-tagsinput.js"></script>
-
-	<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/flick/jquery-ui.css"/>
-	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/bootstrap.tagsinput/0.8.0/bootstrap-tagsinput.css"/>
-	-->
-{{> include/page.header.end}}
 
 {{>user.warnings}}
 

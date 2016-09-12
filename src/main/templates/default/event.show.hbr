@@ -1,22 +1,14 @@
-{{> include/page.header.begin pagetitle=record.title}}
-<script src="/lib/ckeditor/ckeditor.js"></script>
-<script src="/lib/datatables/media/js/jquery.dataTables.min.js"></script>
-
 {{#ifMayChange record}}
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/bootstrap-tokenfield.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/css/bootstrap-tokenfield.min.css"/>
-<script src="/lib/webshim-1.15.10/js-webshim/minified/polyfiller.js"></script>
+    {{> include/page.header pagetitle=record.title datatables=true   wysiwyg=true   tageditor=true   dateselector=true}}
+{{else}}
+    {{> include/page.header pagetitle=record.title datatables=false  wysiwyg=false  tageditor=false  dateselector=false}}
 {{/ifMayChange}}
 
-{{> include/page.header.end}}
 {{#ifMayView record}}
 
 {{> dialog.confirm.action command="RemoveMember" field="member" message="Weet je zeker dat je je wilt afmelden?" okButton="Afmelden"}}
 {{> dialog.confirm.action command="RemoveInvitation" field="invitedUser" message="Weet je zeker dat je deze uitnodiging wilt verwijderen?" okButton="Verwijderen"}}
 
-{{#ifMayChange record}}
-	<script>webshim.polyfill('forms forms-ext');</script>
-{{/ifMayChange}}
 
 <div>
 	<ul class="nav nav-tabs" id="navTabs">

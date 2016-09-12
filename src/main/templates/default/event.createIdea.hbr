@@ -1,9 +1,8 @@
-{{> include/page.header.begin}}
-<script src="/lib/ckeditor/ckeditor.js"></script>
-<script src="/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-<script src="/lib/jquery-validation/src/localization/messages_nl.js"></script>
-<script src="/lib/webshim-1.15.10/js-webshim/minified/polyfiller.js"></script>
-{{> include/page.header.end}}
+{{#ifMayChange record}}
+    {{> include/page.header pagetitle=record.title datatables=false  wysiwyg=true   tageditor=false  dateselector=true validate=true}}
+{{else}}
+    {{> include/page.header pagetitle=record.title datatables=false  wysiwyg=false  tageditor=false  dateselector=false}}
+{{/ifMayChange}}
 
 <script >
 	webshim.polyfill('forms forms-ext');

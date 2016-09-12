@@ -1,12 +1,10 @@
-{{> include/page.header.begin pagetitle="Activiteiten"}}
-	<script src="/lib/datatables/media/js/jquery.dataTables.min.js"></script>
-{{> include/page.header.end}}
+{{> include/page.header pagetitle="Activiteiten" datatables=true}}
 
 <script>
 	$(document).ready(function() {
 		$('#events').dataTable( {
 			"language": { "url": "/lib/datatables-i18n/i18n/nl.json" },
-			 "lengthMenu": [[-1, 20, 50, 100], ["Alle", 20, 50, 100]],
+			 "lengthMenu": [[-1, 20, 50, 100], ["Allemaal", 20, 50, 100]],
 			  "dom": '<"top"f>rt<"bottom"><"clear">',
 			  //"stateSave": true,
 			  //"stateDuration": -1,
