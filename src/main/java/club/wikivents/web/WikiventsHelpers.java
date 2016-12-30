@@ -41,7 +41,7 @@ public class WikiventsHelpers extends UserHelpers<User> {
 			owner=true;
 		if ((o instanceof User) && ((User) o).equals(callUser)) 
 			owner=true;
-		if ((o instanceof User.Ref) && ((User.Ref) o).get0().equals(callUser)) 
+		if ((o instanceof User.Ref) && callUser.equals(((User.Ref) o).get0()))
 			owner=true;
 		if (owner)
 			return options.fn();
