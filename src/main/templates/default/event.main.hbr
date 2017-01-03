@@ -27,6 +27,8 @@
 <br>
 {{/if}}
 <a href="/event/!create?clone={{record._id}}">Kloon deze activiteit</a>
+<br>
+{{>embedded.tag.list list=record.tagList}}
 	{{>event.groups}}
 	{{>event.participants}}	
 </div>

@@ -15,11 +15,10 @@
   <table id="grouplist" class="display compact" cellspacing="0" width="100%">
     <thead>
       <tr>
-        <th>Categorie</th>
-        <th>Tag</th>
-        <th>Aantal Geinteresseerde Leden</th>
-        <th>Aantal Activiteiten</th>
-        <th>Gerelateerd</th>
+        <th width="100">Pop.</th>
+        <th width="100">Tag</th>
+        <th width="100">Leden</th>
+        <th width="100">Activiteiten</th>
       </tr>
     </thead>
     <tbody>
@@ -27,11 +26,10 @@
 
 {{#each list}}
 	  <tr>
-	    <td>{{#each this.typeTags}}{{link}} {{/each}}</td>
+        <td data-order="-{{popularity}}">{{this.popularity}}</td>
         <td><a href="/tag/{{this.name}}">{{this.name}}</a></td>
         <td>{{this.users.size}}</td>
         <td>{{this.events.size}}</td>
-        <td>{{#each this.elementTags}}{{link}} {{/each}}</td>
       </tr>
 {{/each}}
     </tbody>

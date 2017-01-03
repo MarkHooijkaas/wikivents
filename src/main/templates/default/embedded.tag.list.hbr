@@ -1,0 +1,5 @@
+{{#each list}}
+{{#if this.name}}
+<a href="/tag/{{this}}"><button type="button" class="btn btn-default" >{{this.link}}</button></a>
+{{/if}}
+{{/each}}

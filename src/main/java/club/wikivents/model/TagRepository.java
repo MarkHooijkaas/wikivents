@@ -2,7 +2,6 @@ package club.wikivents.model;
 
 import java.io.File;
 import java.util.Iterator;
-import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.kisst.item4j.ImmutableSequence;
@@ -18,8 +17,6 @@ public class TagRepository implements Iterable<Tag> {
 
 	public TagRepository(WikiventsModel model) {
 		this.model = model;
-		addTag("categorie:categorie");
-		addTag("categorie:zonder-categorie");
 		preloadTags(new File("data/predefined-tags.dat"));
 	}
 
@@ -33,7 +30,6 @@ public class TagRepository implements Iterable<Tag> {
 				addTag(line);
 		}
 	}
-
 
 	public ImmutableSequence<User> getUsers(String tag) { return model.userTags.records(tag); }
 	public ImmutableSequence<Event> getEvents(String tag) { return model.eventTags.records(tag); }
@@ -65,8 +61,8 @@ public class TagRepository implements Iterable<Tag> {
 		if (pos>0)
 			addType(typeName.substring(0,pos),tag);
 		Tag type=findTag(typeName);
-		tag.addType(typeName);
-		type.addElement(tag.name);
+		tag.addParent(typeName);
+		type.addChild(tag.name);
 	}
 
 	public Tag getTag(String name) {

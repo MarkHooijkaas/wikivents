@@ -14,6 +14,4 @@
 {{/ifMayView}}
 
 <h2>Interesses</h2>
-{{#each record.tagList}}
-<a href="/tag/{{this}}"><button type="button" class="btn btn-default" >{{this.types}}:{{this}}</button></a>
-{{/each}}
+{{>embedded.tag.list list=record.tagList}}
