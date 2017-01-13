@@ -48,6 +48,7 @@ public class WikiventsSite implements HttpCallHandler {
 		public final HttpCallHandler gebruiker=user;
 		public final HttpCallHandler event=new EventHandler(WikiventsSite.this);
 		public final HttpCallHandler group=new GroupHandler(WikiventsSite.this);
+		public final HttpCallHandler saveAll=new SaveAllHandler(WikiventsSite.this);
 		public final HttpCallHandler login  = loginPage::handleLogin;
 		public final HttpCallHandler forgotPassword = loginPage::handleForgotPassword;
 		public final HttpCallHandler logout = new LogoutPage(WikiventsSite.this);
