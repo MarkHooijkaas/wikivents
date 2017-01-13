@@ -1,12 +1,12 @@
-{{> include/page.header.begin  pagetitle="Thema's"}}
+{{> include/page.header.begin  pagetitle="Groepen"}}
 	<script src="/lib/datatables/media/js/jquery.dataTables.min.js"></script>
 {{> include/page.header.end}}
 
-Hieronder zie je een lijst aan tags.
-Een activiteit kan verschillende tags hebben.
-Een gebruiker kan interesse hebben in die specifieke tag.
+{{#if call.user.isAdmin}}
+<p>
+ <a href="/group/!create">maak dan een nieuwe groep</a>
+{{/if}}
 
-<br>
 {{> embedded.group.list}}
-  
+
 {{> include/page.footer}}

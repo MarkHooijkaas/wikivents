@@ -1,6 +1,6 @@
 {{#ifLoggedIn}}
 <div class="col-xs-12 col-sm-6 panel panel-default overflow-hidden">
-<h2>Ge&iuml;nteresseerden</h2> 
+<h2>Leden</h2>
 
 {{#each record.members}}
 	{{#if call.user.maySeeUsers}}{{&priv link}}{{else}}{{&get0.usernameLink}}{{/if}}

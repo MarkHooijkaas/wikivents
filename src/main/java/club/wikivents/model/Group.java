@@ -19,7 +19,7 @@ public class Group extends GroupData implements AccessChecker<User> {
 		));
 	}
 
-	public String getUrl() { return "/thema/"+urlName; }
+	public String getUrl() { return "/group/"+urlName; }
 	
 	public ArrayList<Event> futureEvents() {
 		ArrayList<Event> result=new ArrayList<Event>();

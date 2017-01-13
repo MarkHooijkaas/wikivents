@@ -57,6 +57,8 @@ public class WikiventsTheme extends TemplateTheme {
 	public final CompiledTemplate groupShow = template("group.show");
 	public final CompiledTemplate groupEdit = template("group.edit");
 	public final CompiledTemplate groupList = template("group.list");
-	
+
+	public final CompiledTemplate tagList = template("tag.list");
+
 	public final CompiledTemplate mail = template("mail");
 }

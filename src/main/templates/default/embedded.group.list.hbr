@@ -10,31 +10,41 @@
 	} );
 </script>
 
-
-
   <table id="grouplist" class="display compact" cellspacing="0" width="100%">
     <thead>
       <tr>
-        <th width="100">Score</th>
-        <th width="400">Tag</th>
-        <th width="100">Leden</th>
-        <th width="100">Activiteiten</th>
+        <th>Thema</th>
+        <th>Aantal Leden</th>
+        <th>Aangemaakt op</th>
+        <th>Update</th>
+{{#ifAdminMode}}
+        <th>Beheerders</th>
+        <th>Del</th>
+{{/ifAdminMode}}
       </tr>
     </thead>
     <tbody>
 
-
 {{#each list}}
-	  <tr>
-        <td data-order="-{{popularity}}">{{this.popularity}}</td>
-        <td><a href="/tag/{{this.name}}">{{this.name}}</a></td>
-        <td>{{this.users.size}}</td>
-        <td>{{this.events.size}}</td>
+{{#ifMayView this}}
+	  <tr{{#if hidden}} style="color: blue;"{{/if}}>
+        <td><a href="{{url}}">{{title}}</a></td>
+        <td>{{this.members.size}}</td>
+        <td data-order="{{creationDate}}">{{dateFormat creationDate "eee d MMM yyyy"}}</td>
+        <td data-order="{{modificationDate}}">{{dateFormat modificationDate "eee d MMM yyyy"}}</td>
+{{#ifAdminMode}}
+        <td>{{&join owners "<br/>"}}</td>
+        <td>
+			{{> include/modal.delete action="delete" field="ActionHandlerId" value=record.key label="Weet je zeker dat je deze interesse wil verwijderen?"}}
+		</td>
+{{/ifAdminMode}}
+
       </tr>
+{{/ifMayView}}
 {{/each}}
     </tbody>
   </table>
  
 {{else}}
-Nog geen thema's
+Nog geen groepen
 {{/if}}

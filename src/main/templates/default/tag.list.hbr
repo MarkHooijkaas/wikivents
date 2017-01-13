@@ -1,0 +1,48 @@
+{{> include/page.header.begin  pagetitle="Thema's"}}
+	<script src="/lib/datatables/media/js/jquery.dataTables.min.js"></script>
+{{> include/page.header.end}}
+
+Hieronder zie je een lijst aan tags.
+Een activiteit kan verschillende tags hebben.
+Een gebruiker kan interesse hebben in die specifieke tag.
+
+<br>
+{{#if list}}
+<script>
+	$(document).ready(function() {
+		$('#grouplist').dataTable( {
+			"language": { "url": "/lib/datatables-i18n/i18n/nl.json" },
+			 "lengthMenu": [[-1, 20, 50, 100], ["Alle", 20, 50, 100]],
+			  "dom": '<"top"f>rt<"bottom"><"clear">',
+			  //"aaSorting": [[2, "asc" ]],
+		} );
+	} );
+</script>
+  <table id="grouplist" class="display compact" cellspacing="0" width="100%">
+    <thead>
+      <tr>
+        <th width="100">Score</th>
+        <th width="400">Tag</th>
+        <th width="100">Leden</th>
+        <th width="100">Activiteiten</th>
+      </tr>
+    </thead>
+    <tbody>
+
+
+{{#each list}}
+	  <tr>
+        <td data-order="-{{popularity}}">{{this.popularity}}</td>
+        <td><a href="/tag/{{this.name}}">{{this.name}}</a></td>
+        <td>{{this.users.size}}</td>
+        <td>{{this.events.size}}</td>
+      </tr>
+{{/each}}
+    </tbody>
+  </table>
+
+{{else}}
+Nog geen tags
+{{/if}}
+  
+{{> include/page.footer}}

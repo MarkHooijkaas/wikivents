@@ -26,7 +26,7 @@
 		<li role="presentation"><a role="tab" data-toggle="tab" data-target="#eventsTab"    >Gepland {{record.futureEvents.size}}</a></li>	
 		<li role="presentation"><a role="tab" data-toggle="tab" data-target="#pastEventsTab">Geweest  {{record.pastEvents.size}}</a></li>	
 {{#if call.user.maySeeUsers}}
-		<li role="presentation"><a role="tab" data-toggle="tab" data-target="#participantsTab"    >Ge&iuml;nteresseerden {{record.members.size}}</a></li>
+		<li role="presentation"><a role="tab" data-toggle="tab" data-target="#participantsTab"    >Leden {{record.members.size}}+{{record.invitedUsers.size}}</a></li>
 		<li role="presentation"><a role="tab" data-toggle="tab" data-target="#commentsTab">Reacties {{record.comments.size}}</a></li>
 		<li role="presentation"><a role="tab" data-toggle="tab" data-target="#historyTab">Historie</a></li>
 {{/if}}
