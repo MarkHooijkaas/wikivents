@@ -24,7 +24,7 @@
       <ul class="nav navbar-nav">
 		<li><a href="/event/*.future"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Activiteiten</a></li>
 		<li><a href="/tag/*"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span> Tags</a></li>
-		<li><a href="/group/*"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Groepen</a></li>
+		<li><a href="/group/*"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Groepen</a></li>
         <li><form class="navbar-form" role="search" action="/search">
         <div class="input-group">
             <input type="text" class="form-control" placeholder="Search" name="text" id="srch-term">

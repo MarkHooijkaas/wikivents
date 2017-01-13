@@ -1,7 +1,7 @@
 {{#ifMayChange record}}
-    {{> include/page.header pagetitle=record.title datatables=true  wysiwyg=true  tageditor=true   dateselector=true  validate=true}}
+    {{> include/page.header pagetype="Gebruiker" pagetitle=record.name datatables=true  wysiwyg=true  tageditor=true   dateselector=true  validate=true}}
 {{else}}
-    {{> include/page.header pagetitle=record.title datatables=true  wysiwyg=false tageditor=false dateselector=false validate=false}}
+    {{> include/page.header pagetype="Gebruiker" pagetitle=record.name datatables=true  wysiwyg=false tageditor=false dateselector=false validate=false}}
 {{/ifMayChange}}
 
 
