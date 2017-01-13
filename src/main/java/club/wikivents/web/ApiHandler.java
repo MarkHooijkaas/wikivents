@@ -1,15 +1,9 @@
 package club.wikivents.web;
 
-import java.io.PrintWriter;
-
-import org.kisst.http4j.ActionHandler;
 import org.kisst.http4j.HttpCall;
-import org.kisst.http4j.HttpCallDispatcher;
 import org.kisst.http4j.HttpCallHandler;
-import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
 import org.kisst.item4j.json.JsonOutputter;
 
-import club.wikivents.model.Tag;
 import club.wikivents.model.WikiventsModel;
 
 public class ApiHandler implements HttpCallHandler {
@@ -28,6 +22,8 @@ public class ApiHandler implements HttpCallHandler {
 			obj=model.tags;
 		if (obj!=null)
 			call.output(json.createString(obj));
+		else
+			call.sendError(404, "No such page");
 	}
 }
 

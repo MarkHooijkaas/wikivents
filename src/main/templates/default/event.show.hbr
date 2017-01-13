@@ -84,7 +84,16 @@
 		$(document).on('shown.bs.tab', 'a[data-target="#historyTab"]', function (e) {
     		$('#historyTab').load("?view=history");
 		});
-        $('#tagEditInput').tokenfield({});
+        var tagNames = new Bloodhound({
+          datumTokenizer: Bloodhound.tokenizers.whitespace,
+          queryTokenizer: Bloodhound.tokenizers.whitespace,
+          prefetch: '/api/tags'
+        });
+        $('#addTagField').typeahead(null, {
+          name: 'tags',
+          source: tagNames
+        });
+
 	} );
 </script>
 

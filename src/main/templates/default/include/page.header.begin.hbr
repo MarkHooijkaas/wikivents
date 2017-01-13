@@ -12,7 +12,6 @@
 	<link rel="stylesheet" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
 {{/if}}
 {{#if tageditor}}
-    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/css/bootstrap-tokenfield.min.css"/>
 {{/if}}
 
 	<script src="//code.jquery.com/jquery-3.1.0.min.js"></script>
@@ -28,8 +27,7 @@
 	<script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/localization/messages_nl.js"></script>
 {{/if}}
 {{#if tageditor}}
-	<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/bootstrap-tokenfield.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery.devbridge-autocomplete/1.2.26/jquery.autocomplete.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
 {{/if}}
 {{#if dateselector}}
     <script src="/lib/webshim-1.15.10/js-webshim/minified/polyfiller.js"></script>
@@ -39,23 +37,6 @@
 	<link rel="apple-touch-icon" href="/favicon.ico">
 
 {{#if false}}
-	<script src=""></script>
-	<link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css">
-	<script src="/lib/bootstrap/dist/js/bootstrap.min.js"></script>
- 	<script src="/lib/jquery/dist/jquery.min.js"></script>
-
  	<link rel="stylesheet" href="/lib/datatables/media/css/jquery.dataTables.css">
  	<script src="/lib/datatables/media/js/jquery.dataTables.min.js">
-
-	<link rel="stylesheet" type="text/css" href=""/>
-
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/corejs-typeahead/0.11.1/bloodhound.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>
-
-	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/tag-it/2.0/js/tag-it.js"></script>
-	<script src="https://cdn.jsdelivr.net/bootstrap.tagsinput/0.8.0/bootstrap-tagsinput.js"></script>
-
-	<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/flick/jquery-ui.css"/>
-	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/bootstrap.tagsinput/0.8.0/bootstrap-tagsinput.css"/>
 {{/if}}

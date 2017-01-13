@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import club.wikivents.model.Event;
 import club.wikivents.model.Group;
+import club.wikivents.model.Tag;
 
 public class EventHandler extends CommonBaseHandler<Event> {
 	public static final Logger logger = LoggerFactory.getLogger(EventHandler.class);
@@ -86,7 +87,25 @@ public class EventHandler extends CommonBaseHandler<Event> {
 		else
 			table.update(event, event.removeSequenceItem(schema.groups, gr.getRef()));
 	}
-	
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	public void handleAddTag(WikiventsCall call, Event rec) {
+		String tag=call.request.getParameter("tag");
+		tag= Tag.normalize(tag);
+		CallInfo.instance.get().action="handleAddTag "+tag;
+		if (!rec.tags.endsWith(","))
+			tag=","+tag;
+		if (! rec.hasTag(tag))
+			table.update(rec, rec.changeField(schema.tags, rec.tags+tag+","));
+	}
+	public void handleRemoveTag(WikiventsCall call, Event rec) {
+		String tag=call.request.getParameter("tag");
+		tag= Tag.normalize(tag);
+		CallInfo.instance.get().action="handleRemoveTag "+tag;
+		if (rec.hasTag(tag))
+			table.update(rec, rec.changeField(schema.tags, rec.tags.replaceAll(tag+",","")));
+	}
+
 	public class Form extends HttpFormData {
 		public Form(WikiventsCall call, Struct data) { super(call, call.getTheme().eventEdit, data); }
 		public Form(WikiventsCall call, CompiledTemplate theme) { super(call, theme); }

@@ -15,8 +15,8 @@
   <table id="grouplist" class="display compact" cellspacing="0" width="100%">
     <thead>
       <tr>
-        <th width="100">Pop.</th>
-        <th width="100">Tag</th>
+        <th width="100">Score</th>
+        <th width="400">Tag</th>
         <th width="100">Leden</th>
         <th width="100">Activiteiten</th>
       </tr>

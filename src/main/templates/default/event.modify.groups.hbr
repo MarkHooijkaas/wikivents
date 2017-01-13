@@ -1,4 +1,4 @@
-<h2>Thema's</h2> 
+<h2>Groepen</h2>
 
 {{#each record.groups}}
 	<a href="/theme/:{{key}}">{{get0.title}}</a>

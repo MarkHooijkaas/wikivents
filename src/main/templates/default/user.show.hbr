@@ -1,7 +1,7 @@
 {{#ifMayChange record}}
-    {{> include/page.header pagetitle=record.title datatables=false wysiwyg=true  tageditor=true   dateselector=true  validate=true}}
+    {{> include/page.header pagetitle=record.title datatables=true  wysiwyg=true  tageditor=true   dateselector=true  validate=true}}
 {{else}}
-    {{> include/page.header pagetitle=record.title datatables=fals  wysiwyg=false tageditor=false dateselector=false validate=false}}
+    {{> include/page.header pagetitle=record.title datatables=true  wysiwyg=false tageditor=false dateselector=false validate=false}}
 {{/ifMayChange}}
 
 
@@ -16,13 +16,14 @@
 			  "dom": '<"top"f>rt<"bottom"><"clear">'			
 		} );
 
-    	$('#tagEditInput').tokenfield({
-          //autocomplete: {
-          //  source: "/api/tags"
-            //autoFocus:true,
-            //delay: 100
-          //}
-          //showAutocompleteOnFocus: true
+		var tagNames = new Bloodhound({
+          datumTokenizer: Bloodhound.tokenizers.whitespace,
+          queryTokenizer: Bloodhound.tokenizers.whitespace,
+          prefetch: '/api/tags'
+        });
+        $('#addTagField').typeahead(null, {
+          name: 'tags',
+          source: tagNames
         });
 	} );
 </script>

@@ -11,7 +11,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.StringJoiner;
 
-import org.kisst.http4j.handlebar.AccessChecker;
 import org.kisst.item4j.ImmutableSequence;
 import org.kisst.item4j.struct.MultiStruct;
 import org.kisst.item4j.struct.SingleItemStruct;
@@ -89,6 +88,7 @@ public class Event extends EventData implements Comparable<Event> {
 		
 	//public Member findMember(String id) { return members.findItemOrNull(Member.key, id); }
 
+	public boolean hasTag(String tag) { return tags.indexOf(","+tag+",")>=0; }
 
 	public boolean hasGroup(Group gr) {
 		if (groups==null || gr==null)

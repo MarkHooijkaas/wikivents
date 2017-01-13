@@ -95,6 +95,12 @@ public class TagRepository implements Iterable<Tag> {
 	}
 
 	public Tag[] tagList(String tags) {
+		while (tags.startsWith(","))
+			tags=tags.substring(1);
+		while (tags.endsWith(","))
+			tags=tags.substring(0,tags.length()-1);
+		if (tags.length()==0)
+			return new Tag[0];
 		String[] tagNames=tags.split(",");
 		Tag[] result = new Tag[tagNames.length];
 		int i=0;

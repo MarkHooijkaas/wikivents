@@ -9,6 +9,9 @@
 	{{> include/show.booleanField value=record.hidden  name="hidden" label="Zichtbaarheid" title="Zichtbaarheid" trueLabel="VERBORGEN" falseLabel="ZICHTBAAR"}}
 
 	{{>event.modify.groups}}
+
+	<h2>Tags</h2>
+    {{>modify.tags}}
 {{#if false}}
 	{{>event.create.poll}}
 {{/if}}
@@ -35,13 +38,5 @@
 {{#partial "emptyTemplate"}}{{/partial}}
 {{> include/show.textAreaField label="omschrijving" name="description" prefix="" value=record.description}}
 
-<h2>Tags</h2>
-<form role="form" method="POST">
-    <input type="hidden" name="action" value="changeField"/>
-    <input type="hidden" name="field" value="tags"/>
-    <input type="hidden" name="ajax" value="false"/>
-    <input type="text"  name="value" class="form-control" id="tagEditInput" value="{{record.tags}}" />
-    <input type="submit" class="btn btn-default" value="Tags bewaren" />
-</form>
 </div>
 

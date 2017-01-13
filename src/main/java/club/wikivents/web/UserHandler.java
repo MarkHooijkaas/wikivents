@@ -22,6 +22,7 @@ import org.kisst.util.CallInfo;
 import org.kisst.util.PasswordEncryption;
 import org.kisst.util.StringUtil;
 
+import club.wikivents.model.Tag;
 import club.wikivents.model.User;
 import club.wikivents.model.UserCommands.RemoveRecommendationCommand;
 import club.wikivents.model.UserItem;
@@ -312,6 +313,23 @@ public class UserHandler extends WikiventsActionHandler<User> {
 	    }
 	    return null;
 	}
-	
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	public void handleAddTag(WikiventsCall call, User rec) {
+		String tag=call.request.getParameter("tag");
+		tag= Tag.normalize(tag);
+		CallInfo.instance.get().action="handleAddTag "+tag;
+		if (!rec.tags.endsWith(","))
+			tag=","+tag;
+		if (! rec.hasTag(tag))
+			table.update(rec, rec.changeField(schema.tags, rec.tags+tag+","));
+	}
+	public void handleRemoveTag(WikiventsCall call, User rec) {
+		String tag=call.request.getParameter("tag");
+		tag= Tag.normalize(tag);
+		CallInfo.instance.get().action="handleRemoveTag "+tag;
+		if (rec.hasTag(tag))
+			table.update(rec, rec.changeField(schema.tags, rec.tags.replaceAll(tag+",","")));
+	}
 }
 

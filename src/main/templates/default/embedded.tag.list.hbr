@@ -1,5 +1,5 @@
 {{#each list}}
 {{#if this.name}}
-<a href="/tag/{{this}}"><button type="button" class="btn btn-default" >{{this.link}}</button></a>
+<a href="/tag/{{this}}"><button type="button" class="btn btn-default" ><span class="glyphicon glyphicon-tag" aria-hidden="true"> {{this.link}}</button></a>
 {{/if}}
 {{/each}}

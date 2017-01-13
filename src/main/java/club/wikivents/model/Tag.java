@@ -54,4 +54,10 @@ public class Tag {
 			return 0;
 		return list.size();
 	}
+
+	public static String normalize(String tag) {
+		tag=tag.toLowerCase().trim();
+		tag=tag.replaceAll("\\s+", "-").replaceAll("[^-a-zA-Z0-9]", "").replaceAll("\\-\\-+", "-");
+		return tag;
+	}
 }

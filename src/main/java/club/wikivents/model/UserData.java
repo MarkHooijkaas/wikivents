@@ -56,6 +56,10 @@ public abstract class UserData extends WikiventsObject<User> {
 		String tmp = schema.tags.getString(data, null);
 		if (tmp==null)
 			tmp=findTags(this.getRef());
+		if (! tmp.startsWith(","))
+			tmp=","+tmp;
+		if (! tmp.endsWith(","))
+			tmp=tmp+",";
 		this.tags=tmp;
 		this.avatarUrl=schema.avatarUrl.getString(data,null);
 		this.passwordResetToken=schema.passwordResetToken.getString(data,null);

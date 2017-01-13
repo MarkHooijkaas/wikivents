@@ -236,4 +236,5 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 	
 	public boolean isRecommendedBy(User user) { return recommendations.hasItem(UserItem.key,user._id); }
 	public UserItem findRecommendation(String id) { return recommendations.findItemOrNull(UserItem.key, id); }
+	public boolean hasTag(String tag) { return tags.indexOf(","+tag+",")>=0; }
 }

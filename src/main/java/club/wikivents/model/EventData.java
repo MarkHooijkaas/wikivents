@@ -5,7 +5,6 @@ import java.time.LocalTime;
 
 import org.kisst.item4j.ImmutableSequence;
 import org.kisst.item4j.Item;
-import org.kisst.item4j.SchemaBase;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.pko4j.PkoRef;
 
@@ -69,6 +68,10 @@ public abstract class EventData extends CommonBase<Event> implements Item.Factor
 			if (city!=null && city.indexOf("Meerweg")<0)
 				tmpgroups=null;
 		}
+		if (! tmp.startsWith(","))
+			tmp=","+tmp;
+		if (! tmp.endsWith(","))
+			tmp=tmp+",";
 		this.tags=tmp;
 		this.groups=tmpgroups;
 	}
