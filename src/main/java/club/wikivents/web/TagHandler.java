@@ -16,7 +16,7 @@ public class TagHandler extends ActionHandler<WikiventsCall, String> {
 
 	@NeedsNoAuthentication
 	public void listAll(WikiventsCall call) {
-		call.output(call.getTheme().groupList, model.tags);
+		call.output(call.getTheme().tagList, model.tags);
 	}
 
 	@NeedsNoAuthentication
