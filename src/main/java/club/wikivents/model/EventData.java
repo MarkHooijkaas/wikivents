@@ -13,7 +13,7 @@ public abstract class EventData extends CommonBase<Event> implements Item.Factor
 	public static final Schema schema=new Schema();
 	public static final class Schema extends CommonBase.Schema<Event> {
 		private Schema() { super(Event.class); }
-		public final StringField imageUrl = new StringField("imageUrl"); 
+		public final StringField imageUrl = new StringField("imageUrl");
 		public final IntField max = new IntField("max"); 
 		public final BooleanField membersAllowed = new BooleanField("membersAllowed");
 		public final BooleanField backupMembersAllowed = new BooleanField("backupMembersAllowed");

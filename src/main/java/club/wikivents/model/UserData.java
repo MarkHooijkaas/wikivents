@@ -18,7 +18,9 @@ public abstract class UserData extends WikiventsObject<User> {
 		private Schema() { super(User.class); }
 		@Override public int getCurrentVersion() { return 1; }
 		public final IdField _id = new IdField();
-		public final StringField username = new StringField("username"); 
+		public final InstantField creationDate = new InstantField("creationDate");
+		public final InstantField modificationDate = new InstantField("modificationDate");
+		public final StringField username = new StringField("username");
 		public final StringField description= new StringField("description"); 
 		public final StringField email    = new StringField("email");
 		public final StringField city = new StringField("city");

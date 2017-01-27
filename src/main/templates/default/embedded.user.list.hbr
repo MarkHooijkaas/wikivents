@@ -21,7 +21,8 @@
         <th>Karma waarde</th>
         <th>profiel</th>
         <th>foto</th>
-{{/ifIsAdmin}}       
+        <th>update</th>
+{{/ifIsAdmin}}
       </tr>
     </thead>
     <tbody>
@@ -37,7 +38,8 @@
         <td>{{karma}}</td>
         <td>{{#if description}}true{{else}}false{{/if}}</td>
         <td>{{#if avatarUrl}}true{{else}}false{{/if}}</td>
-{{/ifIsAdmin}}       
+        <td data-order="{{modificationDate}}">{{dateFormat modificationDate "eee d MMM yyyy"}}</td>
+{{/ifIsAdmin}}
       </tr>
 {{/each}}
     </tbody>

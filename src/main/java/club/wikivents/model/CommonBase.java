@@ -2,7 +2,6 @@ package club.wikivents.model;
 
 import java.util.StringJoiner;
 
-import org.kisst.http4j.handlebar.AccessChecker;
 import org.kisst.item4j.ImmutableSequence;
 import org.kisst.item4j.Item;
 import org.kisst.item4j.struct.ReflectStruct;
@@ -20,6 +19,8 @@ public abstract class CommonBase<T extends CommonBase<T>> extends WikiventsObjec
 	public static class Schema<T extends PkoObject> extends PkoSchema<T> {
 		protected Schema(Class<T> cls) { super(cls); }
 		public final IdField _id = new IdField();
+		public final InstantField creationDate = new InstantField("creationDate");
+		public final InstantField modificationDate = new InstantField("modificationDate");
 		public final IntField _crudObjectVersion = new IntField("_crudObjectVersion");
 		public final StringField title = new StringField("title"); 
 		public final StringField urlName= new StringField("urlName"); 
