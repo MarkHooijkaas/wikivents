@@ -3,7 +3,7 @@
 <h3>Deze activiteit is een Wikidee, en nog niet definitief gepland.</h3>
 {{/if}}
 {{#if record.hidden}}
-<h3>Deze activiteit is alleen zichtbaar voor genodigden{{#if record.groups}} (inclusief themaleden){{/if}}.</h3>
+<h3>Deze activiteit is alleen zichtbaar voor genodigden{{#if record.groups}} (inclusief groepsleden){{/if}}.</h3>
 {{/if}}
 	{{>event.description}}
 </div>

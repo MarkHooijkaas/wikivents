@@ -1,7 +1,7 @@
 <h2>Groepen</h2>
 
 {{#each record.groups}}
-	<a href="/theme/:{{key}}">{{get0.title}}</a>
+	<a href="/group/:{{key}}">{{get0.title}}</a>
 		{{> include/modal.delete title=get0.title action="removeGroup" field="groupId" value=key label="Weet je zeker dat je deze groep wilt verwijderen?"}}
 	<br/>
 {{/each}}

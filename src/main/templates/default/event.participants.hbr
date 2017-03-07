@@ -3,7 +3,7 @@
 <div>
 <h2>{{#if record.idea}}Ge&iuml;nteresseerden{{else}}Deelnemers{{/if}} {{record.memberCount}}</h2>
 {{#if record.invitedOnly}}
-Alleen genodigden{{#if record.groups}} (inclusief themaleden){{/if}} kunnen deelnemen aan deze activiteit.<br>
+Alleen genodigden{{#if record.groups}} (inclusief groepsleden){{/if}} kunnen deelnemen aan deze activiteit.<br>
 {{/if}}
 
 {{#if call.user.maySeeUsers}}

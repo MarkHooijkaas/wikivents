@@ -13,7 +13,7 @@
   <table id="grouplist" class="display compact" cellspacing="0" width="100%">
     <thead>
       <tr>
-        <th>Thema</th>
+        <th>Groep</th>
         <th>Aantal Leden</th>
         <th>Aangemaakt op</th>
         <th>Update</th>

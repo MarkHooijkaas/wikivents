@@ -38,7 +38,7 @@
 	{{/ifMayChange}}
 	</ul>
 	{{> rememberTabs}}
-	<h1>Thema: {{record.title}}</h1>
+	<h1>Groep: {{record.title}}</h1>
 
 	<div class="tab-content">
 		<div class="tab-pane active" role="tabpanel" id="mainTab">
@@ -82,7 +82,7 @@
 </script>
 
 {{else}}
-Dit thema is niet publiek zichtbaar
+Deze groep is niet publiek zichtbaar
 {{/ifMayView}}
 
 {{> include/page.footer}}

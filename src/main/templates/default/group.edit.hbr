@@ -22,7 +22,7 @@
 	{{> include/form.checkbox form.hidden label="Onzichtbaar" value="true" required=""}}
 	{{> include/form.textarea form.description label="Omschrijving" rows=10 required=""}}
 
-	{{> include/form.submitButton submitTitle="Maak thema" cancelUrl="/theme/*"}}
+	{{> include/form.submitButton submitTitle="Maak groep" cancelUrl="/group/*"}}
 	<input type="hidden" name="action" value="edit"/>
 </form>
 </div>
