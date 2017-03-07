@@ -2,7 +2,7 @@
 	<target name="init">
 		<property file="user.properties"/>
 		<property file="version.properties"/>
-		
+
 		<property name="projectname" value="wikivents"/>
 		<property file="buildnumber.properties"/>
 		<property name="srcdir" value="src/main"/>
@@ -11,7 +11,7 @@
 		<mkdir dir="${builddir}" />
 		<mkdir dir="${builddir}/classes" />
 	</target>
-	
+
 	<path id="build.classpath">
 	  <fileset dir="${basedir}">
 	     <include name="lib/*.jar"/>
@@ -37,9 +37,12 @@
 	     </manifest>
 	 </jar>
 	</target>
-	
+
 	<target name="compile" description="Compiles Java files" depends="init">
-		<javac srcdir="${srcdir}/java" destdir="${builddir}/classes" debug="on" optimize="on" target="1.8"  includeantruntime="false">
+		<javac destdir="${builddir}/classes" debug="on" optimize="on" target="1.8"  includeantruntime="false">
+				<src path="../hooi4j/src/main/java"/>
+				<src path="../pko4j/src/main/java"/>
+				<src path="${srcdir}/java"/>
 		    <compilerarg value="-Xlint"/>
 			<classpath>
 				<fileset dir="lib">
@@ -54,7 +57,7 @@
 			<manifest>
 				<attribute name="Implementation-Vendor" value="org.kisst"/>
 				<attribute name="Implementation-Title" value="${projectname}"/>
-				<attribute name="Implementation-Version" value="${project.version}"/> 
+				<attribute name="Implementation-Version" value="${project.version}"/>
 				<attribute name="Class-Path" value="${manifest.classpath}"/>
 				<attribute name="Main-Class" value="club.wikivents.Runner"/>
 			</manifest>
@@ -70,7 +73,7 @@
 			<manifest>
 				<attribute name="Implementation-Vendor" value="org.kisst"/>
 				<attribute name="Implementation-Title" value="${projectname}"/>
-				<attribute name="Implementation-Version" value="${project.version}"/> 
+				<attribute name="Implementation-Version" value="${project.version}"/>
 				<attribute name="Class-Path" value="${manifest.classpath}"/>
 				<attribute name="Main-Class" value="club.wikivents.Runner"/>
 			</manifest>
@@ -82,7 +85,7 @@
 	    </jar>
 	</target>
 
-	
+
 	<target name="libs" description="creates a zip file for all lib files" depends="init">
 		<zip destfile="${builddir}/${projectname}-${project.version}-libs.zip" >
 			<zipfileset dir="." includes="lib/*"/>
@@ -102,7 +105,7 @@
 	<target name="clean" depends="init">
   		<delete dir="${builddir}/classes" />
   	</target>
-  	
+
   	<target name="test" depends="compile,file-test,mongo-test"/>
   	<target name="file-test" depends="">
   	      <java classname="test.Main"
