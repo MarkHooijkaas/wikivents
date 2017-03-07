@@ -65,7 +65,14 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 		}
 		return result;
 	}
-
+	public ArrayList<Event> allEvents() {
+		ArrayList<Event> result=new ArrayList<Event>();
+		for (Event e: model.allEvents) {
+			if (e.hasMember(this) || e.hasOwner(this))
+				result.add(e);
+		}
+		return result;
+	}
 	public ArrayList<Group> groups() {
 		ArrayList<Group> result=new ArrayList<Group>();
 		for (Group gr: model.groups) {

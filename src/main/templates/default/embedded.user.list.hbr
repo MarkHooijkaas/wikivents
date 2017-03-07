@@ -15,7 +15,8 @@
         <th>Naam</th>
         <th>Woonplaats</th>
         <th>Lid sinds</th>
-{{#ifIsAdmin}}       
+{{#ifIsAdmin}}
+        <th>activiteiten</th>
         <th>email</th>
         <th>email validated</th>
         <th>Karma waarde</th>
@@ -33,6 +34,7 @@
         <td>{{city}}</td>
         <td data-order="{{creationDate}}">{{dateFormat creationDate "eee d MMM yyyy"}}</td>
 {{#ifIsAdmin}}       
+        <td>{{allEvents.size}}</td>
         <td>{{email}}</td>
         <td>{{emailValidated}}</td>
         <td>{{karma}}</td>
