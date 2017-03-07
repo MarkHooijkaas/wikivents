@@ -10,7 +10,7 @@
 
 	{{>event.modify.groups}}
 
-	<h2>Tags</h2>
+	<h2>Labels</h2>
     {{>modify.tags}}
 {{#if false}}
 	{{>event.create.poll}}

@@ -2,7 +2,7 @@
 
 {{#each record.groups}}
 	<a href="/theme/:{{key}}">{{get0.title}}</a>
-		{{> include/modal.delete title=get0.title action="removeGroup" field="groupId" value=key label="Weet je zeker dat je dit thema wilt verwijderen?"}} 
+		{{> include/modal.delete title=get0.title action="removeGroup" field="groupId" value=key label="Weet je zeker dat je deze groep wilt verwijderen?"}}
 	<br/>
 {{/each}}
 
@@ -10,9 +10,9 @@
 <input type="hidden" name="action" value="addGroup">
 <input type="hidden" name="groupId" value="" id="groupId">
 <div class="dropdown">
-	<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Voeg thema toe<span class="caret"></span></button>
+	<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Voeg groep toe<span class="caret"></span></button>
 	<ul class="dropdown-menu">
-	<li class="dropdown-header">Eigen interesses</li>
+	<li class="dropdown-header">Eigen Groepen</li>
 	{{#each user.groups}}
 		{{#ifEventHasGroup record this}}
 		{{else}}
@@ -20,7 +20,7 @@
 		{{/ifEventHasGroup}}
 	{{/each}}
 	<li class="divider"></li>
-	<li class="dropdown-header">Alle thema's</li>
+	<li class="dropdown-header">Alle groepen</li>
 	{{#each model.groups}}
 		{{#ifEventHasGroup record this}}
 		{{else}}

@@ -18,7 +18,6 @@
 		<li role="presentation"><a role="tab" data-toggle="tab" data-target="#extraInfoTab">Extra Info</a></li>
 {{/if}}
 {{/ifAmMember}}
-		<li role="presentation"><a role="tab" data-toggle="tab" data-target="#tagsTab">Tags</a></li>
 {{#if call.user.maySeeUsers}}
 		<li role="presentation"><a role="tab" data-toggle="tab" data-target="#participantsTab">Deelnemers {{record.memberCount}}</a></li>
 		<li role="presentation"><a role="tab" data-toggle="tab" data-target="#commentsTab">Reacties {{record.comments.size}}</a></li>
@@ -50,9 +49,6 @@
 		</div>
 		<div class="tab-pane" role="tabpanel" id="commentsTab">
 			{{> include/show.comments}}
-		</div>
-		<div class="tab-pane" role="tabpanel" id="tagsTab">
-    	    {{>embedded.tag.list list=record.tagList}}
 		</div>
 		<div class="tab-pane" role="tabpanel" id="historyTab">
 			<h2>Historie van {{record.name}} wordt geladen</h2>

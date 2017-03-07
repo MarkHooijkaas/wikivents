@@ -4,13 +4,13 @@
 	<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/localization/messages_nl.js"></script>
 {{> include/page.header.end}}
 
-<h1>Tag: {{tag.name}}</h1>
+<h1>Label: {{tag.name}}</h1>
 
 {{> embedded.tag.list list=tag.parentTags}}
 {{#if tag.isChild}}{{#if tag.isParent}}<br>{{/if}}{{/if}}
 {{> embedded.tag.list list=tag.childTags}}
 
-<h2>Activiteiten met tag {{tag.name}}</h2>
+<h2>Activiteiten met label {{tag.name}}</h2>
 {{> include/embedded.event.list list=events}}
 
 <h2>Gebruikers met interesse in {{tag.name}}</h2>

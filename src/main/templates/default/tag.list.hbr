@@ -1,10 +1,10 @@
-{{> include/page.header.begin  pagetype="" pagetitle="Alle Tags"}}
+{{> include/page.header.begin  pagetype="" pagetitle="Alle Labels"}}
 	<script src="/lib/datatables/media/js/jquery.dataTables.min.js"></script>
 {{> include/page.header.end}}
 
-Hieronder zie je een lijst aan tags.
-Een activiteit kan verschillende tags hebben.
-Een gebruiker kan interesse hebben in die specifieke tag.
+Hieronder zie je een lijst aan labels.
+Een activiteit kan verschillende labels hebben.
+Een gebruiker kan interesse hebben in specifieke labels.
 
 <br>
 {{#if list}}
