@@ -5,3 +5,8 @@ http.sslKeyStorePassword=wikivents
 http.sslKeyManagerPassword=wikivents
 http.sslTrustStorePath=config/dev.keystore
 http.sslTrustStorePassword=wikivents
+
+wikivents.email = {
+        host=localhost
+        port=25
+}
