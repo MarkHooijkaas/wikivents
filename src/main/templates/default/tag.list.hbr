@@ -22,9 +22,9 @@ Een gebruiker kan interesse hebben in specifieke labels.
     <thead>
       <tr>
         <th width="100">Score</th>
-        <th width="400">Tag</th>
         <th width="100">Leden</th>
         <th width="100">Activiteiten</th>
+        <th width="800">Label</th>
       </tr>
     </thead>
     <tbody>
@@ -33,16 +33,16 @@ Een gebruiker kan interesse hebben in specifieke labels.
 {{#each list}}
 	  <tr>
         <td data-order="-{{popularity}}">{{this.popularity}}</td>
-        <td><a href="/tag/{{this.name}}">{{this.name}}</a></td>
         <td>{{this.users.size}}</td>
         <td>{{this.events.size}}</td>
+        <td><a href="/tag/{{this.name}}">{{this.name}}</a></td>
       </tr>
 {{/each}}
     </tbody>
   </table>
 
 {{else}}
-Nog geen tags
+Nog geen labels
 {{/if}}
   
 {{> include/page.footer}}

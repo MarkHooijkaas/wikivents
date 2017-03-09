@@ -29,7 +29,7 @@
 {{#ifMayView this}}
 	  <tr{{#if hidden}} style="color: blue;"{{/if}}>
         <td><a href="{{url}}">{{title}}</a></td>
-        <td>{{this.members.size}}</td>
+        <td>{{this.members.size}}+{{this.invitedUsers.size}}</td>
         <td data-order="{{creationDate}}">{{dateFormat creationDate "eee d MMM yyyy"}}</td>
         <td data-order="{{modificationDate}}">{{dateFormat modificationDate "eee d MMM yyyy"}}</td>
 {{#ifAdminMode}}
