@@ -40,10 +40,12 @@
 {{#if record.groups}}
 <h2>Groepen</h2>
 {{#each record.groups}}
+    {{#ifMayView this}}
 	{{#ifMayChange record}}
 		{{> include/modal.delete title=user.get0.username action="removeGroup" field="groupId" value=key label="Weet je zeker dat je deze groep wilt verwijderen?"}}
 	{{/ifMayChange}}
 	<a href="{{url}}">{{title}}</a>
 	<br/>
+    {{/ifMayView}}
 {{/each}}
 {{/if}}
