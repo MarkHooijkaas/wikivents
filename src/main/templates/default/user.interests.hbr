@@ -1,4 +1,4 @@
-<h1>Interesses van {{record.username}}</h1>
+<h1>Groepen van {{record.username}}</h1>
 
 {{#each record.groups}}
 	{{#ifMayChange record}}

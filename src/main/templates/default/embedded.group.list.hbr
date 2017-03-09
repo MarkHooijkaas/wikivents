@@ -35,7 +35,7 @@
 {{#ifAdminMode}}
         <td>{{&join owners "<br/>"}}</td>
         <td>
-			{{> include/modal.delete action="delete" field="ActionHandlerId" value=record.key label="Weet je zeker dat je deze interesse wil verwijderen?"}}
+			{{> include/modal.delete action="delete" field="ActionHandlerId" value=record.key label="Weet je zeker dat je deze groep wil verwijderen?"}}
 		</td>
 {{/ifAdminMode}}
 

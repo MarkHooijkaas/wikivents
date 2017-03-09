@@ -3,9 +3,9 @@
 {{> include/show.ajaxField value=record.urlName name="urlName" type="" label="URL" edit=true}}
 
 
-<h2>Verwijder Ge&iuml;nteresseerden</h2> 
+<h2>Verwijder lid uit groep</h2>
 {{#each record.members}}
-	{{> include/modal.delete title=this.get0.username action="removeMember" field="userId" value=this.key label="Weet je zeker dat je deze geinteresseerde wilt verwijderen?"}} 
+	{{> include/modal.delete title=this.get0.username action="removeMember" field="userId" value=this.key label="Weet je zeker dat je dit lid uit de groep wilt verwijderen?"}}
 	{{& this.link}}
 	<br/>
 {{/each}}

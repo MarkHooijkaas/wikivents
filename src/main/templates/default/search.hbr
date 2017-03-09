@@ -17,7 +17,7 @@
 {{> include/embedded.event.list list=events tableid="events"}}
 
 <h2>Groepen met de tekst: {{text}}</h2>
-{{> embedded.group.list list=themes tableid="groups"}}
+{{> embedded.group.list list=groups tableid="groups"}}
 
 
 {{#if call.user.maySeeProfile}}

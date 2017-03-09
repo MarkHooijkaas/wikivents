@@ -42,9 +42,6 @@
 		    <h1>Activiteiten waar {{record.username}} heen is gegaan</h1>
 			{{> include/embedded.event.list list=record.pastEvents tableid="pastEventsTabbed"}}
 		</div>
-		<div class="tab-pane" role="tabpanel" id="interestsTab">
-			{{> user.interests}}
-		</div>
 		<div class="tab-pane" role="tabpanel" id="karmaTab">
 			{{> user.karma}}
 		</div>

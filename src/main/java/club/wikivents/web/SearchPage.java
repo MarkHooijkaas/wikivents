@@ -42,7 +42,7 @@ public class SearchPage extends WikiventsPage {
 			context.add("users", users);
 		}
 		context.add("events", events);
-		context.add("themes", themes);
+		context.add("groups", themes);
 		call.output(call.getTheme().search.toString(context));
 	}
 
