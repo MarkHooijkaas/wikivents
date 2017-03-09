@@ -61,8 +61,6 @@
 				<attribute name="Class-Path" value="${manifest.classpath}"/>
 				<attribute name="Main-Class" value="club.wikivents.Runner"/>
 			</manifest>
-			<zipfileset dir="../hooi4j/build/classes" />
-			<zipfileset dir="../pko4j/build/classes" />
 			<zipfileset dir="src/main/templates" prefix="templates"/>
 			<zipfileset dir="." includes="version.properties"/>
 	    </jar>
