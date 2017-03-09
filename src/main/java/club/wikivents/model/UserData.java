@@ -86,10 +86,13 @@ public abstract class UserData extends WikiventsObject<User> {
 	}
 
 	private ImmutableSequence<UserItem> startingRecommendation(Struct data, int version) {
+		ImmutableSequence<UserItem> result = schema.recommendations.getSequenceOrEmpty(table.model, data);
+		if (result.size()>0)
+			return result;
 		boolean defaultValue = version==0;
 		boolean identityValidated =  Item.asBoolean(data.getDirectFieldValue("identityValidated",defaultValue));
 		if (! identityValidated)
-			return schema.recommendations.getSequenceOrEmpty(table.model, data);
+			return result;
 		MultiStruct data2=new MultiStruct(
 			new SingleItemStruct(UserItem.schema.date.name, ""+this.creationDate),
 			new SingleItemStruct(UserItem.schema.user.name, "55bd0486a1e0df4a250cd3eb")

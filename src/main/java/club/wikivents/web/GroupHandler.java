@@ -41,7 +41,7 @@ public class GroupHandler extends CommonBaseHandler<Group> {
 		if (formdata.isValid()) {
 			Group t=new Group(call.model,call.user,formdata.record);
 			model.groups.create(t);
-			call.redirect("/theme/:"+t._id);
+			call.redirect("/group/:"+t._id);
 		}
 		else
 			formdata.handle();
