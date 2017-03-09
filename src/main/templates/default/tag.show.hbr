@@ -4,8 +4,17 @@
 	<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/localization/messages_nl.js"></script>
 {{> include/page.header.end}}
 
-<h1>Label: {{tag.name}}</h1>
-
+<h1><span class="glyphicon glyphicon-tag" aria-hidden="true">Label: {{tag.name}}</h1>
+{{#ifLoggedIn}}
+<form role="form" method="POST" style="display:inline;">
+    <input type="hidden" name="action" value="addTag"/>
+    <input type="hidden" name="field" value="tags"/>
+    <input type="hidden" name="ajax" value="false"/>
+    <input type="hidden" name="tag"  value="{{tag.name}}">
+    <input type="submit" class="btn btn-default" value="Voeg label {{tag.name}} toe aan je interesses" />
+</form>
+{{/ifLoggedIn}}
+<h2>Gerelateerde labels</h2>
 {{> embedded.tag.list list=tag.parentTags}}
 {{#if tag.isChild}}{{#if tag.isParent}}<br>{{/if}}{{/if}}
 {{> embedded.tag.list list=tag.childTags}}

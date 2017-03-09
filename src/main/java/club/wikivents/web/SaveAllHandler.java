@@ -15,6 +15,7 @@ public class SaveAllHandler extends WikiventsPage {
 
 		model.users.saveAll();
 		model.events.saveAll();
+		model.groups.saveAll();
 
 		call.output("done");
 	}

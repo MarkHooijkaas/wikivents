@@ -1,10 +1,13 @@
 package club.wikivents.web;
 
+import club.wikivents.model.Tag;
+import club.wikivents.model.User;
 import org.kisst.http4j.ActionHandler;
 import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
 
 import club.wikivents.model.WikiventsModel;
+import org.kisst.util.CallInfo;
 
 public class TagHandler extends ActionHandler<WikiventsCall, String> {
 
@@ -38,6 +41,26 @@ public class TagHandler extends ActionHandler<WikiventsCall, String> {
 	@Override public void handle(HttpCall httpcall, String subPath) {
 		WikiventsCall call=WikiventsCall.of(httpcall, model);
 		handleCall(call, subPath);
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	public void handleAddTag(WikiventsCall call) {
+		String tag=call.request.getParameter("tag");
+		tag= Tag.normalize(tag);
+		CallInfo.instance.get().action="handleAddTag "+tag;
+		User user = call.authenticatedUser;
+		if (!user.tags.endsWith(","))
+			tag=","+tag;
+		if (! user.hasTag(tag))
+			model.users.update(user, user.changeField(User.schema.tags, user.tags+tag+","));
+	}
+	public void handleRemoveTag(WikiventsCall call) {
+		String tag=call.request.getParameter("tag");
+		tag= Tag.normalize(tag);
+		CallInfo.instance.get().action="handleRemoveTag "+tag;
+		User user = call.authenticatedUser;
+		if (user.hasTag(tag))
+			model.users.update(user, user.changeField(User.schema.tags, user.tags.replaceAll(tag+",","")));
 	}
 }
 

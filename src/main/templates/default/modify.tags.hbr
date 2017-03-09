@@ -3,7 +3,7 @@
     <input type="hidden" name="field" value="tags"/>
     <input type="hidden" name="ajax" value="false"/>
     <input type="text" id="addTagField" class="typeahead"  name="tag"  placeholder="Type een tagnaam">
-    <input type="submit" class="btn btn-default" value="Tag toevoegen" />
+    <input type="submit" class="btn btn-default" value="Label toevoegen" />
     <br>
     <br>
 </form>
