@@ -2,13 +2,14 @@
 <img src="{{record.karmaIcon}}">
 
 {{#if record.karmaNeutral}}
-<h1 style="color:orange;">Karma neutraal: (Identiteit nog niet gecontroleerd)</h1>
+<h1 style="color:orange;">Karma neutraal: (Nog geen aanbevelingen)</h1>
 <p style="color:red;">
 De Karma van deze gebruiker staat op neutraal. 
-Meestal is dat een teken dat deze gebruiker zich nieuw heeft geregistreerd.
-Waarschijnlijk is het email adres of de identiteit van deze gebruiker nog niet gevalideerd. 
-Deze controle enige tijd kan kosten.
-Deze gebruiker mag nog niet deelnemen aan activiteiten, een email verzenden of profielen van andere gebruikers zien, om misbruik te voorkomen.
+Deze gebruiker heeft nog geen aanbevelingen van andere gebruikers.
+Waarschijnlijk is dit een nieuw lid die nog niet veel mensen kent.
+ Ken je deze persoon wel, geef hem dan een aanbeveling.
+Deze gebruiker mag al wel deelnemen aan activiteiten, en profielen van andere gebruikers zien,
+maar mag nog geen email verzenden, of activiteiten organiseren.
 Mocht je toch vragen hebben, neem dan gerust contact op met <a href="mailto:info@wikivents.nl">info@wikivents.nl</a>.  
 </p>  
 {{/if}}

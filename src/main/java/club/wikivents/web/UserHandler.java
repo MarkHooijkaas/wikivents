@@ -5,6 +5,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletException;
@@ -36,6 +39,31 @@ public class UserHandler extends WikiventsActionHandler<User> {
 
 	public void listAll(WikiventsCall call) {
 		call.output(call.getTheme().userList, model.users);
+	}
+	public void listExport(WikiventsCall call) {
+		if (call.isAuthenticated() && call.user.isAdmin) {
+			ArrayList<User> users = new ArrayList<User>();
+			for (User u : model.users) {
+				if (u.karmaPositive() && u.canReceiveMail() && u.emailValidated)
+					users.add(u);
+			}
+			users.sort((User u1, User u2) -> u1.creationDate.compareTo(u2.creationDate));
+			StringBuilder out = new StringBuilder();
+			out.append("EMAIL	USERNAME	OPTIN_DATE	CITY	ACT_TOTAL	ACT_PAST	ACT_FUTURE\n");
+			for (User u : users) {
+				out.append(u.email).append('\t');
+				out.append(u.username).append('\t');
+				out.append(u.creationDate.toString().substring(0, 10)).append('\t');
+				out.append(u.city).append('\t');
+
+				out.append(u.allEvents().size()).append('\t');
+				out.append(u.pastEvents().size()).append('\t');
+				out.append(u.futureEvents().size()).append('\n');
+			}
+			call.output(out.toString());
+		}
+		else
+			call.redirect("/");
 	}
 
 	@NeedsNoAuthorization

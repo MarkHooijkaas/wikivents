@@ -70,7 +70,7 @@ public abstract class UserData extends WikiventsObject<User> {
 		this.isAdmin=schema.isAdmin.getBoolean(data,false);
 		this.emailValidated=schema.emailValidated.getBoolean(data,false);
 		this.blocked=schema.blocked.getBoolean(data,false);
-		this.recommendations=startingRecommendation(data, version);
+		this.recommendations=schema.recommendations.getSequenceOrEmpty(table.model, data);
 	}
 
 	private String findTags(Ref user) {
@@ -85,22 +85,6 @@ public abstract class UserData extends WikiventsObject<User> {
 		return result;
 	}
 
-	private ImmutableSequence<UserItem> startingRecommendation(Struct data, int version) {
-		ImmutableSequence<UserItem> result = schema.recommendations.getSequenceOrEmpty(table.model, data);
-		if (result.size()>0)
-			return result;
-		boolean defaultValue = version==0;
-		boolean identityValidated =  Item.asBoolean(data.getDirectFieldValue("identityValidated",defaultValue));
-		if (! identityValidated)
-			return result;
-		MultiStruct data2=new MultiStruct(
-			new SingleItemStruct(UserItem.schema.date.name, ""+this.creationDate),
-			new SingleItemStruct(UserItem.schema.user.name, "55bd0486a1e0df4a250cd3eb")
-		);
-		UserItem item=new UserItem(model, data2);
-		return ImmutableSequence.of(UserItem.class, item);
-	}	
-	
 	@Override public Ref getRef() { return Ref.of(model,_id); }
 	public static class Ref extends PkoRef<User> implements MyObject, Htmlable {
 		// TODO: think of structural solution for refs with a null key
