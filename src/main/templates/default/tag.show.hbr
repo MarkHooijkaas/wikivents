@@ -22,7 +22,9 @@
 <h2>Activiteiten met label {{tag.name}}</h2>
 {{> include/embedded.event.list list=events}}
 
+{{#ifLoggedIn}}
 <h2>Gebruikers met interesse in {{tag.name}}</h2>
 {{> embedded.user.list list=users}}
+{{/ifLoggedIn}}
 
 {{> include/page.footer}}
