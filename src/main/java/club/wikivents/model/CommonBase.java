@@ -29,7 +29,6 @@ public abstract class CommonBase<T extends CommonBase<T>> extends WikiventsObjec
 		public final SequenceField<User.Ref> owners = new SequenceField<User.Ref>(User.Ref.class,"owners");
 		public final SequenceField<User.Ref> members= new SequenceField<>(User.Ref.class,"members"); 
 		public final SequenceField<User.Ref> invitedUsers= new SequenceField<>(User.Ref.class,"invitedUsers"); 
-		public final SequenceField<User.Ref> interestedUsers= new SequenceField<>(User.Ref.class,"interestedUsers"); 
 		public final SequenceField<User.Ref> likes = new SequenceField<User.Ref>(User.Ref.class,"likes");
 		public final StringField description = new StringField("description"); 
 		public final SequenceField<Comment> comments= new SequenceField<Comment>(Comment.class,"comments");
@@ -44,7 +43,6 @@ public abstract class CommonBase<T extends CommonBase<T>> extends WikiventsObjec
 	public final ImmutableSequence<User.Ref> owners;
 	public final ImmutableSequence<User.Ref> members;
 	public final ImmutableSequence<User.Ref> invitedUsers;
-	public final ImmutableSequence<User.Ref> interestedUsers;
 	public final ImmutableSequence<User.Ref> likes;
 	public final ImmutableSequence<Comment> comments;
 	public final ImmutableSequence<Poll> polls;
@@ -84,7 +82,6 @@ public abstract class CommonBase<T extends CommonBase<T>> extends WikiventsObjec
 			this.members=ImmutableSequence.of(User.Ref.class, arr);
 		}
 		this.invitedUsers=schema.invitedUsers.getSequenceOrEmpty(model, data);
-		this.interestedUsers=schema.interestedUsers.getSequenceOrEmpty(model, data);
 
 		this.likes=schema.likes.getSequenceOrEmpty(model, data);
 		this.comments=schema.comments.getSequenceOrEmpty(model, data);
@@ -156,12 +153,10 @@ public abstract class CommonBase<T extends CommonBase<T>> extends WikiventsObjec
 	public boolean hasOwner(User.Ref user) { return owners.contains(user); }
 	public boolean hasMember(User.Ref user) { return members.contains(user); }
 	public boolean hasInvitedUser(User.Ref user) { return invitedUsers.contains(user); }
-	public boolean hasInterestedUser(User.Ref user) { return interestedUsers.contains(user); }
 
 	public final boolean hasOwner(User user) { return user!=null && hasOwner(user.getRef()); }
 	public final boolean hasMember(User user) { return user!=null && hasMember(user.getRef()); }
 	public final boolean hasInvitedUser(User user) { return user!=null && hasInvitedUser(user.getRef()); }
-	public final boolean hasInterestedUser(User user) { return user!=null && hasInterestedUser(user.getRef()); }
 
 	private static ImmutableSequence.StringExpression userRefKey=(ref) -> {return ((User.Ref) ref).getKey(); };
 	public boolean isLikedBy(User user) { return likes.hasItem(userRefKey, user._id); }
