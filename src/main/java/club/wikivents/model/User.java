@@ -42,7 +42,10 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 
 	@Override public String toString() { return "User("+username+")"; }
 	@Override public String getPasswordSalt() { return passwordSalt; }
-	public String getUrl() { return "/gebruiker/"+username;}
+	public String getUrl() {
+		if (archived)
+			return "/user/:"+this._id;
+		return "/user/"+username;}
 
 	public String getLoginToken() { 
 		SecureToken tok=new SecureToken(model, _id);
@@ -86,20 +89,22 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 	@Override public String getHtmlString() { return link(); }
 	public String link() {
 		String img=avatarUrl;
-		
-		if (img==null || img.trim().length()==0)
+
+		if (archived)
+			return "<img class=\"link-avatar\" src=\"/favicon.ico\">"+getName(); // TODO: ander plaatje
+		else if (img==null || img.trim().length()==0)
 			img="/favicon.ico";
 		
 		img="<img class=\"link-avatar\" src=\""+img+"\"> ";
-		return "<a href=\"/user/"+username+"\" data-toggle=\"tooltip\" title=\""+username+"\">"+img+username+"</a>"; 
+		return "<a href=\""+getUrl()+"\" data-toggle=\"tooltip\" title=\""+getName()+"\">"+img+getName()+"</a>";
 	} 
-	public String usernameLink() { return "<a href=\"/user/"+username+"\">"+username+"</a>";	} 
+	public String usernameLink() { return "<a href=\""+getUrl()+"\">"+getName()+"</a>";	}
 	public String avatarLink() {
 		String img=avatarUrl;
 		if (img==null || img.trim().length()==0)
 			img="/favicon.ico";
 		img="<img class=\"link-avatar\" src=\""+img+"\"> ";
-		return "<a href=\"/user/"+username+"\" data-toggle=\"tooltip\" title=\""+username+"\">"+img+"</a>"; 
+		return "<a href=\""+getUrl()+"\" data-toggle=\"tooltip\" title=\""+getName()+"\">"+img+"</a>";
 	}
 
 

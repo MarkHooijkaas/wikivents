@@ -36,7 +36,7 @@ public class UserItem extends ReflectStruct implements MyObject, AccessChecker<U
 
 	@Override public String toString() {
 		User u=user.get0();
-		return "UserItem("+u==null?"null":u.username+","+comment+")"; 
+		return "UserItem("+u==null?"null":u.getName()+","+comment+")";
 	}
 
 	@Override public boolean mayBeChangedBy(User user) { return user!=null && this.user!=null && this.user.getKey().equals(user.getKey()); }

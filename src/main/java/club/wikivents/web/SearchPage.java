@@ -35,7 +35,7 @@ public class SearchPage extends WikiventsPage {
 		if (call.authenticated) {
 			ArrayList<User> users=new ArrayList<User>() ;
 			for (User u: call.model.users) {
-				if ((u.description+u.username+u.city+u.tags).toLowerCase().indexOf(text)>=0) {
+				if ((u.description+u.username+u.city+u.tags).toLowerCase().indexOf(text)>=0 && ! u.archived) {
 					users.add(u);
 				}
 			}		

@@ -139,7 +139,7 @@ public abstract class CommonBase<T extends CommonBase<T>> extends WikiventsObjec
 	public String ownerNames() {
 		StringJoiner sj = new StringJoiner(", ");
 		for (User.Ref r : owners)
-			sj.add(r.get().username);
+			sj.add(r.get().getName());
 		return sj.toString();
 	}
 
