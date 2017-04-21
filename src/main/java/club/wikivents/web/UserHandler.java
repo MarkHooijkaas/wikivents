@@ -49,11 +49,12 @@ public class UserHandler extends WikiventsActionHandler<User> {
 			}
 			users.sort((User u1, User u2) -> u1.creationDate.compareTo(u2.creationDate));
 			StringBuilder out = new StringBuilder();
-			out.append("EMAIL	USERNAME	OPTIN_DATE	CITY	ACT_TOTAL	ACT_PAST	ACT_FUTURE\n");
+			out.append("EMAIL	USERNAME	OPTIN_DATE	ARCHIVED	CITY	ACT_TOTAL	ACT_PAST	ACT_FUTURE\n");
 			for (User u : users) {
 				out.append(u.email).append('\t');
 				out.append(u.username).append('\t');
 				out.append(u.creationDate.toString().substring(0, 10)).append('\t');
+				out.append(u.archived).append('\t');
 				out.append(u.city).append('\t');
 
 				out.append(u.allEvents().size()).append('\t');
