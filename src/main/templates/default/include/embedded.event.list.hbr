@@ -6,6 +6,7 @@
         <th>Datum</th>
         <th>Tijd</th>
         <th>activiteit</th>
+        <th>provincie</th>
         <th>plaats</th>
         <th>locatie</th>
         <th>deelnemers</th>
@@ -32,6 +33,7 @@
         <td data-order="{{dateKey}} {{time}}">{{dateShortFormat date}}</td>
         <td>{{time}}</td>
         <td><a href="{{url}}" {{#if cancelled}} style="color: grey;"{{/if}}>{{#if idea}}<span style="color:grey;">WIKIDEE</span><br>{{/if}}{{#if cancelled}}GEANNULEERD<br>{{/if}}{{title}}</a></td>
+        <td>{{province}}</td>
         <td>{{city}}</td>
         <td>{{location}}</td>
         <td data-order="{{members.size}}">{{#if idea}}{{members.size}}{{else}}{{memberCount}}{{/if}}</td>

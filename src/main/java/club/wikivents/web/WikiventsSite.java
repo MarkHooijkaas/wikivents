@@ -18,7 +18,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import club.wikivents.WikiventsModels;
+import club.wikivents.model.geo.City;
 import club.wikivents.model.WikiventsModel;
+import club.wikivents.model.geo.Province;
 import club.wikivents.web.WikiventsCall.BlockedUserException;
 import net.tanesha.recaptcha.ReCaptcha;
 import net.tanesha.recaptcha.ReCaptchaFactory;
@@ -65,6 +67,8 @@ public class WikiventsSite implements HttpCallHandler {
 	}
 	public WikiventsSite(Props props) {
 		logger.warn("Starting Wikivents site"); // TODO: should not be warning
+		Province.load("data/geo/provinces.txt");
+		City.load("data/geo/cities.txt");
 		this.props=props;
 		//for (Event e:model.newestEvents)
 		//	System.out.println(e._id+"\t"+e.creationDate());

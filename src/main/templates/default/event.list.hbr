@@ -9,6 +9,26 @@
 			  //"stateSave": true,
 			  //"stateDuration": -1,
 			  "aaSorting": [[0, "asc" ]],
+			   "initComplete": function(settings, json) {
+					  var columnDate = this.api().column(0);
+					  var column = this.api().column(3);
+					  var select = $('<select><option value="">Alle provincies</option></select>')
+						  .appendTo( $(column.header()).empty() )
+						  .on( 'change', function () {
+							  var val = $.fn.dataTable.util.escapeRegex(
+								  $(this).val()
+							  );
+
+							  column
+								  .search( val ? '^'+val+'$' : '', true, false )
+								  .draw();
+							  columnDate.sort();
+						  } );
+
+					  column.data().unique().sort().each( function ( d, j ) {
+						  select.append( '<option value="'+d+'">'+d+'</option>' )
+					  } );
+               }
 		} );
 	} );
 </script>

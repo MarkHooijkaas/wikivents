@@ -8,6 +8,10 @@ import org.kisst.item4j.Item;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.pko4j.PkoRef;
 
+import club.wikivents.model.geo.City;
+import club.wikivents.model.geo.Province;
+import club.wikivents.model.geo.ProvinceField;
+
 public abstract class EventData extends CommonBase<Event> implements Item.Factory {
 	@Override public Iterable<String> fieldNames() { return schema.fieldNames(); }
 	public static final Schema schema=new Schema();
@@ -22,7 +26,8 @@ public abstract class EventData extends CommonBase<Event> implements Item.Factor
 		public final LocalDateField date = new LocalDateField("date"); 
 		public final LocalTimeField time = new LocalTimeField("time"); 
 		public final LocalTimeField endTime = new LocalTimeField("endTime"); 
-		public final StringField city = new StringField("city"); 
+		public final StringField city = new StringField("city");
+		public final ProvinceField province = new ProvinceField("province");
 		public final StringField location = new StringField("location"); 
 		public final StringField cost = new StringField("cost"); 
 		public final StringField guestInfo = new StringField("guestInfo");
@@ -31,6 +36,7 @@ public abstract class EventData extends CommonBase<Event> implements Item.Factor
 	}
 	
 	public final String city;
+	public final Province province;
 	public final String location;
 	public final String cost;
 	public final String guestInfo;
@@ -51,6 +57,11 @@ public abstract class EventData extends CommonBase<Event> implements Item.Factor
 		this.guestInfo=schema.guestInfo.getString(data, null);
 		this.imageUrl=schema.imageUrl.getString(data);
 		this.city=schema.city.getString(data);
+		Province prov = schema.province.findProvince(data);
+		if (prov==null)
+			this.province= City.findProvince(city);
+		else
+			this.province=prov;
 		this.location=schema.location.getString(data);
 		this.cost=schema.cost.getString(data);
 		this.date=schema.date.getLocalDate(data);
