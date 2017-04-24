@@ -4,8 +4,8 @@
 	$(document).ready(function() {
 		$('#events').dataTable( {
 			"language": { "url": "/lib/datatables-i18n/i18n/nl.json" },
-			 "lengthMenu": [[-1, 20, 50, 100], ["Allemaal", 20, 50, 100]],
-			  "dom": '<"top"f>rt<"bottom"><"clear">',
+			 "lengthMenu": [[100, -1, 20, 50], [100, "Allemaal", 20, 50]],
+			  //"dom": '<"top"f>rt<"bottom"><"clear">',
 			  //"stateSave": true,
 			  //"stateDuration": -1,
 			  "aaSorting": [[0, "asc" ]],
@@ -25,7 +25,10 @@
 							  columnDate.sort();
 						  } );
 
-					  column.data().unique().sort().each( function ( d, j ) {
+					  //column.data().unique().sort()
+					  ["Groningen", "Friesland", "Drenthe", "Gelderland", "Overijssel", "Flevoland"
+					   , "Noord-Holland", "Zuid-Holland", "Utrecht", "Zeeland", "Noord-Brabant", "Limburg"]
+					  .forEach( function ( d, j ) {
 						  select.append( '<option value="'+d+'">'+d+'</option>' )
 					  } );
                }
