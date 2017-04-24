@@ -69,6 +69,7 @@ public class WikiventsSite implements HttpCallHandler {
 		logger.warn("Starting Wikivents site"); // TODO: should not be warning
 		Province.load("data/geo/provinces.txt");
 		City.load("data/geo/cities.txt");
+		City.load("data/geo/cities-extra.txt");
 		this.props=props;
 		//for (Event e:model.newestEvents)
 		//	System.out.println(e._id+"\t"+e.creationDate());
