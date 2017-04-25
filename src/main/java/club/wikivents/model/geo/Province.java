@@ -14,8 +14,8 @@ public class Province {
 	private Province(String code, String name) {
 		this.code = code;
 		this.name = name;
-		index.put(code, this);
-		index.put(name, this);
+		index.put(code.toLowerCase(), this);
+		index.put(name.toLowerCase(), this);
 	}
 
 	public static Province from(Object obj, Province defaultValue) {
@@ -26,7 +26,7 @@ public class Province {
 		return defaultValue;
 	}
 
-	public static Province fromString(String text) { return index.get(text); }
+	public static Province fromString(String text) { return index.get(text.toLowerCase()); }
 	@Override public String toString() { return name;}
 
 	public static void load(String filename) {
