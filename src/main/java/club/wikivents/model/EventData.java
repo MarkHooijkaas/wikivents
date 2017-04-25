@@ -72,34 +72,13 @@ public abstract class EventData extends CommonBase<Event> implements Item.Factor
 		this.backupMembersAllowed=schema.backupMembersAllowed.getBoolean(data,true);
 		this.cancelled=schema.cancelled.getBoolean(data,false);
 		this.idea=schema.idea.getBoolean(data,false);
-		ImmutableSequence<Group.Ref> tmpgroups = schema.groups.getSequenceOrEmpty(model, data);
-		String tmp = schema.tags.getString(data, null);
-		if (tmp==null) {
-			tmp = findTags(tmpgroups);
-			if (city!=null && city.indexOf("Meerweg")<0)
-				tmpgroups=null;
-		}
+		this.groups = schema.groups.getSequenceOrEmpty(model, data);
+		String tmp = schema.tags.getString(data,  "");
 		if (! tmp.startsWith(","))
 			tmp=","+tmp;
 		if (! tmp.endsWith(","))
 			tmp=tmp+",";
 		this.tags=tmp;
-		this.groups=tmpgroups;
-	}
-
-	private String findTags(ImmutableSequence<GroupData.Ref> groups){
-		String result="";
-		if (result.indexOf("Meerweg")>=0)
-			result="zeilen";
-		for (Group.Ref gr : groups) {
-			Group g = gr.get0();
-			if (g!=null  && ! g.invitedOnly) {
-				if (result.length()>0)
-					result += ",";
-				result +=  g.urlName;
-			}
-		}
-		return result;
 	}
 
 	@Override public Ref getRef() { return Ref.of(model,_id); }
