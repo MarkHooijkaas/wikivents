@@ -248,8 +248,10 @@ public class UserHandler extends WikiventsActionHandler<User> {
 	
 	@NeedsNoAuthorization
 	public void handleAddRecommendation(WikiventsCall call, User user) { 
-		if (call.user.mayRecommend(user))
-			table.update(user, user.addSequenceItem(schema.recommendations, new UserItem(model, call.user)));
+		if (call.user.mayRecommend(user)) {
+			String comment=call.request.getParameter("comment");
+			table.update(user, user.addSequenceItem(schema.recommendations, new UserItem(model, call.user, comment)));
+		}
 	}
 	@NeedsNoAuthorization
 	public void handleRemoveRecommendation(WikiventsCall call, User user) {
