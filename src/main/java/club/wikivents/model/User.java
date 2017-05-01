@@ -91,7 +91,7 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 		String img=avatarUrl;
 
 		if (archived)
-			return "<img class=\"link-avatar\" src=\"/favicon.ico\">"+getName(); // TODO: ander plaatje
+			return "<img class=\"link-avatar\" src=\"/white-smiley.png\">"+getName();
 		else if (img==null || img.trim().length()==0)
 			img="/favicon.ico";
 		
@@ -101,7 +101,9 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 	public String usernameLink() { return "<a href=\""+getUrl()+"\">"+getName()+"</a>";	}
 	public String avatarLink() {
 		String img=avatarUrl;
-		if (img==null || img.trim().length()==0)
+		if (archived)
+			img="/white-smiley.png";
+		else if (img==null || img.trim().length()==0)
 			img="/favicon.ico";
 		img="<img class=\"link-avatar\" src=\""+img+"\"> ";
 		return "<a href=\""+getUrl()+"\" data-toggle=\"tooltip\" title=\""+getName()+"\">"+img+"</a>";
@@ -113,7 +115,8 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 	public boolean mayJoin(CommonBase<?> obj) { return obj.mayBeJoinedBy(this); }
 	@Override public boolean mayBeViewedBy(User user) {
 		if (user==null) return false;
-		if (_id.equals(user._id))	return true;
+		if (archived && ! user.isAdmin) return false;
+		if (_id.equals(user._id) && ! archived)	return true;
 		if (user.maySeeProfile()) return true;
 		return false;		
 	}

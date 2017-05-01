@@ -6,6 +6,7 @@
 	<tr><td>email:</td><td> {{record.email}} {{> include/modal.textField value=record.email name="email" prefix="" label="E-mail"}}</td></tr>
 	<tr><td>geblokkeerd:</td><td> {{> include/modal.boolField value=record.blocked name="blocked" title="Blokkeren" prefix="" label="geblokkeerd" trueLabel="AAN" falseLabel="UIT"}}</td></tr>
 	<tr><td>uitgeschreven:</td><td> {{> include/modal.boolField value=record.archived name="archived" title="Uitschrijven" prefix="" label="uitgeschreven" trueLabel="Uitgeschreven" falseLabel="actief-lid"}}</td></tr>
+	<tr><td>verberg naam:</td><td> {{> include/modal.boolField value=record.hideName name="hideName" title="Verberg naam" prefix="" label="Verberg Naam " trueLabel="verborgen" falseLabel="zichtbaar"}}</td></tr>
 	<tr><td>Beheerder:</td><td> {{> include/modal.boolField value=record.isAdmin name="isAdmin" title="Beheerder" prefix="" label="beheerder" trueLabel="AAN" falseLabel="UIT"}}</td></tr>
 </table>	  
 

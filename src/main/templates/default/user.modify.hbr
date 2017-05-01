@@ -29,7 +29,7 @@ Dit geldt helemaal voor organisatoren die mensen bij hun thuis uitnodigen.
 
 <table>
 	<tr><td>Wekelijkse Activiteiten overzicht:</td><td> {{> include/modal.boolField value=record.subscribeWeeklyActivities name="subscribeWeeklyActivities" title="Wekelijkse Activiteiten overzicht" prefix="" label="Wekelijkse Activiteiten overzicht" trueLabel="e-mail" falseLabel="uit"}}</td></tr>
-	<tr><td>Maandelijkse nieuwsbrief:</td><td> {{> include/modal.boolField value=record.subscribeMonthlyMail name="subscribeMonthlyMail" title="Maandelijkse nieuwsbrief" prefix="" label="Maandelijkse nieuwsbrief" trueLabel="e-mail" falseLabel="uit"}}</td></tr>
+	<tr><td>Maandelijkse nieuwsbrief:</td><td> {{> include/modal.boolField value=record.subscribeMonthlyMail name="subscribeMonthlyMail" title="Maandelijkse nieuwsbrief" prefix="" label="Maandelijkse nieuwsbrief" trueLabel="e-mail" falseLabel=""}}</td></tr>
 </table>
 
 <h1>Wijzig profiel tekst

@@ -8,9 +8,6 @@
 {{>user.warnings}}
 
 {{#ifMayView record}}
-{{#if record.archived}}
-<h1>Deze gebruiker heeft zich uitgeschreven</h1>
-{{else}}
 <script>
 	$(document).ready(function() {
 		$('.datatable').dataTable( {
@@ -64,9 +61,12 @@
 	</div>
 </div>
 
-{{/if}}
+{{else}}
+{{#if record.archived}}
+<h1>Deze gebruiker heeft zich uitgeschreven</h1>
 {{else}}
 	<span style="color:red;">Je identiteit is nog niet gevalideerd. Daarom mag je alleen je eigen profielfoto zien. Neem contact op met <a href="mailto.info@wikivents.nl">info@wikivents.nl</a> om je identiteit te valideren.</span>
+{{/if}}
 {{/ifMayView}}
 
 <script>

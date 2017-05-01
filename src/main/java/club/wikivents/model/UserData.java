@@ -33,6 +33,7 @@ public abstract class UserData extends WikiventsObject<User> {
 		public final BooleanField emailValidated = new BooleanField("emailValidated");
 		public final BooleanField blocked = new BooleanField("blocked");
 		public final BooleanField archived = new BooleanField("archived");
+		public final BooleanField hideName = new BooleanField("hideName");
 		public final BooleanField subscribeWeeklyActivities = new BooleanField("subscribeWeeklyActivities");
 		public final BooleanField subscribeMonthlyMail = new BooleanField("subscribeMonthlyMail");
 		public final SequenceField<UserItem> recommendations= new SequenceField<>(UserItem.class,"recommendations");
@@ -51,6 +52,7 @@ public abstract class UserData extends WikiventsObject<User> {
 	public final boolean emailValidated;
 	public final boolean blocked;
 	public final boolean archived;
+	public final boolean hideName;
 	public final boolean subscribeWeeklyActivities;
 	public final boolean subscribeMonthlyMail;
 	public final ImmutableSequence<UserItem> recommendations;
@@ -77,6 +79,7 @@ public abstract class UserData extends WikiventsObject<User> {
 		this.emailValidated=schema.emailValidated.getBoolean(data,false);
 		this.blocked=schema.blocked.getBoolean(data,false);
 		this.archived=schema.archived.getBoolean(data,false);
+		this.hideName=schema.hideName.getBoolean(data,false);
 		this.subscribeWeeklyActivities=schema.subscribeWeeklyActivities.getBoolean(data,true);
 		this.subscribeMonthlyMail=schema.subscribeMonthlyMail.getBoolean(data,true);
 		this.recommendations=schema.recommendations.getSequenceOrEmpty(table.model, data);
@@ -119,8 +122,8 @@ public abstract class UserData extends WikiventsObject<User> {
 		}
 	}
 	@Override public String getName() {
-		if (archived)
-			return "*uitgeschreven*";
+		if (hideName)
+			return "***";
 		return username;
 	}
 }
