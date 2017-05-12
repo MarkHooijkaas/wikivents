@@ -1,0 +1,7 @@
+{{> include/page.header.begin}}
+	<script src="/lib/datatables/media/js/jquery.dataTables.min.js"></script>
+{{> include/page.header.end}}
+
+{{message}}
+
+{{> include/page.footer }}

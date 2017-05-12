@@ -31,6 +31,7 @@ public class WikiventsTheme extends TemplateTheme {
 	}
 	
 	public final CompiledTemplate home = template("home");
+	public final CompiledTemplate simpleMessage = template("simple.message");
 	public final CompiledTemplate help = template("help");
 	public final CompiledTemplate login = template("login");
 	public final CompiledTemplate logout = template("logout");

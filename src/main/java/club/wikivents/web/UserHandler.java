@@ -49,7 +49,7 @@ public class UserHandler extends WikiventsActionHandler<User> {
 			}
 			users.sort((User u1, User u2) -> u1.creationDate.compareTo(u2.creationDate));
 			StringBuilder out = new StringBuilder();
-			out.append("EMAIL	USERNAME	OPTIN_DATE	ARCHIVED	WEEKLY_ACT_MAIL	MONTHLY_NEWS_MAIL	CITY	ACT_TOTAL	ACT_PAST	ACT_FUTURE\n");
+			out.append("EMAIL	USERNAME	OPTIN_DATE	ARCHIVED	WEEKLY_ACT_MAIL MONTHLY_NEWS_MAIL	CITY	ACT_TOTAL	MONTHLY_UNSUB_URL\n");
 			for (User u : users) {
 				out.append(u.email).append('\t');
 				out.append(u.username).append('\t');
@@ -60,8 +60,7 @@ public class UserHandler extends WikiventsActionHandler<User> {
 				out.append(u.city).append('\t');
 
 				out.append(u.allEvents().size()).append('\t');
-				out.append(u.pastEvents().size()).append('\t');
-				out.append(u.futureEvents().size()).append('\n');
+				out.append(u.unsubscribeMonthlyNewsLetterUrl()).append('\n');
 			}
 			call.output(out.toString());
 		}
@@ -363,6 +362,23 @@ public class UserHandler extends WikiventsActionHandler<User> {
 		CallInfo.instance.get().action="handleRemoveTag "+tag;
 		if (rec.hasTag(tag))
 			table.update(rec, rec.changeField(schema.tags, rec.tags.replaceAll(tag+",","")));
+	}
+
+	@NeedsNoAuthentication
+	public void viewUnsubscribeMonthlyNewsletter(WikiventsCall call, User user) {
+		TemplateData context = call.createTemplateData();
+		String message=null;
+		String token=call.request.getParameter("token");
+		if (user==null)
+			message="onbekende gebruiker";
+		else if (token==null || ! token.equals(user.secureToken(User.tokenUnsubscribe)))
+			message="ongeldige token om maandelijkse nieuwsbrief instelling aan te passen voor "+user.username;
+		else {
+			table.update(user, user.changeField(schema.subscribeMonthlyMail, false));
+			message="Maandelijkse nieuwsbrief voor " + user.email + " is uitgeschakeld";
+		}
+		context.add("message",message);
+		call.output(call.getTheme().simpleMessage, context);
 	}
 }
 
