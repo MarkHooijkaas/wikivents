@@ -43,10 +43,9 @@ public class City {
 		else if (existing!=province){
 			if (important) {
 				index.put(city,province);
-				System.out.println(city+"->"+province+"\tIgnoring "+existing);
+				//System.out.println(city+"->"+province+"\tIgnoring "+existing);
 			}
-			else
-				System.out.println(city+"->"+existing+"\tIgnoring "+province);
+			//else System.out.println(city+"->"+existing+"\tIgnoring "+province);
 		}
 	}
 
