@@ -259,4 +259,7 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 	public String unsubscribeMonthlyNewsLetterUrl() {
 		return "https://wikivents.nl"+getUrl()+"?view=UnsubscribeMonthlyNewsletter&token="+secureToken(tokenUnsubscribe);
 	}
+	public String unsubscribeWeeklyNewsLetterUrl() {
+		return "https://wikivents.nl"+getUrl()+"?view=UnsubscribeWeeklyNewsletter&token="+secureToken(tokenUnsubscribe);
+	}
 }
