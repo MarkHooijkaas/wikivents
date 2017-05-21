@@ -1,5 +1,8 @@
 package club.wikivents.web;
 
+import java.io.File;
+
+import org.kisst.http4j.ResourceHandler;
 import org.kisst.http4j.form.HttpFormData;
 import org.kisst.http4j.handlebar.TemplateEngine.CompiledTemplate;
 import org.kisst.item4j.struct.Struct;
@@ -15,6 +18,7 @@ public class EventHandler extends CommonBaseHandler<Event> {
 	public static final Logger logger = LoggerFactory.getLogger(EventHandler.class);
 
 	public final Event.Schema schema;
+	private final ResourceHandler uploads = new ResourceHandler(null, new File("data/Event/"));
 
 
 	public EventHandler(WikiventsSite site) { super(site, site.model.events, site.model.eventUrlIndex, Event.schema); this.schema=Event.schema; }
@@ -68,6 +72,11 @@ public class EventHandler extends CommonBaseHandler<Event> {
 		}
 		else
 			formdata.handle();
+	}
+
+	@NeedsNoAuthentication
+	public void viewUploads(WikiventsCall call, Event event, String subpath) {
+		uploads.handle(call, event._id+".dir/uploads/"+subpath);
 	}
 
 
