@@ -143,6 +143,8 @@ public abstract class CommonBase<T extends CommonBase<T>> extends WikiventsObjec
 		return sj.toString();
 	}
 
+	public boolean isVisible() { return !hidden; }
+
 	@Override public boolean mayBeChangedBy(User user) { return user!=null && (user.isAdmin || hasOwner(user)); }
 	@Override public boolean mayBeViewedBy(User user) { 
 		return (!hidden) || hasOwner(user) || hasMember(user) || hasInvitedUser(user);

@@ -30,6 +30,9 @@ public class EventHandler extends CommonBaseHandler<Event> {
 	@NeedsNoAuthentication
 	public void listPast(WikiventsCall call) { call.output(call.getTheme().eventList, call.model.pastEvents()); }
 
+	public void listExport(WikiventsCall call) { call.output(call.getTheme().eventExport, call.model.futureEvents()); }
+	public void listExportNew(WikiventsCall call) { call.output(call.getTheme().eventExportNew, call.model.futureEvents()); }
+
 	@NeedsNoAuthentication
 	public void view(WikiventsCall call, Event event) {
 		call.output(call.getTheme().eventShow, event);

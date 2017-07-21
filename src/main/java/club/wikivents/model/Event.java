@@ -29,6 +29,8 @@ public class Event extends EventData implements Comparable<Event> {
 		));
 	}
 
+	public boolean isExportable() { return (! hidden) && (! cancelled) && date!=null && date.minusMonths(1).isBefore(LocalDate.now());}
+	public boolean isExportableNew() { return (! hidden) && (! cancelled) && creationDate.plusSeconds(3600*24*14).isAfter(Instant.now());}
 	@Override public boolean mayBeViewedBy(User user) { return super.mayBeViewedBy(user) || hasInvitedGroupUser(user);}
 	@Override public boolean mayBeJoinedBy(User user) { return super.mayBeJoinedBy(user) || hasInvitedGroupUser(user);}
 	public boolean hasInvitedGroupUser(User.Ref user) {

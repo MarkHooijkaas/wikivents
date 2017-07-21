@@ -157,7 +157,7 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 	public boolean karmaNotNegative() { return karma()>=0; }
 	public boolean karmaNotPositive() { return karma()<=0; }
 	
-	public boolean canReceiveMail() { return emailValidated && karma()>0; }
+	public boolean canReceiveMail() { return emailValidated && karma()>=0; }
 	public boolean maySeeUsers() { return karma()>=0; }
 	public boolean maySeeSender() { return karma()>0; }
 	public boolean maySendMail() { return karma()>0; }
@@ -256,6 +256,7 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 	public String secureToken(String info) { return PasswordEncryption.onewayEncrypt(_id+info,passwordSalt,17);}
 
 	public static final String tokenUnsubscribe="Unsubscribe";
+	public String unsubscribeToken() { return secureToken(tokenUnsubscribe); }
 	public String unsubscribeMonthlyNewsLetterUrl() {
 		return "https://wikivents.nl"+getUrl()+"?view=UnsubscribeMonthlyNewsletter&token="+secureToken(tokenUnsubscribe);
 	}

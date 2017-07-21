@@ -44,12 +44,12 @@ public class UserHandler extends WikiventsActionHandler<User> {
 		if (call.isAuthenticated() && call.user.isAdmin) {
 			ArrayList<User> users = new ArrayList<User>();
 			for (User u : model.users) {
-				if (u.karmaPositive() && u.canReceiveMail() && u.emailValidated)
+				if (u.karmaNotNegative() && u.canReceiveMail() && u.emailValidated)
 					users.add(u);
 			}
 			users.sort((User u1, User u2) -> u1.creationDate.compareTo(u2.creationDate));
 			StringBuilder out = new StringBuilder();
-			out.append("EMAIL	USERNAME	OPTIN_DATE	WEEKLY_ACT_MAIL	MONTHLY_NEWS_MAIL	CITY	ACT_TOTAL	WEEKLY_UNSUB_URL	MONTHLY_UNSUB_URL\n");
+			out.append("EMAIL	USERNAME	OPTIN_DATE	WEEKLY_ACT_MAIL	MONTHLY_NEWS_MAIL	CITY	ACT_TOTAL	UNSUB_TOKEN\n");
 			for (User u : users) {
 				out.append(u.email).append('\t');
 				out.append(u.username).append('\t');
@@ -59,8 +59,7 @@ public class UserHandler extends WikiventsActionHandler<User> {
 				out.append(u.city).append('\t');
 
 				out.append(u.allEvents().size()).append('\t');
-				out.append(u.unsubscribeWeeklyNewsLetterUrl()).append('\t');
-				out.append(u.unsubscribeMonthlyNewsLetterUrl()).append('\n');
+				out.append(u.unsubscribeToken()).append('\n');
 			}
 			call.output(out.toString());
 		}
