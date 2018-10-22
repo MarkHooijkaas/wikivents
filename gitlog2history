@@ -1,0 +1,6 @@
+#!/bin/sh
+
+cd data
+for f in User/*; do
+	git log --format="%ad;%an;%ae;%aN;%s" --date="format:%Y-%m-%d %H:%M:%S" --reverse $f >$f/history.txt
+done
