@@ -32,7 +32,7 @@ public class TagRepository implements Iterable<Tag> {
 	}
 
 	public ImmutableSequence<User> getUsers(String tag) { return model.userTags.records(tag); }
-	public ImmutableSequence<Event> getEvents(String tag) { return model.eventTags.records(tag); }
+	public ImmutableSequence<Wikivent> getEvents(String tag) { return model.eventTags.records(tag); }
 
 	public void addTags(String tags) {
 		for (String tag : tags.split(","))
@@ -128,15 +128,15 @@ public class TagRepository implements Iterable<Tag> {
 			}
 		}
 	}
-	public class EventListener implements PkoTable.ChangeHandler<Event> {
-		@Override public Class<Event> getRecordClass() { return Event.class;}
-		@Override public boolean allow(PkoTable<Event>.Change change) { return true;}
-		@Override public void rollback(PkoTable<Event>.Change change) {}
-		@Override public void commit(PkoTable<Event>.Change change) {
-			Event rec = change.newRecord;
+	public class EventListener implements PkoTable.ChangeHandler<Wikivent> {
+		@Override public Class<Wikivent> getRecordClass() { return Wikivent.class;}
+		@Override public boolean allow(PkoTable<Wikivent>.Change change) { return true;}
+		@Override public void rollback(PkoTable<Wikivent>.Change change) {}
+		@Override public void commit(PkoTable<Wikivent>.Change change) {
+			Wikivent rec = change.newRecord;
 			if (rec!=null) {
 				if (rec.tags != null) {
-					Event oldRec = change.oldRecord;
+					Wikivent oldRec = change.oldRecord;
 					if (oldRec == null || !rec.tags.equals(oldRec.tags))
 						addTags(change.newRecord.tags);
 				}

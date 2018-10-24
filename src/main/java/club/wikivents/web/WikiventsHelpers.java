@@ -2,13 +2,13 @@ package club.wikivents.web;
 
 import java.io.IOException;
 
+import club.wikivents.model.Wikivent;
 import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.handlebar.UserHelpers;
 
 import com.github.jknack.handlebars.Options;
 
 import club.wikivents.model.CommonBase;
-import club.wikivents.model.Event;
 import club.wikivents.model.Group;
 import club.wikivents.model.User;
 
@@ -47,15 +47,15 @@ public class WikiventsHelpers extends UserHelpers<User> {
 			return options.fn();
 		return options.inverse();
 	}
-	public CharSequence ifEventHasGroup(Event e, Group gr, final Options options) throws IOException { 
+	public CharSequence ifEventHasGroup(Wikivent e, Group gr, final Options options) throws IOException {
 		if (e.hasGroup(gr)) 
 			return options.fn();
 		return options.inverse();
 	}
 	public CharSequence ifLikedByMe(Object obj, final Options options) throws IOException {
 		boolean liked = false;
-		if (obj instanceof Event)
-			liked= ((Event) obj).isLikedBy((User) getUserOrNull(options));
+		if (obj instanceof Wikivent)
+			liked= ((Wikivent) obj).isLikedBy((User) getUserOrNull(options));
 		if (liked)
 			return options.fn();
 		return options.inverse();

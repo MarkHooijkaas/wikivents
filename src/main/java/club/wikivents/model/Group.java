@@ -21,17 +21,17 @@ public class Group extends GroupData implements AccessChecker<User> {
 
 	public String getUrl() { return "/group/"+urlName; }
 	
-	public ArrayList<Event> futureEvents() {
-		ArrayList<Event> result=new ArrayList<Event>();
-		for (Event e: model.futureEvents()) {
+	public ArrayList<Wikivent> futureEvents() {
+		ArrayList<Wikivent> result=new ArrayList<Wikivent>();
+		for (Wikivent e: model.futureEvents()) {
 			if (e.hasGroup(this))
 				result.add(e);
 		}
 		return result;
 	}
-	public ArrayList<Event> pastEvents() {
-		ArrayList<Event> result=new ArrayList<Event>();
-		for (Event e: model.pastEvents()) {
+	public ArrayList<Wikivent> pastEvents() {
+		ArrayList<Wikivent> result=new ArrayList<Wikivent>();
+		for (Wikivent e: model.pastEvents()) {
 			if (e.hasGroup(this))
 				result.add(e);
 		}

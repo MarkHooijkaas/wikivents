@@ -41,7 +41,7 @@ public class Tag {
 	@Override public String toString() { return name; }
 	private boolean contains(String list, String tag) { return list.indexOf(","+tag.trim()+",")>=0; }
 	public ImmutableSequence<User> getUsers() { return repo.getUsers(name);}
-	public ImmutableSequence<Event> getEvents() { return repo.getEvents(name);}
+	public ImmutableSequence<Wikivent> getEvents() { return repo.getEvents(name);}
 	public int nrofUsers() {
 		ImmutableSequence<User> list = getUsers();
 		if (list==null)
@@ -49,7 +49,7 @@ public class Tag {
 		return list.size();
 	}
 	public int nrofEvents() {
-		ImmutableSequence<Event> list = getEvents();
+		ImmutableSequence<Wikivent> list = getEvents();
 		if (list==null)
 			return 0;
 		return list.size();

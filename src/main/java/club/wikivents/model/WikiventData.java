@@ -12,11 +12,11 @@ import club.wikivents.model.geo.City;
 import club.wikivents.model.geo.Province;
 import club.wikivents.model.geo.ProvinceField;
 
-public abstract class EventData extends CommonBase<Event> implements Item.Factory {
+public abstract class WikiventData extends CommonBase<Wikivent> implements Item.Factory {
 	@Override public Iterable<String> fieldNames() { return schema.fieldNames(); }
 	public static final Schema schema=new Schema();
-	public static final class Schema extends CommonBase.Schema<Event> {
-		private Schema() { super(Event.class); }
+	public static final class Schema extends CommonBase.Schema<Wikivent> {
+		private Schema() { super(Wikivent.class); }
 		public final StringField imageUrl = new StringField("imageUrl");
 		public final IntField max = new IntField("max"); 
 		public final BooleanField membersAllowed = new BooleanField("membersAllowed");
@@ -52,7 +52,7 @@ public abstract class EventData extends CommonBase<Event> implements Item.Factor
 	public final boolean idea;
 	public final ImmutableSequence<Group.Ref> groups;
 	
-	public EventData(WikiventsModel model, Struct data) {
+	public WikiventData(WikiventsModel model, Struct data) {
 		super(schema, model, model.events, data);
 		this.guestInfo=schema.guestInfo.getString(data, null);
 		this.imageUrl=schema.imageUrl.getString(data);
@@ -82,10 +82,10 @@ public abstract class EventData extends CommonBase<Event> implements Item.Factor
 	}
 
 	@Override public Ref getRef() { return Ref.of(model,_id); }
-	public static class Ref extends PkoRef<Event> {
+	public static class Ref extends PkoRef<Wikivent> {
 		static public Ref of(WikiventsModel model, String key) { return key==null ? null : new Ref(model, key); }
-		public static class Field extends Schema.BasicField<Event.Ref> {
-			public Field(String name) { super(Event.Ref.class, name); }
+		public static class Field extends Schema.BasicField<Wikivent.Ref> {
+			public Field(String name) { super(Wikivent.Ref.class, name); }
 			public Ref getRef(WikiventsModel model, Struct data) { return of(model, Item.asString(data.getDirectFieldValue(name)));}
 		}
 		private Ref(WikiventsModel model, String _id) { super(model.events, _id); }

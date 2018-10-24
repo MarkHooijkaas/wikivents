@@ -2,10 +2,10 @@ package club.wikivents.web;
 
 import java.util.ArrayList;
 
+import club.wikivents.model.Wikivent;
 import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.handlebar.TemplateEngine.TemplateData;
 
-import club.wikivents.model.Event;
 import club.wikivents.model.Group;
 import club.wikivents.model.User;
 
@@ -20,8 +20,8 @@ public class SearchPage extends WikiventsPage {
 		context.add("text", text);
 		if (text!=null)
 			text=text.toLowerCase();
-		ArrayList<Event> events=new ArrayList<Event>() ;
-		for (Event e: call.model.allEvents) {
+		ArrayList<Wikivent> events=new ArrayList<Wikivent>() ;
+		for (Wikivent e: call.model.allEvents) {
 			if ((e.description+e.title+e.city+e.location+e.tags).toLowerCase().indexOf(text)>=0) {
 				events.add(e);
 			}

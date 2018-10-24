@@ -52,25 +52,25 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 		return tok.getToken();
 	}
 	
-	public ArrayList<Event> futureEvents() {
-		ArrayList<Event> result=new ArrayList<Event>();
-		for (Event e: model.futureEvents()) {
+	public ArrayList<Wikivent> futureEvents() {
+		ArrayList<Wikivent> result=new ArrayList<Wikivent>();
+		for (Wikivent e: model.futureEvents()) {
 			if (e.hasMember(this) || e.hasOwner(this))
 				result.add(e);
 		}
 		return result;
 	}
-	public ArrayList<Event> pastEvents() {
-		ArrayList<Event> result=new ArrayList<Event>();
-		for (Event e: model.pastEvents()) {
+	public ArrayList<Wikivent> pastEvents() {
+		ArrayList<Wikivent> result=new ArrayList<Wikivent>();
+		for (Wikivent e: model.pastEvents()) {
 			if (e.hasMember(this) || e.hasOwner(this))
 				result.add(e);
 		}
 		return result;
 	}
-	public ArrayList<Event> allEvents() {
-		ArrayList<Event> result=new ArrayList<Event>();
-		for (Event e: model.allEvents) {
+	public ArrayList<Wikivent> allEvents() {
+		ArrayList<Wikivent> result=new ArrayList<Wikivent>();
+		for (Wikivent e: model.allEvents) {
 			if (e.hasMember(this) || e.hasOwner(this))
 				result.add(e);
 		}

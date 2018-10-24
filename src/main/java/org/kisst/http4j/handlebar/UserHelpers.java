@@ -91,7 +91,7 @@ public class UserHelpers<T> {
 			if (obj instanceof AccessChecker) {
 				T user =getUserOrNull(options);
 				authorized= ((AccessChecker<T>)obj).mayBeViewedBy(user);
-				//System.out.println(user+(authorized?"":" NOT")+" authorized for "+((Event) obj).title);
+				//System.out.println(user+(authorized?"":" NOT")+" authorized for "+((Wikivent) obj).title);
 			}
 			if (authorized) 
 				return options.fn();

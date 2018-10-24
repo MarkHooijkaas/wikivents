@@ -18,10 +18,10 @@ import org.kisst.item4j.struct.Struct;
 
 import com.github.jknack.handlebars.Handlebars.SafeString;
 
-public class Event extends EventData implements Comparable<Event> {
+public class Wikivent extends WikiventData implements Comparable<Wikivent> {
 
-	public Event(WikiventsModel model, Struct data) { super(model, data); }
-	public Event(WikiventsModel model, User org, Struct data) {
+	public Wikivent(WikiventsModel model, Struct data) { super(model, data); }
+	public Wikivent(WikiventsModel model, User org, Struct data) {
 		this(model, new MultiStruct(
 			new SingleItemStruct(schema.owners.name, ImmutableSequence.of(User.Ref.class, org.getRef())),
 			new SingleItemStruct(schema.members.name, ImmutableSequence.of(User.Ref.class, org.getRef())),
@@ -102,7 +102,7 @@ public class Event extends EventData implements Comparable<Event> {
 		return false;
 	}
 	
-	@Override public int compareTo(Event other) { return this.date.compareTo(other.date);}
+	@Override public int compareTo(Wikivent other) { return this.date.compareTo(other.date);}
 
 	public Comment findComment(String id) { 
 		if (comments==null || id==null)

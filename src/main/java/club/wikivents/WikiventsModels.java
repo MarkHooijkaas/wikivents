@@ -2,11 +2,11 @@ package club.wikivents;
 
 import java.io.File;
 
+import club.wikivents.model.Wikivent;
 import org.kisst.pko4j.impl.FileStorage;
 import org.kisst.pko4j.impl.GitStorage;
 import org.kisst.props4j.Props;
 
-import club.wikivents.model.Event;
 import club.wikivents.model.Group;
 import club.wikivents.model.User;
 import club.wikivents.model.WikiventsModel;
@@ -18,12 +18,12 @@ public class WikiventsModels {
 		GitStorage git=null;
 		if (props.getBoolean("useGit",false)) {
 			File datadir = new File(props.getString("datadir", "data"));
-			git=new GitStorage(datadir);
+			//git=new GitStorage(datadir);
 		}
 		return new WikiventsModel(site,
-			new FileStorage<User>(User.schema, props, git),
-			new FileStorage<Event>(Event.schema, props, git),
-			new FileStorage<Group>(Group.schema, props, git)
+			new FileStorage<User>(User.schema, props),
+			new FileStorage<Wikivent>(Wikivent.schema, props),
+			new FileStorage<Group>(Group.schema, props)
 		);
 	}
 

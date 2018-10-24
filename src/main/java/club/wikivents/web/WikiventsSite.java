@@ -71,7 +71,7 @@ public class WikiventsSite implements HttpCallHandler {
 		City.load("data/geo/cities.txt");
 		City.load("data/geo/cities-extra.txt");
 		this.props=props;
-		//for (Event e:model.newestEvents)
+		//for (Wikivent e:model.newestEvents)
 		//	System.out.println(e._id+"\t"+e.creationDate());
 		
 		this.emailer=new MailSender(props.getProps("email"));

@@ -1,21 +1,15 @@
 package club.wikivents.model;
 
-import java.util.StringJoiner;
-
 import org.kisst.item4j.ImmutableSequence;
 import org.kisst.item4j.Item;
-import org.kisst.item4j.struct.ReflectStruct;
 import org.kisst.item4j.struct.Struct;
-import org.kisst.item4j.struct.StructProps;
-import org.kisst.pko4j.PkoModel.MyObject;
 import org.kisst.pko4j.PkoObject;
 import org.kisst.pko4j.PkoSchema;
 import org.kisst.pko4j.PkoTable;
-import org.kisst.props4j.Props;
 import org.kisst.util.StringUtil;
 
 public abstract class BasicContent<T extends BasicContent<T>> extends WikiventsObject<T> implements Item.Factory {
-	public static Schema<Event> contentSchema =new Schema<>(Event.class); //TODO: have a schema with a neutral class
+	public static Schema<Wikivent> contentSchema =new Schema<>(Wikivent.class); //TODO: have a schema with a neutral class
 	public static class Schema<T extends PkoObject> extends PkoSchema<T> {
 		protected Schema(Class<T> cls) { super(cls); }
 		public final IdField _id = new IdField();
@@ -40,7 +34,7 @@ public abstract class BasicContent<T extends BasicContent<T>> extends WikiventsO
 		private final SequenceField<Guest> guests= new SequenceField<Guest>(Guest.class,"guests");
 		public final SequenceField<User.Ref> organizers = new SequenceField<User.Ref>(User.Ref.class,"organizers");
 	}
-	private static OldEventSchema<Event> oldEventSchema = new OldEventSchema<Event>(Event.class);
+	private static OldEventSchema<Wikivent> oldEventSchema = new OldEventSchema<Wikivent>(Wikivent.class);
 
 	public BasicContent(Schema<T> schema, WikiventsModel model, PkoTable<T> table, Struct data) {
 		super(model, table, data);

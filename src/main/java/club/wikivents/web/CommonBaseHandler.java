@@ -1,12 +1,12 @@
 package club.wikivents.web;
 
+import club.wikivents.model.Wikivent;
 import org.kisst.pko4j.PkoTable;
 import org.kisst.pko4j.index.UniqueIndex;
 import org.kisst.util.CallInfo;
 
 import club.wikivents.model.Comment;
 import club.wikivents.model.CommonBase;
-import club.wikivents.model.Event;
 import club.wikivents.model.User;
 import club.wikivents.model.CommonBaseCommands.AddMemberCommand;
 import club.wikivents.model.CommonBaseCommands.RemoveMemberCommand;
@@ -110,25 +110,25 @@ public class CommonBaseHandler<T extends CommonBase<T> & HasUrl> extends Wikiven
 	@NeedsNoAuthorization
 	public void handleAddLike(WikiventsCall call) {
 		String id=call.request.getParameter("eventId");
-		Event event=model.events.read(id);
+		Wikivent event=model.events.read(id);
 		if (event!=null)
 			CallInfo.instance.get().data=event.title;
 		if (! event.isLikedBy(call.user))
-			model.events.update(event, event.addSequenceItem(Event.schema.likes, call.user.getRef()));
+			model.events.update(event, event.addSequenceItem(Wikivent.schema.likes, call.user.getRef()));
 	}
 
 	@NeedsNoAuthorization
 	public void handleRemoveLike(WikiventsCall call) {
 		String id=call.request.getParameter("eventId");
-		Event event=model.events.read(id);
+		Wikivent event=model.events.read(id);
 		if (event!=null)
 			CallInfo.instance.get().data=event.title;
 		User.Ref ref = call.user.getRef();
-		model.events.update(event, event.removeSequenceItem(Event.schema.likes, ref));
+		model.events.update(event, event.removeSequenceItem(Wikivent.schema.likes, ref));
 	}
 
 	/*
-	public void handleAddPoll(WikiventsCall call, Event event) {
+	public void handleAddPoll(WikiventsCall call, Wikivent event) {
 		table.update(event,
 			event.addSequenceItem(schema.polls, event.new Poll(new HttpRequestStruct(call)))
 		);

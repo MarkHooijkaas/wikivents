@@ -15,7 +15,7 @@ import org.kisst.props4j.Props;
 import org.kisst.util.StringUtil;
 
 public abstract class CommonBase<T extends CommonBase<T>> extends WikiventsObject<T> implements Item.Factory {
-	public static Schema<Event> commonSchema=new Schema<>(Event.class); //TODO: have a schema with a neutral class
+	public static Schema<Wikivent> commonSchema=new Schema<>(Wikivent.class); //TODO: have a schema with a neutral class
 	public static class Schema<T extends PkoObject> extends PkoSchema<T> {
 		protected Schema(Class<T> cls) { super(cls); }
 		public final IdField _id = new IdField();
@@ -52,7 +52,7 @@ public abstract class CommonBase<T extends CommonBase<T>> extends WikiventsObjec
 		private final SequenceField<Guest> guests= new SequenceField<Guest>(Guest.class,"guests");
 		public final SequenceField<User.Ref> organizers = new SequenceField<User.Ref>(User.Ref.class,"organizers");
 	}
-	private static OldEventSchema<Event> oldEventSchema = new OldEventSchema<Event>(Event.class);
+	private static OldEventSchema<Wikivent> oldEventSchema = new OldEventSchema<Wikivent>(Wikivent.class);
 	
 	public CommonBase(Schema<T> schema, WikiventsModel model, PkoTable<T> table, Struct data) {
 		super(model, table, data);
