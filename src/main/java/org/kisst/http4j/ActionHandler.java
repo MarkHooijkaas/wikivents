@@ -47,7 +47,7 @@ public abstract class ActionHandler<C extends HttpCall, T> implements HttpCallHa
 			try {
 				handleCall2(call, subPath);
 			}
-			catch (RuntimeException e) { call.sendError(500, e.getMessage()); }
+			catch (RuntimeException e) { call.sendError(500, HttpServer.getRootErrorMessage(e)); }
 		}
 		else
 			handleCall2(call, subPath);

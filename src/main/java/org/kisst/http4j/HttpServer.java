@@ -164,7 +164,7 @@ public class HttpServer extends AbstractHandler {
         catch (UnauthorizedException e) {
         	try {
         		response.resetBuffer();
-				response.sendError(403, e.getMessage());
+				response.sendError(403, getRootErrorMessage(e));
 			}
         	catch (IOException e1) { logger.error("IO exception when redirecting Unauthorized call",e); }
         }
@@ -173,14 +173,14 @@ public class HttpServer extends AbstractHandler {
         	try {
         		if (e instanceof HttpException) {
         			HttpException he=(HttpException) e;
-        			response.sendError(he.code, e.getMessage()); 
+        			response.sendError(he.code, getRootErrorMessage(e));
         			e.printStackTrace();
         		}
         		else {
         			logger.error("Error when handling "+path,e);
         			StringWriter result = new StringWriter();
         			PrintWriter out = new PrintWriter(result);
-        			out.println(e.getMessage());
+        			out.println(getRootErrorMessage(e));
         			out.println("<pre>");
         			e.printStackTrace(out);
         			out.println("</pre>");
@@ -200,7 +200,12 @@ public class HttpServer extends AbstractHandler {
 			catch (IOException e) { logger.error("IO error during FlushBuffer ",e); }
 		}
 	}
-	
+
+	public static	 String getRootErrorMessage(Throwable e) {
+		while (e.getCause()!=null)
+			e=e.getCause();
+		return e.getMessage();
+	}
 	public static class HttpException extends RuntimeException {
 		private static final long serialVersionUID = 1L;
 		private final int code;
