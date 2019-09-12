@@ -39,7 +39,7 @@
 	</target>
 
 	<target name="compile" description="Compiles Java files" depends="init">
-		<javac destdir="${builddir}/classes" debug="on" optimize="on" target="1.8"  includeantruntime="false">
+		<javac destdir="${builddir}/classes" debug="on" optimize="on" source="1.8" target="1.8"  includeantruntime="false">
 				<src path="../hooi4j/src/main/java"/>
 				<src path="../pko4j/src/main/java"/>
 				<src path="${srcdir}/java"/>
