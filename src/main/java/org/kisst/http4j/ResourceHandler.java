@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
+import java.net.URLConnection;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
@@ -88,10 +89,11 @@ public class ResourceHandler implements HttpCallHandler {
 	}
 
 	private void setContentHeaders(HttpCall call, String fileName, long contentLength) {
-		try {
-			call.response.setHeader("Content-Type", Files.probeContentType(Paths.get(fileName)));
-		}
-		catch (IOException e) { throw new RuntimeException(e);}
+				String type=URLConnection.guessContentTypeFromName(fileName);
+				if (type==null && fileName.endsWith(".css"))
+					type="text/css";
+		        call.response.setHeader("Content-Type", type );
+		   
 		call.response.setHeader("Content-Disposition", String.format(CONTENT_DISPOSITION_HEADER, fileName));
 
 		//System.out.println(fileName+":"+contentLength);
