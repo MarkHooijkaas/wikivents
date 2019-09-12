@@ -10,6 +10,7 @@ public class WikiventsCommands {
 		public final T record;
 		public Command(T record) { this.record=record;}
 		public boolean mayBeDoneBy(User user) { return user.isAdmin; }
+		public void validate() {}
 		@Override public void otherActions(boolean rerun) {}
 		@Override public T target() {return record;}
 		@Override public String toString() {return this.getClass().getSimpleName()+"("+record.getKey()+")";}
@@ -33,6 +34,4 @@ public class WikiventsCommands {
 			return ((BasicPkoObject<WikiventsModel, T>)record).changeField(fieldName, value); 
 		}
 	}
-
-
 }

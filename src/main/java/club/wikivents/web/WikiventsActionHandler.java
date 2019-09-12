@@ -2,6 +2,7 @@ package club.wikivents.web;
 
 import java.lang.reflect.Method;
 
+import club.wikivents.model.*;
 import org.kisst.http4j.ActionHandler;
 import org.kisst.http4j.HttpCall;
 import org.kisst.http4j.handlebar.AccessChecker;
@@ -13,12 +14,8 @@ import org.kisst.util.ReflectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import club.wikivents.model.User;
-import club.wikivents.model.WikiventsCommands;
 import club.wikivents.model.WikiventsCommands.ChangeFieldCommand;
 import club.wikivents.model.WikiventsCommands.Command;
-import club.wikivents.model.WikiventsModel;
-import club.wikivents.model.WikiventsObject;
 
 public abstract class WikiventsActionHandler<T extends WikiventsObject<T> & AccessChecker<User> & HasUrl> extends ActionHandler<WikiventsCall, T>{
 	public static final Logger logger = LoggerFactory.getLogger(WikiventsActionHandler.class);
@@ -140,5 +137,18 @@ public abstract class WikiventsActionHandler<T extends WikiventsObject<T> & Acce
 	public void handleDelete(WikiventsCall call, T rec) {
 		if (call.user.isAdmin)
 			table.delete(rec);
+	}
+
+	public void handle(T oldRec, WikiventsCall call, WikiventsCommands.Command cmd) {
+		if (! cmd.mayBeDoneBy(call.user))
+			throw new RuntimeException(cmd.toString()+ " may not be called by User "+call.user);
+		cmd.validate();
+		WikiventsObject.Event event = call.user.new PasswordChanged(call,"secret");
+		//T newRec = cmd.apply(event);
+		// persist (event, oldRec, newRec)
+		// table.update(oldrec, newRec)
+
+
+
 	}
 }

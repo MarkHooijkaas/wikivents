@@ -184,12 +184,7 @@ public class UserHandler extends WikiventsActionHandler<User> {
 	
 	
 	private void changePassword(User user, String newPassword) {
-		String salt = PasswordEncryption.generateSalt();
-		String pw = PasswordEncryption.encryptPassword(newPassword, salt);
-		table.update(user, user.changeFields(new HashStruct()
-			.add(schema.passwordSalt,  salt)
-			.add(schema.encryptedPassword, pw)
-		));
+		table.update(user, user.changePassword(newPassword));
 	}
 	
 	@NeedsNoAuthentication

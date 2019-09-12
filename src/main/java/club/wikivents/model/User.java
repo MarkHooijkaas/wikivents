@@ -12,9 +12,11 @@ import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import club.wikivents.web.WikiventsCall;
 import org.kisst.http4j.SecureToken;
 import org.kisst.http4j.handlebar.AccessChecker;
 import org.kisst.http4j.handlebar.Htmlable;
+import org.kisst.item4j.struct.HashStruct;
 import org.kisst.item4j.struct.Struct;
 import org.kisst.util.PasswordEncryption;
 import org.kisst.util.PasswordEncryption.HasPasswordSalt;
@@ -51,7 +53,7 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 		SecureToken tok=new SecureToken(model, _id);
 		return tok.getToken();
 	}
-	
+
 	public ArrayList<Wikivent> futureEvents() {
 		ArrayList<Wikivent> result=new ArrayList<Wikivent>();
 		for (Wikivent e: model.futureEvents()) {
@@ -263,4 +265,38 @@ public class User extends UserData implements AccessChecker<User>, Htmlable, Has
 	public String unsubscribeWeeklyNewsLetterUrl() {
 		return "https://wikivents.nl"+getUrl()+"?view=UnsubscribeWeeklyNewsletter&token="+secureToken(tokenUnsubscribe);
 	}
+
+	// Test of mutator function
+
+	// public class ChangePasswordCommand extends UserCommand {
+	//   public final String newPassword;
+	//   public ChangePasswordCommand(Struct context) {
+	//     super(context);
+	//     this.newPassword=context.get("password");
+	//
+	// }
+	public static class UserEvent extends WikiventsObject.Event<User> {
+		public UserEvent(WikiventsCall callContext) {
+			super(callContext);
+		}
+	}
+
+	public class PasswordChanged extends UserEvent {
+		public final String newPassword;
+		public PasswordChanged(WikiventsCall callContext, String newPassword) {
+			super(callContext);
+			this.newPassword = newPassword;
+		}
+	}
+
+	public User handle(PasswordChanged event) { return changePassword(event.newPassword); }
+	public User changePassword(String newPassword) {
+		String salt = PasswordEncryption.generateSalt();
+		String pw = PasswordEncryption.encryptPassword(newPassword, salt);
+		return changeFields(new HashStruct()
+				.add(schema.passwordSalt,  salt)
+				.add(schema.encryptedPassword, pw)
+		);
+	}
+
 }

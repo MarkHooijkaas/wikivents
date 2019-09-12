@@ -40,8 +40,7 @@ public class EventHandler extends CommonBaseHandler<Wikivent> {
 	public void viewEdit(WikiventsCall call, Wikivent event) {
 		new Form(call,event).showForm();
 	}
-	
-	
+
 	public void handleEdit(WikiventsCall call, Wikivent event) {
 		Form formdata = new Form(call,(Struct) null);
 		if (formdata.isValid()) 

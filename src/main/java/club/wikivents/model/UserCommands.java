@@ -1,6 +1,8 @@
 package club.wikivents.model;
 
+import club.wikivents.web.WikiventsCall;
 import org.kisst.item4j.HasName;
+import org.kisst.pko4j.PkoObject;
 
 public class UserCommands {
 	public static abstract class Command extends WikiventsCommands.Command<User> {
@@ -22,6 +24,18 @@ public class UserCommands {
 		@Override public User apply() {
 			UserItem recommendation=record.findRecommendation(recommenderId);
 			return record.changeField(User.schema.recommendations, record.recommendations.removeItem(recommendation));
+		}
+	}
+
+	public static class ChangePassword  extends WikiventsCommands.Command<User> {
+		public final String newPassword;
+		public ChangePassword(User record, String newPassword) {
+			super(record);
+			this.newPassword=newPassword;
+		}
+		@Override public boolean mayBeDoneBy(User user) { return user.isAdmin || user==record;}//|| record.fieldMayBeChangedBy(field, user);}
+		@Override public User apply() {
+			return record.changePassword(this.newPassword);
 		}
 	}
 }
