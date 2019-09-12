@@ -61,6 +61,15 @@ actions
 	- event/addComment
 
 
+Storage:
+	objects+blobs: User+avatar, Event+pics, groups
+		FileSystem, S3, GCP, mongo, elastic
+	history: File.append, SQL, elasticsearch, git-commit
+	messages/notifications: File.append, SQL, elastic
+	signalling: Kafka, MQ, 0MQ, watchAll, ...
+
+
+
 
 
 
